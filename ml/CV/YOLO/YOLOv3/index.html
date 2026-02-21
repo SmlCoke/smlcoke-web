@@ -1,0 +1,1419 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SmlCoke">
+      
+      
+      
+        <link rel="prev" href="../YOLOv2/">
+      
+      
+        <link rel="next" href="../../VIT/ViT/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>YOLO v3 - SmlCoke Home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#yolov3" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SmlCoke Home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              YOLO v3
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../blog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  博客
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+  机器学习
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../ResNet/notes/" class="md-tabs__link">
+          
+  
+  
+  计算机视觉
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../rust/Study/" class="md-tabs__link">
+          
+  
+  
+  Rust
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SmlCoke Home
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    博客
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 Full-Connected NN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Basic/ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Basic/ch3_CNN/ch3_CNN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Basic/ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Basic/ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ResNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DenseNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-bounding-box-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. Bounding Box Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-class-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Class Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-predictions-across-scales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Predictions Across Scales
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. Predictions Across Scales">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-base-feature-extractor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 “base feature extractor 在网络的哪个部分？为什么还要加几个卷积层？”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-scale-anchor-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 scale 与 anchor box
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-anchor-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 anchor box的尺寸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-grid-cell-anchor-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 grid cell 中， 如何使用这些 anchor box?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VIT/ViT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PFLD/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rust
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rust/Study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 学习笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-bounding-box-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. Bounding Box Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-class-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Class Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-predictions-across-scales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Predictions Across Scales
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. Predictions Across Scales">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-base-feature-extractor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 “base feature extractor 在网络的哪个部分？为什么还要加几个卷积层？”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-scale-anchor-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 scale 与 anchor box
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-anchor-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 anchor box的尺寸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-grid-cell-anchor-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 grid cell 中， 如何使用这些 anchor box?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="yolov3">YOLOv3</h1>
+<h2 id="i-bounding-box-prediction">I. Bounding Box Prediction</h2>
+<blockquote>
+<p><strong>This should be 1 if the bounding box prior overlaps a ground truth object by more than any other bounding box prior.</strong></p>
+</blockquote>
+<p>这是最关键的一句。</p>
+<p>拆开理解：</p>
+<p><strong>“overlaps” 是什么？</strong></p>
+<p>指的是 <strong>IoU（Intersection over Union）</strong></p>
+<p><strong>这句话在说什么？</strong></p>
+<p>对某一个 <strong>ground truth object</strong>：</p>
+<ol>
+<li>把所有 bounding box priors（anchors）拿出来</li>
+<li>计算它们和该 GT 的 IoU</li>
+<li><strong>IoU 最大的那个 anchor</strong></li>
+<li>→ 它的 <strong>objectness label = 1</strong></li>
+</ol>
+<p>换句话说：</p>
+<blockquote>
+<p><strong>每个真实目标，只“认领”一个 anchor（IoU 最大的那个）</strong></p>
+</blockquote>
+<p>所以：</p>
+<blockquote>
+<p>“This should be 1”
+指的是：
+👉 <strong>objectness 的监督标签为 1</strong></p>
+</blockquote>
+<p>不是预测值，而是 <strong>训练时的目标值（label）</strong></p>
+<blockquote>
+<p><strong>If the bounding box prior is not the best but does overlap a ground truth object by more than some threshold we ignore the prediction, following [17].</strong></p>
+</blockquote>
+<p>这一句非常 subtle。</p>
+<p>情况分三类：</p>
+<table>
+<thead>
+<tr>
+<th>anchor 与 GT 的 IoU</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最大 IoU 的那个</td>
+<td>正样本（objectness=1）</td>
+</tr>
+<tr>
+<td>IoU &gt; threshold（0.5），但不是最大</td>
+<td><strong>忽略（ignore）</strong></td>
+</tr>
+<tr>
+<td>IoU ≤ threshold</td>
+<td>负样本（objectness=0）</td>
+</tr>
+</tbody>
+</table>
+<p>这里的 <strong>ignore</strong> 是关键：</p>
+<p><strong>既不是正样本，也不是负样本</strong></p>
+<p>即：</p>
+<ul>
+<li>不算 objectness loss</li>
+<li>不算 bbox loss</li>
+<li>不算 class loss</li>
+</ul>
+<p>这样做的原因是：</p>
+<blockquote>
+<p><strong>避免惩罚“其实预测得还不错、只是没被选中”的 anchor</strong></p>
+<p><strong>If a bounding box prior is not assigned to a ground truth object it incurs no loss for coordinate or class predictions, only objectness</strong></p>
+</blockquote>
+<p>这句话非常重要，我们拆开：</p>
+<p><strong>“not assigned to a ground truth object” 是指谁？</strong></p>
+<ul>
+<li>不是 IoU 最大的 anchor</li>
+<li>也不是被 ignore 的 anchor</li>
+<li>即：<strong>普通背景 anchor</strong></li>
+</ul>
+<p><strong>“no loss for coordinate or class predictions”</strong></p>
+<p>意思是：</p>
+<ul>
+<li>不回归 bbox（x, y, w, h）</li>
+<li>不预测类别</li>
+<li>因为：</li>
+</ul>
+<blockquote>
+<p><strong>本来就没有目标，回归坐标/类别是没有意义的</strong></p>
+</blockquote>
+<p><strong>“only objectness”</strong></p>
+<p>但仍然：</p>
+<ul>
+<li>计算 objectness loss</li>
+<li>目标是：
+  [
+  \text{objectness} = 0
+  ]</li>
+</ul>
+<p>即：</p>
+<blockquote>
+<p><strong>你应该学会说：这里没有物体</strong></p>
+</blockquote>
+<h2 id="ii-class-prediction">II. Class Prediction</h2>
+<blockquote>
+<p>During training we use binary cross-entropy loss for the class predictions. This formulation helps when we move to more complex domains like the Open Images Dataset [7]. In this dataset there are many overlapping labels (i.e. Woman and Person).</p>
+</blockquote>
+<p><strong>Binary cross-entropy loss</strong></p>
+<ul>
+<li>
+<p>单个类别的 BCE 公式
+    对某个类别 (c)：真实标签：(y_c \in {0,1})，预测概率：(p_c \in (0,1))，则：
+    [
+    \mathcal{L}_{\text{BCE}}(y_c, p_c)
+    = - \left[ y_c \log p_c + (1-y_c)\log(1-p_c) \right]
+    ]
+    如果 (y_c = 1)，你就希望 (p_c \to 1)；如果 (y_c = 0)，你就希望 (p_c \to 0)</p>
+</li>
+<li>
+<p>多类别时的 BCE（YOLOv3 实际用的）
+    对一个 box，有 (C) 个类别：</p>
+<p>[
+\mathcal{L}<em>{\text{class}}
+= \sum</em>{c=1}^{C}
+\mathcal{L}_{\text{BCE}}(y_c, p_c)
+]</p>
+<p><strong>逐类独立求和</strong>，没有归一化，没有类别之间的“竞争”</p>
+</li>
+</ul>
+<p><strong>YOLOv3 把“类别预测”建模成一个多标签问题（multilabel classification），而不是传统的“单标签多分类”（softmax）。</strong></p>
+<p>也就是说：<strong>一个 bounding box 可以同时属于多个类别</strong>，每个类别是一个<strong>独立的二分类问题</strong></p>
+<blockquote>
+<p><strong>传统做法：softmax（单标签分类）</strong>
+softmax 的隐含假设是：
+[
+\sum_{c=1}^C p_c = 1
+]
+也就是：<strong>一个框只能属于一个类别</strong>
+例如：这个框要么是 <code>Person</code>,要么是 <code>Dog</code>,不可能同时是两个,这在 <strong>VOC / COCO 的早期版本</strong> 里大致成立。
+<strong>YOLOv3 的做法：multilabel + sigmoid</strong>
+YOLOv3 改成：每个类别 <strong>一个 sigmoid</strong>，各类别 <strong>互不竞争</strong>
+[
+p_c = \sigma(z_c), \quad c = 1,\dots,C
+]
+$z_c$是线性分类器的原始输出，范围是$(-\infty, +\infty)$
+意味着：一个 box 可以同时满足，<code>Person = 1</code>，<code>Woman = 1</code>，<code>Adult = 1</code></p>
+</blockquote>
+<h2 id="iii-predictions-across-scales">III. Predictions Across Scales</h2>
+<h3 id="31-base-feature-extractor">3.1 “base feature extractor 在网络的哪个部分？为什么还要加几个卷积层？”</h3>
+<p>base feature extractor = Darknet-53 主干网络（backbone），就是一些列卷积层和残差块
+为什么还要多加几层卷积层？
+<strong>把“分类特征”转成“检测特征”</strong></p>
+<ul>
+<li>backbone 主要学的是 <strong>语义表征</strong></li>
+<li>检测需要的是：精确定位（回归）+objectness+类别判断
+所以需要 <strong>专门的 detection head 卷积层</strong></li>
+</ul>
+<h3 id="32-scale-anchor-box">3.2 scale 与 anchor box</h3>
+<blockquote>
+<p>In our experiments with COCO [10] we predict 3 boxes at each scale so the tensor is N × N × [3 ∗ (4 + 1 + 80)] for the 4 bounding box offsets, 1 objectness prediction, and 80 class predictions.</p>
+</blockquote>
+<p>这里的每个scale对应3个boxes，就是说一个grid cell有3个anchor box，当然，来自不同的尺寸</p>
+<h3 id="33-anchor-box">3.3 anchor box的尺寸</h3>
+<p><strong>在整个训练集的所有 ground truth box 上，仅用宽高 (w, h) 做 K-means 聚类得到了9个anchor box：</strong>
+COCO 上得到的就是：</p>
+<pre><code>(10×13), (16×30), (33×23),
+(30×61), (62×45), (59×119),
+(116×90), (156×198), (373×326)
+</code></pre>
+<blockquote>
+<p>✅ <strong>每个 scale 分配 3 个 anchor</strong></p>
+</blockquote>
+<p>具体分配方式（从小到大）：</p>
+<table>
+<thead>
+<tr>
+<th>Scale</th>
+<th>Feature Map</th>
+<th>Anchor 尺寸</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>小目标</td>
+<td>52×52</td>
+<td>(10×13), (16×30), (33×23)</td>
+</tr>
+<tr>
+<td>中目标</td>
+<td>26×26</td>
+<td>(30×61), (62×45), (59×119)</td>
+</tr>
+<tr>
+<td>大目标</td>
+<td>13×13</td>
+<td>(116×90), (156×198), (373×326)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="34-grid-cell-anchor-box">3.4 grid cell 中， 如何使用这些 anchor box?</h3>
+<p>训练时流程是：
+1. 对一个 GT box
+2. 找 <strong>IoU 最大的 anchor（在所有 scale 上）</strong>
+3. 只把这个 anchor 标为正样本
+4. anchor 所在的 grid cell 负责预测该目标 </p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

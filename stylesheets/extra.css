@@ -1,0 +1,67 @@
+/* 隐藏首页默认的标题和主内容区域多余的空白 */
+.md-main__inner {
+  margin-top: 0;
+}
+
+/* 首页背景轮播容器 */
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 20px;
+  border-radius: 20px;
+  color: white;
+  margin-bottom: 40px;
+  
+  /* 新增：背景图相关设置 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* 魔法代码：添加一层半透明的黑色遮罩，保证不管背景图多亮，白色的字都能看清 */
+  box-shadow: inset 0 0 0 2000px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.1);
+  /* 切换图片时的平滑渐变过渡动画 (1秒) */
+  transition: background-image 1s ease-in-out;
+}
+
+/* （原来的 .hero-title, .hero-subtitle, .hero-buttons 等保持不变） */
+
+/* 大标题字体 */
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+/* 副标题 */
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+/* 炫酷按钮组 */
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.hero-buttons a {
+  padding: 12px 30px;
+  background-color: white;
+  color: #e73c7e; /* 按钮文字颜色 */
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.hero-buttons a:hover {
+  transform: translateY(-5px); /* 鼠标悬停时上浮 */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  background-color: #f8f9fa;
+  color: #23a6d5;
+}
