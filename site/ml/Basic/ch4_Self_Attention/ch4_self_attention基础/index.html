@@ -1,0 +1,1518 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SmlCoke">
+      
+      
+      
+        <link rel="prev" href="../../ch3_CNN/ch3_CNN/">
+      
+      
+        <link rel="next" href="../../ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>Chapter 4 Self-Attention - SmlCoke Home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SmlCoke Home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chapter 4 Self-Attention
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../blog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  博客
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+  机器学习
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../CV/ResNet/notes/" class="md-tabs__link">
+          
+  
+  
+  计算机视觉
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../rust/Study/" class="md-tabs__link">
+          
+  
+  
+  Rust
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SmlCoke Home
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    博客
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 Full-Connected NN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch3_CNN/ch3_CNN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一. 引入
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二. 输入是sequence时，输出是什么呢？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequence-labeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三. Sequence Labeling(第一种情况)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三. Sequence Labeling(第一种情况)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-self-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 self-attention层的工作机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 我们用矩阵来表示这种逻辑过程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-multi-head-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Multi-Head Attention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-position-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Position Encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-attention-for-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四. Self-Attention for image
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四. Self-Attention for image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-self-attention-and-cnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Self-Attention and CNN
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-attention-rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五. Self-attention 与 RNN
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/ResNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/DenseNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/YOLO/YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/YOLO/YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/YOLO/YOLOv3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/VIT/ViT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/PFLD/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rust
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rust/Study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 学习笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一. 引入
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二. 输入是sequence时，输出是什么呢？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequence-labeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三. Sequence Labeling(第一种情况)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三. Sequence Labeling(第一种情况)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-self-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 self-attention层的工作机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 我们用矩阵来表示这种逻辑过程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-multi-head-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Multi-Head Attention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-position-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Position Encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-attention-for-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四. Self-Attention for image
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四. Self-Attention for image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-self-attention-and-cnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Self-Attention and CNN
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-attention-rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五. Self-attention 与 RNN
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">自注意力机制</h1>
+<h2 id="_2">一. 引入</h2>
+<p>到目前为止，classification和regression任务的输入都还只是一个向量。但是当输入是一堆向量(<strong>sequence</strong>)呢？</p>
+<p><strong>输入是a set of vector(sequence)的例子</strong></p>
+<ol>
+<li>
+<p>输入是一段文字，其中的每一个词都是一个vector，例如：
+    &gt; I saw a cat</p>
+<p>将词汇转化为向量的方法: (1) one-hot (2) Word Embedding
+<img alt="alt text" src="../image.png" /></p>
+</li>
+<li>
+<p>输入是一段声音讯号
+    <img alt="alt text" src="../image-1.png" />
+    有很多方法将一个<strong>window</strong>中的讯号转化为一个vector</p>
+</li>
+<li>
+<p>Graph
+   <img alt="alt text" src="../image-2.png" /> 
+   每个结点就是一个向量</p>
+</li>
+</ol>
+<h2 id="sequence">二. 输入是sequence时，输出是什么呢？</h2>
+<ol>
+<li>
+<p>Each vector has a label
+   输入的每一个向量，对应一个label
+   <img alt="alt text" src="../image-3.png" />
+   <strong>例如我们输入一个句子，机器识别句子中的每一个词的词性</strong></p>
+</li>
+<li>
+<p>A whole sequence has a label
+   输入的一整个向量序列，对应一个label
+   <img alt="alt text" src="../image-4.png" />
+   例如输入一个句子，机器判断positive or negative
+   输入一个分子，判断有没有毒性？亲水性如何？</p>
+</li>
+<li>
+<p>sequence to sequence
+   <img alt="alt text" src="../image-5.png" />
+   输入的labels个数不确定，机器要自己判断应该输出多少个label
+   例如：翻译（输入输出是不同的语言，输入输出的词汇不一样），同理，语音辨识</p>
+</li>
+</ol>
+<h2 id="sequence-labeling">三. Sequence Labeling(第一种情况)</h2>
+<p>一个有瑕疵的做法——直接用一个FC
+<img alt="alt text" src="../image-6.png" />
+问题，所有相同的输入产生相同的输出，但是在序列中时，他们不一定对应着同一个label!</p>
+<p><strong>解决办法：</strong> 把前后几个vector串起来，一起丢进FC
+<img alt="alt text" src="../image-7.png" /></p>
+<p><strong>如果我们需要考虑一整个sequence作为一个window进入FC呢？开一个巨大的window意味着FC的参数量很大，同时容易Overfitting</strong></p>
+<p>==重要引入：Self Attention==
+<img alt="alt text" src="../image-8.png" />
+即引入一个self-attention层，并且，我们可以像CNN中堆叠卷积层一样堆叠多个self-attention层：
+<img alt="alt text" src="../image-9.png" /></p>
+<h3 id="31-self-attention">3.1 self-attention层的工作机制</h3>
+<p>例如self-attention层input <span class="arithmatex">\(\mathbf{a_1},\mathbf{a_2},\mathbf{a_3},\mathbf{a_4}\)</span> 四个向量，output <span class="arithmatex">\(\mathbf{b_1},\mathbf{b_2},\mathbf{b_3},\mathbf{b_4}\)</span> 四个向量。每一个<span class="arithmatex">\(\mathbf{b}\)</span>都需要考虑所有输入序列的向量</p>
+<p>举个例子，我们来看看如何产生<span class="arithmatex">\(\mathbf{b_1}\)</span>这个向量:
+1. <strong>找出</strong><span class="arithmatex">\(\mathbf{a_1},\mathbf{a_2},\mathbf{a_3},\mathbf{a_4}\)</span>中跟<span class="arithmatex">\(\mathbf{a_1}\)</span>的<strong>相关性(relevant)程度</strong></p>
+<ol>
+<li>
+<p><strong>如何描述这种相关性程度呢？——利用一个数值</strong> <span class="arithmatex">\(\alpha\)</span> 描述。
+   常见方法——dot product(内积)和additive(加性)
+   <img alt="alt text" src="../image-10.png" />
+   这张图展示了自注意力（Self-attention）中两种计算注意力得分<span class="arithmatex">\(\alpha\)</span>的方式：<strong>点积（Dot-product）</strong>和<strong>加性（Additive）</strong>。</p>
+<ol>
+<li>点积注意力（Dot-product Attention）
+计算逻辑：</li>
+<li>输入向量分别通过权重矩阵<span class="arithmatex">\(\boldsymbol{W}^q\)</span>、<span class="arithmatex">\(\boldsymbol{W}^k\)</span>得到 <strong>查询(query)</strong> 向量 <span class="arithmatex">\(\boldsymbol{q}\)</span>、<strong>键(key)</strong> 向量<span class="arithmatex">\(\boldsymbol{k}\)</span>；</li>
+<li>
+<p>注意力得分<span class="arithmatex">\(\alpha\)</span>由<span class="arithmatex">\(\boldsymbol{q}\)</span>和<span class="arithmatex">\(\boldsymbol{k}\)</span>的点积直接计算：
+$<span class="arithmatex">\(\alpha = \boldsymbol{q} \cdot \boldsymbol{k}\)</span>$</p>
+</li>
+<li>
+<p>加性注意力（Additive Attention）
+计算逻辑：</p>
+</li>
+<li>输入向量同样通过<span class="arithmatex">\(\boldsymbol{W}^q\)</span>、<span class="arithmatex">\(\boldsymbol{W}^k\)</span>得到<span class="arithmatex">\(\boldsymbol{q}\)</span>、<span class="arithmatex">\(\boldsymbol{k}\)</span>；</li>
+<li>先将<span class="arithmatex">\(\boldsymbol{q}\)</span>和<span class="arithmatex">\(\boldsymbol{k}\)</span>相加，经过<span class="arithmatex">\(\text{tanh}\)</span>激活函数；</li>
+<li>再通过 <strong>权重矩阵</strong> <span class="arithmatex">\(\boldsymbol{W}\)</span>变换得到注意力得分<span class="arithmatex">\(\alpha\)</span>（过程可表示为）：
+    $<span class="arithmatex">\(\alpha = \boldsymbol{W} \cdot \text{tanh}(\boldsymbol{q} + \boldsymbol{k})\)</span>$</li>
+</ol>
+</li>
+<li>
+<p><strong>计算出</strong><span class="arithmatex">\(\mathbf{a_1}\)</span>跟其他每一个向量<span class="arithmatex">\(\mathbf{a_i}\)</span>的 <strong>相关性分数</strong> <span class="arithmatex">\(\alpha_{1,i}\)</span>(包括自己也要计算)
+   <img alt="alt text" src="../image-11.png" /></p>
+</li>
+<li>
+<p><strong>Softmax 归一化</strong>
+    将所有源位置的得分归一化为概率分布，得到注意力权重：
+    $$
+    \alpha'<em>{i,j} = \frac{\exp(\alpha</em>{i,j})}{\sum_{k} \exp(\alpha_{i,k})}
+    $$
+    此步骤确保 <span class="arithmatex">\(\sum_j \alpha'_{i,j} = 1\)</span>，权重具有可解释性（概率意义）。
+    <img alt="alt text" src="../image-12.png" /></p>
+</li>
+<li>
+<p>加权求和：生成输出
+    最终，位置 <span class="arithmatex">\(i\)</span> 的输出 <span class="arithmatex">\(\mathbf{b}^i\)</span> 由所有位置的值向量 <span class="arithmatex">\(\mathbf{v}^j\)</span>（通常 <span class="arithmatex">\(\mathbf{v}^j = W^v \mathbf{a}^j\)</span>）按权重加权求和得到：
+    $$
+    \mathbf{b}^i = \sum_j \alpha'_{i,j} \mathbf{v}^j
+    $$
+    <img alt="alt text" src="../image-13.png" />
+    这样做得到的效果就是，哪一个向量与<span class="arithmatex">\(\mathbf{a_1}\)</span>的相关性越高，其得分<span class="arithmatex">\(\alpha_{1,i}\)</span>就越大，其位置的值向量<span class="arithmatex">\(\mathbf{v_i}\)</span>就会<strong>占主导地位。</strong></p>
+</li>
+</ol>
+<p><strong>核心思想：</strong>
+让序列中的每个元素（如词向量）能够“关注”序列中所有其他元素，动态计算它们之间的相关性权重，从而生成富含上下文信息的新表示。</p>
+<h3 id="32">3.2 我们用矩阵来表示这种逻辑过程</h3>
+<p>如下的向量默认是列向量
+<strong>第一步：得到<span class="arithmatex">\(q_i\)</span>, <span class="arithmatex">\(k_i\)</span>, <span class="arithmatex">\(v_i\)</span></strong>
+$<span class="arithmatex">\(\begin{aligned}
+[\mathbf{q^1}, \mathbf{q^2}, \mathbf{q^3}, \mathbf{q^4}] &amp;= \boldsymbol{W}^q [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}]  \\
+[\mathbf{k^1}, \mathbf{k^2}, \mathbf{k^3}, \mathbf{k^4}] &amp;=  \boldsymbol{W}^k [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}] \\
+[\mathbf{v^1}, \mathbf{v^2}, \mathbf{v^3}, \mathbf{v^4}] &amp;= \boldsymbol{W}^v [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}] \\
+\Rightarrow \\
+\mathbf{Q} &amp;= \boldsymbol{W}^q \mathbf{I} \\
+\mathbf{K} &amp;= \boldsymbol{W}^k \mathbf{I} \\
+\mathbf{V} &amp;= \boldsymbol{W}^v \mathbf{I}
+\end{aligned}\)</span>$</p>
+<p><strong>第二部：计算attention分数</strong>
+<span class="arithmatex">\(\alpha_{1,1} = k^1 q^1, \alpha_{1,2} = k^2 q^1, \alpha_{1,3} = k^3 q^1, \alpha_{1,4} = k^4 q^1\)</span>
+此时<span class="arithmatex">\(k\)</span>是行向量
+因此：
+<span class="arithmatex">\(\begin{bmatrix}
+\mathbf{\alpha_{1,1}}\\ 
+\mathbf{\alpha_{1,2}}\\ 
+\mathbf{\alpha_{1,3}}\\ 
+\mathbf{\alpha_{1,4}}\end{bmatrix} = \begin{bmatrix}
+ k^1\\
+ k^2\\
+ k^3\\
+ k^4\\
+\end{bmatrix} \mathbf{q^1}\)</span>
+同理可得：
+<span class="arithmatex">\(\begin{bmatrix}
+\mathbf{\alpha_{2,1}}\\ 
+\mathbf{\alpha_{2,2}}\\ 
+\mathbf{\alpha_{2,3}}\\ 
+\mathbf{\alpha_{2,4}}\end{bmatrix} = \begin{bmatrix}
+ k^1\\
+ k^2\\
+ k^3\\
+ k^4\\
+\end{bmatrix} \mathbf{q^2}\)</span>
+等
+因此最终：
+<span class="arithmatex">\(\begin{bmatrix}
+\mathbf{\alpha_{1,1}}\quad \mathbf{\alpha_{2,1}}\quad \mathbf{\alpha_{3,1}}\quad \mathbf{\alpha_{4,1}}\\ 
+\mathbf{\alpha_{1,2}}\quad \mathbf{\alpha_{2,2}}\quad \mathbf{\alpha_{3,2}}\quad \mathbf{\alpha_{4,2}}\\ 
+\mathbf{\alpha_{1,3}}\quad \mathbf{\alpha_{2,3}}\quad \mathbf{\alpha_{3,3}}\quad \mathbf{\alpha_{4,3}}\\ 
+\mathbf{\alpha_{1,4}}\quad \mathbf{\alpha_{2,4}}\quad \mathbf{\alpha_{3,4}}\quad \mathbf{\alpha_{4,4}}\end{bmatrix} = \begin{bmatrix}
+ k^1\\
+ k^2\\
+ k^3\\
+ k^4\\
+\end{bmatrix} [\mathbf{q^1}\quad \mathbf{q^2}\quad \mathbf{q^3}\quad \mathbf{q^4}]\)</span>
+$<span class="arithmatex">\(\mathbf{A} = \mathbf{K}^T \mathbf{Q}\)</span>$</p>
+<p><strong>第三步：Softmax归一化</strong>
+按column做Softmax
+$<span class="arithmatex">\(\mathbf{A'} = \text{Softmax}(\mathbf{A})\)</span>$
+这里的<span class="arithmatex">\(A'\)</span>，就称为：<strong>attention matrix</strong></p>
+<p><strong>第四步：加权求和，得到输出</strong></p>
+<div class="arithmatex">\[\begin{bmatrix}
+\mathbf{b^1}\quad \mathbf{b^2}\quad \mathbf{b^3}\quad \mathbf{b^4}\end{bmatrix} = [\mathbf{v^1}\quad \mathbf{v^2}\quad \mathbf{v^3}\quad \mathbf{v^4}] \begin{bmatrix}
+\alpha'_{1,1}\quad \alpha'_{2,1}\quad \alpha'_{3,1}\quad \alpha'_{4,1}\\ 
+\alpha'_{1,2}\quad \alpha'_{2,2}\quad \alpha'_{3,2}\quad \alpha'_{4,2}\\ 
+\alpha'_{1,3}\quad \alpha'_{2,3}\quad \alpha'_{3,3}\quad \alpha'_{4,3}\\ 
+\alpha'_{1,4}\quad \alpha'_{2,4}\quad \alpha'_{3,4}\quad \alpha'_{4,4}\end{bmatrix}\]</div>
+<div class="arithmatex">\[\mathbf{O} = \mathbf{V} \mathbf{A'}\]</div>
+<p>流程图一览：
+<img alt="alt text" src="../image-14.png" /></p>
+<h3 id="33-multi-head-attention">3.3 Multi-Head Attention</h3>
+<p>我们可以并行多个self-attention机制，称为multi-head attention。我们用Head=2举例。
+此时：
+<span class="arithmatex">\(a^1\)</span>乘上一个矩阵得到<span class="arithmatex">\(q^1\)</span>
+<span class="arithmatex">\(q^1\)</span>再乘上另外两个矩阵，得到<span class="arithmatex">\(q^{1,1}\)</span>和<span class="arithmatex">\(q^{1,2}\)</span>
+同理，<span class="arithmatex">\(k^1\)</span>和<span class="arithmatex">\(v^1\)</span>也会分别得到<span class="arithmatex">\(k^{1,1}\)</span>、<span class="arithmatex">\(k^{1,2}\)</span>和<span class="arithmatex">\(v^{1,1}\)</span>、<span class="arithmatex">\(v^{1,2}\)</span>。
+然后，一组和二组就分别由自己的<span class="arithmatex">\(\mathbf{Q}\)</span>, <span class="arithmatex">\(\mathbf{K}\)</span>, <span class="arithmatex">\(\mathbf{V}\)</span>, <span class="arithmatex">\(\mathbf{A}\)</span>，<span class="arithmatex">\(\mathbf{O}\)</span>，计算出自己的输出<span class="arithmatex">\(\mathbf{O}\)</span>：<span class="arithmatex">\(\mathbf{O^1}\)</span>和<span class="arithmatex">\(\mathbf{O^2}\)</span>。
+然后，将<span class="arithmatex">\(\mathbf{O^1}\)</span>和<span class="arithmatex">\(\mathbf{O^2}\)</span>拼接起来，乘上一个矩阵，得到最终的输出<span class="arithmatex">\(\mathbf{O}\)</span>。
+<img alt="alt text" src="../image-15.png" /></p>
+<h3 id="34-position-encoding">3.4 Position Encoding</h3>
+<p>Self-attention机制本身没有考虑序列中各个向量的顺序信息，因此我们需要引入<strong>位置编码(Position Encoding)</strong>，将位置信息注入到输入向量中。
+<img alt="alt text" src="../image-16.png" /></p>
+<h2 id="self-attention-for-image">四. Self-Attention for image</h2>
+<h3 id="41">4.1</h3>
+<p><img alt="alt text" src="../image-17.png" /></p>
+<h3 id="42-self-attention-and-cnn">4.2 Self-Attention and CNN</h3>
+<p><img alt="alt text" src="../image-18.png" />
+“CNN 是简化版的 Self-attention, Self-attention 是复杂化的 CNN”
+<strong>CNN 中的 receptive field 的范围和大小是人为划定的，但是在 self-attention 中，vector 之间的关系是学习出来的。</strong>
+<img alt="alt text" src="../image-19.png" /></p>
+<h2 id="self-attention-rnn">五. Self-attention 与 RNN</h2>
+<p>RNN的考虑是单向的，没有self-attention全面
+<img alt="alt text" src="../image-20.png" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
