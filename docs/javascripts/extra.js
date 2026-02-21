@@ -5,10 +5,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const images = [
       'assets/bg1.jpg',   // 第一张图
       'assets/bg2.jpg',   // 第二张图
-      'assets/bg3.png'    // 第三张图
+      'assets/bg3.png',   // 第三张图
+      'assets/bg4.jpg',   // 第四张图
       // 如果你有更多图片，按这个格式往下加即可
     ];
     
+    // 【新增：预加载所有图片】
+    // 这样浏览器会在后台提前下载好这些图片，切换时就会绝对丝滑
+    images.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+
     let currentIndex = 0;
     // 初始化显示第一张图
     hero.style.backgroundImage = `url('${images[currentIndex]}')`;
