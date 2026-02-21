@@ -1258,21 +1258,21 @@
 <ul>
 <li>
 <p>单个类别的 BCE 公式
-    对某个类别 (c)：真实标签：(y_c \in {0,1})，预测概率：(p_c \in (0,1))，则：
+    对某个类别 (c)：真实标签：<span class="arithmatex">\(y_c \in {0,1}\)</span>，预测概率：<span class="arithmatex">\(p_c \in (0,1\)</span>)，则：
     [
     \mathcal{L}_{\text{BCE}}(y_c, p_c)
     = - \left[ y_c \log p_c + (1-y_c)\log(1-p_c) \right]
     ]
-    如果 (y_c = 1)，你就希望 (p_c \to 1)；如果 (y_c = 0)，你就希望 (p_c \to 0)</p>
+    如果 <span class="arithmatex">\(y_c = 1\)</span>，你就希望 <span class="arithmatex">\(p_c \to 1\)</span>；如果 <span class="arithmatex">\(y_c = 0\)</span>，你就希望 <span class="arithmatex">\(p_c \to 0\)</span></p>
 </li>
 <li>
 <p>多类别时的 BCE（YOLOv3 实际用的）
     对一个 box，有 (C) 个类别：</p>
-<p>[
-\mathcal{L}<em>{\text{class}}
-= \sum</em>{c=1}^{C}
+<div class="arithmatex">\[
+\mathcal{L}_{\text{class}}
+= \sum_{c=1}^{C}
 \mathcal{L}_{\text{BCE}}(y_c, p_c)
-]</p>
+\]</div>
 <p><strong>逐类独立求和</strong>，没有归一化，没有类别之间的“竞争”</p>
 </li>
 </ul>
@@ -1291,7 +1291,7 @@ YOLOv3 改成：每个类别 <strong>一个 sigmoid</strong>，各类别 <strong
 [
 p_c = \sigma(z_c), \quad c = 1,\dots,C
 ]
-$z_c$是线性分类器的原始输出，范围是$(-\infty, +\infty)$
+<span class="arithmatex">\(z_c\)</span>是线性分类器的原始输出，范围是<span class="arithmatex">\((-\infty, +\infty)\)</span>
 意味着：一个 box 可以同时满足，<code>Person = 1</code>，<code>Woman = 1</code>，<code>Adult = 1</code></p>
 </blockquote>
 <h2 id="iii-predictions-across-scales">III. Predictions Across Scales</h2>
@@ -1413,6 +1413,10 @@ COCO 上得到的就是：</p>
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

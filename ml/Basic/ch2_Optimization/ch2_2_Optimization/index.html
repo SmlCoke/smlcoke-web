@@ -1349,12 +1349,12 @@
 <h3 id="12-taylor-series-approximation">1.2 Taylor Series Approximation</h3>
 <p><img alt="alt text" src="../image-1.png" /></p>
 <p>critical point: gradient = 0, the hessian tell if <strong>local minima</strong>, <strong>local max</strong> and <strong>saddle point</strong></p>
-<p>$v=(\theta - \theta')$</p>
-<p>我们重点关注：$v^T H v$
+<p><span class="arithmatex">\(v=(\theta - \theta')\)</span></p>
+<p>我们重点关注：<span class="arithmatex">\(v^T H v\)</span>
 <img alt="alt text" src="../image-2.png" /></p>
 <p>没有必要去考虑任意值，有简便方法：
-$H$是正定矩阵（所有特征值大于0），则$v^T H v$ 恒 $&gt;0$
-$H$是负定矩阵（所有特征值小于0），则$v^T H v$ 恒 $&lt;0$
+<span class="arithmatex">\(H\)</span>是正定矩阵（所有特征值大于0），则<span class="arithmatex">\(v^T H v\)</span> 恒 <span class="arithmatex">\(&gt;0\)</span>
+<span class="arithmatex">\(H\)</span>是负定矩阵（所有特征值小于0），则<span class="arithmatex">\(v^T H v\)</span> 恒 <span class="arithmatex">\(&lt;0\)</span>
 否则，为saddle point</p>
 <p><strong>案例</strong>
 <img alt="alt text" src="../image-3.png" />
@@ -1389,8 +1389,8 @@ Error Surface：<strong>来回振荡</strong>！</p>
 <p>如上图，Learning rate代表每次梯度下降需要走的步长，Learning rate越大代表步长越大，反之越小。</p>
 <p>该方法中，将此前一直相同的Learning rate动态变化：
 <img alt="alt text" src="../image-16.png" />
-$\sigma_{i}^{t}$<strong>是参数种类的函数，也是时间的函数</strong>，由此来调控Learning rate，更新步长$m$</p>
-<p>$\sigma_{i}^{t}$的计算方法：——前面所有的梯度的<strong>均方根</strong>
+<span class="arithmatex">\(\sigma_{i}^{t}\)</span><strong>是参数种类的函数，也是时间的函数</strong>，由此来调控Learning rate，更新步长<span class="arithmatex">\(m\)</span></p>
+<p><span class="arithmatex">\(\sigma_{i}^{t}\)</span>的计算方法：——前面所有的梯度的<strong>均方根</strong>
 <img alt="alt text" src="../image-17.png" />
 <img alt="alt text" src="../image-18.png" /></p>
 <p>但是，有个问题！<strong>即便是同一个参数，同一个梯度方向，我们也希望Learning rate也可以动态调整！</strong>
@@ -1398,7 +1398,7 @@ $\sigma_{i}^{t}$<strong>是参数种类的函数，也是时间的函数</strong
 <h4 id="2-rmsprop">突破点2. RMSProp</h4>
 <p><img alt="alt text" src="../image-20.png" />
 以下图中间的大坡为例：
-大的gradient需要小的步长，即大的这个时候我们希望$\sigma_{i}^{t}$也尽可能大一点，这<strong>就需要我们刚刚得到的大gradient权值更重一点！</strong>，因此，我们就可以把$\alpha$调小一点来解决这个问题。</p>
+大的gradient需要小的步长，即大的这个时候我们希望<span class="arithmatex">\(\sigma_{i}^{t}\)</span>也尽可能大一点，这<strong>就需要我们刚刚得到的大gradient权值更重一点！</strong>，因此，我们就可以把<span class="arithmatex">\(\alpha\)</span>调小一点来解决这个问题。</p>
 <blockquote>
 <p>个人立即RMSProp就是将之前的均方根<strong>做法修改为了梯度加权的均方根</strong>，使得Learning rate自适应gradient进行调整。
 <img alt="alt text" src="../image-21.png" /></p>
@@ -1409,7 +1409,7 @@ Adam : RMSProp + momentum
 <img alt="alt text" src="../image-24.png" />
 <img alt="alt text" src="../image-22.png" /></p>
 <p>越快要靠近终点，<strong>Learning的调整导致的！</strong>
-快要靠近终点的时候，纵轴方向连续出现的梯度都很小，导致在这个方向累积了很小的$\sigma$，使得纵轴方向的步长变得相对较大。</p>
+快要靠近终点的时候，纵轴方向连续出现的梯度都很小，导致在这个方向累积了很小的<span class="arithmatex">\(\sigma\)</span>，使得纵轴方向的步长变得相对较大。</p>
 <p>解决这个问题的方法：</p>
 <h4 id="3learning-rate-decay-or-warm-up">突破点3：Learning rate decay or Warm up</h4>
 <p><img alt="alt text" src="../image-23.png" />
@@ -1428,7 +1428,7 @@ Learning rate 随着全局时间演进而逐渐衰减。</p>
 <h4 id="gradient-descend-momentum">Gradient Descend + Momentum</h4>
 <p>计算出来的梯度的反方向+前一步的方向，共同考虑
 <img alt="alt text" src="../image-12.png" />
-例如$\mathbf{m}^2 = \lambda \mathbf{m}^1 - \eta \mathbf{g}^1$</p>
+例如<span class="arithmatex">\(\mathbf{m}^2 = \lambda \mathbf{m}^1 - \eta \mathbf{g}^1\)</span></p>
 <p>示例：
 <img alt="alt text" src="../image-13.png" /></p>
 
@@ -1492,6 +1492,10 @@ Learning rate 随着全局时间演进而逐渐衰减。</p>
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

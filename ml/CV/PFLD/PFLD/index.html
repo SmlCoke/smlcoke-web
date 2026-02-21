@@ -1434,22 +1434,22 @@ is added for precisely localizing landmarks in images</p>
 <p>==Against Challenge 1, 2, 3==</p>
 <p>传统的 L2 Loss 仅计算 2D 坐标距离，缺乏对 3D 几何结构的感知。作者利用<strong>辅助网络</strong>预测 3D 到 2D 的投影参数，以此作为正则化手段，帮助主网络更好地理解人脸姿态。</p>
 <p><strong>3D-to-2D Projection Analysis</strong>
-设 $\mathbf{X}$ 为 2D 图像特征点，$\mathbf{U}$ 为 3D 标准人脸模型特征点，二者通过投影矩阵 $\mathbf{P}$ 关联。</p>
+设 <span class="arithmatex">\(\mathbf{X}\)</span> 为 2D 图像特征点，<span class="arithmatex">\(\mathbf{U}\)</span> 为 3D 标准人脸模型特征点，二者通过投影矩阵 <span class="arithmatex">\(\mathbf{P}\)</span> 关联。</p>
 <ol>
 <li>
 <p><strong>数据定义</strong>：</p>
 <ul>
-<li>$\mathbf{X}$ ($2 \times N$)：图像平面上的 2D 关键点坐标。</li>
-<li>$\mathbf{U}$ ($4 \times N$)：标准 3D 人脸模型的关键点坐标，使用<strong>齐次坐标</strong> $[u_i, v_i, z_i, 1]^T$，以便统一表示旋转和平移。</li>
+<li><span class="arithmatex">\(\mathbf{X}\)</span> (<span class="arithmatex">\(2 \times N\)</span>)：图像平面上的 2D 关键点坐标。</li>
+<li><span class="arithmatex">\(\mathbf{U}\)</span> (<span class="arithmatex">\(4 \times N\)</span>)：标准 3D 人脸模型的关键点坐标，使用<strong>齐次坐标</strong> <span class="arithmatex">\([u_i, v_i, z_i, 1]^T\)</span>，以便统一表示旋转和平移。</li>
 </ul>
 </li>
 <li>
-<p><strong>投影矩阵 $\mathbf{P}$ ($2 \times 4$) 与自由度</strong>：</p>
+<p><strong>投影矩阵 <span class="arithmatex">\(\mathbf{P}\)</span> (<span class="arithmatex">\(2 \times 4\)</span>) 与自由度</strong>：</p>
 <ul>
 <li>基于<strong>弱透视投影模型 (Weak Perspective Model)</strong>，投影由 6 个自由度决定：<ul>
 <li><strong>Rotation (3 DoF)</strong>: 欧拉角 (Yaw, Pitch, Roll)。</li>
 <li><strong>Scale (1 DoF)</strong>: 缩放比例。</li>
-<li><strong>Translation (2 DoF)</strong>: 平面位移 ($t_x, t_y$)。</li>
+<li><strong>Translation (2 DoF)</strong>: 平面位移 (<span class="arithmatex">\(t_x, t_y\)</span>)。</li>
 </ul>
 </li>
 </ul>
@@ -1468,16 +1468,16 @@ is added for precisely localizing landmarks in images</p>
 </blockquote>
 <p><strong>Loss Funcion</strong>
 从数学角度而言，损失函数可表述为以下通用形式：
-$$\mathcal{L}:=\frac{1}{M} \sum_{m=1}^{M} \sum_{n=1}^{N} \gamma_{n}\left|\mathbf{d}<em>{n}^{m}\right|$$
-其中$||\cdot||$表示用于衡量第m个输入中第n个特征点距离/误差的特定度量指标。N代表每张人脸需检测的预定义特征点数量，<strong>M表示每个训练批次batch中的图像数量</strong>。在给定度量标准（如本文采用的$\ell_2$范数）后，权重系数$\gamma_n$起关键作用。综合前述几何约束与数据不平衡等考量，我们设计的新型损失函数如下：
-$$\mathcal{L}:=\frac{1}{M} \sum</em>{m=1}^{M} \sum_{n=1}^{N}\left(\sum_{c=1}^{C} \omega_{n}^{c} \sum_{k=1}^{K}\left(1-\cos \theta_{n}^{k}\right)\right)\left|\mathbf{d}<em>{n}^{m}\right|</em>{2}^{2} .$$</p>
-<p>显然，式(2)中的$\sum_{c=1}^{C} \omega_{n}^{c} \sum_{k=1}^{K}\left(1-\cos \theta_{n}^{k}\right)$项等价于式(1)中的$\gamma_n$。具体分析该损失函数：其中$\theta^1$、$\theta^2$与$\theta^3$（$K=3$）分别表示<strong>真实值与估计值在偏航角、俯仰角及翻滚角上的偏差角度</strong>。显然，<strong>偏差角增大时惩罚力度随之增强</strong>。此外，我们将样本划分为多属性类别，包括侧脸、正脸、抬头、低头、表情及遮挡等类别。权重参数$\omega_n^c$根据类别$c$的样本占比进行调整（本研究直接采用占比的倒数）。例如，当禁用几何约束与数据不平衡功能时，该损失函数即退化为普通$\ell_2$损失。无论三维姿态或数据不平衡是否影响训练过程，本损失函数都能通过距离度量有效处理局部变异问题。</p>
+$<span class="arithmatex">\(\mathcal{L}:=\frac{1}{M} \sum_{m=1}^{M} \sum_{n=1}^{N} \gamma_{n}\left\|\mathbf{d}_{n}^{m}\right\|\)</span>$
+其中<span class="arithmatex">\(||\cdot||\)</span>表示用于衡量第m个输入中第n个特征点距离/误差的特定度量指标。N代表每张人脸需检测的预定义特征点数量，<strong>M表示每个训练批次batch中的图像数量</strong>。在给定度量标准（如本文采用的<span class="arithmatex">\(\ell_2\)</span>范数）后，权重系数<span class="arithmatex">\(\gamma_n\)</span>起关键作用。综合前述几何约束与数据不平衡等考量，我们设计的新型损失函数如下：
+$<span class="arithmatex">\(\mathcal{L}:=\frac{1}{M} \sum_{m=1}^{M} \sum_{n=1}^{N}\left(\sum_{c=1}^{C} \omega_{n}^{c} \sum_{k=1}^{K}\left(1-\cos \theta_{n}^{k}\right)\right)\left\|\mathbf{d}_{n}^{m}\right\|_{2}^{2} .\)</span>$</p>
+<p>显然，式(2)中的<span class="arithmatex">\(\sum_{c=1}^{C} \omega_{n}^{c} \sum_{k=1}^{K}\left(1-\cos \theta_{n}^{k}\right)\)</span>项等价于式(1)中的<span class="arithmatex">\(\gamma_n\)</span>。具体分析该损失函数：其中<span class="arithmatex">\(\theta^1\)</span>、<span class="arithmatex">\(\theta^2\)</span>与<span class="arithmatex">\(\theta^3\)</span>（<span class="arithmatex">\(K=3\)</span>）分别表示<strong>真实值与估计值在偏航角、俯仰角及翻滚角上的偏差角度</strong>。显然，<strong>偏差角增大时惩罚力度随之增强</strong>。此外，我们将样本划分为多属性类别，包括侧脸、正脸、抬头、低头、表情及遮挡等类别。权重参数<span class="arithmatex">\(\omega_n^c\)</span>根据类别<span class="arithmatex">\(c\)</span>的样本占比进行调整（本研究直接采用占比的倒数）。例如，当禁用几何约束与数据不平衡功能时，该损失函数即退化为普通<span class="arithmatex">\(\ell_2\)</span>损失。无论三维姿态或数据不平衡是否影响训练过程，本损失函数都能通过距离度量有效处理局部变异问题。</p>
 <h3 id="22-backbone-network">2.2 BackBone Network</h3>
 <blockquote>
 <p>Similar to other CNN based models, we employ several convolutional layers to extract features and predict landmarks. Considering that human faces are of strong global structures, like symmetry and spacial relationships among eyes, mouth, nose, etc., such global structures could help localize landmarks more precisely. Therefore, instead of single scale feature maps, we extend them into multi-scale maps. The extension is finished via executing convolution operations with strides, which enlarges the receptive field. Then we perform the final prediction through fully connecting the multi-scale feature maps. The detailed configuration of the backbone subnet is summarized in Table 1.
 与其他基于卷积神经网络（CNN）的模型类似，我们采用多个卷积层进行特征提取与关键点预测。考虑到人脸具有强烈的全局结构特征（如对称性及眼、口、鼻等器官的空间关系），这些全局结构有助于更精准地定位关键点。<strong>因此，我们并未使用单一尺度特征图，而是将其扩展为多尺度特征图——通过带步长的卷积操作扩大感受野来实现扩展</strong>，最终通过全连接多尺度特征图完成预测。主干子网的具体配置详见表1。
 <img alt="alt text" src="../image.png" />
-表1：主干网络配置。每行代表一组<strong>重复$n$次</strong>的相同层结构。同一序列中的<strong>所有层均具有相同数量的输出通道</strong> $c$。每组序列的<strong>首层</strong>步长为$s$。扩展系数$t$始终作用于输入尺寸。</p>
+表1：主干网络配置。每行代表一组<strong>重复<span class="arithmatex">\(n\)</span>次</strong>的相同层结构。同一序列中的<strong>所有层均具有相同数量的输出通道</strong> <span class="arithmatex">\(c\)</span>。每组序列的<strong>首层</strong>步长为<span class="arithmatex">\(s\)</span>。扩展系数<span class="arithmatex">\(t\)</span>始终作用于输入尺寸。</p>
 </blockquote>
 <p><strong>重点：MS-FC (Multi-Scale Fully Connected) Layer</strong></p>
 <p><strong>Why Multi-Scale?</strong>
@@ -1488,9 +1488,9 @@ $$\mathcal{L}:=\frac{1}{M} \sum</em>{m=1}^{M} \sum_{n=1}^{N}\left(\sum_{c=1}^{C}
 <p><strong>PFLD 的实现策略</strong>
 PFLD 在 Backbone 推理过程中，从不同阶段引出分支（Table 1 中的 S1, S2, S3），最后进行拼接融合。</p>
 <ul>
-<li><strong>S1 (Scale 1)</strong>: 输入 $14 \times 14 \times 16$，捕捉细粒度特征（如器官轮廓）。</li>
-<li><strong>S2 (Scale 2)</strong>: 输入 $7 \times 7 \times 32$，捕捉中等尺度特征。</li>
-<li><strong>S3 (Scale 3)</strong>: 输入 $1 \times 1 \times 128$，捕捉高度抽象的全局特征。</li>
+<li><strong>S1 (Scale 1)</strong>: 输入 <span class="arithmatex">\(14 \times 14 \times 16\)</span>，捕捉细粒度特征（如器官轮廓）。</li>
+<li><strong>S2 (Scale 2)</strong>: 输入 <span class="arithmatex">\(7 \times 7 \times 32\)</span>，捕捉中等尺度特征。</li>
+<li><strong>S3 (Scale 3)</strong>: 输入 <span class="arithmatex">\(1 \times 1 \times 128\)</span>，捕捉高度抽象的全局特征。</li>
 </ul>
 <p><strong>Fusion 过程</strong>:
 这三个尺度的特征图分别被 Flatten（拉平），然后 <strong>Concat（拼接）</strong> 成一个长向量，最后输入全连接层进行预测。这种设计兼顾了模型轻量化与高精度定位需求。</p>
@@ -1596,6 +1596,10 @@ PFLD 在 Backbone 推理过程中，从不同阶段引出分支（Table 1 中的
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

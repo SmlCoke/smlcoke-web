@@ -888,10 +888,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#223-prclass_iobject-times-probject-times-ioutruthpred-prclass_i-times-ioutruthpred" class="md-nav__link">
+  <a href="#223-prclass_iobject-times-probject-times-ioutruth_pred-prclass_i-times-ioutruth_pred" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.3 $Pr(Class_i|Object) \times Pr(Object) \times IOU^{truth}{pred} = Pr(Class_i) \times IOU^{truth}{pred}$
+        2.2.3 \(Pr(Class_i|Object) \times Pr(Object) \times IOU^{truth}_{pred} = Pr(Class_i) \times IOU^{truth}_{pred}\)
       
     </span>
   </a>
@@ -918,7 +918,7 @@
   <a href="#24-1-times-1-reduction-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.4 $1 \times 1$ reduction layer
+        2.4 \(1 \times 1\) reduction layer
       
     </span>
   </a>
@@ -1577,10 +1577,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#223-prclass_iobject-times-probject-times-ioutruthpred-prclass_i-times-ioutruthpred" class="md-nav__link">
+  <a href="#223-prclass_iobject-times-probject-times-ioutruth_pred-prclass_i-times-ioutruth_pred" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.3 $Pr(Class_i|Object) \times Pr(Object) \times IOU^{truth}{pred} = Pr(Class_i) \times IOU^{truth}{pred}$
+        2.2.3 \(Pr(Class_i|Object) \times Pr(Object) \times IOU^{truth}_{pred} = Pr(Class_i) \times IOU^{truth}_{pred}\)
       
     </span>
   </a>
@@ -1607,7 +1607,7 @@
   <a href="#24-1-times-1-reduction-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.4 $1 \times 1$ reduction layer
+        2.4 \(1 \times 1\) reduction layer
       
     </span>
   </a>
@@ -1982,13 +1982,13 @@
 <li>对于极小、密集的 GT 框，<strong>多个 GT 框可能落在同一个grid cell内</strong>，这种情况下无法处理</li>
 </ol>
 <h3 id="22-grid-cell-predictor-and-bounding-box">2.2 grid cell, predictor and bounding box</h3>
-<p>Each grid cell predicts B bounding boxes and confidence scores for those boxes. These confidence scores reflect how confident the model is that the box contains an object and also how accurate it thinks the box is that it predicts. Formally we define confidence as $Pr(\text{Object}) * IOU^{\text{truth}}_{\text{pred}}$. If no object exists in that cell, the confidence scores should be zero. Otherwise we want the confidence score to equal the intersection over union (IOU) between the predicted box and the ground truth</p>
+<p>Each grid cell predicts B bounding boxes and confidence scores for those boxes. These confidence scores reflect how confident the model is that the box contains an object and also how accurate it thinks the box is that it predicts. Formally we define confidence as <span class="arithmatex">\(Pr(\text{Object}) * IOU^{\text{truth}}_{\text{pred}}\)</span>. If no object exists in that cell, the confidence scores should be zero. Otherwise we want the confidence score to equal the intersection over union (IOU) between the predicted box and the ground truth</p>
 <h4 id="221-confidence">2.2.1 先理解什么是confidence</h4>
-<p>[
-\text{confidence}=\underbrace{Pr(\text{Object})}<em>{\text{有没有物体}}
+<div class="arithmatex">\[
+\text{confidence}=\underbrace{Pr(\text{Object})}_{\text{有没有物体}}
 \times
-\underbrace{IOU^{truth}</em>{pred}}_{\text{框得准不准}}
-]</p>
+\underbrace{IOU^{truth}_{pred}}_{\text{框得准不准}}
+\]</div>
 <p><strong>Example</strong></p>
 <p>1️⃣ 情况 A：有物体，但框很烂</p>
 <ul>
@@ -2067,10 +2067,10 @@
 </ul>
 <p>⚠️ 注意：
 这不是概率意义上的 soft label，而是<strong>训练目标的定义</strong>。</p>
-<p>2️⃣ $\text{IOU}^{truth}_{pred}$</p>
-<p>[
+<p>2️⃣ <span class="arithmatex">\(\text{IOU}^{truth}_{pred}\)</span></p>
+<div class="arithmatex">\[
 \text{IOU} = \frac{\text{Area of Intersection}}{\text{Area of Union}}
-]</p>
+\]</div>
 <ul>
 <li>衡量预测框和真实框的重合程度</li>
 <li>∈ [0, 1]</li>
@@ -2078,7 +2078,7 @@
 <hr />
 <h4 id="222-grid-cell-predictor-bounding-box">2.2.2 grid cell 与 predictor 与 bounding box</h4>
 <ol>
-<li>一个grid cell 包含$B$个predictor，或者说预测$B$个bounding box，B 个 bounding box 没有固定形状和位置$(x,y,w,h)$，这些参数完全是由网络通过<strong>回归</strong>学习出来</li>
+<li>一个grid cell 包含<span class="arithmatex">\(B\)</span>个predictor，或者说预测<span class="arithmatex">\(B\)</span>个bounding box，B 个 bounding box 没有固定形状和位置<span class="arithmatex">\((x,y,w,h)\)</span>，这些参数完全是由网络通过<strong>回归</strong>学习出来</li>
 <li>grid cell 只负责预测，不限制 bounding box 的空间范围。bounding box 可以跨越任意多个 grid cell，但在 YOLO v1 中，一个物体永远只由其中心点所在的那个 grid cell 负责预测。所以这就有个问题：</li>
 <li>小物体：很容易<strong>多个中心点落同一个 cell → 冲突</strong></li>
 <li>大物体：只由一个 cell 预测 → <strong>定位压力极大</strong></li>
@@ -2105,7 +2105,7 @@
 <blockquote>
 <p>是的，严格来说就是 S × S × B 个 bounding box predictor。</p>
 </blockquote>
-<h4 id="223-prclass_iobject-times-probject-times-ioutruthpred-prclass_i-times-ioutruthpred">2.2.3 $Pr(Class_i|Object) \times Pr(Object) \times IOU^{truth}<em>{pred} = Pr(Class_i) \times IOU^{truth}</em>{pred}$</h4>
+<h4 id="223-prclass_iobject-times-probject-times-ioutruth_pred-prclass_i-times-ioutruth_pred">2.2.3 <span class="arithmatex">\(Pr(Class_i|Object) \times Pr(Object) \times IOU^{truth}_{pred} = Pr(Class_i) \times IOU^{truth}_{pred}\)</span></h4>
 <ol>
 <li>class 是什么？</li>
 <li>这里的 <strong>class</strong> 指的是：<strong>目标检测数据集中的“语义类别”</strong></li>
@@ -2124,9 +2124,9 @@
 <li><code>Pr(Class_i | Object)</code> 是指：<strong>在当前 grid cell 确实存在一个由它负责的物体的前提下，该物体属于第 i 类的概率。</strong></li>
 </ol>
 <p><strong>总结：</strong></p>
-<p>$$\boxed{\text{Pr(Class i|Object)}} \times \boxed{\text{Pr(Object)} × \text{IOU}^{\text{truth}}<em>{\text{pred}}} = \text{Pr(Class i)} × \text{IOU}^{\text{truth}}</em>{\text{pred}}$$</p>
-<p>grid cell负责：$\boxed{\text{Pr(\text{Class i|Object})}}$，如果这里有一个物体，那么它属于类别Class i的概率
-bounding box负责：$\boxed{\text{Pr(Object)} \times \text{IOU}^{\text{truth}}_{\text{pred}}}$，这里有没有物体？有物体的话，我框得准不准？</p>
+<div class="arithmatex">\[\boxed{\text{Pr(Class i|Object)}} \times \boxed{\text{Pr(Object)} × \text{IOU}^{\text{truth}}_{\text{pred}}} = \text{Pr(Class i)} × \text{IOU}^{\text{truth}}_{\text{pred}}\]</div>
+<p>grid cell负责：<span class="arithmatex">\(\boxed{\text{Pr(\text{Class i|Object})}}\)</span>，如果这里有一个物体，那么它属于类别Class i的概率
+bounding box负责：<span class="arithmatex">\(\boxed{\text{Pr(Object)} \times \text{IOU}^{\text{truth}}_{\text{pred}}}\)</span>，这里有没有物体？有物体的话，我框得准不准？</p>
 <blockquote>
 <p>which gives us class-specific confidence scores for each box. These scores encode both the probability of that class appearing in the box and how well the predicted box fits the <strong>object</strong>(指的就是cell对应的GT框).
 由此得到每个边界框的类别特定置信度分数。这些分数既反映了该类别出现在框内的概率，也体现了预测框与<strong>物体</strong>的匹配程度。</p>
@@ -2137,11 +2137,11 @@ bounding box负责：$\boxed{\text{Pr(Object)} \times \text{IOU}^{\text{truth}}_
 模型架构。我们的系统将目标检测建模为一个回归问题。该方法将图像划分为S×S的网格单元，每个网格单元预测B个边界框、对应框的置信度以及<strong>C个类别概率</strong>。这些<strong>预测结果被编码为一个S×S×(B∗5 + C)维的张量</strong>。
 <img alt="alt text" src="../image-1.png" /></p>
 </blockquote>
-<h3 id="24-1-times-1-reduction-layer">2.4 $1 \times 1$ reduction layer</h3>
+<h3 id="24-1-times-1-reduction-layer">2.4 <span class="arithmatex">\(1 \times 1\)</span> reduction layer</h3>
 <blockquote>
 <p>Our network has 24 convolutional layers followed by 2 fully connected layers. Instead of the inception modules used by GoogLeNet, we <strong>simply use 1 × 1 reduction layers followed by 3 × 3 convolutional layers</strong>, similar to Lin et al [22]. The full network is shown in Figure 3
 <img alt="alt text" src="../image.png" />
-1. 这里的$1 \times 1$ reduction layer也是卷积层，是用来降低维度的，但是不是spatial downsampling（借助stride），而是channel-wise reduction（降通道数）
+1. 这里的<span class="arithmatex">\(1 \times 1\)</span> reduction layer也是卷积层，是用来降低维度的，但是不是spatial downsampling（借助stride），而是channel-wise reduction（降通道数）
 2. 为什么不要spatial downsampling？
    1. YOLO v1 的 backbone 需要：<strong>尽量保持空间分辨率</strong>。因为后面要做 <strong>grid-based detection</strong>
    2. 如果随便用 stride=2：grid 会变粗，小目标直接没了
@@ -2163,19 +2163,19 @@ x, y: 将其参数化为特定网格单元位置的偏移量，使其值落在[0
 </blockquote>
 <p>这里不得不提及一下Confidence Loss函数的计算与前向传播和反向传播的流程：</p>
 <ol>
-<li>$\text{Confidence Loss} = \sum{(c_{\text{pred}}-c_{\text{gt}})^2}$，其中：</li>
-<li>$c_{\text{pred}}$：是网络前向传播输出的某一个 bounding box predictor 对“这个 box 的置信度”的预测值。</li>
+<li><span class="arithmatex">\(\text{Confidence Loss} = \sum{(c_{\text{pred}}-c_{\text{gt}})^2}\)</span>，其中：</li>
+<li><span class="arithmatex">\(c_{\text{pred}}\)</span>：是网络前向传播输出的某一个 bounding box predictor 对“这个 box 的置信度”的预测值。</li>
 <li>也就是论文中说的：
   [
   \boxed{\text{Pr(Object)} \times IOU^{\text{truth}}_{\text{pred}}}
   ]</li>
-<li>图片中的每一个 grid cell，每个 grid cell 中的每一个 bounding box predictor，都会有一个自己的$c_{\text{pred}}$分数，<strong>但是一张图片中可能只有几个grid cell有GT对应，也就是说可能一张图片中只有几个bounding box predictor的$c_{\text{pred}}$分数不为0，其余都等于0</strong> </li>
-<li>$c_{\text{gt}}$：是训练时人为构造的“这个 box predictor 应该预测的正确置信度”。它不是网络算出来的，而是：</li>
+<li>图片中的每一个 grid cell，每个 grid cell 中的每一个 bounding box predictor，都会有一个自己的<span class="arithmatex">\(c_{\text{pred}}\)</span>分数，<strong>但是一张图片中可能只有几个grid cell有GT对应，也就是说可能一张图片中只有几个bounding box predictor的<span class="arithmatex">\(c_{\text{pred}}\)</span>分数不为0，其余都等于0</strong> </li>
+<li><span class="arithmatex">\(c_{\text{gt}}\)</span>：是训练时人为构造的“这个 box predictor 应该预测的正确置信度”。它不是网络算出来的，而是：</li>
 <li>由 <strong>GT 框 + IOU 规则 + 责任分配规则</strong>决定的</li>
-<li>当前 grid cell 没有被分配 GT，那玩完了，全体bounding box predictor的$c_{\text{gt}}$都为0</li>
+<li>当前 grid cell 没有被分配 GT，那玩完了，全体bounding box predictor的<span class="arithmatex">\(c_{\text{gt}}\)</span>都为0</li>
 <li>当前 grid cell 有一个 GT box：<ol>
 <li>计算出该 cell 内的所有 B 个 bounding box <strong>与 GT 的 IOU</strong></li>
-<li>找到$IOU$最大的那个 bounding box</li>
+<li>找到<span class="arithmatex">\(IOU\)</span>最大的那个 bounding box</li>
 <li>设定：</li>
 <li>该 predictor：
     [
@@ -2190,18 +2190,18 @@ x, y: 将其参数化为特定网格单元位置的偏移量，使其值落在[0
 </ol>
 <p>因为空白bounding box太多了，所以它们的confidence下降对于Loss值的降低是非常明显的，导致真正的目标 box 在 梯度合成中 发挥的作用不明显，也就是说所即便模型没有很好地提高目标 box 的 confidence，只要它成功地把大量 no-object box 的 confidence 压低，总 loss 仍然可以持续下降。</p>
 <blockquote>
-<p>之前误以为 (x,y,w,h) 是直接被优化的自变量，但实际上真正被优化的是共享的卷积核和全连接层参数；(x,y,w,h,c) 只是这些参数在不同 grid cell 和 predictor 上的输出。由于 no-object box 数量巨大，它们在 confidence loss 上产生的大量梯度会共同作用于同一套网络参数，从而主导参数更新方向，使得网络更倾向于压低整体 confidence，而不是优先提升 object box 的 confidence。</p>
+<p>之前误以为 <span class="arithmatex">\(x,y,w,h\)</span> 是直接被优化的自变量，但实际上真正被优化的是共享的卷积核和全连接层参数；<span class="arithmatex">\(x,y,w,h,c\)</span> 只是这些参数在不同 grid cell 和 predictor 上的输出。由于 no-object box 数量巨大，它们在 confidence loss 上产生的大量梯度会共同作用于同一套网络参数，从而主导参数更新方向，使得网络更倾向于压低整体 confidence，而不是优先提升 object box 的 confidence。</p>
 </blockquote>
 <h4 id="322">3.2.2 两个权重</h4>
 <blockquote>
-<p>To remedy this, we increase the loss from bounding box coordinate predictions and decrease the loss from confidence predictions for boxes that don’t contain objects. We use two parameters, $λ_{coord}$ and $λ_{noobj}$ to accomplish this. We set $λ_{coord}$ = 5 and $λ_{noobj}$ = .5.
+<p>To remedy this, we increase the loss from bounding box coordinate predictions and decrease the loss from confidence predictions for boxes that don’t contain objects. We use two parameters, <span class="arithmatex">\(λ_{coord}\)</span> and <span class="arithmatex">\(λ_{noobj}\)</span> to accomplish this. We set <span class="arithmatex">\(λ_{coord}\)</span> = 5 and <span class="arithmatex">\(λ_{noobj}\)</span> = .5.
 对于不包含物体的预测框，增加其边界框坐标预测的损失权重，同时降低confidence预测的损失权重</p>
 </blockquote>
 <h4 id="323-loss">3.2.3 Loss函数的优化</h4>
 <blockquote>
 <p>Our error metric should reflect that small deviations in large boxes matter less than in small boxes.To partially address this we predict the square root of the bounding box width and height instead of the width and height directly.</p>
 </blockquote>
-<p>因为$y=\sqrt{w} \rightarrow dy = \frac{1}{2\sqrt{w}}dw$，当$w$比较大时，$\Delta w$对$y$造成的影响小于同等程度的$\Delta w$与小$w$</p>
+<p>因为<span class="arithmatex">\(y=\sqrt{w} \rightarrow dy = \frac{1}{2\sqrt{w}}dw\)</span>，当<span class="arithmatex">\(w\)</span>比较大时，<span class="arithmatex">\(\Delta w\)</span>对<span class="arithmatex">\(y\)</span>造成的影响小于同等程度的<span class="arithmatex">\(\Delta w\)</span>与小<span class="arithmatex">\(w\)</span></p>
 <h4 id="324-bounding-box">3.2.4 bounding box的责任分工</h4>
 <blockquote>
 <p>We assign one predictor to be “responsible” for predicting an object based on which prediction has the highest current IOU with the ground truth. This leads to specialization between the bounding box predictors. Each predictor gets better at predicting certain sizes, aspect ratios, or classes of object, improving overall recall
@@ -2209,54 +2209,54 @@ x, y: 将其参数化为特定网格单元位置的偏移量，使其值落在[0
 </blockquote>
 <h4 id="325-loss">3.2.5 完整的Loss函数</h4>
 <p>loss function:</p>
-<p>$\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 \right]$</p>
-<p>$+ \lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2 \right]$</p>
-<p>$+ \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2$</p>
-<p>$+ \lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2$</p>
-<p>$+ \sum_{i=0}^{S^2} \mathbb{1}<em>{i}^{\text{obj}} \sum</em>{c \in \text{classes}} \left[p_i(c) - \hat{p}_i(c)\right]^2$</p>
+<p><span class="arithmatex">\(\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 \right]\)</span></p>
+<p><span class="arithmatex">\(+ \lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2 \right]\)</span></p>
+<p><span class="arithmatex">\(+ \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2\)</span></p>
+<p><span class="arithmatex">\(+ \lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2\)</span></p>
+<p><span class="arithmatex">\(+ \sum_{i=0}^{S^2} \mathbb{1}_{i}^{\text{obj}} \sum_{c \in \text{classes}} \left[p_i(c) - \hat{p}_i(c)\right]^2\)</span></p>
 <blockquote>
-<p>where $\mathbb{1}<em>{i}^{\text{obj}}$ denotes if object appears in cell $i$ and $\mathbb{1}</em>{ij}^{\text{obj}}$ denotes that the $j$th bounding box predictor in cell $i$ is “responsible” for that prediction.</p>
+<p>where <span class="arithmatex">\(\mathbb{1}_{i}^{\text{obj}}\)</span> denotes if object appears in cell <span class="arithmatex">\(i\)</span> and <span class="arithmatex">\(\mathbb{1}_{ij}^{\text{obj}}\)</span> denotes that the <span class="arithmatex">\(j\)</span>th bounding box predictor in cell <span class="arithmatex">\(i\)</span> is “responsible” for that prediction.</p>
 </blockquote>
 <ol>
-<li>$\hat{x_i}, \hat{y_i}, \hat{w_i}, \hat{h_i}$: cell i 的 GT Box 的真实位置参数（当然，会经过相对换算）<blockquote>
-<p>例如，输入为$448\times 448$的图片，当$S=7$时，每个grid cell的尺寸都是$64\times64$，如果说有一个 GT box 的目标中心的像素坐标是$(160,200)$，并且$w=80, h=120$
-<strong>Step1: 计算 GT box 属于哪一个 grid cell：</strong>$i_x=\lfloor160/64\rfloor=2, i_y = \lfloor200/64\rfloor=3$
-<strong>Step2: 计算$x_i, y_i$：</strong>
-$\hat{x_i}=(160-2\times64)/64=0.5$
-$\hat{y_i}=(200-3\times64)/64=0.125$
-<strong>Step3: 计算$w_i, h_i$：</strong>
-$\hat{w_i}=80/448\approx0.18$
-$\hat{h_i}=120/448\approx0.27$</p>
+<li><span class="arithmatex">\(\hat{x_i}, \hat{y_i}, \hat{w_i}, \hat{h_i}\)</span>: cell i 的 GT Box 的真实位置参数（当然，会经过相对换算）<blockquote>
+<p>例如，输入为<span class="arithmatex">\(448\times 448\)</span>的图片，当<span class="arithmatex">\(S=7\)</span>时，每个grid cell的尺寸都是<span class="arithmatex">\(64\times64\)</span>，如果说有一个 GT box 的目标中心的像素坐标是<span class="arithmatex">\((160,200)\)</span>，并且<span class="arithmatex">\(w=80, h=120\)</span>
+<strong>Step1: 计算 GT box 属于哪一个 grid cell：</strong><span class="arithmatex">\(i_x=\lfloor160/64\rfloor=2, i_y = \lfloor200/64\rfloor=3\)</span>
+<strong>Step2: 计算<span class="arithmatex">\(x_i, y_i\)</span>：</strong>
+<span class="arithmatex">\(\hat{x_i}=(160-2\times64)/64=0.5\)</span>
+<span class="arithmatex">\(\hat{y_i}=(200-3\times64)/64=0.125\)</span>
+<strong>Step3: 计算<span class="arithmatex">\(w_i, h_i\)</span>：</strong>
+<span class="arithmatex">\(\hat{w_i}=80/448\approx0.18\)</span>
+<span class="arithmatex">\(\hat{h_i}=120/448\approx0.27\)</span></p>
 </blockquote>
 </li>
-<li>$x_i, y_i, w_i, h_i$：cell i 内 IOU 最大的 predictor 预测的 GT Box 的位置参数</li>
-<li>$\hat{C_i}$：<strong>如果 bounding box predictor 负责该 GT Box</strong>，$\hat{C_i} = \text{IOU}^{\text{pred}}_{\text{GT}}$；<strong>如果 bounding box predictor 不负责该 GT 或者该 cell is non-object</strong>，$\hat{C_i} = 0$ </li>
-<li>$C_i$：负责该 GT 的 bounding box predictor: $C_i = \text{Pr}(\text{object}) \times \text{IOU}^{\text{pred}}_{\text{GT}}$（其余 B-1 个 bounding box predictor 的 $C_i=0$，因为$\text{Pr(object)=0}$?）</li>
-<li>$\hat{p_i}$：<strong>独热向量</strong>，表示 cell i 的这个 GT box 的类别，比如：<blockquote>
+<li><span class="arithmatex">\(x_i, y_i, w_i, h_i\)</span>：cell i 内 IOU 最大的 predictor 预测的 GT Box 的位置参数</li>
+<li><span class="arithmatex">\(\hat{C_i}\)</span>：<strong>如果 bounding box predictor 负责该 GT Box</strong>，<span class="arithmatex">\(\hat{C_i} = \text{IOU}^{\text{pred}}_{\text{GT}}\)</span>；<strong>如果 bounding box predictor 不负责该 GT 或者该 cell is non-object</strong>，<span class="arithmatex">\(\hat{C_i} = 0\)</span> </li>
+<li><span class="arithmatex">\(C_i\)</span>：负责该 GT 的 bounding box predictor: <span class="arithmatex">\(C_i = \text{Pr}(\text{object}) \times \text{IOU}^{\text{pred}}_{\text{GT}}\)</span>（其余 B-1 个 bounding box predictor 的 <span class="arithmatex">\(C_i=0\)</span>，因为<span class="arithmatex">\(\text{Pr(object)=0}\)</span>?）</li>
+<li><span class="arithmatex">\(\hat{p_i}\)</span>：<strong>独热向量</strong>，表示 cell i 的这个 GT box 的类别，比如：<blockquote>
 <p>如果该 cell 中的目标类别是 “dog”：
-| class | (\hat{p}_i(c)) |
+| class | <span class="arithmatex">\(\hat{p}_i(c)\)</span> |
 | ----- | -------------- |
 | dog   | 1              |
 | cat   | 0              |
 | car   | 0              |
 | ...   | 0              |</p>
-<p>那么：$\hat{p_i} = [1,0,0,\cdots, 0]$</p>
+<p>那么：<span class="arithmatex">\(\hat{p_i} = [1,0,0,\cdots, 0]\)</span></p>
 </blockquote>
 </li>
-<li>$p_i$：当前 cell 预测出的<strong>类别概率向量</strong>，例如：<blockquote>
-<p>$p_i=[0.6,0.3,0.002,\cdots, 0.000001]$    </p>
+<li><span class="arithmatex">\(p_i\)</span>：当前 cell 预测出的<strong>类别概率向量</strong>，例如：<blockquote>
+<p><span class="arithmatex">\(p_i=[0.6,0.3,0.002,\cdots, 0.000001]\)</span>    </p>
 </blockquote>
 </li>
 <li><strong>Loss函数各项解析：</strong></li>
-<li>$\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 \right]$
+<li><span class="arithmatex">\(\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 \right]\)</span>
     图片中的所有<strong>具有obj</strong>的 grid cell 中<strong>负责该 GT box 的位置</strong>损失</li>
-<li>$\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2 \right]$
+<li><span class="arithmatex">\(\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2 \right]\)</span>
     图片中的所有<strong>具有obj</strong>的 grid cell 中<strong>负责该 GT box 的形状</strong>损失</li>
-<li>$\sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2$
+<li><span class="arithmatex">\(\sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2\)</span>
     图片中的所有<strong>具有obj</strong>的 grid cell 中<strong>负责该 GT box 的confidence</strong>损失：<strong>我这个框框的准吗</strong>？</li>
-<li>$\lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}<em>{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2$
-    这里的$\hat{C</em>{i}}=0$，<strong>因为这里是背景，根本就没有 GT box，甚至不存在框得准不准的问题，只要你预测了非零 confidence，就要被惩罚</strong></li>
-<li>$\sum_{i=0}^{S^2} \mathbb{1}<em>{i}^{\text{obj}} \sum</em>{c \in \text{classes}} \left[p_i(c) - \hat{p}_i(c)\right]^2$
+<li><span class="arithmatex">\(\lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2\)</span>
+    这里的<span class="arithmatex">\(\hat{C_{i}}=0\)</span>，<strong>因为这里是背景，根本就没有 GT box，甚至不存在框得准不准的问题，只要你预测了非零 confidence，就要被惩罚</strong></li>
+<li><span class="arithmatex">\(\sum_{i=0}^{S^2} \mathbb{1}_{i}^{\text{obj}} \sum_{c \in \text{classes}} \left[p_i(c) - \hat{p}_i(c)\right]^2\)</span>
     具有 obj 的 grid 的类别预测损失。</li>
 </ol>
 <h2 id="iv-inference">IV. Inference</h2>
@@ -2285,7 +2285,7 @@ $\hat{h_i}=120/448\approx0.27$</p>
 [
 (x,y,w,h,c)<em>{i,j} = f</em>\theta(\text{feature at cell } i)
 ]
-共享<strong>同一套参数 (\theta)</strong>，在不同空间位置被重复使用（卷积）</p>
+共享<strong>同一套参数 <span class="arithmatex">\(\theta\)</span></strong>，在不同空间位置被重复使用（卷积）</p>
 <p>这意味着：<strong>只要某个视觉模式在多个 cell 出现过，那些 cell 的输出就可能产生“相似的预测行为”</strong></p>
 </blockquote>
 </li>
@@ -2506,6 +2506,10 @@ YOLO是一种快速、精准的目标检测算法，特别适合计算机视觉�
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

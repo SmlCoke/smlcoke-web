@@ -1398,18 +1398,18 @@
 <h2 id="ii-convolutional-layer">II. Convolutional Layer</h2>
 <p>卷积层是 CNN 的核心，它实现了“局部感受野”和“参数共享”。</p>
 <h3 id="21-filter-tensor">2.1 Filter (Tensor)</h3>
-<p>每一个 Filter（滤波器）本质上是一个小矩阵（例如 $3 \times 3$）。Filter 在图像上滑动并进行点积运算，输出特征图（Feature Map）。</p>
+<p>每一个 Filter（滤波器）本质上是一个小矩阵（例如 <span class="arithmatex">\(3 \times 3\)</span>）。Filter 在图像上滑动并进行点积运算，输出特征图（Feature Map）。</p>
 <h3 id="22-stride-and-padding">2.2 Stride and Padding</h3>
 <ul>
 <li><strong>Stride (步长)</strong>：滤波器每次移动的像素数。</li>
 <li><strong>Padding (填充)</strong>：在图像四周补充 0 或其他数值，用以控制输出特征图的大小并保护边缘信息。</li>
 </ul>
 <h3 id="23-output-size-calculation">2.3 Output Size Calculation</h3>
-<p>假设输入特征图大小为 $W \times H$，滤波器大小为 $F \times F$，步长为 $S$，填充为 $P$。则输出尺寸为：
-$$W_{out} = \lfloor \frac{W - F + 2P}{S} \rfloor + 1$$
-$$H_{out} = \lfloor \frac{H - F + 2P}{S} \rfloor + 1$$</p>
+<p>假设输入特征图大小为 <span class="arithmatex">\(W \times H\)</span>，滤波器大小为 <span class="arithmatex">\(F \times F\)</span>，步长为 <span class="arithmatex">\(S\)</span>，填充为 <span class="arithmatex">\(P\)</span>。则输出尺寸为：
+$<span class="arithmatex">\(W_{out} = \lfloor \frac{W - F + 2P}{S} \rfloor + 1\)</span>$
+$<span class="arithmatex">\(H_{out} = \lfloor \frac{H - F + 2P}{S} \rfloor + 1\)</span>$</p>
 <h3 id="24-feature-map">2.4 Feature Map</h3>
-<p>经过多个 Filter 卷积后，会得到多个 Feature Map。若输入有 $C$ 个通道，则每个 Filter 的深度也必须为 $C$。</p>
+<p>经过多个 Filter 卷积后，会得到多个 Feature Map。若输入有 <span class="arithmatex">\(C\)</span> 个通道，则每个 Filter 的深度也必须为 <span class="arithmatex">\(C\)</span>。</p>
 <h2 id="iii-pooling-layer">III. Pooling Layer</h2>
 <p>池化层用于减少空间维度，从而减少参数量并提高模型的鲁棒性。</p>
 <h3 id="31-max-pooling">3.1 Max Pooling</h3>
@@ -1424,7 +1424,7 @@ $$H_{out} = \lfloor \frac{H - F + 2P}{S} \rfloor + 1$$</p>
 <h3 id="42-classification">4.2 Classification</h3>
 <p>使用扁平化后的向量作为输入，通过全连接层（Fully Connected Layers）和 Softmax 激活函数输出类别的概率分布。</p>
 <h2 id="v-cnn-for-alphago">V. CNN for AlphaGo</h2>
-<p>CNN 不仅限于处理图像。在 AlphaGo 中，棋盘被视为 $19 \times 19$ 的“图像”，由于围棋也具有局部模式（如某些棋型）和某种程度的平移不变性，CNN 同样表现出色。
+<p>CNN 不仅限于处理图像。在 AlphaGo 中，棋盘被视为 <span class="arithmatex">\(19 \times 19\)</span> 的“图像”，由于围棋也具有局部模式（如某些棋型）和某种程度的平移不变性，CNN 同样表现出色。
 - 注意：由于棋盘像素不能随意丢弃，AlphaGo 的 CNN 架构中通常不使用 Pooling 层。</p>
 
 
@@ -1487,6 +1487,10 @@ $$H_{out} = \lfloor \frac{H - F + 2P}{S} \rfloor + 1$$</p>
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

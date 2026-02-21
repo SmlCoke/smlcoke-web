@@ -1503,20 +1503,20 @@
 <h3 id="step">step</h3>
 <p>model, define loss, optimization</p>
 <h3 id="definition">definition</h3>
-<p>$c\,\text{sigmoid}(b+wx)=c\frac{1}{1+\text{exp}[-(b+wx)]}$</p>
-<p>$y = b + \sum_{i}c_i \, \text{sigmoid}(b_i+w_ix_1)\rightarrow y = b + \sum_{i}c_i \, \text{sigmoid}(b_i+\sum_{j} w_{ij}x_j)$</p>
+<p><span class="arithmatex">\(c\,\text{sigmoid}(b+wx)=c\frac{1}{1+\text{exp}[-(b+wx)]}\)</span></p>
+<p><span class="arithmatex">\(y = b + \sum_{i}c_i \, \text{sigmoid}(b_i+w_ix_1)\rightarrow y = b + \sum_{i}c_i \, \text{sigmoid}(b_i+\sum_{j} w_{ij}x_j)\)</span></p>
 <p><img alt="Alt text" src="../image.png" /></p>
 <p><img alt="Alt text" src="../image-1.png" /></p>
 <p><img alt="Alt text" src="../image-2.png" /></p>
 <p><img alt="Alt text" src="../image-3.png" /></p>
 <p><img alt="Alt text" src="../image-4.png" />
 <img alt="Alt text" src="../image-5.png" /></p>
-<p>$\mathbf{x}\rightarrow \mathbf{a}$的复杂化
+<p><span class="arithmatex">\(\mathbf{x}\rightarrow \mathbf{a}\)</span>的复杂化
 <img alt="Alt text" src="../image-6.png" /></p>
 <h2 id="ii-how-to-solve-large-traninig-loss">II. How to Solve Large Traninig Loss</h2>
 <h3 id="model-bias">方法一：Model bias</h3>
-<p>$\mathbf{x}$太小，导致$f_{\theta_1}(\mathbf{x})$, $f_{\theta_2}(\mathbf{x})$, $f_{\theta_3}(\mathbf{x})$......函数集合整体的Loss效果上限很低
-<strong>解决办法</strong>：增加$\mathbf{x}$维度，增加网络深度</p>
+<p><span class="arithmatex">\(\mathbf{x}\)</span>太小，导致<span class="arithmatex">\(f_{\theta_1}(\mathbf{x})\)</span>, <span class="arithmatex">\(f_{\theta_2}(\mathbf{x})\)</span>, <span class="arithmatex">\(f_{\theta_3}(\mathbf{x})\)</span>......函数集合整体的Loss效果上限很低
+<strong>解决办法</strong>：增加<span class="arithmatex">\(\mathbf{x}\)</span>维度，增加网络深度</p>
 <h3 id="optimization-issue">方法二：Optimization Issue</h3>
 <p>进入local minimum
 梯度下降算法不给力，例如这种情况：
@@ -1652,10 +1652,10 @@ L = -\log(0.70)
 </blockquote>
 <h3 id="44-softmax">4.4 softmax函数</h3>
 <p><img alt="alt text" src="../image-28.png" />
-$$\text{softmax:} \quad V = {z_i}, z_{j}'=\frac{e^{z_j}}{\sum_{i}e^{z_i}}$$</p>
+$<span class="arithmatex">\(\text{softmax:} \quad V = \{z_i\}, z_{j}'=\frac{e^{z_j}}{\sum_{i}e^{z_i}}\)</span>$</p>
 <h3 id="45-loss">4.5 Loss函数</h3>
-<p>$$\text{MSE:} \quad e = \sum_{j} (\hat{y_j}-y_j')^2$$
-$$\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}$$</p>
+<div class="arithmatex">\[\text{MSE:} \quad e = \sum_{j} (\hat{y_j}-y_j')^2$$
+$$\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}\]</div>
 <p><strong>MSE VS Cross-Entropy</strong>
 <img alt="alt text" src="../image-29.png" />
 <strong>Cross-Entropy不容易卡住，可以从左上角走到右下角</strong></p>
@@ -1720,6 +1720,10 @@ $$\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}$$</p>
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

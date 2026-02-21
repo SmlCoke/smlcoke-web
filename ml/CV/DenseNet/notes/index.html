@@ -1659,8 +1659,8 @@
 <p>The layers within the second and third dense block consistently assign the least weight to the outputs of the transition layer (the top row of the triangles), indicating that the transition layer outputs many redundant features (with low weight on average). This is in keeping with the strong results of DenseNet-BC where exactly these outputs are compressed</p>
 </blockquote>
 <p>这里的weight代表什么意思？
-Layer $\ell$看到Layer$s$，或者说利用s占比多少。
-这一点通过$1 \times 1$Filter来实现。
+Layer <span class="arithmatex">\(\ell\)</span>看到Layer<span class="arithmatex">\(s\)</span>，或者说利用s占比多少。
+这一点通过<span class="arithmatex">\(1 \times 1\)</span>Filter来实现。
 <img alt="alt text" src="../image-2.png" /></p>
 <p>ReLook:
 feature map: 卷积层或池化层输出的多通道张量</p>
@@ -1672,12 +1672,12 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 </blockquote>
 <ul>
 <li><strong>state</strong>: 每一层的输出feature maps。比如说输入一张猫的照片，第一层卷积提取：边缘，第二层卷积提取：更复杂的局部纹理，第三层卷积提取：猫耳朵 / 猫脸等形状。这些都是<strong>有价值的信息</strong>。
-  但是但是传统 CNN 有一个严重问题：<strong>每一层输出 只能传给下一层（$x_l → x_{l+1}$）</strong>
+  但是但是传统 CNN 有一个严重问题：<strong>每一层输出 只能传给下一层（<span class="arithmatex">\(x_l → x_{l+1}\)</span>）</strong>
   <strong>意味着早期层产生的“有价值特征”,经过几十层后，被不断卷积、混合、变换……，这些特征逐渐被淡化、扭曲甚至遗失</strong></li>
 <li><strong>“many layers contribute very little and can in fact be randomly dropped during training.”</strong>
   ResNet的结构是：
-  $$x_{l+1} = x_{l}+F(x_l)$$
-  如果 $F(x_l)$ 很小（趋近于 0），那么：
+  $<span class="arithmatex">\(x_{l+1} = x_{l}+F(x_l)\)</span>$
+  如果 <span class="arithmatex">\(F(x_l)\)</span> 很小（趋近于 0），那么：
   某些残差块几乎不改变特征 → “不起作用”
   这就是为什么 Stochastic Depth 随机丢掉残差块时，性能还能保持甚至提升。
   ResNet的深度，实际上可能并不是有效的深度</li>
@@ -1688,61 +1688,61 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 <p>除了参数效率更高之外，DenseNet（密集连接网络）的另一大优势在于其改善了信息与梯度在整个网络中的流动，这使得网络更易于训练。<strong>每一层都能直接获取来自损失函数的梯度以及原始输入信号，从而形成了一种隐式的深度监督机制[20]</strong>。这种特性有助于更深层网络架构的训练。此外，我们还观察到密集连接具有正则化效应，能够在训练集规模较小的任务上减少过拟合现象。</p>
 </blockquote>
 <ul>
-<li>我们举个例子，分别来自VGG, ResNet, DenseNet。下面用$H(\cdot)$表示权重层的映射关系，可能包含了Conv, BN, ReLU</li>
+<li>我们举个例子，分别来自VGG, ResNet, DenseNet。下面用<span class="arithmatex">\(H(\cdot)\)</span>表示权重层的映射关系，可能包含了Conv, BN, ReLU</li>
 <li><strong>VGG:</strong></li>
 </ul>
 <p>(1) 前向传播：</p>
 <blockquote>
-<p>$\mathbf{X_1} = H_1 (\mathbf{X_0}, \mathbf{W_1})$
-$\mathbf{X_2} = H_2 (\mathbf{X_1}, \mathbf{W_2})$
-$\mathbf{X_3} = H_3 (\mathbf{X_2}, \mathbf{W_3})$
-$\text{Loss} = L(\mathbf{X_3})$</p>
+<p><span class="arithmatex">\(\mathbf{X_1} = H_1 (\mathbf{X_0}, \mathbf{W_1})\)</span>
+<span class="arithmatex">\(\mathbf{X_2} = H_2 (\mathbf{X_1}, \mathbf{W_2})\)</span>
+<span class="arithmatex">\(\mathbf{X_3} = H_3 (\mathbf{X_2}, \mathbf{W_3})\)</span>
+<span class="arithmatex">\(\text{Loss} = L(\mathbf{X_3})\)</span></p>
 </blockquote>
-<p>(2) 反向传播：例如计算$\partial L/\partial \mathbf{W_1}$:</p>
+<p>(2) 反向传播：例如计算<span class="arithmatex">\(\partial L/\partial \mathbf{W_1}\)</span>:</p>
 <blockquote>
-<p>$$
-  \frac{\partial L}{\partial \mathbf{W_1}}  =\frac{\partial L}{\partial \mathbf{X_3}} \cdot \frac{\partial \mathbf{X_3}}{\partial \mathbf{X_2}} \cdot \frac{\partial \mathbf{X_2}}{\partial \mathbf{X_1}} \cdot \frac{\partial \mathbf{X_1}}{\partial \mathbf{W_1}}$$</p>
+<div class="arithmatex">\[
+  \frac{\partial L}{\partial \mathbf{W_1}}  =\frac{\partial L}{\partial \mathbf{X_3}} \cdot \frac{\partial \mathbf{X_3}}{\partial \mathbf{X_2}} \cdot \frac{\partial \mathbf{X_2}}{\partial \mathbf{X_1}} \cdot \frac{\partial \mathbf{X_1}}{\partial \mathbf{W_1}}\]</div>
 </blockquote>
 <ul>
 <li><strong>ResNet:</strong></li>
 </ul>
 <p>(1) 前向传播：</p>
 <blockquote>
-<p>$\mathbf{X_1} = H_1 (\mathbf{X_0}; \mathbf{W_1}) + \mathbf{X_0}$ 
-$\mathbf{X_2} = H_2 (\mathbf{X_1}; \mathbf{W_2})+ \mathbf{X_1}$ 
-$\mathbf{X_3} = H_3 (\mathbf{X_2}; \mathbf{W_3})+ \mathbf{X_2}$ 
-$\text{Loss} = L(\mathbf{X_3})$</p>
+<p><span class="arithmatex">\(\mathbf{X_1} = H_1 (\mathbf{X_0}; \mathbf{W_1}) + \mathbf{X_0}\)</span> 
+<span class="arithmatex">\(\mathbf{X_2} = H_2 (\mathbf{X_1}; \mathbf{W_2})+ \mathbf{X_1}\)</span> 
+<span class="arithmatex">\(\mathbf{X_3} = H_3 (\mathbf{X_2}; \mathbf{W_3})+ \mathbf{X_2}\)</span> 
+<span class="arithmatex">\(\text{Loss} = L(\mathbf{X_3})\)</span></p>
 </blockquote>
-<p>(2) 反向传播：例如计算$\partial L/\partial \mathbf{W_1}$:</p>
+<p>(2) 反向传播：例如计算<span class="arithmatex">\(\partial L/\partial \mathbf{W_1}\)</span>:</p>
 <blockquote>
-<p>$$\begin{aligned}
-  \frac{\partial L}{\partial \mathbf{W_1}}  &amp; =\frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{W_1}}+\frac{\partial \mathbf{X_2}}{\partial \mathbf{W_1}}) \
-  &amp; = \frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_2}}+1)\cdot \frac{\partial \mathbf{X_2}}{\partial \mathbf{W_1}} \ 
-  &amp; = \frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_2}}+1)\cdot (\frac{\partial \mathbf{H_2}}{\partial \mathbf{X_1}}+1)\cdot \frac{\partial \mathbf{X_1}}{\partial \mathbf{W_1}} \ 
+<div class="arithmatex">\[\begin{aligned}
+  \frac{\partial L}{\partial \mathbf{W_1}}  &amp; =\frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{W_1}}+\frac{\partial \mathbf{X_2}}{\partial \mathbf{W_1}}) \\
+  &amp; = \frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_2}}+1)\cdot \frac{\partial \mathbf{X_2}}{\partial \mathbf{W_1}} \\ 
+  &amp; = \frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_2}}+1)\cdot (\frac{\partial \mathbf{H_2}}{\partial \mathbf{X_1}}+1)\cdot \frac{\partial \mathbf{X_1}}{\partial \mathbf{W_1}} \\ 
   &amp; = \frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_2}}+1)\cdot (\frac{\partial \mathbf{H_2}}{\partial \mathbf{X_1}}+1)\cdot \frac{\partial \mathbf{H_1}}{\partial \mathbf{W_1}}
-  \end{aligned}$$ </p>
+  \end{aligned}\]</div>
 </blockquote>
-<p>可见，从Loss函数到第一层的权重$\mathbf{W_1
-  }$不再是只能经过一条超长的链式法则，<strong>而是有了多条支路</strong>，比如上面式子<strong>中间的两个1</strong>，这个效果是由shortcut connection构建的。
-  然而，bottleneck的堆叠并不能使得这种从Loss直接到$\mathbf{W_1}$的<strong>超短通路</strong>长时间存在，因为第一层的shortcut并不是已知蔓延的很后面的(所以说当ResNet的梯度很深时，还是有可能存在gradient vanishing的问题)。
+<p>可见，从Loss函数到第一层的权重<span class="arithmatex">\(\mathbf{W_1
+  }\)</span>不再是只能经过一条超长的链式法则，<strong>而是有了多条支路</strong>，比如上面式子<strong>中间的两个1</strong>，这个效果是由shortcut connection构建的。
+  然而，bottleneck的堆叠并不能使得这种从Loss直接到<span class="arithmatex">\(\mathbf{W_1}\)</span>的<strong>超短通路</strong>长时间存在，因为第一层的shortcut并不是已知蔓延的很后面的(所以说当ResNet的梯度很深时，还是有可能存在gradient vanishing的问题)。
   <strong>但是在DenseNet，这中链接一直存在！</strong></p>
 <ul>
 <li>DenseNet</li>
 </ul>
 <p>(1) 前向传播：</p>
 <blockquote>
-<p>$\mathbf{X_1} = H_1 (\mathbf{X_0}, \mathbf{W_1})$ 
-$\mathbf{X_2} = H_2 (\mathbf{X_0}, \mathbf{X_1}\; \mathbf{W_2})$ 
-$\mathbf{X_3} = H_3 (\mathbf{X_0}, \mathbf{X_1}, \mathbf{X_2}; \mathbf{W_3})$ 
-$\text{Loss} = L(\mathbf{X_3})$</p>
+<p><span class="arithmatex">\(\mathbf{X_1} = H_1 (\mathbf{X_0}, \mathbf{W_1})\)</span> 
+<span class="arithmatex">\(\mathbf{X_2} = H_2 (\mathbf{X_0}, \mathbf{X_1}\; \mathbf{W_2})\)</span> 
+<span class="arithmatex">\(\mathbf{X_3} = H_3 (\mathbf{X_0}, \mathbf{X_1}, \mathbf{X_2}; \mathbf{W_3})\)</span> 
+<span class="arithmatex">\(\text{Loss} = L(\mathbf{X_3})\)</span></p>
 </blockquote>
-<p>(2) 反向传播：例如计算$\partial L/\partial \mathbf{W_1}$:</p>
+<p>(2) 反向传播：例如计算<span class="arithmatex">\(\partial L/\partial \mathbf{W_1}\)</span>:</p>
 <blockquote>
-<p>$$\begin{aligned}
-  \frac{\partial L}{\partial \mathbf{W_1}}  &amp; =\frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_0}}+\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_1}}+\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_2}}+\frac{\partial \mathbf{H_3}}{\partial \mathbf{W_1}}) \
-  \end{aligned}$$ </p>
+<div class="arithmatex">\[\begin{aligned}
+  \frac{\partial L}{\partial \mathbf{W_1}}  &amp; =\frac{\partial L}{\partial \mathbf{X_3}} \cdot (\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_0}}+\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_1}}+\frac{\partial \mathbf{H_3}}{\partial \mathbf{X_2}}+\frac{\partial \mathbf{H_3}}{\partial \mathbf{W_1}}) \\
+  \end{aligned}\]</div>
 </blockquote>
-<p>可见，<strong>不管传播到后面多少层，Loss函数都能直接看到第一层的权重（严格来说是第一层权重$\mathbf{X_0}$与输入$\mathbf{W_1}$作用后的$\mathbf{X_1}$），而不用必须透过中间传播的所有层。</strong> 一直有一条永远不会衰减的路径。</p>
+<p>可见，<strong>不管传播到后面多少层，Loss函数都能直接看到第一层的权重（严格来说是第一层权重<span class="arithmatex">\(\mathbf{X_0}\)</span>与输入<span class="arithmatex">\(\mathbf{W_1}\)</span>作用后的<span class="arithmatex">\(\mathbf{X_1}\)</span>），而不用必须透过中间传播的所有层。</strong> 一直有一条永远不会衰减的路径。</p>
 <ul>
 <li><strong>implicit deep supervision</strong>
   在 DenseNet 中，每一层都好像直接受到了“<strong>来自损失函数的监督</strong>”，就像把 loss 的梯度直接连接到了每一层上。</li>
@@ -1756,7 +1756,7 @@ $\text{Loss} = L(\mathbf{X_3})$</p>
 <ol>
 <li><strong>Highway networks</strong>
   比ResNet早半年，核心思想是：
-  $y = H(x) \cdot T(x) + x \cdot C(x)$
+  <span class="arithmatex">\(y = H(x) \cdot T(x) + x \cdot C(x)\)</span>
   引入 gated shortcut（带门控的捷径路径）
   门控允许网络“自动决定”是否要保留信息或修改信息，缺点就是引入了两个门控神经元，参数量巨大</li>
 <li><strong>ResNet</strong>
@@ -1785,52 +1785,52 @@ $\text{Loss} = L(\mathbf{X_3})$</p>
 </blockquote>
 <h2 id="iii-densenets">III. DenseNets</h2>
 <h3 id="31">3.1 符号定义</h3>
-<p>$H_{\ell}$: 第l层非线性变换，几种不同运算的复合，例如BN, ReLU, Conv或者Pooling
-$\mathbf{x}_\ell$: 第$\ell$层的输出feature map</p>
+<p><span class="arithmatex">\(H_{\ell}\)</span>: 第l层非线性变换，几种不同运算的复合，例如BN, ReLU, Conv或者Pooling
+<span class="arithmatex">\(\mathbf{x}_\ell\)</span>: 第<span class="arithmatex">\(\ell\)</span>层的输出feature map</p>
 <ul>
-<li>Traditional: $\mathbf{x}<em>\ell = H</em>\ell(\mathbf{x}_{\ell-1})$</li>
-<li>ResNet: $\mathbf{x}<em>\ell = H_l(\mathbf{x}</em>{\ell-1}) + \mathbf{x}_{\ell-1}$</li>
+<li>Traditional: <span class="arithmatex">\(\mathbf{x}_\ell = H_\ell(\mathbf{x}_{\ell-1})\)</span></li>
+<li>ResNet: <span class="arithmatex">\(\mathbf{x}_\ell = H_l(\mathbf{x}_{\ell-1}) + \mathbf{x}_{\ell-1}\)</span></li>
 </ul>
 <h3 id="32-resnet">3.2 ResNet的缺陷</h3>
 <blockquote>
 <p>However, the identity function and the output of Hℓ are combined by summation, which may impede the information flow in the network.</p>
-<p>残差网络（ResNet）的一个优势在于梯度能够通过恒等映射直接从后续层流向浅层。然而，恒等函数与$H_{\ell}$的输出通过求和相结合，这种操作可能会阻碍网络中的信息流动。</p>
+<p>残差网络（ResNet）的一个优势在于梯度能够通过恒等映射直接从后续层流向浅层。然而，恒等函数与<span class="arithmatex">\(H_{\ell}\)</span>的输出通过求和相结合，这种操作可能会阻碍网络中的信息流动。</p>
 </blockquote>
 <p>==什么叫做阻碍信息流？为什么会阻碍？==
-1. $\mathbf{x}<em>\ell = H_l(\mathbf{x}</em>{\ell-1}) + \mathbf{x}_{\ell-1}$
+1. <span class="arithmatex">\(\mathbf{x}_\ell = H_l(\mathbf{x}_{\ell-1}) + \mathbf{x}_{\ell-1}\)</span>
    这相当于把两个feature map直接压缩合并为一个，但是 <strong>“合并”的动作本质上会丢掉一部分细节，导致早期特征信息被掩盖。</strong> 例如把“素描图（边缘）”和“纹理图”叠在一起混成一张新图，这显然是不合理的。（这就是 DenseNet 使用 concat（拼接）而不是 add（加法） 的根本原因。）</p>
 <h3 id="33-dense-connectivity">3.3 Dense connectivity</h3>
-<p>第$\ell$层将接收所有前驱层（$x_0,...,x_{\ell-1}$）的特征图作为输入：</p>
-<p>$x_\ell = H_\ell([x_0, x_1, ..., x_{\ell-1}])$</p>
-<p>其中$[x_0,...,x_{\ell-1}]$表示第0层至第$\ell-1$层生成的特征图 <strong>拼接(concatenation)</strong> 结果。由于这种密集连接特性，我们将该网络架构称为密集卷积网络（DenseNet）。为实现便利，我们将公式$H_\ell(\cdot)$的多个输入拼接为单个张量。</p>
+<p>第<span class="arithmatex">\(\ell\)</span>层将接收所有前驱层（<span class="arithmatex">\(x_0,...,x_{\ell-1}\)</span>）的特征图作为输入：</p>
+<p><span class="arithmatex">\(x_\ell = H_\ell([x_0, x_1, ..., x_{\ell-1}])\)</span></p>
+<p>其中<span class="arithmatex">\([x_0,...,x_{\ell-1}]\)</span>表示第0层至第<span class="arithmatex">\(\ell-1\)</span>层生成的特征图 <strong>拼接(concatenation)</strong> 结果。由于这种密集连接特性，我们将该网络架构称为密集卷积网络（DenseNet）。为实现便利，我们将公式<span class="arithmatex">\(H_\ell(\cdot)\)</span>的多个输入拼接为单个张量。</p>
 <h3 id="34-dense-block-and-transition-layer">3.4 Dense Block and Transition layer</h3>
 <ol>
 <li><strong>Dense Block的构成：</strong></li>
-<li>BN, ReLU, Conv $\rightarrow$ BN, ReLU, Conv</li>
+<li>BN, ReLU, Conv <span class="arithmatex">\(\rightarrow\)</span> BN, ReLU, Conv</li>
 <li>内部的<strong>所有层输出特征图的空间尺寸</strong>相同（H×W 不变）。</li>
 <li>所有downsampling过程交给Transition Layer完成</li>
 <li><strong>不同 Dense Block 之间没有 Dense-style concat</strong>，即第一个dense block内部的所有feature map不会直接concat给第二个dense block</li>
 <li><strong>Transition Layer</strong>：</li>
-<li>结构：BN $\rightarrow$ $1\times 1$ Conv $\rightarrow$ $2\times 2$ AvgPool</li>
+<li>结构：BN <span class="arithmatex">\(\rightarrow\)</span> <span class="arithmatex">\(1\times 1\)</span> Conv <span class="arithmatex">\(\rightarrow\)</span> <span class="arithmatex">\(2\times 2\)</span> AvgPool</li>
 <li>BN稳定训练，防止梯度消失</li>
-<li>$1\times 1$ Conv：调整Dense Block输出feature map的channels数。</li>
+<li><span class="arithmatex">\(1\times 1\)</span> Conv：调整Dense Block输出feature map的channels数。</li>
 <li>2×2 AvgPool：完成downsampling</li>
 </ol>
 <h3 id="35-growth-rate">3.5 Growth rate</h3>
 <blockquote>
 <p>If each function Hℓ produces k featuremaps, it follows that the ℓth layer has k0 + k × (ℓ − 1) input feature-maps, where k0 is the number of channels in the input layer.
-增长率。若每个函数$H_\ell$生成$k$个特征图，则第$\ell$层将包含$k_0 + k \times (\ell - 1)$个输入特征图，其中$k_0$表示输入层的通道数。</p>
+增长率。若每个函数<span class="arithmatex">\(H_\ell\)</span>生成<span class="arithmatex">\(k\)</span>个特征图，则第<span class="arithmatex">\(\ell\)</span>层将包含<span class="arithmatex">\(k_0 + k \times (\ell - 1)\)</span>个输入特征图，其中<span class="arithmatex">\(k_0\)</span>表示输入层的通道数。</p>
 </blockquote>
 <p>理解：
-输入层：$k_0$
-第1层：增加 $k$
-第2层：再增加 $k$
+输入层：<span class="arithmatex">\(k_0\)</span>
+第1层：增加 <span class="arithmatex">\(k\)</span>
+第2层：再增加 <span class="arithmatex">\(k\)</span>
 ...
-第$(\ell-1)$层：再增加 $k$
-因此第$\ell$层看到的feature map就有：$k_0 + k(\ell - 1)$个</p>
+第<span class="arithmatex">\((\ell-1)\)</span>层：再增加 <span class="arithmatex">\(k\)</span>
+因此第<span class="arithmatex">\(\ell\)</span>层看到的feature map就有：<span class="arithmatex">\(k_0 + k(\ell - 1)\)</span>个</p>
 <blockquote>
 <p>each layer has access to all the preceding feature-maps in its block and, therefore, to the network’s “collective knowledge”. One can view the feature-maps as the global state of the network. Each layer adds k feature-maps of its own to this state. The growth rate regulates how much new information each layer contributes to the global state. The global state, once written, can be accessed from everywhere within the network and, unlike in traditional network architectures, there is no need to replicate it from layer to layer.</p>
-<p>每个层都能<strong>访问其模块中所有先前的特征图</strong>，从而获取网络的"集体知识"。特征图可视为网络的全局状态，每一层都会向该状态添加$k$个自身生成的特征图。<strong>增长率控制着每个层向全局状态贡献新信息的程度</strong>。与传统网络架构不同，这种全局状态一旦写入，即可在整个网络中<strong>任意访问</strong>，无需逐层复制。</p>
+<p>每个层都能<strong>访问其模块中所有先前的特征图</strong>，从而获取网络的"集体知识"。特征图可视为网络的全局状态，每一层都会向该状态添加<span class="arithmatex">\(k\)</span>个自身生成的特征图。<strong>增长率控制着每个层向全局状态贡献新信息的程度</strong>。与传统网络架构不同，这种全局状态一旦写入，即可在整个网络中<strong>任意访问</strong>，无需逐层复制。</p>
 </blockquote>
 <ol>
 <li>
@@ -1864,26 +1864,26 @@ $\mathbf{x}_\ell$: 第$\ell$层的输出feature map</p>
 </ol>
 <h3 id="36-bottleneck">3.6 Bottleneck</h3>
 <blockquote>
-<p>Bottleneck layers. Although each layer only produces k output feature-maps, it typically has many more inputs. It has been noted in [36, 11] that a $1\times1$ convolution can be introduced as bottleneck layer before each $3\times3$ convolution to <strong>reduce the number of input feature-maps</strong>, and thus to improve computational efficiency. We find this design especially effective for DenseNet and we refer to our network with such a bottleneck layer, i.e., to the <strong>BN-ReLU-Conv(1× 1)-BN-ReLU-Conv(3×3)</strong> version of $H_\ell$, as DenseNet-B. In our experiments, we let each $1\times1$ convolution produce $4k$ feature-maps.</p>
-<p>瓶颈层设计。尽管每个卷积层仅生成$k$个输出特征图，但其输入通道数通常远高于此（例如$k0 + k(l-1)$）。文献[36,11]指出，可在每个3×3卷积前引入1×1卷积作为瓶颈层来减少输入特征图数量，<strong>从而提升计算效率</strong>。我们发现这种设计对DenseNet尤为有效，将采用该瓶颈结构的网络（即$H_\ell$函数采用<strong>BN-ReLU-Conv(1×1)-BN-ReLU-Conv(3×3)</strong>变体）称为<strong>DenseNet-B</strong>。实验中，我们令每个1×1卷积生成$4k$个特征图。</p>
+<p>Bottleneck layers. Although each layer only produces k output feature-maps, it typically has many more inputs. It has been noted in [36, 11] that a <span class="arithmatex">\(1\times1\)</span> convolution can be introduced as bottleneck layer before each <span class="arithmatex">\(3\times3\)</span> convolution to <strong>reduce the number of input feature-maps</strong>, and thus to improve computational efficiency. We find this design especially effective for DenseNet and we refer to our network with such a bottleneck layer, i.e., to the <strong>BN-ReLU-Conv(1× 1)-BN-ReLU-Conv(3×3)</strong> version of <span class="arithmatex">\(H_\ell\)</span>, as DenseNet-B. In our experiments, we let each <span class="arithmatex">\(1\times1\)</span> convolution produce <span class="arithmatex">\(4k\)</span> feature-maps.</p>
+<p>瓶颈层设计。尽管每个卷积层仅生成<span class="arithmatex">\(k\)</span>个输出特征图，但其输入通道数通常远高于此（例如<span class="arithmatex">\(k0 + k(l-1)\)</span>）。文献[36,11]指出，可在每个3×3卷积前引入1×1卷积作为瓶颈层来减少输入特征图数量，<strong>从而提升计算效率</strong>。我们发现这种设计对DenseNet尤为有效，将采用该瓶颈结构的网络（即<span class="arithmatex">\(H_\ell\)</span>函数采用<strong>BN-ReLU-Conv(1×1)-BN-ReLU-Conv(3×3)</strong>变体）称为<strong>DenseNet-B</strong>。实验中，我们令每个1×1卷积生成<span class="arithmatex">\(4k\)</span>个特征图。</p>
 </blockquote>
 <h3 id="37-compression">3.7 Compression</h3>
 <blockquote>
-<p>If a dense block contains m feature-maps, we let the following transition layer generate $⌊\theta m⌋$ output featuremaps, where $0&lt;\theta\leq1$ is referred to as the compression factor.</p>
+<p>If a dense block contains m feature-maps, we let the following transition layer generate <span class="arithmatex">\(⌊\theta m⌋\)</span> output featuremaps, where <span class="arithmatex">\(0&lt;\theta\leq1\)</span> is referred to as the compression factor.</p>
 </blockquote>
-<p>为什么Transition layer可以改变输出feature maps的个数(这里实际上是输出的feature map的channels个数)？因为Transition layer的第一步就是$1\times 1$ Conv </p>
+<p>为什么Transition layer可以改变输出feature maps的个数(这里实际上是输出的feature map的channels个数)？因为Transition layer的第一步就是<span class="arithmatex">\(1\times 1\)</span> Conv </p>
 <h3 id="38important">3.8(Important)</h3>
 <p>本片论文中，提到的Dense Block中，提到某layer可以看到此前层输出的所有feature maps。这里的feature map，实际上只有一个channel！具体流程可以参照下方理解：
-比如说初始输入有$k_0$个feature map，准确来说是一个具有16channels的feature map
+比如说初始输入有<span class="arithmatex">\(k_0\)</span>个feature map，准确来说是一个具有16channels的feature map
 * <strong>Layer 0 的输入：</strong>
-    * 它看到的是 $k_0$ 个 channels。
-    * <strong>Input Shape:</strong> $(16, H, W)$</p>
+    * 它看到的是 <span class="arithmatex">\(k_0\)</span> 个 channels。
+    * <strong>Input Shape:</strong> <span class="arithmatex">\((16, H, W)\)</span></p>
 <ul>
 <li>
 <p><strong>Layer 0 的输出：</strong></p>
 <ul>
-<li>经过 BN-ReLU-Conv 后，它产生 $k$ 个新的 feature maps。</li>
-<li><strong>Output Shape:</strong> $(12, H, W)$</li>
+<li>经过 BN-ReLU-Conv 后，它产生 <span class="arithmatex">\(k\)</span> 个新的 feature maps。</li>
+<li><strong>Output Shape:</strong> <span class="arithmatex">\((12, H, W)\)</span></li>
 </ul>
 </li>
 <li>
@@ -1891,36 +1891,36 @@ $\mathbf{x}_\ell$: 第$\ell$层的输出feature map</p>
 <ul>
 <li>它不只是接收 Layer 0 的输出。它接收 <strong>(Block 的输入) + (Layer 0 的输出)</strong>。</li>
 <li>组合方式是<strong>在 Channel 维度上拼接</strong>。</li>
-<li><strong>Input Shape:</strong> $(16 + 12, H, W) = (28, H, W)$</li>
+<li><strong>Input Shape:</strong> <span class="arithmatex">\((16 + 12, H, W) = (28, H, W)\)</span></li>
 </ul>
 </li>
 <li>
 <p><strong>Layer 1 的输出：</strong></p>
 <ul>
-<li>它同样只产生 $k$ 个新的 feature maps。</li>
-<li><strong>Output Shape:</strong> $(12, H, W)$</li>
+<li>它同样只产生 <span class="arithmatex">\(k\)</span> 个新的 feature maps。</li>
+<li><strong>Output Shape:</strong> <span class="arithmatex">\((12, H, W)\)</span></li>
 </ul>
 </li>
 <li>
 <p><strong>Layer 2 的输入：</strong></p>
 <ul>
 <li>它接收 <strong>(Block 输入) + (Layer 0 输出) + (Layer 1 输出)</strong>。</li>
-<li><strong>Input Shape:</strong> $(16 + 12 + 12, H, W) = (40, H, W)$</li>
+<li><strong>Input Shape:</strong> <span class="arithmatex">\((16 + 12 + 12, H, W) = (40, H, W)\)</span></li>
 </ul>
 </li>
 </ul>
-<p>以此类推，对于第 $l$ 层，它的输入 Channel 总数是 $k_0 + k \times (l-1)$ </p>
+<p>以此类推，对于第 <span class="arithmatex">\(l\)</span> 层，它的输入 Channel 总数是 <span class="arithmatex">\(k_0 + k \times (l-1)\)</span> </p>
 <p>此外，前置所有Layers的输出feature map的组合方式就是：<strong>concatenation(拼接)</strong>，拼接方式如下：
-$$[x_0, x_1, x_2, ..., x_{\ell-1}]$$
-即按照顺序排列，其中$x_{k}$代表第$k$层<strong>输出的所有feature map，其实严格来说是一张具有多channels的feature map, channels个数等于第$k$层filters个数！</strong>
+$<span class="arithmatex">\([x_0, x_1, x_2, ..., x_{\ell-1}]\)</span>$
+即按照顺序排列，其中<span class="arithmatex">\(x_{k}\)</span>代表第<span class="arithmatex">\(k\)</span>层<strong>输出的所有feature map，其实严格来说是一张具有多channels的feature map, channels个数等于第<span class="arithmatex">\(k\)</span>层filters个数！</strong>
 <strong>也就是说，上面这个公式，其实是single Tensor!</strong> 原文中也直接说过：</p>
 <blockquote>
-<p>"refers to the concatenation of the feature-maps produced in layers $0 \dots l-1$." [cite: 134]
+<p>"refers to the concatenation of the feature-maps produced in layers <span class="arithmatex">\(0 \dots l-1\)</span>." [cite: 134]
 "we concatenate the multiple inputs ... into a single tensor."</p>
 </blockquote>
 <p>==这是 DenseNet 和 ResNet 最大的区别。==</p>
 <ul>
-<li><strong>ResNet:</strong> 使用 <strong>相加 (Summation)</strong>。$H_l(x_{l-1}) + x_{l-1}$。这要求输入的 Channel 数和输出的 Channel 数通常要一致（<strong>或者是为了相加而强行对齐</strong>）。</li>
+<li><strong>ResNet:</strong> 使用 <strong>相加 (Summation)</strong>。<span class="arithmatex">\(H_l(x_{l-1}) + x_{l-1}\)</span>。这要求输入的 Channel 数和输出的 Channel 数通常要一致（<strong>或者是为了相加而强行对齐</strong>）。</li>
 <li><strong>DenseNet:</strong> 使用 <strong>拼接 (Concatenation)</strong>。</li>
 </ul>
 <h3 id="39-implement-details">3.9 Implement Details</h3>
@@ -1947,8 +1947,8 @@ $$[x_0, x_1, x_2, ..., x_{\ell-1}]$$
 </tr>
 <tr>
 <td style="text-align: left;"><strong>输入尺寸</strong></td>
-<td style="text-align: left;">小尺寸图片 (文字隐含为 $32\times32$)，feature maps 变化为 $32\times32 \rightarrow 16\times16 \rightarrow 8\times8$</td>
-<td style="text-align: left;">大尺寸图片 ($224\times224$)</td>
+<td style="text-align: left;">小尺寸图片 (文字隐含为 <span class="arithmatex">\(32\times32\)</span>)，feature maps 变化为 <span class="arithmatex">\(32\times32 \rightarrow 16\times16 \rightarrow 8\times8\)</span></td>
+<td style="text-align: left;">大尺寸图片 (<span class="arithmatex">\(224\times224\)</span>)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Dense Blocks 数量</strong></td>
@@ -1957,12 +1957,12 @@ $$[x_0, x_1, x_2, ..., x_{\ell-1}]$$
 </tr>
 <tr>
 <td style="text-align: left;"><strong>初始卷积层</strong></td>
-<td style="text-align: left;">输出 16(DenseNet) 或 $2k$(DenseNet-BC) 个通道</td>
-<td style="text-align: left;">$7\times7$ 卷积，stride 2，输出 $2k$ 个通道</td>
+<td style="text-align: left;">输出 16(DenseNet) 或 <span class="arithmatex">\(2k\)</span>(DenseNet-BC) 个通道</td>
+<td style="text-align: left;"><span class="arithmatex">\(7\times7\)</span> 卷积，stride 2，输出 <span class="arithmatex">\(2k\)</span> 个通道</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>配置目的</strong></td>
-<td style="text-align: left;">验证<strong>不同深度 ($L$)</strong> 和<strong>增长率 ($k$)</strong> 的效果 (如 $L=40, k=12$)</td>
+<td style="text-align: left;">验证<strong>不同深度 (<span class="arithmatex">\(L\)</span>)</strong> 和<strong>增长率 (<span class="arithmatex">\(k\)</span>)</strong> 的效果 (如 <span class="arithmatex">\(L=40, k=12\)</span>)</td>
 <td style="text-align: left;">追求在大型数据集上的 SOTA 性能 (如 DenseNet-121, 169)</td>
 </tr>
 </tbody>
@@ -1974,14 +1974,14 @@ $$[x_0, x_1, x_2, ..., x_{\ell-1}]$$
 <h3 id="310-clarify-densenet-and-densenet-bc">3.10 Clarify: DenseNet and DenseNet-BC</h3>
 <h4 id="1-densenet">1. DenseNet</h4>
 <ol>
-<li>DenseBlock内部：结构只有：<strong>BN-ReLU-$3\times 3$ Conv</strong>，没有用前缀的<strong>BN-ReLU-$1\times 1$ Conv</strong>提前降低计算复杂度。</li>
-<li>Transition Layer：不进行通道压缩（<strong>即：$\lfloor \theta m \rfloor$-Compression</strong>）</li>
+<li>DenseBlock内部：结构只有：<strong>BN-ReLU-<span class="arithmatex">\(3\times 3\)</span> Conv</strong>，没有用前缀的<strong>BN-ReLU-<span class="arithmatex">\(1\times 1\)</span> Conv</strong>提前降低计算复杂度。</li>
+<li>Transition Layer：不进行通道压缩（<strong>即：<span class="arithmatex">\(\lfloor \theta m \rfloor\)</span>-Compression</strong>）</li>
 </ol>
 <h4 id="2-densenet-bc">2. DenseNet-BC (优化版)</h4>
 <p>结合了 <strong>B</strong>ottleneck layers 和 <strong>C</strong>ompression。
-1. <strong>B (Bottleneck)：</strong> 在 $3\times3$ 卷积前加入 $1\times1$ 卷积（即 <code>BN-ReLU-Conv(1x1) - BN-ReLU-Conv(3x3)</code>）来<strong>减少输入 feature maps 的数量（准确来说是channels数），降低计算量</strong>。
-2. <strong>C (Compression)：</strong> 在 Transition Layer 使用 $\theta &lt; 1$（实验中通常设为 0.5 ），即用 $1\times1$ 卷积将<strong>通道数减半</strong> [cite: 162, 164]。
-3. <strong>初始卷积层：</strong> 根据这一段描述，初始卷积层输出 <strong>2倍增长率 ($2 \times k$)</strong> 的通道数。</p>
+1. <strong>B (Bottleneck)：</strong> 在 <span class="arithmatex">\(3\times3\)</span> 卷积前加入 <span class="arithmatex">\(1\times1\)</span> 卷积（即 <code>BN-ReLU-Conv(1x1) - BN-ReLU-Conv(3x3)</code>）来<strong>减少输入 feature maps 的数量（准确来说是channels数），降低计算量</strong>。
+2. <strong>C (Compression)：</strong> 在 Transition Layer 使用 <span class="arithmatex">\(\theta &lt; 1\)</span>（实验中通常设为 0.5 ），即用 <span class="arithmatex">\(1\times1\)</span> 卷积将<strong>通道数减半</strong> [cite: 162, 164]。
+3. <strong>初始卷积层：</strong> 根据这一段描述，初始卷积层输出 <strong>2倍增长率 (<span class="arithmatex">\(2 \times k\)</span>)</strong> 的通道数。</p>
 <h2 id="iv-experiments">IV. Experiments</h2>
 <h3 id="41-sgd">4.1 有关SGD</h3>
 <p>十万个数据，每一个数据都能计算出Loss函数值，并且反推梯度。也就是说如果采Full-batch GD算法：</p>
@@ -1994,7 +1994,7 @@ $$[x_0, x_1, x_2, ..., x_{\ell-1}]$$
 ...</p>
 </blockquote>
 <p>一次循环可以更新十万次梯度，但是这样做计算量太大。
-$\rightarrow \rightarrow \rightarrow \rightarrow \rightarrow$ 
+<span class="arithmatex">\(\rightarrow \rightarrow \rightarrow \rightarrow \rightarrow\)</span> 
 <strong>mini-batch：</strong> 分成一份一份batch，每一个batch内计算出一堆梯度，然后<strong>求平均</strong>，然后<strong>才更新参数</strong>，<strong>然后再考虑下一个batch</strong></p>
 <h3 id="42-parameter-efficiency">4.2 Parameter Efficiency</h3>
 <p>使用更少的参数达到更好的效果</p>
@@ -2006,7 +2006,7 @@ $\rightarrow \rightarrow \rightarrow \rightarrow \rightarrow$
 <h3 id="43-overfitting">4.3 Overfitting</h3>
 <blockquote>
 <p>In our experiments, we observed potential overfitting in a single setting: on C10, a 4× growth of parameters produced by increasing k =12 to k =24 lead to a modest increase in error from 5.77% to 5 83%. The DenseNet-BC bottleneck and compression layers appear to be an effective way to counter this trend.
-过拟合问题。参数利用效率提升带来的一个积极副作用是，DenseNet往往更不容易出现过拟合现象。我们观察到，在没有数据增强的数据集上，DenseNet架构相较于先前工作的改进尤为显著。在C10数据集上，错误率从7.33%降至5.19%，相对降幅达29%；在C100数据集上，错误率从28.20%降至19.64%，降幅约为30%。实验中仅在一个配置下观察到潜在的过拟合现象：当将增长率$k=12$提升至$k=24$导致参数量增长4倍时，C10数据集的错误率从5.77%小幅上升至5.83%。DenseNet-BC采用的瓶颈层与压缩层结构被证明是有效抑制这种趋势的方法。</p>
+过拟合问题。参数利用效率提升带来的一个积极副作用是，DenseNet往往更不容易出现过拟合现象。我们观察到，在没有数据增强的数据集上，DenseNet架构相较于先前工作的改进尤为显著。在C10数据集上，错误率从7.33%降至5.19%，相对降幅达29%；在C100数据集上，错误率从28.20%降至19.64%，降幅约为30%。实验中仅在一个配置下观察到潜在的过拟合现象：当将增长率<span class="arithmatex">\(k=12\)</span>提升至<span class="arithmatex">\(k=24\)</span>导致参数量增长4倍时，C10数据集的错误率从5.77%小幅上升至5.83%。DenseNet-BC采用的瓶颈层与压缩层结构被证明是有效抑制这种趋势的方法。</p>
 </blockquote>
 <h2 id="v-dicussion">V. Dicussion</h2>
 <h3 id="51-classifier">5.1 classifier对前面所有层的直接监督</h3>
@@ -2089,6 +2089,10 @@ Input Image Feature Map
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

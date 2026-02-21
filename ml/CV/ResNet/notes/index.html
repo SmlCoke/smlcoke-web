@@ -1575,7 +1575,7 @@ auxiliary: 辅助
 hypothesize: 假设</p>
 <h2 id="basic">Basic</h2>
 <ol>
-<li>$\text{FLOPs} =H_{\text{out}}\times W_{\text{out}}\times C_{\text{in}} \times C_{\text{out}} \times K \times K$ </li>
+<li><span class="arithmatex">\(\text{FLOPs} =H_{\text{out}}\times W_{\text{out}}\times C_{\text{in}} \times C_{\text{out}} \times K \times K\)</span> </li>
 </ol>
 <h2 id="important-points">Important points</h2>
 <p>The <strong>depth</strong> of representations is of central importance for many visual recognition tasks. </p>
@@ -1613,7 +1613,7 @@ end-to-end: 意味着整个网络从输入原始数据（如图像）到输出�
 </blockquote>
 <ul>
 <li><strong>identity mapping(恒等映射)</strong>
-  <strong>定义</strong>：对输入 $x$，identity mapping 就是直接把 $x$ 返回；数学上就是 $y=x$
+  <strong>定义</strong>：对输入 <span class="arithmatex">\(x\)</span>，identity mapping 就是直接把 <span class="arithmatex">\(x\)</span> 返回；数学上就是 <span class="arithmatex">\(y=x\)</span>
   <strong>在网络里的意思</strong>：某几层的组合（多层卷积+非线性）如果总体上等价于恒等映射，说明这些层并不改变该特征 —— 它们“什么也没做”，只是把信息原样传递下去。</li>
 </ul>
 <p>这一段的意思就是说，我们基于一个shallower的网络构造一个deeper的网络，原始Layer的参数原封不动保留，新增层直接采用identity mapping，这样做的话<strong>按理说至少能够保证training error不会恶化，但是实验结果非也</strong>。</p>
@@ -1633,16 +1633,16 @@ end-to-end: 意味着整个网络从输入原始数据（如图像）到输出�
 </ul>
 <h3 id="15-resnet">1.5 引入ResNet</h3>
 <blockquote>
-<p>Instead of hoping eachfew stacked layers directly fit a desired underlying mapping, we explicitly let these layers fit a residualmapping. Formally, denoting the desired underlying mapping as $\mathcal{H}(x)$, we let the stacked nonlinearlayers fit another mapping of $\mathcal{F}(x) := \mathcal{H}(x) − x$. The original mapping is recast into F(x)+x
-我们不期望堆叠的若干层网络直接拟合目标底层映射$H(x)$，而是显式地让这些层拟合残差映射$F(x) := H(x) - x$。原映射可重新表述为$F(x)+x$。</p>
+<p>Instead of hoping eachfew stacked layers directly fit a desired underlying mapping, we explicitly let these layers fit a residualmapping. Formally, denoting the desired underlying mapping as <span class="arithmatex">\(\mathcal{H}(x)\)</span>, we let the stacked nonlinearlayers fit another mapping of <span class="arithmatex">\(\mathcal{F}(x) := \mathcal{H}(x) − x\)</span>. The original mapping is recast into F(x)+x
+我们不期望堆叠的若干层网络直接拟合目标底层映射<span class="arithmatex">\(H(x)\)</span>，而是显式地让这些层拟合残差映射<span class="arithmatex">\(F(x) := H(x) - x\)</span>。原映射可重新表述为<span class="arithmatex">\(F(x)+x\)</span>。</p>
 </blockquote>
 <ul>
 <li><strong>underlying mapping(底层映射)</strong>
-  在深度网络里，某一段连续的卷积层（比如两个 3×3 conv）执行的总功能其实就是一个大函数映射：$x\rightarrow y$
-  residual mapping(残差映射)中，我们不让网络直接学习$\mathcal{H}(x)$，而是学习目标映射 $\mathcal{H}(x)$ 与输入 $x$ 的差值</li>
+  在深度网络里，某一段连续的卷积层（比如两个 3×3 conv）执行的总功能其实就是一个大函数映射：<span class="arithmatex">\(x\rightarrow y\)</span>
+  residual mapping(残差映射)中，我们不让网络直接学习<span class="arithmatex">\(\mathcal{H}(x)\)</span>，而是学习目标映射 <span class="arithmatex">\(\mathcal{H}(x)\)</span> 与输入 <span class="arithmatex">\(x\)</span> 的差值</li>
 <li><strong>为什么如果最优就是 identity mapping，学习 residual=0 比学习 identity 本身容易”</strong></li>
-<li><strong>plain 网络（如 VGG 那样）：要逼近 $H(x)=x$ 很难</strong>，这需要多层卷积 + BN + ReLU精确配合，这对参数非常苛刻，优化器很难自动找到这个解（这就是论文说的 degradation 发生的原因）。</li>
-<li><strong>ResNet：只需要让残差 $F(x) \rightarrow 0$</strong>，要实现 identity，只需要把残差的卷积层权重推向 0（梯度最容易做到的事情）</li>
+<li><strong>plain 网络（如 VGG 那样）：要逼近 <span class="arithmatex">\(H(x)=x\)</span> 很难</strong>，这需要多层卷积 + BN + ReLU精确配合，这对参数非常苛刻，优化器很难自动找到这个解（这就是论文说的 degradation 发生的原因）。</li>
+<li><strong>ResNet：只需要让残差 <span class="arithmatex">\(F(x) \rightarrow 0\)</span></strong>，要实现 identity，只需要把残差的卷积层权重推向 0（梯度最容易做到的事情）</li>
 </ul>
 <h3 id="16-shortcut">1.6 什么是shortcut</h3>
 <p>这根飞线就是shortcut
@@ -1659,10 +1659,10 @@ end-to-end: 意味着整个网络从输入原始数据（如图像）到输出�
 <li>在深度学习时代，<strong>origin vector</strong>可能是 CNN 的某一层特征 patch（512 维）</li>
 <li>“CNN某一层特征patch”可以理解为==某一层输出张量中，某一空间位置 (i, j) 上所有通道的值组成的 C 维向量。==</li>
 <li>
-<p><strong>residual vector</strong>: 当你有一个“字典（dictionary）”或者“聚类中心（cluster center）”时，一个原始向量不直接编码，而是计算它相对于某个中心的差值（residual）：$\mathbf{r}=\mathbf{x}-\mathbf{c}$
-  $\mathbf{x}$=原始向量
-  $\mathbf{c}$=字典中的一个中心（也叫 visual word、codeword）
-  $\mathbf{r}$=residual vector（残差向量）
+<p><strong>residual vector</strong>: 当你有一个“字典（dictionary）”或者“聚类中心（cluster center）”时，一个原始向量不直接编码，而是计算它相对于某个中心的差值（residual）：<span class="arithmatex">\(\mathbf{r}=\mathbf{x}-\mathbf{c}\)</span>
+  <span class="arithmatex">\(\mathbf{x}\)</span>=原始向量
+  <span class="arithmatex">\(\mathbf{c}\)</span>=字典中的一个中心（也叫 visual word、codeword）
+  <span class="arithmatex">\(\mathbf{r}\)</span>=residual vector（残差向量）
   这与Residual Network一样，==编码“变化量”比编码“整体映射”更容易。==
   ==论文作者想说明：ResNet 的思想不是凭空出现，而是在传统视觉里已经验证过“残差比原始表示更好”。==</p>
 </li>
@@ -1697,8 +1697,8 @@ end-to-end: 意味着整个网络从输入原始数据（如图像）到输出�
 <h2 id="iii-part3-deep-residual-learning">III. Part3. Deep Residual Learning</h2>
 <h3 id="31-multiple-nonlinear-layers-sympotically-approximate">3.1 multiple nonlinear layers sympotically approximate</h3>
 <blockquote>
-<p>If one hypothesizes that multiple nonlinear layers can asymptotically approximate complicated functions2, then it is equivalent to hypothesize that they can asymptotically approximate the residual functions, i.e.,  $\mathcal{H}(x) − x$ (assuming that the input and output are of the same dimensions)</p>
-<p>如果假设多个非线性层可以渐进逼近复杂函数$^2$，那么这等价于假设它们能够渐进逼近残差函数，即$\mathcal{H}(x)-x$（假设输入与输出维度相同）。</p>
+<p>If one hypothesizes that multiple nonlinear layers can asymptotically approximate complicated functions2, then it is equivalent to hypothesize that they can asymptotically approximate the residual functions, i.e.,  <span class="arithmatex">\(\mathcal{H}(x) − x\)</span> (assuming that the input and output are of the same dimensions)</p>
+<p>如果假设多个非线性层可以渐进逼近复杂函数<span class="arithmatex">\(^2\)</span>，那么这等价于假设它们能够渐进逼近残差函数，即<span class="arithmatex">\(\mathcal{H}(x)-x\)</span>（假设输入与输出维度相同）。</p>
 </blockquote>
 <h3 id="32-solver">3.2 当solver面对恒等映射和零映射</h3>
 <blockquote>
@@ -1708,7 +1708,7 @@ end-to-end: 意味着整个网络从输入原始数据（如图像）到输出�
 <ul>
 <li>
 <p><strong>precondition(预处理)</strong>
-  其实就是$\mathcal{F}(x) = \mathcal{H}(x)=x$
+  其实就是<span class="arithmatex">\(\mathcal{F}(x) = \mathcal{H}(x)=x\)</span>
   原因：因为 <strong>大部分卷积块的最优映射并不会大幅偏离 identity</strong></p>
 <blockquote>
 <p>很多 block 只是做微调（refinement），而不是剧烈变化，实验（Fig. 7）也证明 F(x) 的响应值普遍较小 → H(x) 很接近 x</p>
@@ -1724,23 +1724,23 @@ end-to-end: 意味着整个网络从输入原始数据（如图像）到输出�
 <h3 id="33">3.3 写法的疑惑</h3>
 <blockquote>
 <p>We adopt residual learning to every few stacked layers. A building block is shown in Fig. 2. Formally, in this paper we consider a building block defined as:
-$$y = F(x, {W_i}) + x$$
-Here $\mathbf{x}$ and $\mathbf{y}$ are the input and output vectors of the layers considered. The function $F(x; {W_i})$ represents the residual mapping to be learned. Forthe example in Fig. 2 that has two layers, $F=W_2\sigma(W_1 x)$ in which $\sigma$ denotes ReLU [29] and the biases are omitted for simplifying notations. The operation $F + x$ is performed by a shortcut connection and element-wise addition. We adopt the second nonlinearity after the addition (i.e., $\sigma(y)$, see Fig. 2)</p>
+$<span class="arithmatex">\(y = F(x, {W_i}) + x\)</span>$
+Here <span class="arithmatex">\(\mathbf{x}\)</span> and <span class="arithmatex">\(\mathbf{y}\)</span> are the input and output vectors of the layers considered. The function <span class="arithmatex">\(F(x; \{W_i\})\)</span> represents the residual mapping to be learned. Forthe example in Fig. 2 that has two layers, <span class="arithmatex">\(F=W_2\sigma(W_1 x)\)</span> in which <span class="arithmatex">\(\sigma\)</span> denotes ReLU [29] and the biases are omitted for simplifying notations. The operation <span class="arithmatex">\(F + x\)</span> is performed by a shortcut connection and element-wise addition. We adopt the second nonlinearity after the addition (i.e., <span class="arithmatex">\(\sigma(y)\)</span>, see Fig. 2)</p>
 <p>我们对每几个堆叠层采用残差学习。图2展示了一个构建模块的示意图。形式上，本文考虑的构建模块定义为：
-$y = F(x, {W_i}) + x$
-其中$\mathbf{x}$和$\mathbf{y}$分别表示所涉及层的输入和输出向量。函数$F(x; {W_i})$代表需要学习的残差映射。以图2所示的两层结构为例，$F = W_2\sigma(W_1x)$，其中$\sigma$表示ReLU激活函数[29]，为简化表达式省略了偏置项。通过快捷连接和逐元素相加实现$F + x$运算。我们在加法操作后采用了第二次非线性变换（即$\sigma(y)$，参见图2）。</p>
+<span class="arithmatex">\(y = F(x, {W_i}) + x\)</span>
+其中<span class="arithmatex">\(\mathbf{x}\)</span>和<span class="arithmatex">\(\mathbf{y}\)</span>分别表示所涉及层的输入和输出向量。函数<span class="arithmatex">\(F(x; \{W_i\})\)</span>代表需要学习的残差映射。以图2所示的两层结构为例，<span class="arithmatex">\(F = W_2\sigma(W_1x)\)</span>，其中<span class="arithmatex">\(\sigma\)</span>表示ReLU激活函数[29]，为简化表达式省略了偏置项。通过快捷连接和逐元素相加实现<span class="arithmatex">\(F + x\)</span>运算。我们在加法操作后采用了第二次非线性变换（即<span class="arithmatex">\(\sigma(y)\)</span>，参见图2）。</p>
 </blockquote>
 <ul>
 <li>
-<p>$W_i x$
+<p><span class="arithmatex">\(W_i x\)</span>
   并非代表整整意义上的矩阵乘法，实际上还是卷积？
-  事实上，在数学上，任何<strong>线性运算都可以抽象成「某个矩阵 × 输入」</strong>，因此用$W_i x$表示卷积<strong>层</strong>运算是合理的。
-  而且，输入张量摊平成一个长向量 $x_{\text{flat}}$，然后卷积核展开成一个稀疏大矩阵 $W_{\text{conv}}$，然后进行运算$y = x_{\text{flat}}W_{\text{conv}}$在数学上是严格等价的</p>
+  事实上，在数学上，任何<strong>线性运算都可以抽象成「某个矩阵 × 输入」</strong>，因此用<span class="arithmatex">\(W_i x\)</span>表示卷积<strong>层</strong>运算是合理的。
+  而且，输入张量摊平成一个长向量 <span class="arithmatex">\(x_{\text{flat}}\)</span>，然后卷积核展开成一个稀疏大矩阵 <span class="arithmatex">\(W_{\text{conv}}\)</span>，然后进行运算<span class="arithmatex">\(y = x_{\text{flat}}W_{\text{conv}}\)</span>在数学上是严格等价的</p>
 </li>
 <li>
 <p>shortcut 的加法要求两边维度严格一致。因此 ResNet 的设计必须保证 F(x) 的输出和 x 有同样的 shape。
   例如当输入/输出通道数改变时，可能出现维度不匹配的情况，=="we can perform a linear projection(线性投影) Ws by the shortcut connections to match the dimensions:"==
-  $$\mathbf{y} = \mathcal{F}(\mathbf{x};{W_i})+W_s \mathbf{x}$$</p>
+  $<span class="arithmatex">\(\mathbf{y} = \mathcal{F}(\mathbf{x};\{W_i\})+W_s \mathbf{x}\)</span>$</p>
 </li>
 </ul>
 <h3 id="34-fbn-relu">3.4 F建立在多个卷积层以及BN, ReLU上</h3>
@@ -1791,11 +1791,11 @@ $y = F(x, {W_i}) + x$
 <p>（B）采用公式(2)的投影快捷连接，通过1×1卷积实现维度匹配。对于这两种方案，当shortcuts跨越两种尺寸的特征图时，均采用步长为2的操作方式。</p>
 </blockquote>
 <ul>
-<li><strong>如果y = $\mathcal{F}(x)+x$的$\mathcal{F}(x)$和$x$维度(H, W, C都必须一致)不一致</strong></li>
-<li>变换：$x' = W_s x$
-  设置好卷积核$W_s$的$H(=1), W(=1)$, $C_{\text{in}}$(等于输入的通道数)，$C_{\text{out}}$(卷积核个数等于输出的通道数)，以及stride（实现downsampling，对输入的feature map的H, W进行压缩）</li>
+<li><strong>如果y = <span class="arithmatex">\(\mathcal{F}(x)+x\)</span>的<span class="arithmatex">\(\mathcal{F}(x)\)</span>和<span class="arithmatex">\(x\)</span>维度(H, W, C都必须一致)不一致</strong></li>
+<li>变换：<span class="arithmatex">\(x' = W_s x\)</span>
+  设置好卷积核<span class="arithmatex">\(W_s\)</span>的<span class="arithmatex">\(H(=1), W(=1)\)</span>, <span class="arithmatex">\(C_{\text{in}}\)</span>(等于输入的通道数)，<span class="arithmatex">\(C_{\text{out}}\)</span>(卷积核个数等于输出的通道数)，以及stride（实现downsampling，对输入的feature map的H, W进行压缩）</li>
 <li><strong>For both options, when the shortcuts go across feature maps of two sizes, they are performed with a stride of 2</strong>
-  说的其实就是上面对于$\mathbf{x}$的变换，因为正常卷积层通路的H×W变化了，因此$\mathbf{x}$的$H\times W$也必须变化，例如downsampling
+  说的其实就是上面对于<span class="arithmatex">\(\mathbf{x}\)</span>的变换，因为正常卷积层通路的H×W变化了，因此<span class="arithmatex">\(\mathbf{x}\)</span>的<span class="arithmatex">\(H\times W\)</span>也必须变化，例如downsampling
   因为 F(x) 下采样了，shortcut 也必须下采样。</li>
 </ul>
 <h3 id="37">3.7 训练细节</h3>
@@ -1805,9 +1805,9 @@ $y = F(x, {W_i}) + x$
 </blockquote>
 <ul>
 <li><strong>per-pixel mean subtraction</strong>
-  ImageNet 训练时，所有图像的像素都会做如下操作：$x' = x - \mu$，其中：</li>
-<li>( x )：原始像素（RGB 三通道）</li>
-<li>( \mu )：训练集的像素均值（针对 R、G、B 三通道分别计算）
+  ImageNet 训练时，所有图像的像素都会做如下操作：<span class="arithmatex">\(x' = x - \mu\)</span>，其中：</li>
+<li><span class="arithmatex">\( x \)</span>：原始像素（RGB 三通道）</li>
+<li><span class="arithmatex">\( \mu \)</span>：训练集的像素均值（针对 R、G、B 三通道分别计算）
   作用：</li>
 <li><strong>将像素分布居中到 0 左右</strong>，方便神经网络训练</li>
 <li>加快收敛速度</li>
@@ -1847,7 +1847,7 @@ $y = F(x, {W_i}) + x$
 <li>
 <p>==BN==</p>
 </li>
-<li>BN的位置：conv后，ReLU前：conv $\rightarrow$ BN $\rightarrow$ ReLU</li>
+<li>BN的位置：conv后，ReLU前：conv <span class="arithmatex">\(\rightarrow\)</span> BN <span class="arithmatex">\(\rightarrow\)</span> ReLU</li>
 <li>==深度网络中，每层输入分布不断变化，导致训练难==, BN 让每层的输入都保持“标准化”：
   [
   x_{norm} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}
@@ -1858,7 +1858,7 @@ $y = F(x, {W_i}) + x$
 <li>
 <p>==什么叫 “train … from scratch”？还能不从头吗？==</p>
 </li>
-<li>从头开始，即我们不适用预训练权重，随机初始化：即：$W \sim \mathcal{N}(0, \sigma^2)$</li>
+<li>从头开始，即我们不适用预训练权重，随机初始化：即：<span class="arithmatex">\(W \sim \mathcal{N}(0, \sigma^2)\)</span></li>
 <li>
 <p>不从头开始，叫 <strong>fine-tuning（迁移学习）</strong>，使用 ImageNet 上别人训练好的权重，然后在自己的网络上微调。微调通常比从头训练效果更好、收敛更快、算力需求更低</p>
 </li>
@@ -1866,7 +1866,7 @@ $y = F(x, {W_i}) + x$
 <p>==weight decay==</p>
 </li>
 <li>weight decay 就是 <strong>L2 正则化</strong>。在损失函数中加入：
-  $L_{total} = L_{data} + \lambda ||W||^2$
+  <span class="arithmatex">\(L_{total} = L_{data} + \lambda ||W||^2\)</span>
   其中 λ=0.0001。</li>
 <li>作用：<ul>
 <li>防止权重变得太大</li>
@@ -1875,10 +1875,10 @@ $y = F(x, {W_i}) + x$
 </ul>
 </li>
 <li>SGD 更新时：
-  $W \leftarrow W - \eta (\frac{\partial L}{\partial W} + \lambda W)$
-  其中 $\lambda W$ 就是 weight decay 部分。</li>
+  <span class="arithmatex">\(W \leftarrow W - \eta (\frac{\partial L}{\partial W} + \lambda W)\)</span>
+  其中 <span class="arithmatex">\(\lambda W\)</span> 就是 weight decay 部分。</li>
 <li><strong>为什么weight decay可以防止overfitting？</strong>
-  模型越复杂、参数越大，它拟合训练集噪声的能力越强 $\rightarrow$ overfitting。而weight decay惩罚大参数</li>
+  模型越复杂、参数越大，它拟合训练集噪声的能力越强 <span class="arithmatex">\(\rightarrow\)</span> overfitting。而weight decay惩罚大参数</li>
 </ul>
 <h2 id="iv-part4-experimets">IV. Part4. Experimets</h2>
 <h3 id="41-imagenet-classification">4.1 ImageNet Classification任务</h3>
@@ -2052,6 +2052,10 @@ plain nets，34-layer在训练时，training error反而会大于18-layer，并�
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

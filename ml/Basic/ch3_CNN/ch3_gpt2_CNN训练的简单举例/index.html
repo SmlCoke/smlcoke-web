@@ -952,15 +952,15 @@
 <h1 id="_2">⭐ 我们用一个最简单的神经网络训练例子解释整个过程</h1>
 <p>我们构造一个最简单的线性模型：</p>
 <h3 id="_3"><strong>模型：</strong></h3>
-<p>[
+<div class="arithmatex">\[
 \hat{y} = w x + b
-]</p>
+\]</div>
 <p>只有两个参数：<code>w</code> 和 <code>b</code>。</p>
 <hr />
 <h1 id="loss-mse">⭐ Loss 函数选择最常见的 MSE：</h1>
-<p>[
+<div class="arithmatex">\[
 L = \frac{1}{2}(y - \hat{y})^2
-]</p>
+\]</div>
 <p>为什么前面有 1/2？
 因为反向求导时可以消掉 2，公式更好看。</p>
 <p>我们假设有一个样本：</p>
@@ -969,20 +969,20 @@ y = 5
 初始参数：w = 1， b = 0
 </code></pre>
 <p>也就是说初始模型预测为：</p>
-<p>[
+<div class="arithmatex">\[
 \hat{y} = 1 \cdot 2 + 0 = 2
-]</p>
+\]</div>
 <p>真实 y = 5，所以误差明显很大。</p>
 <hr />
 <h1 id="forward-pass">⭐ 第一步：正向传播（Forward pass）</h1>
 <h4 id="1">1. 预测输出</h4>
-<p>[
+<div class="arithmatex">\[
 \hat{y} = wx + b = 2
-]</p>
+\]</div>
 <h4 id="2-loss">2. Loss</h4>
-<p>[
+<div class="arithmatex">\[
 L = \frac{1}{2} (5 - 2)^2 = \frac{1}{2} \cdot 9 = 4.5
-]</p>
+\]</div>
 <hr />
 <h1 id="backprop">⭐ 第二步：反向传播计算梯度（Backprop）</h1>
 <p>重点来了：这里的梯度是 <strong>数学意义的导数</strong>，但我们是对有限数据进行采样（离散化后的 Loss）。</p>
@@ -990,76 +990,76 @@ L = \frac{1}{2} (5 - 2)^2 = \frac{1}{2} \cdot 9 = 4.5
 <h4 id="batch"><strong>我们并不是对整个真实的概率分布求梯度，而是对某个 batch 的有限样本估计它。</strong></h4>
 <hr />
 <h3 id="w">✔ 求对参数 w 的梯度：</h3>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial w}
 = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial w}
-]</p>
+\]</div>
 <p>计算：</p>
 <h4 id="1_1">1.</h4>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial \hat{y}}
 = \hat{y} - y = 2 - 5 = -3
-]</p>
+\]</div>
 <h4 id="2">2.</h4>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial \hat{y}}{\partial w} = x = 2
-]</p>
+\]</div>
 <h4 id="_4">组合：</h4>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial w} = -3 \cdot 2 = -6
-]</p>
+\]</div>
 <hr />
 <h3 id="b">✔ 求对参数 b 的梯度：</h3>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial b}
 = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial b}
 = -3 \cdot 1 = -3
-]</p>
+\]</div>
 <hr />
 <h1 id="_5">⭐ 第三步：梯度下降（参数更新）</h1>
 <p>假设学习率为：</p>
-<p>[
+<div class="arithmatex">\[
 \eta = 0.1
-]</p>
+\]</div>
 <p>梯度下降公式：</p>
-<p>[
+<div class="arithmatex">\[
 w \leftarrow w - \eta \frac{\partial L}{\partial w}
-]</p>
+\]</div>
 <p>代入：</p>
 <h4 id="1-w">1. 更新 w</h4>
-<p>[
+<div class="arithmatex">\[
 w = 1 - 0.1 \cdot (-6) = 1 + 0.6 = 1.6
-]</p>
+\]</div>
 <h4 id="2-b">2. 更新 b</h4>
-<p>[
+<div class="arithmatex">\[
 b = 0 - 0.1 \cdot (-3) = 0 + 0.3 = 0.3
-]</p>
+\]</div>
 <hr />
 <h3 id="_6">⭐ 新模型是什么？</h3>
-<p>[
+<div class="arithmatex">\[
 \hat{y} = 1.6x + 0.3
-]</p>
+\]</div>
 <p>如果你再 forward 一次：</p>
-<p>[
+<div class="arithmatex">\[
 \hat{y} = 1.6 \cdot 2 + 0.3 = 3.5
-]</p>
+\]</div>
 <p>loss 变成：</p>
-<p>[
+<div class="arithmatex">\[
 L = \frac12 (5 - 3.5)^2 = 1.125
-]</p>
+\]</div>
 <p><strong>Loss 下降了！说明梯度方向是正确的。</strong></p>
 <p>这就是梯度下降的全部过程。</p>
 <hr />
 <h1 id="_7">⭐ 那“离散化”到底体现在哪里？</h1>
 <p>关键点是：</p>
 <h3 id="loss">✔ 真正的 Loss 是对整个数据分布的期望：</h3>
-<p>[
+<div class="arithmatex">\[
 L = \mathbb{E}_{(x,y) \sim p} [\ell(f(x), y)]
-]</p>
+\]</div>
 <p>但我们不可能拿到整个真实分布，只能拿到有限样本：</p>
-<p>[
+<div class="arithmatex">\[
 L_{\text{empirical}} = \frac{1}{N}\sum_{i=1}^N \ell(f(x_i), y_i)
-]</p>
+\]</div>
 <p>这就产生了两个离散化：</p>
 <hr />
 <h3 id="1-loss-1"><strong>① Loss 是用有限样本（训练集）估计的—离散化 1</strong></h3>
@@ -1067,9 +1067,9 @@ L_{\text{empirical}} = \frac{1}{N}\sum_{i=1}^N \ell(f(x_i), y_i)
 <hr />
 <h3 id="2-batch-loss-2"><strong>② 梯度是用每个 batch 的 Loss 估计的—离散化 2</strong></h3>
 <p>mini-batch SGD 中，每次只用例如 32 个样本估计梯度：</p>
-<p>[
+<div class="arithmatex">\[
 \nabla L \approx \frac{1}{32} \sum_{i=1}^{32} \nabla \ell_i
-]</p>
+\]</div>
 <p>这个梯度是近似的，不是真实的梯度，但方向统计上是正确的。</p>
 <p>这就是 deep learning 中所谓的：</p>
 <h4 id="stochastic-gradient-descent-sgd"><strong>随机梯度下降（Stochastic Gradient Descent, SGD）</strong></h4>
@@ -1088,17 +1088,17 @@ L_{\text{empirical}} = \frac{1}{N}\sum_{i=1}^N \ell(f(x_i), y_i)
 📌 讲 SGD、Adam、Momentum 的区别</p>
 <p>你想继续深入哪个方向？</p>
 <h2 id="qa2">QA2</h2>
-<p><strong>你提到的步骤：对参数w和参数b的梯度，这里用到了求导，比如$\frac{\partial L}{\partial\omega}=\frac{\partial L}{\partial \hat{y}} \times \frac{\hat {y}}{\partial\omega}$以及$\frac{\partial L}{\partial b}=\frac{\partial L}{\partial \hat{y}} \times \frac{\hat {y}}{\partial b}$，这里的公式就是数学意义上的梯度的求法吧？也就是说这一步是没有进行离散化的？在真实的CNN训练中，也是这么做的吗？</strong></p>
+<p><strong>你提到的步骤：对参数w和参数b的梯度，这里用到了求导，比如<span class="arithmatex">\(\frac{\partial L}{\partial\omega}=\frac{\partial L}{\partial \hat{y}} \times \frac{\hat {y}}{\partial\omega}\)</span>以及<span class="arithmatex">\(\frac{\partial L}{\partial b}=\frac{\partial L}{\partial \hat{y}} \times \frac{\hat {y}}{\partial b}\)</span>，这里的公式就是数学意义上的梯度的求法吧？也就是说这一步是没有进行离散化的？在真实的CNN训练中，也是这么做的吗？</strong></p>
 <p>你的理解非常好，而且你现在问到的正是<strong>深度学习梯度计算的本质问题</strong>。
 我把关键点讲得非常明确：</p>
 <h1 id="1_2">✅ 1. 是的，对参数求导这一步使用的就是数学意义上的导数</h1>
 <p>例如：</p>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial w}=
 \frac{\partial L}{\partial \hat{y}}
 \cdot
 \frac{\partial \hat{y}}{\partial w}
-]</p>
+\]</div>
 <p>这里的链式法则、偏导、求导公式 <strong>都是严格数学中的连续导数运算</strong>。
 CNN、RNN、Transformer……所有深度学习模型都是这么计算梯度的。</p>
 <hr />
@@ -1112,40 +1112,40 @@ CNN、RNN、Transformer……所有深度学习模型都是这么计算梯度的
 <hr />
 <h1 id="1_3">⭐ （1）求导公式本身是连续的，没有任何离散化</h1>
 <p>例如卷积的参数梯度：</p>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial W_{3\times 3}}
-]</p>
+\]</div>
 <p>softmax 的梯度：</p>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial z_i}=p_i - y_i
-]</p>
+\]</div>
 <p>ReLU 的梯度：</p>
-<p>[
+<div class="arithmatex">\[
 \frac{d}{dx}\max(0, x)=\begin{cases}
 1 &amp; x&gt;0 \
 0 &amp; x\le 0
 \end{cases}
-]</p>
+\]</div>
 <p>这些都是严格数学定义的导数，不是近似。</p>
 <hr />
 <h1 id="2loss">⭐ （2）Loss 是离散样本造成的近似</h1>
 <p>真实 Loss（数学意义）应该是：</p>
-<p>[
-L = \mathbb{E}<em>{(x,y)\sim p</em>{\text{真实数据分布}}} ; \ell(f(x), y)
-]</p>
+<div class="arithmatex">\[
+L = \mathbb{E}*{(x,y)\sim p*{\text{真实数据分布}}} ; \ell(f(x), y)
+\]</div>
 <p>但现实中我们根本不知道真实分布，只能用有限训练集：</p>
-<p>[
+<div class="arithmatex">\[
 L_{\text{empirical}}
 = \frac{1}{N}\sum_{i=1}^N \ell(f(x_i), y_i)
-]</p>
+\]</div>
 <p>甚至 mini-batch 训练时：</p>
-<p>[
+<div class="arithmatex">\[
 L_{\text{batch}} = \frac{1}{32}\sum_{i=1}^{32} \ell(f(x_i), y_i)
-]</p>
+\]</div>
 <p>于是整体梯度是：</p>
-<p>[
+<div class="arithmatex">\[
 \nabla L_{\text{batch}} \approx \nabla L_{\text{真实}}
-]</p>
+\]</div>
 <p>➡ <strong>这里才是真正的离散化！</strong>
 梯度方向不完美，但 <strong>统计上是朝向真实梯度方向的无偏估计</strong>。</p>
 <hr />
@@ -1160,13 +1160,13 @@ L_{\text{batch}} = \frac{1}{32}\sum_{i=1}^{32} \ell(f(x_i), y_i)
 <hr />
 <h1 id="3-cnn">⭐ 3. CNN 训练中也是严格这么做的！</h1>
 <p>CNN 的反向传播涉及卷积操作：</p>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial W_{k,h,w}}
 =\sum_{所有通道与位置}
 \frac{\partial L}{\partial \text{feature}}
 \cdot
 \frac{\partial \text{feature}}{\partial W_{k,h,w}}
-]</p>
+\]</div>
 <p>这一切：</p>
 <ul>
 <li>使用链式法则</li>
@@ -1258,16 +1258,16 @@ b = 0
 <ol>
 <li><strong>模型输出：</strong></li>
 </ol>
-<p>[
+<div class="arithmatex">\[
 \hat{y} = wx + b = 2
-]</p>
+\]</div>
 <ol>
 <li><strong>loss：</strong></li>
 </ol>
-<p>[
+<div class="arithmatex">\[
 L = \frac{1}{2}(y - \hat{y})^2
 = \frac{1}{2}(5 - 2)^2 = 4.5
-]</p>
+\]</div>
 <p>到这里为止，就是正向传播。</p>
 <p>它没有任何求导、更新参数的步骤。
 只是“算输出”和“算 loss”。</p>
@@ -1278,17 +1278,17 @@ L = \frac{1}{2}(y - \hat{y})^2
 <p><strong>把 Loss 对每个参数的偏导数算出来。</strong></p>
 </blockquote>
 <p>也就是算下面这些：</p>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial w},\quad
 \frac{\partial L}{\partial b}
-]</p>
+\]</div>
 <p>反向传播完整步骤：</p>
 <h4 id="1-loss">1. Loss 对预测值的导数</h4>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial \hat{y}}
 = \hat{y} - y
 = 2 - 5 = -3
-]</p>
+\]</div>
 <h4 id="2_2">2. 预测值对每个参数的导数</h4>
 <p>[
 \frac{\partial \hat{y}}{\partial w} = x = 2
@@ -1297,17 +1297,17 @@ L = \frac{1}{2}(y - \hat{y})^2
 \frac{\partial \hat{y}}{\partial b} = 1
 ]</p>
 <h4 id="3-chain-rule">3. 使用链式法则（Chain Rule）</h4>
-<p>[
+<div class="arithmatex">\[
 \frac{\partial L}{\partial w}
 = \frac{\partial L}{\partial \hat{y}}
 \cdot
 \frac{\partial \hat{y}}{\partial w}
 = -3 \cdot 2 = -6
-]</p>
-<p>[
+\]</div>
+<div class="arithmatex">\[
 \frac{\partial L}{\partial b}
 = -3 \cdot 1 = -3
-]</p>
+\]</div>
 <p>到这里，反向传播结束。</p>
 <hr />
 <h1 id="gradient-descent">⭐ 第三部分：参数更新（Gradient Descent）</h1>
@@ -1458,6 +1458,10 @@ b = 0 + 0.3 = 0.3
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

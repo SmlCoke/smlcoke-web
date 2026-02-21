@@ -1655,8 +1655,8 @@
 <h3 id="31-vision-transformer">3.1 Vision Transformer</h3>
 <p><img alt="alt text" src="../image.png" /></p>
 <blockquote>
-<p>An overview of the model is depicted in Figure 1. The standard Transformer receives as input a 1D sequence of token embeddings. To handle 2D images, we reshape the image $x \in R^{H\times W \times C}$ into a sequence of flattened 2D patches $x_p \in R^{N\times(P^2·C)}$, where $(H, W)$ is the resolution of the original image, C is the number of channels, $(P, P)$ is the resolution of each image patch, and $N = HW/P^2$ is the resulting number of patches, which also serves as the effective input sequence length for the Transformer. The Transformer uses <strong>constant latent vector size $D$ through all of its layers</strong>, so we <strong>flatten the patches and map to D dimensions with a trainable linear projection (Eq. 1)</strong>. We refer to the output of this projection as the patch embeddings.
-模型概览如图1所示。标准Transformer的输入为一维的token嵌入序列。为处理二维图像，我们将图像$x \in \mathbb{R}^{H\times W\times C}$重塑为扁平化的二维图像块序列$x_p \in \mathbb{R}^{N\times (P^2\cdot C)}$，其中$(H, W)$为原始图像分辨率，$C$为通道数，$(P, P)$为每个图像块的分辨率，$N = HW/P^2$为处理后图像块的数量，该数值同时作为Transformer的有效输入序列长度。Transformer在所有层中均使用恒定潜向量维度$D$，因此我们将<strong>图像块展平后通过可训练的线性投影（式1）映射至$D$维空间</strong>。该投影输出结果称为图像块嵌入。</p>
+<p>An overview of the model is depicted in Figure 1. The standard Transformer receives as input a 1D sequence of token embeddings. To handle 2D images, we reshape the image <span class="arithmatex">\(x \in R^{H\times W \times C}\)</span> into a sequence of flattened 2D patches <span class="arithmatex">\(x_p \in R^{N\times(P^2·C)}\)</span>, where <span class="arithmatex">\((H, W)\)</span> is the resolution of the original image, C is the number of channels, <span class="arithmatex">\((P, P)\)</span> is the resolution of each image patch, and <span class="arithmatex">\(N = HW/P^2\)</span> is the resulting number of patches, which also serves as the effective input sequence length for the Transformer. The Transformer uses <strong>constant latent vector size <span class="arithmatex">\(D\)</span> through all of its layers</strong>, so we <strong>flatten the patches and map to D dimensions with a trainable linear projection (Eq. 1)</strong>. We refer to the output of this projection as the patch embeddings.
+模型概览如图1所示。标准Transformer的输入为一维的token嵌入序列。为处理二维图像，我们将图像<span class="arithmatex">\(x \in \mathbb{R}^{H\times W\times C}\)</span>重塑为扁平化的二维图像块序列<span class="arithmatex">\(x_p \in \mathbb{R}^{N\times (P^2\cdot C)}\)</span>，其中<span class="arithmatex">\((H, W)\)</span>为原始图像分辨率，<span class="arithmatex">\(C\)</span>为通道数，<span class="arithmatex">\((P, P)\)</span>为每个图像块的分辨率，<span class="arithmatex">\(N = HW/P^2\)</span>为处理后图像块的数量，该数值同时作为Transformer的有效输入序列长度。Transformer在所有层中均使用恒定潜向量维度<span class="arithmatex">\(D\)</span>，因此我们将<strong>图像块展平后通过可训练的线性投影（式1）映射至<span class="arithmatex">\(D\)</span>维空间</strong>。该投影输出结果称为图像块嵌入。</p>
 </blockquote>
 <h4 id="image-to-sequence">第一步：从图片到序列（Image to Sequence）</h4>
 <p><strong>——对应论文中的“Patch Embedding”</strong></p>
@@ -1666,27 +1666,27 @@
 <li>
 <p><strong>切分（Reshape）：</strong></p>
 <ul>
-<li>假设你有一张图片 $\mathbf{x}$，大小是 $H \times W \times C$（例如 $224 \times 224 \times 3$）。</li>
-<li>设定一个 Patch Size $P$（论文标题里的 16x16 就是指 $P=16$）。</li>
-<li>把图片切成 $N$ 个固定大小的方块（Patches）。</li>
-<li><strong>数量 $N$：</strong> $N = HW / P^2$（例如 $224^2 / 16^2 = 196$ 个Patch）。</li>
-<li><strong>每个Patch的维度：</strong> $P \times P \times C$（例如 $16 \times 16 \times 3 = 768$ 个像素值）。</li>
+<li>假设你有一张图片 <span class="arithmatex">\(\mathbf{x}\)</span>，大小是 <span class="arithmatex">\(H \times W \times C\)</span>（例如 <span class="arithmatex">\(224 \times 224 \times 3\)</span>）。</li>
+<li>设定一个 Patch Size <span class="arithmatex">\(P\)</span>（论文标题里的 16x16 就是指 <span class="arithmatex">\(P=16\)</span>）。</li>
+<li>把图片切成 <span class="arithmatex">\(N\)</span> 个固定大小的方块（Patches）。</li>
+<li><strong>数量 <span class="arithmatex">\(N\)</span>：</strong> <span class="arithmatex">\(N = HW / P^2\)</span>（例如 <span class="arithmatex">\(224^2 / 16^2 = 196\)</span> 个Patch）。</li>
+<li><strong>每个Patch的维度：</strong> <span class="arithmatex">\(P \times P \times C\)</span>（例如 <span class="arithmatex">\(16 \times 16 \times 3 = 768\)</span> 个像素值）。</li>
 </ul>
 </li>
 <li>
 <p><strong>拉平（Flatten）：</strong></p>
 <ul>
 <li>把每个Patch里的像素点拉成一条直线，变成一个长向量。</li>
-<li>现在的输入变成了 $N$ 个向量，每个向量长度是 $P^2 \cdot C$。</li>
+<li>现在的输入变成了 <span class="arithmatex">\(N\)</span> 个向量，每个向量长度是 <span class="arithmatex">\(P^2 \cdot C\)</span>。</li>
 </ul>
 </li>
 <li>
 <p><strong>线性映射（Linear Projection of Flattened Patches）：</strong></p>
 <ul>
-<li>Transformer内部有一个固定的向量维度 $D$（Latent vector size，比如 768 或 1024）。</li>
-<li>现在的Patch向量长度是像素数（$P^2 \cdot C$），通常不等于 $D$。</li>
-<li>所以，作者用一个可学习的线性层（即公式1中的矩阵 $\mathbf{E}$）把每个Patch映射到 $D$ 维。</li>
-<li><strong>结果：</strong> 你得到了一串序列，包含 $N$ 个 $D$ 维的向量。<strong>这在Transformer眼里，和一句话里的 $N$ 个单词没有任何区别。</strong></li>
+<li>Transformer内部有一个固定的向量维度 <span class="arithmatex">\(D\)</span>（Latent vector size，比如 768 或 1024）。</li>
+<li>现在的Patch向量长度是像素数（<span class="arithmatex">\(P^2 \cdot C\)</span>），通常不等于 <span class="arithmatex">\(D\)</span>。</li>
+<li>所以，作者用一个可学习的线性层（即公式1中的矩阵 <span class="arithmatex">\(\mathbf{E}\)</span>）把每个Patch映射到 <span class="arithmatex">\(D\)</span> 维。</li>
+<li><strong>结果：</strong> 你得到了一串序列，包含 <span class="arithmatex">\(N\)</span> 个 <span class="arithmatex">\(D\)</span> 维的向量。<strong>这在Transformer眼里，和一句话里的 <span class="arithmatex">\(N\)</span> 个单词没有任何区别。</strong></li>
 </ul>
 </li>
 </ol>
@@ -1697,25 +1697,25 @@
 <li>
 <p><strong>添加 [class] Token（分类专用标志）：</strong></p>
 <ul>
-<li><strong>问题：</strong> Transformer输入 $N$ 个向量，输出也是 $N$ 个向量。最后到底用哪一个向量来代表整张图片进行分类呢？是取平均吗？</li>
-<li><strong>解法：</strong> 作者参考了NLP模型 BERT 的做法。在输入序列的最前面，<strong>硬塞进去一个可学习的向量</strong>（论文中叫 $\mathbf{x}_{class}$ 或 $\mathbf{z}_0^0$）。</li>
+<li><strong>问题：</strong> Transformer输入 <span class="arithmatex">\(N\)</span> 个向量，输出也是 <span class="arithmatex">\(N\)</span> 个向量。最后到底用哪一个向量来代表整张图片进行分类呢？是取平均吗？</li>
+<li><strong>解法：</strong> 作者参考了NLP模型 BERT 的做法。在输入序列的最前面，<strong>硬塞进去一个可学习的向量</strong>（论文中叫 <span class="arithmatex">\(\mathbf{x}_{class}\)</span> 或 <span class="arithmatex">\(\mathbf{z}_0^0\)</span>）。</li>
 <li><strong>作用：</strong> 这个向量不对应图片上的任何一块。它的任务是在经过层层Transformer处理时，通过“注意力机制”不断从其他图片Patch那里“收集”有用的信息。</li>
-<li><strong>结果：</strong> 输入序列长度变成了 $N+1$。</li>
+<li><strong>结果：</strong> 输入序列长度变成了 <span class="arithmatex">\(N+1\)</span>。</li>
 </ul>
 </li>
 <li>
 <p><strong>添加位置编码（Position Embeddings）：</strong></p>
 <ul>
 <li><strong>问题：</strong> Transformer 的自注意力机制是<strong>没有位置概念</strong>的。如果你把图片打乱（比如左上角的Patch换到右下角），Transformer 算出来的结果是一模一样的。这对于图像识别显然不行。</li>
-<li><strong>解法：</strong> 给每一个Patch向量（包括那个特殊的Class Token）加上一个位置向量（$\mathbf{E}_{pos}$）。</li>
+<li><strong>解法：</strong> 给每一个Patch向量（包括那个特殊的Class Token）加上一个位置向量（<span class="arithmatex">\(\mathbf{E}_{pos}\)</span>）。</li>
 <li><strong>细节：</strong> 作者使用的是标准的<strong>可学习的1D位置编码</strong>。尽管图片是2D的，但实验表明直接用1D序列号（1, 2, 3...196）效果就已经很好了，不需要复杂的2D坐标编码（附录D.4有详细讨论）。</li>
 </ul>
 </li>
 </ol>
 <p>因此，我们向 Encoder 传入的 Sequence 为：
-$$\mathbf{z}<em>0 = [\mathbf{x}</em>{\text{class}};\, \mathbf{x}<em>{p}^{1}\mathbf{E};\, \mathbf{x}</em>{p}^{2}\mathbf{E};\, \mathbf{x}<em>{p}^{3}\mathbf{E};\, \cdots \mathbf{x}</em>{p}^{N}\mathbf{E};\,] + \mathbf{E}<em>{\text{pos}}$$
+$<span class="arithmatex">\(\mathbf{z}_0 = [\mathbf{x}_{\text{class}};\, \mathbf{x}_{p}^{1}\mathbf{E};\, \mathbf{x}_{p}^{2}\mathbf{E};\, \mathbf{x}_{p}^{3}\mathbf{E};\, \cdots \mathbf{x}_{p}^{N}\mathbf{E};\,] + \mathbf{E}_{\text{pos}}\)</span>$
 其中：
-$$\mathbf{E} \in \mathbb{R}^{P^2 \cdot C} \times D, \mathbf{E}</em>{\text{pos}} \in \mathbb{R}^{(N+1) \times D}$$</p>
+$<span class="arithmatex">\(\mathbf{E} \in \mathbb{R}^{P^2 \cdot C} \times D, \mathbf{E}_{\text{pos}} \in \mathbb{R}^{(N+1) \times D}\)</span>$</p>
 <h4 id="encoder">第三步：Encoder 内部</h4>
 <p>ViT 的 Encoder 内部与标准 Transformer 架构基本相同，只有如下细节需要注意：</p>
 <blockquote>
@@ -1723,28 +1723,28 @@ $$\mathbf{E} \in \mathbb{R}^{P^2 \cdot C} \times D, \mathbf{E}</em>{\text{pos}} 
 Transformer编码器（Vaswani等人，2017）由<strong>多头自注意力机制</strong>（MSA，见附录A）与<strong>多层感知器模块</strong>（公式2、3）交替堆叠构成。每个模块<strong>前应用层归一化（LN）</strong>，每个模块<strong>后采用残差连接</strong>（Wang等人，2019；Baevski &amp; Auli，2019）。该多层感知器<strong>包含两个采用GELU非线性激活函数的层级</strong>。</p>
 </blockquote>
 <p>运算：
-第一段：$\mathbf{z}<em>{\ell}^{\prime}  =\operatorname{MSA}\left(\operatorname{LN}\left(\mathbf{z}</em>{\ell-1}\right)\right)+\mathbf{z}<em>{\ell-1}, \quad  \ell=1 \ldots L$
-第二段：$\mathbf{z}</em>{\ell}  =\operatorname{MLP}\left(\operatorname{LN}\left(\mathbf{z}<em>{\ell}^{\prime}\right)\right)+\mathbf{z}</em>{\ell}^{\prime}, \quad \ell=1 \ldots L$</p>
+第一段：<span class="arithmatex">\(\mathbf{z}_{\ell}^{\prime}  =\operatorname{MSA}\left(\operatorname{LN}\left(\mathbf{z}_{\ell-1}\right)\right)+\mathbf{z}_{\ell-1}, \quad  \ell=1 \ldots L\)</span>
+第二段：<span class="arithmatex">\(\mathbf{z}_{\ell}  =\operatorname{MLP}\left(\operatorname{LN}\left(\mathbf{z}_{\ell}^{\prime}\right)\right)+\mathbf{z}_{\ell}^{\prime}, \quad \ell=1 \ldots L\)</span></p>
 <h4 id="_1">第四步：架构末端如何完成分类？</h4>
 <blockquote>
-<p>Similar to BERT’s [class] token, we prepend a learnable embedding to the sequence of embedded patches ($\mathbf{z}<em>{0}^0 = \mathbf{x}</em>{\text{class}}$), <strong>whose state at the output of the Transformer encoder</strong> ($\mathbf{z}<em>{L}^0$) serves as the image representation y (Eq. 4). <strong>Both during pre-training and fine-tuning</strong>, a classification head is attached to $\mathbf{z}</em>{L}^0$. The classification head is implemented by a <strong>MLP</strong> with one hidden layer at pre-training time and by a <strong>single linear layer</strong> at fine-tuning time.</p>
+<p>Similar to BERT’s [class] token, we prepend a learnable embedding to the sequence of embedded patches (<span class="arithmatex">\(\mathbf{z}_{0}^0 = \mathbf{x}_{\text{class}}\)</span>), <strong>whose state at the output of the Transformer encoder</strong> (<span class="arithmatex">\(\mathbf{z}_{L}^0\)</span>) serves as the image representation y (Eq. 4). <strong>Both during pre-training and fine-tuning</strong>, a classification head is attached to <span class="arithmatex">\(\mathbf{z}_{L}^0\)</span>. The classification head is implemented by a <strong>MLP</strong> with one hidden layer at pre-training time and by a <strong>single linear layer</strong> at fine-tuning time.</p>
 </blockquote>
-<p>$$\mathbf{y}  =\operatorname{LN}\left(\mathbf{z}_{L}^{0}\right)$$</p>
-<p>经过 $L$ 层 Transformer Encoder 的处理（包含多头自注意力 MSA 和 MLP Block），我们得到了输出序列 $\mathbf{z}_L$。</p>
-<p>这个输出序列依然包含 $N+1$ 个向量。</p>
+<div class="arithmatex">\[\mathbf{y}  =\operatorname{LN}\left(\mathbf{z}_{L}^{0}\right)\]</div>
+<p>经过 <span class="arithmatex">\(L\)</span> 层 Transformer Encoder 的处理（包含多头自注意力 MSA 和 MLP Block），我们得到了输出序列 <span class="arithmatex">\(\mathbf{z}_L\)</span>。</p>
+<p>这个输出序列依然包含 <span class="arithmatex">\(N+1\)</span> 个向量。</p>
 <ol>
 <li>
 <p><strong>只取第一个向量：</strong></p>
 <ul>
 <li>正如前面设计的，我们只关心第0个位置的向量（即对应输入时 <code>[class]</code> token 的那个位置）。</li>
-<li>论文公式 (4) 写道：$\mathbf{y} = \text{LN}(\mathbf{z}_L^0)$。这里的 $\mathbf{z}_L^0$ 就是最后一层输出的第一个向量。</li>
-<li><strong>原理：</strong> 因为在Transformer内部，所有Patch都在和这个Class Token进行交互，模型训练的目标就是让这个 $\mathbf{z}_L^0$ 浓缩整张图片的分类特征。</li>
+<li>论文公式 (4) 写道：<span class="arithmatex">\(\mathbf{y} = \text{LN}(\mathbf{z}_L^0)\)</span>。这里的 <span class="arithmatex">\(\mathbf{z}_L^0\)</span> 就是最后一层输出的第一个向量。</li>
+<li><strong>原理：</strong> 因为在Transformer内部，所有Patch都在和这个Class Token进行交互，模型训练的目标就是让这个 <span class="arithmatex">\(\mathbf{z}_L^0\)</span> 浓缩整张图片的分类特征。</li>
 </ul>
 </li>
 <li>
 <p><strong>MLP Head（分类头）：</strong></p>
 <ul>
-<li>拿到这个特征向量 $\mathbf{y}$ 后，<strong>接一个多层感知机（MLP）或者线性层</strong>。</li>
+<li>拿到这个特征向量 <span class="arithmatex">\(\mathbf{y}\)</span> 后，<strong>接一个多层感知机（MLP）或者线性层</strong>。</li>
 <li><strong>预训练时（Pre-training）：</strong> 接一个带有一个隐藏层的MLP。</li>
 <li><strong>微调时（Fine-tuning）：</strong> 接一个简单的线性层（Linear Layer），输出维度等于类别数（比如ImageNet是1000）。</li>
 <li><strong>最后通过 Softmax 得到分类概率。</strong></li>
@@ -1755,13 +1755,13 @@ Transformer编码器（Vaswani等人，2017）由<strong>多头自注意力机�
 <blockquote>
 <p><strong>Inductive bias.</strong> We note that Vision Transformer has much less image specific inductive bias than CNNs. In CNNs, locality, two-dimensional neighborhood structure, and translation equivariance are baked into each layer throughout the whole model. In ViT, only MLP layers are local and translationally equivariant, while the self-attention layers are global. <strong>The two-dimensional neighborhood structure is used very sparingly</strong>: in the beginning of the model by cutting the image into patches and at fine-tuning time for adjusting the position embeddings for images of different resolution (as described below). Other than that, the position embeddings at initialization time carry no information about the 2D positions of the patches and all spatial relations between the patches have to be learned from scratch.
 归纳偏置。我们注意到，视觉变换器（Vision Transformer）相比卷积神经网络（CNN）具有更少的图像特异性归纳偏置。在CNN中，局部性、二维邻域结构和平移等变性被固化在模型的每一层中。而在ViT中，<strong>只有多层感知机（MLP）层具备局部性和平移等变性</strong>，而自注意力层则是全局性的。<strong>二维邻域结构的使用非常有限：仅在模型初始阶段通过将图像切割为patch时，以及在微调阶段为适应不同分辨率图像而调整位置嵌入（如后文所述）时发挥作用</strong>。除此之外，初始化阶段的位置嵌入并不包含patch的二维位置信息，所有patch间的空间关系均需从头学习。</p>
-<p>Hybrid Architecture. As an alternative to raw image patches, the <strong>input sequence can be formed from feature maps of a CNN</strong> (LeCun et al., 1989). In this hybrid model, the patch embedding projection $\mathbf{E}$ (Eq. 1) is applied to patches extracted from a CNN feature map. As a special case,<strong> the patches can have spatial size 1x1</strong>, which means that the input a sequence is obtained by simply flattening the spatial dimensions of the feature map and projecting to the Transformer dimension. The classification input embedding and position embeddings are added as described above.
+<p>Hybrid Architecture. As an alternative to raw image patches, the <strong>input sequence can be formed from feature maps of a CNN</strong> (LeCun et al., 1989). In this hybrid model, the patch embedding projection <span class="arithmatex">\(\mathbf{E}\)</span> (Eq. 1) is applied to patches extracted from a CNN feature map. As a special case,<strong> the patches can have spatial size 1x1</strong>, which means that the input a sequence is obtained by simply flattening the spatial dimensions of the feature map and projecting to the Transformer dimension. The classification input embedding and position embeddings are added as described above.
 混合架构。作为原始图像分块的替代方案，输入序列可由卷积神经网络（CNN，LeCun等人，1989年）的特征图构成。在此混合模型中，分块嵌入投影E（公式1）作用于从CNN特征图提取的分块。特殊情况下，分块空间尺寸可采用1×1，这意味着通过简单展平特征图的空间维度并投影至Transformer维度即可获得输入序列。分类输入嵌入与位置嵌入的添加方式如前所述。</p>
 </blockquote>
 <h3 id="32-fine-tuning-and-higher-resolution">3.2 Fine-Tuning and Higher Resolution</h3>
 <blockquote>
-<p>Typically, we pre-train ViT on large datasets, and <strong>fine-tune to (smaller) downstream tasks</strong>. For this, we <strong>remove the pre-trained prediction head and attach a zeroinitialized $D\times K$ feedforward layer</strong>, where $K$ is the number of downstream classes. It is often <strong>beneficial to fine-tune at higher resolution</strong> than pre-training (Touvron et al., 2019; Kolesnikov et al., 2020). When <strong>feeding images of higher resolution, we keep the patch size the same, which results in a larger effective sequence length</strong>. The Vision Transformer can handle arbitrary sequence lengths (up to memory constraints), <strong>however, the pre-trained position embeddings may no longer be meaningful.</strong> We therefore perform 2D interpolation of the pre-trained position embeddings, according to their location in the original image. <strong>Note that this resolution adjustment and patch extraction are the only points at which an inductive bias about the 2D structure of the images is manually injected into the Vision Transformer.</strong>
-通常，我们会在大型数据集上对ViT进行预训练，然后<strong>针对（规模较小的）下游任务进行微调</strong>。为此，我们会<strong>移除预训练的预测头，并附加一个以零初始化的$D\times K$前馈层</strong>，其中$K$代表下游任务的类别数量。相较于预训练阶段，<strong>采用更高分辨率进行微调往往能获得更好效果</strong>（Touvron等，2019；Kolesnikov等，2020）。当<strong>输入更高分辨率的图像时，我们保持图像块尺寸不变，这将导致有效序列长度增加</strong>。虽然Vision Transformer能够处理任意长度的序列（受内存限制），<strong>但预训练的位置嵌入可能不再具有实际意义</strong>。因此，我们会根据这些位置嵌入在原始图像中的坐标，对预训练的位置嵌入进行二维插值处理。<strong>需要注意的是，这种分辨率调整和图像块提取操作，是人为将关于图像二维结构的归纳偏置注入Vision Transformer的唯一环节。</strong></p>
+<p>Typically, we pre-train ViT on large datasets, and <strong>fine-tune to (smaller) downstream tasks</strong>. For this, we <strong>remove the pre-trained prediction head and attach a zeroinitialized <span class="arithmatex">\(D\times K\)</span> feedforward layer</strong>, where <span class="arithmatex">\(K\)</span> is the number of downstream classes. It is often <strong>beneficial to fine-tune at higher resolution</strong> than pre-training (Touvron et al., 2019; Kolesnikov et al., 2020). When <strong>feeding images of higher resolution, we keep the patch size the same, which results in a larger effective sequence length</strong>. The Vision Transformer can handle arbitrary sequence lengths (up to memory constraints), <strong>however, the pre-trained position embeddings may no longer be meaningful.</strong> We therefore perform 2D interpolation of the pre-trained position embeddings, according to their location in the original image. <strong>Note that this resolution adjustment and patch extraction are the only points at which an inductive bias about the 2D structure of the images is manually injected into the Vision Transformer.</strong>
+通常，我们会在大型数据集上对ViT进行预训练，然后<strong>针对（规模较小的）下游任务进行微调</strong>。为此，我们会<strong>移除预训练的预测头，并附加一个以零初始化的<span class="arithmatex">\(D\times K\)</span>前馈层</strong>，其中<span class="arithmatex">\(K\)</span>代表下游任务的类别数量。相较于预训练阶段，<strong>采用更高分辨率进行微调往往能获得更好效果</strong>（Touvron等，2019；Kolesnikov等，2020）。当<strong>输入更高分辨率的图像时，我们保持图像块尺寸不变，这将导致有效序列长度增加</strong>。虽然Vision Transformer能够处理任意长度的序列（受内存限制），<strong>但预训练的位置嵌入可能不再具有实际意义</strong>。因此，我们会根据这些位置嵌入在原始图像中的坐标，对预训练的位置嵌入进行二维插值处理。<strong>需要注意的是，这种分辨率调整和图像块提取操作，是人为将关于图像二维结构的归纳偏置注入Vision Transformer的唯一环节。</strong></p>
 </blockquote>
 <h2 id="iv-experiments">IV. Experiments</h2>
 <blockquote>
@@ -1787,13 +1787,13 @@ For the baseline CNNs, we use ResNet (He et al., 2016), but replace the Batch No
 </blockquote>
 <h4 id="training-fine-tuning">Training &amp; Fine-tuning</h4>
 <blockquote>
-<p>We train all models, including ResNets, using Adam (Kingma &amp; Ba, 2015) with $\beta_1=0.9, \beta_2=0.999$, a batch size of 4096 and apply a high weight decay of 0.1, which we found to be useful for transfer of all models (Appendix D.1 shows that, in contrast to common practices, Adam works slightly better than SGD for ResNets in our setting). We use a linear learning rate warmup and decay, see Appendix B.1 for details. For fine-tuning we use SGD with momentum, batch size 512, for all models, see Appendix B.1.1. For ImageNet results in Table 2, we fine-tuned at higher resolution: 512 for ViT-L/16 and 518 for ViT-H/14, and also used Polyak &amp; Juditsky (1992) averaging with a factor of 0:9999 (Ramachandran et al., 2019; Wang et al., 2020b).
-我们采用Adam优化器（Kingma &amp; Ba, 2015）训练所有模型（包括ResNet系列），参数设置为$\beta_1=0.9, \beta_2=0.999$，批处理规模为4096，并施加0.1的高权重衰减（附录D.1显示，与常规做法不同，在我们的实验环境下Adam对ResNet的表现略优于SGD）。学习率采用线性预热与衰减策略，详见附录B.1。对于模型微调阶段，所有模型均使用带动量的SGD优化器，批处理规模为512（具体配置参见附录B.1.1）。表2中ImageNet的实验结果采用更高分辨率进行微调：ViT-L/16模型使用512分辨率，ViT-H/14模型使用518分辨率，同时应用Polyak &amp; Juditsky (1992)的滑动平均策略（衰减因子0.9999），该方法参考了Ramachandran等人(2019)和Wang等人(2020b)的工作。</p>
+<p>We train all models, including ResNets, using Adam (Kingma &amp; Ba, 2015) with <span class="arithmatex">\(\beta_1=0.9, \beta_2=0.999\)</span>, a batch size of 4096 and apply a high weight decay of 0.1, which we found to be useful for transfer of all models (Appendix D.1 shows that, in contrast to common practices, Adam works slightly better than SGD for ResNets in our setting). We use a linear learning rate warmup and decay, see Appendix B.1 for details. For fine-tuning we use SGD with momentum, batch size 512, for all models, see Appendix B.1.1. For ImageNet results in Table 2, we fine-tuned at higher resolution: 512 for ViT-L/16 and 518 for ViT-H/14, and also used Polyak &amp; Juditsky (1992) averaging with a factor of 0:9999 (Ramachandran et al., 2019; Wang et al., 2020b).
+我们采用Adam优化器（Kingma &amp; Ba, 2015）训练所有模型（包括ResNet系列），参数设置为<span class="arithmatex">\(\beta_1=0.9, \beta_2=0.999\)</span>，批处理规模为4096，并施加0.1的高权重衰减（附录D.1显示，与常规做法不同，在我们的实验环境下Adam对ResNet的表现略优于SGD）。学习率采用线性预热与衰减策略，详见附录B.1。对于模型微调阶段，所有模型均使用带动量的SGD优化器，批处理规模为512（具体配置参见附录B.1.1）。表2中ImageNet的实验结果采用更高分辨率进行微调：ViT-L/16模型使用512分辨率，ViT-H/14模型使用518分辨率，同时应用Polyak &amp; Juditsky (1992)的滑动平均策略（衰减因子0.9999），该方法参考了Ramachandran等人(2019)和Wang等人(2020b)的工作。</p>
 </blockquote>
 <h4 id="metrics">Metrics</h4>
 <blockquote>
-<p>We report results on downstream datasets either through few-shot or fine-tuning accuracy. Fine-tuning accuracies capture the performance of each model after fine tuning it on the respective dataset. Few-shot accuracies are obtained by solving a regularized least squares regression problem that maps the (frozen) representation of a subset of training images to ${-1, 1}^K$ target vectors. This formulation allows us to recover the exact solution in closed form. Though we mainly focus on fine-tuning performance, we sometimes use linear few-shot accuracies for fast on-the-fly evaluation where fine-tuning would be too costly.
-我们在下游数据集上的报告结果采用小样本学习（few-shot）或微调（fine-tuning）准确率两种形式呈现。微调准确率反映了模型在对应数据集上完成微调后的性能表现；小样本学习准确率则通过求解一个正则化最小二乘回归问题获得，该问题将（冻结参数的）训练图像子集表征映射到目标向量${-1, 1}^K$。这种数学表达形式使我们能以闭式解获得精确结果。虽然研究主要关注微调性能，但在微调成本过高的场景下，我们偶尔会采用线性小样本学习准确率进行快速实时评估。</p>
+<p>We report results on downstream datasets either through few-shot or fine-tuning accuracy. Fine-tuning accuracies capture the performance of each model after fine tuning it on the respective dataset. Few-shot accuracies are obtained by solving a regularized least squares regression problem that maps the (frozen) representation of a subset of training images to <span class="arithmatex">\(\{-1, 1\}^K\)</span> target vectors. This formulation allows us to recover the exact solution in closed form. Though we mainly focus on fine-tuning performance, we sometimes use linear few-shot accuracies for fast on-the-fly evaluation where fine-tuning would be too costly.
+我们在下游数据集上的报告结果采用小样本学习（few-shot）或微调（fine-tuning）准确率两种形式呈现。微调准确率反映了模型在对应数据集上完成微调后的性能表现；小样本学习准确率则通过求解一个正则化最小二乘回归问题获得，该问题将（冻结参数的）训练图像子集表征映射到目标向量<span class="arithmatex">\(\{-1, 1\}^K\)</span>。这种数学表达形式使我们能以闭式解获得精确结果。虽然研究主要关注微调性能，但在微调成本过高的场景下，我们偶尔会采用线性小样本学习准确率进行快速实时评估。</p>
 </blockquote>
 <h3 id="42-comparison-to-state-of-the-art">4.2 COMPARISON TO STATE OF THE ART</h3>
 <p>我们首先将最大的模型——ViT-H/14和ViT-L/16——与文献中最先进的CNN进行对比。第一个对比对象是Big Transfer（BiT）（Kolesnikov等人，2020年），该研究使用大型ResNet进行监督式迁移学习。第二个对比对象是Noisy Student（Xie等人，2020年），这是一个在去除标签的ImageNet和JFT-300M数据集上通过半监督学习训练的大型EfficientNet。目前，Noisy Student在ImageNet上保持最先进水平，而BiT-L在本文报告的其他数据集上表现最佳。所有模型均在TPUv3硬件上训练，我们报告了每个模型预训练所消耗的TPUv3核心天数（即用于训练的TPU v3核心数——每芯片2个核心——乘以训练天数）。</p>
@@ -1876,6 +1876,10 @@ For the baseline CNNs, we use ResNet (He et al., 2016), but replace the Batch No
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

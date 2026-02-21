@@ -1226,21 +1226,21 @@
 <li>引入 <strong>Anchor Boxes（先验框）</strong></li>
 <li>网络不再预测 box 本身，而是预测 <strong>相对于 anchor 的偏移量</strong>：</li>
 </ul>
-<p>[
+<div class="arithmatex">\[
 (t_x, t_y, t_w, t_h)
-]</p>
+\]</div>
 <p>最终 box 由：</p>
-<p>[
+<div class="arithmatex">\[
 \begin{aligned}
-b_x &amp;= \sigma(t_x) + c_x \
-b_y &amp;= \sigma(t_y) + c_y \
-b_w &amp;= p_w \cdot e^{t_w} \
+b_x &amp;= \sigma(t_x) + c_x \\
+b_y &amp;= \sigma(t_y) + c_y \\
+b_w &amp;= p_w \cdot e^{t_w} \\
 b_h &amp;= p_h \cdot e^{t_h}
 \end{aligned}
-]</p>
+\]</div>
 <ul>
-<li>((p_w, p_h))：anchor 宽高</li>
-<li>((c_x, c_y))：grid cell 左上角</li>
+<li><span class="arithmatex">\((p_w, p_h\)</span>)：anchor 宽高</li>
+<li><span class="arithmatex">\((c_x, c_y\)</span>)：grid cell 左上角</li>
 </ul>
 <p>📌 <strong>效果</strong>：</p>
 <ul>
@@ -1249,12 +1249,12 @@ b_h &amp;= p_h \cdot e^{t_h}
 </ul>
 <h2 id="ii-anchor-k-means">II. Anchor 的来源：K-means 聚类（数据驱动）</h2>
 <ul>
-<li>对训练集 GT box 的 ((w, h)) 做 K-means</li>
+<li>对训练集 GT box 的 <span class="arithmatex">\((w, h)\)</span> 做 K-means</li>
 <li>距离度量：</li>
 </ul>
-<p>[
+<div class="arithmatex">\[
 d(box, centroid) = 1 - IOU
-]</p>
+\]</div>
 <p>📌 Anchor ≈ 数据集中最常见的物体形状（先验）</p>
 <h2 id="iii">III. “责任分配”机制的变化</h2>
 <h3 id="yolov1_1">YOLOv1</h3>
@@ -1276,10 +1276,10 @@ d(box, centroid) = 1 - IOU
 <p>📌 predictor 具有了“形状语义”</p>
 <h2 id="iv-bounding-box">IV. Bounding box 参数化改进（稳定训练）</h2>
 <ul>
-<li>使用 (\sigma(t_x), \sigma(t_y))：</li>
+<li>使用 <span class="arithmatex">\(\sigma(t_x), \sigma(t_y)\)</span>：</li>
 <li>限制中心点在 cell 内（0,1）</li>
 <li>
-<p>使用 (e^{t_w}, e^{t_h})：</p>
+<p>使用 <span class="arithmatex">\(e^{t_w}, e^{t_h}\)</span>：</p>
 </li>
 <li>
 <p>保证宽高为正</p>
@@ -1358,6 +1358,10 @@ d(box, centroid) = 1 - IOU
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>
