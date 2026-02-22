@@ -1,10 +1,12 @@
-# 一、Verilog基础
-## 1.1 标识符
+# Verilog HDL 学习笔记
+
+## 一、Verilog基础
+### 1.1 标识符
 标识符是任意字母、数字、$、\_的组合。
 标识符第一个字符必须是==字母==或者\_
 ==保留字都是小写的==
 
-## 1.2 reg相关问题
+### 1.2 reg相关问题
 
 **在一个模块中**<br>
 wire可以被定义为输入和输出，reg只能被定义为输出， 不能被定义为输入<br>
@@ -18,8 +20,8 @@ wire可以被定义为输入和输出，reg只能被定义为输出， 不能被
 <div style="page-break-after: always;"></div>
 
 
-## 1.3 parameter 
-#### 使用示例
+### 1.3 parameter 
+##### 使用示例
 ```verilog
 module fsm (clk, rst_n);  
 ……  
@@ -30,13 +32,13 @@ parameter    FREE  = 2’d3;
 ……  
 endmodule  
 ```
-#### paramter 参数定义的语法：
+##### paramter 参数定义的语法：
 ```verilog
 parameter  <list_of_assignment>;
 ```  
 可一次定义多个参数，用逗号隔开。
 
-#### 在例化时重载parameter
+##### 在例化时重载parameter
 ```verilog
 module_name #(...) module_a(...)
 ```
@@ -47,14 +49,14 @@ module_name #(...) module_a(...)
 
 <div style="page-break-after: always;"></div>
 
-## 1.4 `define
+### 1.4 `define
 编译指导\`define提供了一种简单的文本替换的功能:<br>
 ```verilog
 `define <macro_name> <macro_text><br>
 ```
 在编译时<macro_text>替换<macro_name>。可提高描述的可读性。
 
-### 示例
+#### 示例
 ```verilog
 `define not_delay #1  
 `define and_delay #2  
@@ -69,12 +71,12 @@ or `or_delay or1( out, a1, b1);
 endmodule  
 ```
 
-## 1.5 值
+### 1.5 值
 ![](Study_notes_material/Verilog基础/值.png)
 z：高阻状态，含义是电路未驱动或者断开，常见于三态门、总线空闲
 x：未知状态，含义是信号逻辑值不确定，常见于==未初始化，驱动源冲突==，仿真异常
 
-## 1.6 线网类型
+### 1.6 线网类型
 ==如果没有驱动，线网的缺省值是z==
 tri本意用于描述多个驱动源同时驱动一根线的线网类型，而wire本意用于描述一个驱动源的驱动。
 
@@ -91,7 +93,7 @@ assign a0=c;
 assign a0=d;
 ```
 when a0 = wand? when a0 = wor?
-## 1.7 寄存器类型
+### 1.7 寄存器类型
 寄存器类型(register)分为5种子类型
 reg类型
 integer类型
@@ -101,7 +103,7 @@ realtime类型（testbench中介绍）
 
 在硬件描述语言中，有时候数据类型并不一定与硬件电路相关，在组合逻辑的行为描述中，也会定义reg类型。
 
-## 1.8 位宽
+### 1.8 位宽
 ```verilog
 256 //非定长的十进制数
 4’b10_11 //定长的整数常量
@@ -127,27 +129,27 @@ data_in =4’b1000; ==//data_in[0]=1==
 ![](Study_notes_material/Verilog基础/位宽不一致.png)
 ==只需要记住，赋值时的常量为32b（计算机数据宽度）==
 
-## 1.9 存储器语法
+### 1.9 存储器语法
 ![](Study_notes_material/Verilog基础/存储器.png)
 
-## 1.10 变量的符号
+### 1.10 变量的符号
 ![](Study_notes_material/Verilog基础/变量符号.png)
 
 
-## 1.11 位选择与连接运算符
+### 1.11 位选择与连接运算符
 ```verilog
 reg data[m:n]
 assign data = {data[4:0], data[7:5]};  // 合法
 ```
 在 Verilog 中，==合法的位选择范围a[m:n]必须满足m≥n==，否则会导致语法错误或仿真异常。
 
-## 1.12 运算符
-#### ① 算数运算符： * ， /， +， - ， %
+### 1.12 运算符
+##### ① 算数运算符： * ， /， +， - ， %
 整数除法截断小数部分
 取模运算的结果符号与第一个操作数相同
 ==操作数中有x或者z，结果是x==
 
-#### ② 关系操作符 <, <=, >, >=**
+##### ② 关系操作符 <, <=, >, >=**
 ==操作数中有x或者z，结果是x==
 避免出现有符号数与无符号数的比较
 ```verilog
@@ -162,7 +164,7 @@ d2=j>q; //d2=0;
 
 ```
 
-#### ③ 逻辑操作符 &&, ||, !
+##### ③ 逻辑操作符 &&, ||, !
 逻辑操作符的结果为一位1， 0或x。
 逻辑操作符只对逻辑值运算。
 ==若操作数只包含0、x、 z，则逻辑值为x==
@@ -182,7 +184,7 @@ g = !a; // g=0
 !z = x
 !x = x
 
-#### ④ 相等操作符
+##### ④ 相等操作符
 **逻辑相等：==， !=**
 ==操作数中只要含有x或者z，结果是x==
 
@@ -203,7 +205,7 @@ g = !a; // g=0
 | **x** | 1 | 1 | 0 | 1 |
 | **z** | 1 | 1 | 1 | 0 |
 
-#### ⑤ 位运算
+##### ⑤ 位运算
 ==对于!, ^ 和\~^ ，只要操作数出现x/z，结果就是x==
 **按位取反：~**
 | A | \~A |
@@ -245,7 +247,7 @@ g = !a; // g=0
 | **x** | x | x | x | x |
 | **z** | x | x | x | x |
 
-#### ⑥ 归约运算符
+##### ⑥ 归约运算符
 | 运算符     | 名称    |  操作含义                                           |                           
 | --------- | ----    | -----------------------                            | 
 | `&`       | 归约与   | 所有位与运算（全部为 1 → 1，否则为 0） |                     
@@ -259,7 +261,7 @@ g = !a; // g=0
 或者参见：
 ![](Study_notes_material/Verilog基础/归约运算示意图.png)
 
-#### ⑦ 移位运算符
+##### ⑦ 移位运算符
 在移位操作中，右边的操作数总是被当成无符号数，因此在需要位扩展时总是填0。
 ==移入的位只能是0。==
 一般用连接运算符取代
@@ -269,37 +271,37 @@ assign result = data <<3;
 assign result ={data[4:0],3’b0};
 ```
 
-#### ⑧ 条件运算符
+##### ⑧ 条件运算符
 ![](Study_notes_material/Verilog基础/条件运算符.png)
 
-#### ⑨ 操作符优先级
+##### ⑨ 操作符优先级
 ![](Study_notes_material/Verilog基础/操作符优先级.png)
 
 
 
 <div style="page-break-after: always;"></div>
 
-# 二、Verilog：组合逻辑与行为建模
+## 二、Verilog：组合逻辑与行为建模
 
-## 2.1 数据流模型
+### 2.1 数据流模型
 数据流模型：主要用于组合逻辑的描述，采用assign语句进行赋值，通过布尔表达式能清楚地反映电路的功能结构与组合逻辑的数据特性。
 
-## 2.2 行为级模型
-#### 2.2.1 过程结构
+### 2.2 行为级模型
+##### 2.2.1 过程结构
 initial结构（块）——单次执行
 always结构（块）——重复执行
 
 begin…end结构中语句顺序执行，只有一条语句时begin…end可以省略。
 fork…join结构中语句的并行执行。
 
-#### 2.2.2 过程块中的赋值
+##### 2.2.2 过程块中的赋值
 在过程块中的赋值称为**过程赋值**，在过程赋值语句中表达式左边的信号**必须是寄存器类型**，表达式右边类型没有限制。
 
 **案例：时钟产生**
 ```verilog
 always #5 clk = ~clk;
 ```
-#### 2.2.3 过程块中的分支结构
+##### 2.2.3 过程块中的分支结构
 if...else分支结构只能在过程块中使用
 ==考虑所有的分支情况；==
 ==尽量少地使用嵌套；==
@@ -326,7 +328,7 @@ end
 **在casex语句中，==?，z 和x== 被当作无关值。**
 ![](Study_notes_material/Verilog基础/casex.png)
 
-#### 2.2.4 过程块中的循环结构
+##### 2.2.4 过程块中的循环结构
 repeat：将一块语句循环执行确定次数。
 repeat (次数表达式)<语句>
 
@@ -354,7 +356,7 @@ for(赋初值；条件表达式；计算)<语句>
 
 <div style="page-break-after: always;"></div>
 
-# 三、时序逻辑电路设计基础
+## 三、时序逻辑电路设计基础
 ==不要在一个always块中同时使用阻塞和非阻塞==。
 建模==时序逻辑时使用非阻塞赋值==。
 使用always块描述组合逻辑，使用阻塞赋值。
@@ -364,15 +366,15 @@ for(赋初值；条件表达式；计算)<语句>
 <div style="page-break-after: always;"></div>
 
 
-# 四、模块例化与testbench设计
-## 4.1 模块例化注意事项
+## 四、模块例化与testbench设计
+### 4.1 模块例化注意事项
 尽量使用名字关联
 注意端口位宽的一致性
 检查端口连接规则
 ==不要出现没有连接的端口，没有连接的输入端口初始化值为x。==
 一般不需要显式声明模块端口
 
-## 4.2 Testbench设计
+### 4.2 Testbench设计
 示例代码
 ```verilog
 `timescale 1ns/10ps          
@@ -397,12 +399,12 @@ join
 endmodule
  ```
 
-#### 4.2.1 `timescale <time_unit> /<time_precision>
+##### 4.2.1 `timescale <time_unit> /<time_precision>
 time_unit: 时间单位
 time_precision: 时间精度
 `timescale必须在模块之前出现
 
-#### 4.2.2 有关fork...join
+##### 4.2.2 有关fork...join
 fork…join块在测试文件中很常用。他们的并行特性使用户以说明绝对时间，并且可以并行的执行复杂的过程结构，如循环或任务
 ```verilog
 module inline_ tb;
@@ -418,7 +420,7 @@ join
 endmodule
 ```
 
-#### 4.2.3 循环激励
+##### 4.2.3 循环激励
 
 ```verilog
 module loop_tb
@@ -441,7 +443,7 @@ endmodule
 ```
 
 
-#### 4.2.4 存储器激励
+##### 4.2.4 存储器激励
 ```verilog 
 module array_ tb;
 reg [7: 0] data_ bus, stim_ array[ 0: 15]; // 数组
@@ -458,24 +460,24 @@ for (i = 14; i > 1; i = i - 1) // 循环
 end
 endmodule
 ```
-#### 5.2.5 Testbench中的常见系统函数
+##### 5.2.5 Testbench中的常见系统函数
 ![](Study_notes_material/Verilog基础/display.png)
 ![](Study_notes_material/Verilog基础/monitor.png)
 ![](Study_notes_material/Verilog基础/monitor举例.png)
 
 
-# 五、状态机设计
+## 五、状态机设计
 有限状态机（Finite-state machine）是一种计算机科学与数学理论的抽象，将一些问题
 抽象成一组有限状态之间的切换及其控制，是数字逻辑与程序设计的基础之一。有限状
 态机在数字逻辑、控制、通讯、编译器设计、甚至生物领域都有着广泛的应用。
 
-## 5.1 状态机的分类
+### 5.1 状态机的分类
 摩尔型（Moore）  
 摩尔型状态机的输出只与当前状态有关，与输入无关。  
 米利型（Mealy）  
 米利型状态机的输出不仅与当前状态有关，还与当前输入有关  
 
-## 5.2 设计步骤
+### 5.2 设计步骤
 1. 确定状态机的基本行为  
 1. 建立状态、输出表  
 1. 优化状态机状态数目（optional）  
@@ -484,7 +486,7 @@ endmodule
 1. 求输出表达式  
 1. 完成完整的状态机设计  
 
-## 5.3 两段式经典状态机设计（无输出）
+### 5.3 两段式经典状态机设计（无输出）
 示例：
 ```verilog
 module fsm(dly, done, req, clk, rst_n);  
@@ -536,7 +538,7 @@ endmodule
 <br>
 <div style="page-break-after: always;"></div>
 
-## 5.4 next_state的初始值： 
+### 5.4 next_state的初始值： 
 一般来说next state有三种初始值:**2’bx、ilde、其他state**。  
 - **2'bx**:用于debug，一个完善的状态机必须能够消除x的影响，正确进入状态循环。  
 - **ilde**：零状态  
@@ -550,16 +552,16 @@ endmodule
 <br>
 
 
-## 5.5 状态的编码方式
-#### 方法1. 普通二进制编码
+### 5.5 状态的编码方式
+##### 方法1. 普通二进制编码
 3’b000,3’b001,3’b010,3’b011…<br>
 编码紧凑，节省寄存器资源。状态之间翻转多，影响速度。
 
-#### 方法2. 独热码
+##### 方法2. 独热码
 3’b001,3’b010,3’b100…<br>
 速度快，设计简单，易于维护，消耗寄存器资源多。
 
-#### 方法3. 格雷码
+##### 方法3. 格雷码
 3’b000,3’b001,3’b011,3’b010…<br>
 状态之间翻转少，状态的编码分配较困难。(因为顺序是固定的)
 
@@ -569,8 +571,8 @@ endmodule
 <br>
 <div style="page-break-after: always;"></div>
 
-## 5.6 考虑输出的状态设计
-#### 常见输出方式
+### 5.6 考虑输出的状态设计
+##### 常见输出方式
 ![](Study_notes_material/状态机设计//考虑输出的状态设计.png)
 
 <br>
@@ -579,7 +581,7 @@ endmodule
 <br>
 <div style="page-break-after: always;"></div>
 
-## 5.7 三段式经典状态机设计（有输出）
+### 5.7 三段式经典状态机设计（有输出）
 大致模板与二段式相同，只不过由于有输出信号，所以除了==计算新状态的组合逻辑块==和==转移状态的时序逻辑块==之外，还有一个**输出的块**<br>
 输出块：<br>
 **组合逻辑输出(问题：毛刺)：** 
@@ -618,9 +620,9 @@ assign {ds,rd} = state[1:0];
 
 <div style="page-break-after: always;"></div>
 
-# 六、文件读写
+## 六、文件读写
 
-## 指定地址的文件读操作
+### 指定地址的文件读操作
 **$readmemb**
 ```verilog
 $readmemb ("file_name", <memory_name>,<start_addr>);
@@ -636,7 +638,7 @@ start和finish决定存储器将被装载的地址。start为开始地址，fini
 示例：
 ![](Study_notes_material/文件IO/文件读操作示例.png)
 
-#### 文件格式说明
+##### 文件格式说明
 1. 可指定二进制(b)或十六进制(h)数
 2. 用下划线提高可读性。
 3. 可以包含单行或多行注释。
@@ -648,7 +650,7 @@ start和finish决定存储器将被装载的地址。start为开始地址，fini
 ![](Study_notes_material/文件IO/文件格式示例.png)
 
 
-## 文件输出
+### 文件输出
 \$monitor,\$display等系统任务可以将结果输出到标准输出设备，相似的系统任务**(\$fmonitor, \$fdisplay)可以将结果输出到文件中**。
 
 $fopen
@@ -667,10 +669,10 @@ $fopen
 
 <div style="page-break-after: always;"></div>
 
-# 七、任务
+## 七、任务
 任务: 一般用于编写测试模块，或者行为描述的模块。
 
-## Task的定义
+### Task的定义
 示例：
 ```verilog
 task task_identifier ;
@@ -686,14 +688,14 @@ endtask
 ```
 端口与数据类型的声明语法与module相同，但**不能声明线网类型**，port声明并非必要，task可以不包含任何port声明。
 
-## Task的调用
+### Task的调用
 只能在**initial块**和**always块**中调用任务<br>
 调用格式:<br>
 ```verilog
 task_identifier ( expression { , expression } ) 
 ```
 
-## 注意事项
+### 注意事项
 1. 任务一般在调用它的**模块内部**定义，也可以**在当前文件中定义**，也可以在**单独的文件中定义**，这时需要在调用它的模块文件中通过编译指导`include包括进来。
 2. 任务可以用来建模时序逻辑，也可以用来建模组合逻辑。
 3. 模块的端口可以使任意数目（也可以**无端口**）
@@ -703,7 +705,7 @@ task_identifier ( expression { , expression } )
 7. 任务可以调用任务或者函数。
 
 
-## 示例
+### 示例
 ```verilog
 module test;
   reg [7:0] x, y, result;
@@ -733,15 +735,15 @@ endmodule
 <br>
 <div style="page-break-after: always;"></div>
 
-# 八、函数
-## function的定义
+## 八、函数
+### function的定义
 ```verilog
 function[宽度与类型] function_identifier ;
 function_item_declaratio{function_item_declaration }
 statement
 endfunction
 ```
-## 注意事项
+### 注意事项
 1. 一般在调用它的模块内部定义。也可以在单独的文件中定义，这时需要在调用它的模块文件中通过编译指导`include包括进来。
 2. 宽度与类型可以不定义，这时**函数使用缺省的值：1bit reg类型**（==因为function在过程块中被调用==），函数必须有至少一个的输入，但不能含有任何输出。
 3. 函数定义**不能包含任何定时控制语句**（==纯组合电路的计算==）（==函数仿真时间为0==）
@@ -753,11 +755,11 @@ endfunction
 
 
 
-## 函数的调用
+### 函数的调用
 1. ==函数在调用时传递给函数的变量顺序与函数输入端口的声明顺序相同==。
 2. 函数可以在持续赋值语句或者过程中调用。
 
-## 函数应用举例
+### 函数应用举例
 ```verilog
 module foo(loo);
   input [7:0] loo;
@@ -780,7 +782,7 @@ endmodule
 
 ```
 
-## 函数与任务的特点
+### 函数与任务的特点
 1. ==函数与任务的全部行为都可以用module代替==
 **抽象层次**：
 module>过程块>task>function>if, repeat, for...
@@ -818,7 +820,7 @@ Verilog
 
 <div style="page-break-after: always;"></div>
 
-# 九、Verilog可综合语法
+## 九、Verilog可综合语法
 
 | 语法或语句         | 是否可综合 | 用途或限制说明                                      |
 |--------------------|-------------|----------------------------------------------------|
@@ -844,7 +846,7 @@ Verilog
 
 <div style="page-break-after: always;"></div>
 
-# 十、Verilog代码编写常见问题
+## 十、Verilog代码编写常见问题
 1. 尽量使用==一个时钟==，或者==同一个时钟源==的时钟。
 <br>
 
