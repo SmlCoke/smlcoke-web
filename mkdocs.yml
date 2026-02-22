@@ -36,7 +36,14 @@ nav:
   - 首页: index.md
   - 博客: blog/ # 博客插件会自动接管这个目录
   - 微电子: 
-    # - 半导体物理: me/semiconductor_basic/index.md
+    - 信号与系统:
+      - 常系数线性微分方程:
+        - 齐次解: me/SS/Linear_Differential_Equations/Homogeneous.md
+        - 特解: me/SS/Linear_Differential_Equations/Particular.md
+        - 冲激函数系数平衡法: me/SS/Linear_Differential_Equations/Impulse_Balance.md
+      - 傅里叶变换:
+        - 连续时间傅里叶变换（1）: me/SS/FT/CFT1.md
+        - 连续时间傅里叶变换（2）: me/SS/FT/CFT2.md 
     - 数字芯片设计术语和流程: me/DIC/Glossary.md
     - Verilog HDL 基础: me/verilog/Study_note.md
   - 机器学习: 
