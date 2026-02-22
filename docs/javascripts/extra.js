@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", function() {
       'assets/homepage/bg2.jpg',   // 第二张图
       'assets/homepage/bg3.png',   // 第三张图
       'assets/homepage/bg4.jpg',   // 第四张图
+      'assets/homepage/bg5.jpg',   // 第五张图
+      'assets/homepage/bg6.jpg',   // 第六张图
+      'assets/homepage/bg7.jpg',   // 第七张图
       // 如果你有更多图片，按这个格式往下加即可
     ];
     
