@@ -10,24 +10,28 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/ml/Basic/ch3_CNN/ch3_gpt1_%E5%8D%B7%E7%A7%AF%E5%B1%82%E5%B0%BA%E5%AF%B8/">
+        <link rel="canonical" href="https://smlcoke.com/me/semiconductor_basic/">
       
       
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../DIC/Glossary/">
       
       
         
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
     
     
       
-        <title>Ch3 gpt1 卷积层尺寸 - SmlCoke Home</title>
+        <title>半导体物理 - SmlCoke Home</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
       
 
@@ -46,9 +50,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cnn" class="md-skip">
+        <a href="#_1" class="md-skip">
           跳转至
         </a>
       
@@ -80,7 +84,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -100,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Ch3 gpt1 卷积层尺寸
+              半导体物理
             
           </span>
         </div>
@@ -173,7 +177,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../.." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -192,7 +196,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../blog/" class="md-tabs__link">
+      <a href="../../blog/" class="md-tabs__link">
         
   
   
@@ -209,11 +213,33 @@
   
   
   
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  微电子
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
   
     
     
       <li class="md-tabs__item">
-        <a href="../../ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+        <a href="../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
           
   
   
@@ -233,7 +259,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../CV/ResNet/notes/" class="md-tabs__link">
+        <a href="../../ml/CV/ResNet/notes/" class="md-tabs__link">
           
   
   
@@ -253,7 +279,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../rust/Study/" class="md-tabs__link">
+        <a href="../../rust/Study/" class="md-tabs__link">
           
   
   
@@ -287,7 +313,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -305,7 +331,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -332,7 +358,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../blog/" class="md-nav__link">
+      <a href="../../blog/" class="md-nav__link">
         
   
   
@@ -356,31 +382,36 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    机器学习
+    微电子
   
 
     
@@ -391,12 +422,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
-    机器学习
+    微电子
   
 
           </label>
@@ -406,17 +437,103 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    半导体物理
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Chapter 1 Full-Connected NN
+    半导体物理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        章节笔记
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DIC/Glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字芯片设计术语和流程
   
 
     
@@ -437,98 +554,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
+      <a href="../verilog/Study_note/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Chapter 2 Optimization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ch3_CNN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Chapter 3 CNN
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Chapter 4 Self-Attention
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Chapter 5 Transformer
+    Verilog HDL 基础
   
 
     
@@ -577,7 +610,7 @@
   <span class="md-ellipsis">
     
   
-    计算机视觉
+    机器学习
   
 
     
@@ -593,7 +626,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    计算机视觉
+    机器学习
   
 
           </label>
@@ -606,14 +639,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/ResNet/notes/" class="md-nav__link">
+      <a href="../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    ResNet
+    Chapter 1 Full-Connected NN
   
 
     
@@ -634,14 +667,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/DenseNet/notes/" class="md-nav__link">
+      <a href="../../ml/Basic/ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    DenseNet
+    Chapter 2 Optimization
   
 
     
@@ -662,14 +695,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/YOLO/YOLO/" class="md-nav__link">
+      <a href="../../ml/Basic/ch3_CNN/ch3_CNN/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    YOLO v1
+    Chapter 3 CNN
   
 
     
@@ -690,14 +723,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/YOLO/YOLOv2/" class="md-nav__link">
+      <a href="../../ml/Basic/ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    YOLO v2
+    Chapter 4 Self-Attention
   
 
     
@@ -718,70 +751,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/YOLO/YOLOv3/" class="md-nav__link">
+      <a href="../../ml/Basic/ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    YOLO v3
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../CV/VIT/ViT/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ViT
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../CV/PFLD/PFLD/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PFLD
+    Chapter 5 Transformer
   
 
     
@@ -830,7 +807,7 @@
   <span class="md-ellipsis">
     
   
-    Rust
+    计算机视觉
   
 
     
@@ -843,6 +820,259 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/CV/ResNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/CV/DenseNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/CV/YOLO/YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/CV/VIT/ViT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/CV/PFLD/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -859,7 +1089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../rust/Study/" class="md-nav__link">
+      <a href="../../rust/Study/" class="md-nav__link">
         
   
   
@@ -904,6 +1134,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -912,87 +1144,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cnn" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🧠 一、先回顾 CNN 的层级结构
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#n" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🧩 二、什么是“有 N 个卷积核在看它”？
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#feature-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ⚙️ 三、每个卷积核会产生一个“特征图”（Feature Map）
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#n_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🧮 四、如果有 N 个卷积核，会怎样？
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🖼️ 五、用一个具体例子说明
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🔄 六、连续卷积层之间的关系
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        🔬 七、类比理解
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ✅ 八、总结一句话
+        章节笔记
       
     </span>
   </a>
@@ -1016,149 +1171,61 @@
 
 
 
-  <h1>Ch3 gpt1 卷积层尺寸</h1>
-
-<p>非常非常好的问题 👏👏👏
-你现在问到的这个点——<strong>卷积层的通道（Channel）与卷积核数量之间的关系</strong>——是很多初学者在听李宏毅老师 CNN 课时容易“卡”的地方。
-你理解得已经非常接近正确答案了，我们一步步彻底搞清楚。</p>
+<h1 id="_1">半导体物理</h1>
+<p>本课程涵盖固体物理基础、载流子输运理论、PN 结、电压偏置特性以及金属半导体接触等内容。</p>
 <hr />
-<h2 id="cnn">🧠 一、先回顾 CNN 的层级结构</h2>
-<p>卷积神经网络的每一层其实都可以看作一个三维张量（tensor）：</p>
-<p>[
-\text{Input: } H \times W \times C_{\text{in}}
-]
-[
-\text{Output: } H' \times W' \times C_{\text{out}}
-]</p>
-<ul>
-<li>(H, W)：空间尺寸（高、宽）</li>
-<li>(C_{\text{in}})：输入通道数（input channels）</li>
-<li>(C_{\text{out}})：输出通道数（output channels）</li>
-</ul>
-<hr />
-<h2 id="n">🧩 二、什么是“有 N 个卷积核在看它”？</h2>
-<p>当李宏毅老师说：</p>
-<blockquote>
-<p>“每个位置都有 N 个 neuron 在看它”</p>
-</blockquote>
-<p>他的意思其实是：</p>
-<blockquote>
-<p>这一层有 <strong>N 个不同的卷积核（filter）</strong> 同时在观察输入特征图（feature map）。</p>
-</blockquote>
-<p>每个卷积核都有自己的权重参数，并且都在整张图上“滑动”一遍，去提取不同的特征（例如：边缘、纹理、颜色模式等）。</p>
-<hr />
-<h2 id="feature-map">⚙️ 三、每个卷积核会产生一个“特征图”（Feature Map）</h2>
-<p>具体过程是：</p>
-<p>1️⃣ 输入是一个三维张量：
-[
-H \times W \times C_{\text{in}}
-]</p>
-<p>2️⃣ 每个卷积核（filter）同样是一个三维张量：
-[
-k_h \times k_w \times C_{\text{in}}
-]</p>
-<blockquote>
-<p>也就是说，每个卷积核的“深度”与输入通道数相同，它会看见输入的所有通道。</p>
-</blockquote>
-<p>3️⃣ 当这个卷积核在图上滑动时，它会输出一个二维特征图：
-[
-H' \times W'
-]</p>
-<hr />
-<h2 id="n_1">🧮 四、如果有 N 个卷积核，会怎样？</h2>
-<p>那就会有 N 个这样的二维特征图叠起来：</p>
-<div class="arithmatex">\[
-\text{Output Tensor: } H' \times W' \times N
-\]</div>
-<p>于是我们就得到了：
-[
-C_{\text{out}} = N
-]</p>
-<p>✅ <strong>也就是说：输出通道数 = 卷积核个数 = “有多少个 neuron 在看它”。</strong></p>
-<hr />
-<h2 id="_1">🖼️ 五、用一个具体例子说明</h2>
-<p>假设你输入的是一张 RGB 图片：
-[
-H \times W \times 3
-]</p>
-<p>你这一层有 8 个卷积核，每个核大小是 (3\times3)。</p>
-<p>则每个卷积核的形状是：
-[
-3 \times 3 \times 3
-]
-（因为输入有 3 个通道）</p>
-<p>每个卷积核滑动后得到一个二维输出 (H' \times W')。</p>
-<p>8 个卷积核就会输出 8 张特征图：
-[
-H' \times W' \times 8
-]</p>
-<p>于是：</p>
-<ul>
-<li>输入通道数 (C_{\text{in}} = 3)</li>
-<li>输出通道数 (C_{\text{out}} = 8)</li>
-</ul>
-<hr />
-<h2 id="_2">🔄 六、连续卷积层之间的关系</h2>
-<p>如果下一层继续卷积：</p>
-<ul>
-<li>它的输入通道数就是上层输出通道数（即 (C_{\text{in}} = N)）</li>
-<li>它又可以选择新的卷积核数量 (M)</li>
-<li>输出就会变成：
-  [
-  H'' \times W'' \times M
-  ]</li>
-</ul>
-<p>所以：</p>
+<h2 id="_2">章节笔记</h2>
 <table>
 <thead>
 <tr>
-<th>层号</th>
-<th>输入通道数</th>
-<th>卷积核数</th>
-<th>输出通道数</th>
+<th>章节</th>
+<th>大小</th>
+<th>查看</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Conv1</td>
-<td>3</td>
-<td>8</td>
-<td>8</td>
+<td>第一章：固体物理初步</td>
+<td>10MB</td>
+<td><a href="../../assets/pdf/semiconductor_basic/ch1_solid_state_intro.pdf">打开 PDF</a></td>
 </tr>
 <tr>
-<td>Conv2</td>
-<td>8</td>
-<td>16</td>
-<td>16</td>
+<td>第二章：量子力学初步</td>
+<td>2.6MB</td>
+<td><a href="../../assets/pdf/semiconductor_basic/ch2_quantum_intro.pdf">打开 PDF</a></td>
 </tr>
 <tr>
-<td>Conv3</td>
-<td>16</td>
-<td>32</td>
-<td>32</td>
+<td>第三章：载流子模型与特性</td>
+<td>15MB</td>
+<td><a href="../../assets/pdf/semiconductor_basic/ch3_carrier_model.pdf">打开 PDF</a></td>
+</tr>
+<tr>
+<td>第四章：载流子的输运</td>
+<td>14MB</td>
+<td><a href="../../assets/pdf/semiconductor_basic/ch4_transport.pdf">打开 PDF</a></td>
+</tr>
+<tr>
+<td>第五章：PN结的静电特性</td>
+<td>4.8MB</td>
+<td><a href="../../assets/pdf/semiconductor_basic/ch5_pn_static.pdf">打开 PDF</a></td>
+</tr>
+<tr>
+<td>第六章：偏置电压下的PN结</td>
+<td>8.5MB</td>
+<td><a href="../../assets/pdf/semiconductor_basic/ch6_pn_bias.pdf">打开 PDF</a></td>
+</tr>
+<tr>
+<td>第七章：小信号导纳与瞬态响应</td>
+<td>3.6MB</td>
+<td><a href="../../assets/pdf/semiconductor_basic/ch7_small_signal.pdf">打开 PDF</a></td>
+</tr>
+<tr>
+<td>第八章：金属半导体接触</td>
+<td>3.6MB</td>
+<td><a href="../../assets/pdf/semiconductor_basic/ch8_metal_contact.pdf">打开 PDF</a></td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="_3">🔬 七、类比理解</h2>
-<p>你可以把“通道”理解成<strong>“眼睛的种类”</strong>：</p>
-<ul>
-<li>输入的每个通道是不同的“视角”（例如红、绿、蓝）</li>
-<li>每个卷积核像一个“特征探测器”，用它的所有眼睛（C_in）同时去观察输入。</li>
-<li>有多少个探测器，就会得到多少个新的特征图（C_out）。</li>
-</ul>
-<hr />
-<h2 id="_4">✅ 八、总结一句话</h2>
-<blockquote>
-<p><strong>卷积层中“有 N 个 neuron 在看它”</strong>
-意味着该层有 N 个卷积核（filters）。
-每个卷积核都会看见输入的所有通道，并输出一张特征图。
-所以该层的输出张量有 <strong>N 个通道</strong>。</p>
-</blockquote>
-<hr />
-<p>如果你愿意，我可以帮你画一张示意图：
-展示输入通道（RGB）→ 多个卷积核卷积 → 输出多通道特征图（feature map stack）的结构图，让你一眼看懂通道与卷积核的关系。
-要我画出来吗？</p>
 
 
 
@@ -1214,14 +1281,14 @@ H' \times W' \times 8
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../../../javascripts/extra.js"></script>
+        <script src="../../javascripts/extra.js"></script>
       
-        <script src="../../../../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
