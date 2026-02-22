@@ -67,17 +67,17 @@
 
     1. 点积注意力（Dot-product Attention）
     计算逻辑：
-       1. 输入向量分别通过权重矩阵$\boldsymbol{W}^q$、$\boldsymbol{W}^k$得到 **查询(query)** 向量 $\boldsymbol{q}$、**键(key)** 向量$\boldsymbol{k}$；
-       2. 注意力得分$\alpha$由$\boldsymbol{q}$和$\boldsymbol{k}$的点积直接计算：
-    $$\alpha = \boldsymbol{q} \cdot \boldsymbol{k}$$
+       1. 输入向量分别通过权重矩阵$\mathbf{W}^q$、$\mathbf{W}^k$得到 **查询(query)** 向量 $\mathbf{q}$、**键(key)** 向量$\mathbf{k}$；
+       2. 注意力得分$\alpha$由$\mathbf{q}$和$\mathbf{k}$的点积直接计算：
+    $$\alpha = \mathbf{q} \cdot \mathbf{k}$$
 
 
     2. 加性注意力（Additive Attention）
     计算逻辑：
-       1. 输入向量同样通过$\boldsymbol{W}^q$、$\boldsymbol{W}^k$得到$\boldsymbol{q}$、$\boldsymbol{k}$；
-       2. 先将$\boldsymbol{q}$和$\boldsymbol{k}$相加，经过$\text{tanh}$激活函数；
-       3. 再通过 **权重矩阵** $\boldsymbol{W}$变换得到注意力得分$\alpha$（过程可表示为）：
-        $$\alpha = \boldsymbol{W} \cdot \text{tanh}(\boldsymbol{q} + \boldsymbol{k})$$
+       1. 输入向量同样通过$\mathbf{W}^q$、$\mathbf{W}^k$得到$\mathbf{q}$、$\mathbf{k}$；
+       2. 先将$\mathbf{q}$和$\mathbf{k}$相加，经过$\text{tanh}$激活函数；
+       3. 再通过 **权重矩阵** $\mathbf{W}$变换得到注意力得分$\alpha$（过程可表示为）：
+        $$\alpha = \mathbf{W} \cdot \text{tanh}(\mathbf{q} + \mathbf{k})$$
 
 
 3. **计算出**$\mathbf{a_1}$跟其他每一个向量$\mathbf{a_i}$的 **相关性分数** $\alpha_{1,i}$(包括自己也要计算)
@@ -107,13 +107,13 @@
 如下的向量默认是列向量
 **第一步：得到$q_i$, $k_i$, $v_i$**
 $$\begin{aligned}
-[\mathbf{q^1}, \mathbf{q^2}, \mathbf{q^3}, \mathbf{q^4}] &= \boldsymbol{W}^q [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}]  \\
-[\mathbf{k^1}, \mathbf{k^2}, \mathbf{k^3}, \mathbf{k^4}] &=  \boldsymbol{W}^k [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}] \\
-[\mathbf{v^1}, \mathbf{v^2}, \mathbf{v^3}, \mathbf{v^4}] &= \boldsymbol{W}^v [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}] \\
+[\mathbf{q^1}, \mathbf{q^2}, \mathbf{q^3}, \mathbf{q^4}] &= \mathbf{W}^q [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}]  \\
+[\mathbf{k^1}, \mathbf{k^2}, \mathbf{k^3}, \mathbf{k^4}] &=  \mathbf{W}^k [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}] \\
+[\mathbf{v^1}, \mathbf{v^2}, \mathbf{v^3}, \mathbf{v^4}] &= \mathbf{W}^v [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}] \\
 \Rightarrow \\
-\mathbf{Q} &= \boldsymbol{W}^q \mathbf{I} \\
-\mathbf{K} &= \boldsymbol{W}^k \mathbf{I} \\
-\mathbf{V} &= \boldsymbol{W}^v \mathbf{I}
+\mathbf{Q} &= \mathbf{W}^q \mathbf{I} \\
+\mathbf{K} &= \mathbf{W}^k \mathbf{I} \\
+\mathbf{V} &= \mathbf{W}^v \mathbf{I}
 \end{aligned}$$
 
 **第二部：计算attention分数**
