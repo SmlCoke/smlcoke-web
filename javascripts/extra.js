@@ -3,10 +3,10 @@ document.addEventListener("DOMContentLoaded", function() {
   if (hero) {
     // 1. 在这里按顺序填入你的图片路径
     const images = [
-      'assets/bg1.jpg',   // 第一张图
-      'assets/bg2.jpg',   // 第二张图
-      'assets/bg3.png',   // 第三张图
-      'assets/bg4.jpg',   // 第四张图
+      'assets/homepage/bg1.jpg',   // 第一张图
+      'assets/homepage/bg2.jpg',   // 第二张图
+      'assets/homepage/bg3.png',   // 第三张图
+      'assets/homepage/bg4.jpg',   // 第四张图
       // 如果你有更多图片，按这个格式往下加即可
     ];
     
@@ -27,4 +27,12 @@ document.addEventListener("DOMContentLoaded", function() {
       hero.style.backgroundImage = `url('${images[currentIndex]}')`;
     }, 5000); // 你可以修改 5000 来调整切换速度
   }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("a[href$='.pdf']").forEach(function(link) {
+    link.setAttribute("target", "_blank");
+    link.setAttribute("rel", "noopener");
+  });
 });

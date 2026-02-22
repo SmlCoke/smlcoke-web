@@ -1,0 +1,1619 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SmlCoke">
+      
+      
+        <link rel="canonical" href="https://smlcoke.com/me/DIC/Glossary/">
+      
+      
+        <link rel="prev" href="../../semiconductor_basic/">
+      
+      
+        <link rel="next" href="../../verilog/Study_note/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>数字芯片设计术语和流程 - SmlCoke Home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SmlCoke Home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              数字芯片设计术语和流程
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../blog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  博客
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../semiconductor_basic/" class="md-tabs__link">
+          
+  
+  
+  微电子
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+  机器学习
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../ml/CV/ResNet/notes/" class="md-tabs__link">
+          
+  
+  
+  计算机视觉
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../rust/Study/" class="md-tabs__link">
+          
+  
+  
+  Rust
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SmlCoke Home
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    博客
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微电子
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    微电子
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../semiconductor_basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    半导体物理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字芯片设计术语和流程
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字芯片设计术语和流程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、基本概念
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、基本概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 集成电路工艺节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-moores-law" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 摩尔定律（Moore's Law）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 其他术语
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、IC设计流程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、IC设计流程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-ic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 IC前端
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-ic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 IC后端
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、FPGA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、逻辑设计方法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、存储器
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../verilog/Study_note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verilog HDL 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 Full-Connected NN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/Basic/ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/Basic/ch3_CNN/ch3_CNN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/Basic/ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/Basic/ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/CV/ResNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/CV/DenseNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/CV/VIT/ViT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ml/CV/PFLD/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rust
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/Study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 学习笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、基本概念
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、基本概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 集成电路工艺节点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-moores-law" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 摩尔定律（Moore's Law）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 其他术语
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、IC设计流程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、IC设计流程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-ic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 IC前端
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-ic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 IC后端
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、FPGA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、逻辑设计方法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、存储器
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">数字芯片设计术语表</h1>
+<h2 id="_2">一、基本概念</h2>
+<h3 id="11">1.1 集成电路工艺节点</h3>
+<p>传统工艺节点命名：<strong>栅极长度（Gate length）</strong>和<strong>金属半节距（Half-pitch）</strong>，半节距即芯片内部金属线间距离的一半。
+在20世纪90年代中期之前，<strong>逻辑技术节点</strong>等同其制造的CMOS晶体管的<strong>栅极长度</strong>，和金属半节距大致相等。
+当前行业对半导体技术节点系统的命名方法延续，但与芯片实际的<strong>物理特征之间存在脱节</strong>。</p>
+<h3 id="12-moores-law">1.2 摩尔定律（Moore's Law）</h3>
+<p>当<strong>价格不变</strong>时，集成电路上可容纳的元器件的<strong>数目</strong>，约每隔 18-24 个月便会增加一倍，<strong>性能</strong>也将提升一倍。换言之，每一美元所能买到的电脑性能，将每隔 18-24 个月翻一倍以上。</p>
+<h3 id="13">1.3 其他术语</h3>
+<p><strong>MOSFET</strong>： Metal-Oxide-Semiconductor Field-Effect Transistor
+<strong>VLSI</strong>：Very Large Scale Intergrated Circuit
+<strong>CISC</strong>：复杂指令集
+<strong>RISC</strong>：精简指令集
+<strong>算例</strong>：对信息数据进行处理的能力，单位为OPS或者FLOPS</p>
+<div style="page-break-after: always;"></div>
+
+<h2 id="ic">二、IC设计流程</h2>
+<h3 id="21-ic">2.1 IC前端</h3>
+<p><strong>（1）规格定义</strong>
+描述电路整体实现的功能，定义芯片的<strong>功能、主要部件、频率、总线带宽</strong>等，多采用文字、图、表的形式，指定芯片规格Spec。
+在嵌入式领域系统级描述语言：SystemC。</p>
+<p><strong>（2）模型设计</strong>
+主要包含用于实现模块的<strong>详细算法</strong>，多以C/C++语言实现。</p>
+<p><strong>（3）架构设计</strong>
+在满足功能需求的前提下，设计整个系统或模块的<strong>结构组织与资源分配</strong>方案，包括<strong>子模块划分</strong>、数据通路设计、控制策略等。</p>
+<p><strong>（4）RTL设计</strong>
+使用HDL编写电路功能模块，表达<strong>寄存器级</strong>的<strong>数据流</strong>或<strong>逻辑行为</strong>，以时钟实现<strong>数据在时序单元</strong>（如寄存器）之间的传递。</p>
+<p><strong>标准单元（Standard Cell）</strong>
+数字电路设计的基本单元，由厂家（Foundary）提供，例如：INV, NAND, NOR, XOR, DFF，用于：仿真，综合，静态时序分析，布局布线，功耗分析，一致性检查。由 RTL 电路转换至门级电路，生成门级网表（Netlist）文件。</p>
+<p><strong>（5）前仿真（Pre-simulation）</strong>
+在逻辑综合之前进行，以寄存器传输级（RTL）的设计描述为基础，验证设计的<strong>逻辑功能是否符合预期</strong>，但<strong>不考虑门级延迟</strong>等物理实现因素。
+又称：功能仿真、逻辑仿真</p>
+<p><strong>Testbench</strong>
+针对需要验证的RTL，编写输入激励（RTL代码），验证RTL代码是否符合预期逻辑功能（行为级仿真）。</p>
+<p><strong>（6）逻辑综合（Logic Synthesis）</strong>
+由RTL电路转换至门级电路，生成门级网表(Netlist)文件</p>
+<p><strong>网表（Netlist）</strong>
+网表是一种<strong>描述电路中逻辑元件之间连接关系</strong>的数据结构，是逻辑综合、物理设计等流程中的中间文件。</p>
+<p><strong>（7）STA：静态时序分析（Static Timing Analysis, STA）</strong>
+一种用于验证数字电路设计是否满足时序约束的技术。它通过分析电路中<strong>所有可能的路径延迟</strong>，确保信号能在<strong>预期的时间窗口</strong>内正确传播，从而保证电路的功能正确性和性能。
+STA不依赖于输入激励，能够高效地检测时序违例，如建立时间和保持时间的违规，广泛应用于集成电路设计流程中。</p>
+<p><strong>时序路径</strong>
+信号从一个时序单元（如触发器或寄存器）出发，经过若干组合逻辑门，最终到达另一个时序单元的传播路径。
+（1）路径起始点：① 设计电路的主要输入端 ② 触发器的时钟端
+（2）路径终止点：① 设计电路的输出端 ② 触发器的数据输入端
+<img alt="" src="../Glossary_material/%E6%97%B6%E5%BA%8F%E8%B7%AF%E5%BE%84.png" /></p>
+<p><strong>建立时间(setup time)</strong>
+时钟沿到来前数据从不稳定到稳定所需的时间，如果不满足要求，数据将不能在这个时钟上升沿被稳定地读入触发器。
+$<span class="arithmatex">\(T_c + t_{\text{skew}} \geq t_{\text{cq}} + t_{\text{comp}} + t_{\text{setup}}\)</span>$
+<strong>保持时间(hold time)</strong> 
+数据稳定后所需的保持时间，如果不满足要求，数据将不能被稳定地读入触发器。
+$<span class="arithmatex">\(t_{\text{cq}} + t_{\text{comp}} - t_{\text{skew}} \geq t_{\text{hold}}\)</span>$</p>
+<p><img alt="" src="../Glossary_material/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90.png" /></p>
+<p><strong>（8）形式验证（Formal Verification）</strong>
+使用纯数学方法分析逻辑是否完全等价，逻辑功能的等效性检查。</p>
+<h3 id="22-ic">2.2 IC后端</h3>
+<p><strong>（1）DFT：可测性设计（Design For Test, DFT）</strong>
+芯片设计阶段插入，为了方便测试，提高可测试性。对于逻辑电路采用扫描链的可测试结构，基本思想是通过<strong>插入扫描链</strong>，增加电路内部节点的可控性和可观测性，以达到提高测试效率的目的。</p>
+<p><strong>（2）布局规划（Floor planning）</strong>
+根据面积、连接关系和性能要求，确定芯片中各个逻辑单元（如标准单元、模块、宏单元等）的<strong>位置和布局结构</strong>。</p>
+<p><strong>（3）CTS：时钟树综合（Clock Tree Synthesis, CTS）</strong>
+后端物理设计中的一个关键步骤，其目的是将<strong>全芯片的时钟信号</strong>，通过一棵分布良好的树状结构，<strong>精确地传输到所有需要接收时钟的触发器或寄存器单元</strong>，确保它们能够在合理的时钟偏差（skew）范围内同步工作。
+<strong>简单来说就是时钟的布线</strong>。</p>
+<p><strong>（4）布线（Routing）</strong>
+在布局完成之后，按照设计规则，为所有需要互连的逻辑单元之间<strong>建立实际金属连线</strong>的过程。</p>
+<p><strong>（5）物理验证</strong>
+① <strong>ERC：电气规则检查</strong>（Electrical Rule Check, ERC）。
+在布局布线过程中进行，检查电路开路、短路、浮置等情况。</p>
+<p>② <strong>DRC：设计规则检查</strong>（Design Rule Check, DRC）
+在布局布线之后，生产之前进行，检查布局布线中的各个尺寸是否满足要求，包括线的宽度、孔的面积等。</p>
+<p>③ <strong>LVS：一致性检查</strong>（Layout vs Schematic, LVS）
+在布局布线之后进行，验证最终的物理版图与初始的设计功能是否一致，比较版图和布线后的网表是否功能一致。</p>
+<blockquote>
+<p>包括节点所连元器件是否一致，元器件所连节点是否一致以及有误失配元件等检查。大部分的LVS错误时由于手动的版图设计或布局布线中的布线拥塞导致的。由CAD工具实现。</p>
+</blockquote>
+<p><strong>（6）寄生参数提取（Parasitic Extraction）及后仿真</strong>
+在布局布线完成后，分析芯片中<strong>金属连线和器件</strong>周围所产生的<strong>非理想电气特性</strong>（如寄生电阻、电容、电感），并将这些寄生效应模型提取出来，供后续时序分析、信号完整性分析等使用的过程。</p>
+<p><strong>SDF文件</strong>（Standard Delay Format 文件）
+SDF 文件是用于传递时序信息的标准文件格式，它在后仿真中起到关键作用。SDF 文件将芯片物理布局布线后的实际时序数据（如门延迟、线延迟、寄生参数等）<strong>反标（Back-annotate）到门级网表</strong>中，使得仿真工具能够基于真实的物理条件进行时序验证。</p>
+<p><strong>静态时序分析（含延迟信息）</strong>
+此时电路每个单元位置，电路参数确定，再做静态时序分析是准确的。</p>
+<p><strong>后仿真（Post-simulation）（含延迟信息）</strong>
+在逻辑综合或布局布线之后进行，基于<strong>包含门级延迟信息的网表</strong>，验证在实际物理实现中，设计的功能和时序是否仍然正确，确保引入实际时延后系统功能的正确性。
+又称：时序仿真</p>
+<p><strong>（7）版图（Layout）</strong>
+版图是指将集成电路设计中的各个器件（如晶体管、电阻、电容）以及金属互连等，按照实际物理尺寸和设计规则，以图形方式在硅片上进行空间排列和布置的过程。</p>
+<p><strong>GDSII（Graphic Data System II）</strong>
+GDSII 是一种<strong>版图数据格式</strong>，是集成电路（IC）物理设计中用于<strong>描述芯片几何结构的标准文件格式</strong>，是提交晶圆厂制造芯片的最终交付成果。</p>
+<p><strong>（8）流片（Tape-out）</strong>
+将芯片设计数据交给半导体工厂制造的过程，是整个芯片设计流程的最后阶段，标志着设计完成、进入物理制造阶段。</p>
+<p><strong>掩膜板（Mask）</strong>
+掩膜板是芯片制造中用于光刻步骤的光学模板，上面有设计好的图形，通过光刻工艺将图案转印到硅片上，是芯片量产制造的关键物理工具。</p>
+<p><strong>CDC：跨时钟域（Clock Domain Crossing, CDC）</strong>
+跨时钟域指信号在两个不同时钟控制的区域之间传输的情况，由于时钟不同步，可能引发亚稳态或数据丢失，需要采取专门的同步机制。</p>
+<div style="page-break-after: always;"></div>
+
+<h2 id="fpga">三、FPGA</h2>
+<p><strong>FPGA</strong>: Field Programmable Gate Array
+<strong>ASIC</strong>: Application Specific Intergrated Circuit
+<strong>CLB</strong>: Configurable Logic Block，可配置逻辑块
+<strong>PLL</strong>: Phase Locked Loop, 锁相环
+<strong>DLL</strong>: Delay Locked Loop, 延迟锁相环
+<strong>DSP</strong>: Digital Signal Processor, 数字信号处理
+<strong>PLD</strong>: Programmable Logic Device, 可编程逻辑实现方式</p>
+<p><strong>Slice</strong>
+FPGA 中用于实现组合逻辑和时序逻辑的<strong>最小可编程单元</strong>，它通常包含若干查找表（LUT）、触发器（FF） 以及其他辅助逻辑（如多路选择器、进位链等）。</p>
+<p><strong>查找表（Look-Up Table, LUT）</strong>
+查找表是 FPGA 中用于实现组合逻辑功能的基本结构，它通过将逻辑函数的<strong>真值表存储在存储器</strong>中，根据<strong>输入查地址</strong>，<strong>输出对应结果</strong>。</p>
+<p><strong>锁相环（Phase-Locked Loop, PLL）</strong>
+锁相环是一种用于产生<strong>稳定、高速、相位受控时钟信号的电路</strong>，它能将输入时钟放大、分频或移相，以满足系统的时钟需求。</p>
+<p><strong>工艺映射</strong>
+将门级网表转化为查找表。</p>
+<p><strong>逻辑打包</strong>
+将独立的查找表打包到逻辑块（CLB/LE）。</p>
+<p><strong>IP（Intellectual Property）</strong>
+指的是预先设计、验证过的可复用的电路模块或功能单元。这些 IP 核可以被集成到 FPGA 中，用于实现特定的功能，例如处理器核心、通信协议接口、加密算法等。</p>
+<div style="page-break-after: always;"></div>
+
+<h2 id="_3">四、逻辑设计方法</h2>
+<p><strong>竞争</strong>
+不同路径的输入信号传输到同一点门级电路时，在时间上有先有后，存在时间差。</p>
+<p><strong>冒险</strong>
+由于竞争的存在。过渡时间内产生瞬间的错误输出（毛刺）。
+某输入信号通过两条或两条以上的路径传输到输出端，由于路径延迟不同，到达输出门的时间有先有后，导致输出干扰脉冲的现象。</p>
+<div style="page-break-after: always;"></div>
+
+<h2 id="_4">五、存储器</h2>
+<p><strong>SDRAM（Synchronous Dynamic RAM）</strong>
+同步动态随机存储器，属于 DRAM，SDRAM 时钟和系统时钟同步，比普通 DRAM 速度较快。</p>
+<p><strong>DDR（Double Data Rate SDRAM）</strong>
+<strong>双倍数据传输率 SDRAM</strong>，时钟上升沿、下降沿均进行数据传输，数据传输速率为系统时钟的两倍，传输效能比同步动态随机存取内存（SDRAM）好。</p>
+<p><strong>DDR2</strong>
+供电电压降低 from 2.5 to 1.8 volts，时钟频率高达 400 MHz。</p>
+<p><strong>DDR3</strong>
+电压降低为 1.5 v，时钟频率高达 800 MHz，目前主流市场。</p>
+<p><strong>HBM（High Bandwidth Memory）</strong>
+高带宽存储器，是一种基于 3D 堆栈工艺的 DDR，具备高带宽和能效，常被用于高性能计算、网络交换等需要高存储器带宽的应用场合。</p>
+<p><strong>SoC（System on Chip）</strong>
+片上系统，将一个完整电子系统的各个主要功能模块，如处理器核心、存储器、接口控制器、通信模块、加速器等，集成在同一块芯片上的设计方式。</p>
+<p><strong>EDA 工具（Electronic Design Automation）</strong>
+EDA 工具是指用于辅助电子系统（特别是集成电路）设计与验证的软件工具集合，覆盖从电路设计、仿真、综合、布局布线到时序分析等多个阶段。</p>
+<p><strong>Cache Memory（高速缓存）</strong>
+由于 CPU 的运行速度通常比主存储器（内存）快，高速缓存的目的是适应 CPU 的读取速度，将经常要用到的数据存入 Cache，通常由 SRAM+相关逻辑组成。如 Intel 的 Pentium 处理器分别在片上集成了指令高速缓存和数据高速缓存。</p>
+<p><strong>Flash Memory（闪存）</strong>
+非易失存储器，目前在可在线可改写的非挥发性存储器中容量最大的存储器。支持在线修改数据，写数据的速度比 EEPROM 提高 1 个数量级。Flash 应用于大容量的数据和程序存储。</p>
+<p><strong>SSD（Solid State Disk）</strong>
+固态硬盘：以 Nand-Flash、DRAM 等作为存储介质的硬盘。</p>
+<p><strong>HDD（Hard Disk Drive）</strong>
+机械硬盘：机械硬盘即是传统普通硬盘，磁存储介质，主要由盘片，磁头，盘片转轴及控制电机，磁头控制器，数据转换器，接口，缓存等几个部分组成。</p>
+<p><strong>EPROM（Erasable Programmable Read-Only Memory）</strong>
+紫外擦除只读存储器，非挥发性存储器。不需上电维持内容，适合用作硬件当中的基本输出入系统（BIOS）。允许使用者以紫外线消除其中的程序重复使用，不支持在线修改。</p>
+<p><strong>EEPROM（Electrically Erasable Programmable Read-Only Memory）</strong>
+电子抹除式只读存储器，非挥发性存储器。电源撤除后，储存的信息依然存在，在特殊管脚上施加电压可擦除内部数据。典型应用于如电视机、空调中，存储用户设置的参数。</p>
+<p><strong>ROM（Read Only Memory）</strong>
+只读存储器，内容不改变，多用来储存特定功能的程序或系统程序。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/extra.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
