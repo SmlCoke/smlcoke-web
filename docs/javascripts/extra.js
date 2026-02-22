@@ -28,3 +28,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 5000); // 你可以修改 5000 来调整切换速度
   }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("a[href$='.pdf']").forEach(function(link) {
+    link.setAttribute("target", "_blank");
+    link.setAttribute("rel", "noopener");
+  });
+});

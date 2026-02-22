@@ -31,6 +31,10 @@ extra_javascript:
 nav:
   - 首页: index.md
   - 博客: blog/ # 博客插件会自动接管这个目录
+  - 微电子: 
+    - 半导体物理: me/semiconductor_basic/index.md
+    - 数字芯片设计术语和流程: me/DIC/Glossary.md
+    - Verilog HDL 基础: me/verilog/Study_note.md
   - 机器学习: 
     - Chapter 1 Full-Connected NN: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
     - Chapter 2 Optimization: ml/Basic/ch2_Optimization/ch2_2_Optimization.md
