@@ -1,0 +1,2263 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SmlCoke">
+      
+      
+        <link rel="canonical" href="https://smlcoke.com/me/SS/Linear_Differential_Equations/Particular/">
+      
+      
+        <link rel="prev" href="../Homogeneous/">
+      
+      
+        <link rel="next" href="../Impulse_Balance/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>特解 - SmlCoke Home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SmlCoke Home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              特解
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../blog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  博客
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../Homogeneous/" class="md-tabs__link">
+          
+  
+  
+  微电子
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-tabs__link">
+          
+  
+  
+  机器学习
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../ml/CV/ResNet/notes/" class="md-tabs__link">
+          
+  
+  
+  计算机视觉
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../rust/Study/" class="md-tabs__link">
+          
+  
+  
+  Rust
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SmlCoke Home
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    博客
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微电子
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    微电子
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    信号与系统
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    信号与系统
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_1_1" id="__nav_3_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    常系数线性微分方程
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    常系数线性微分方程
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Homogeneous/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    齐次解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    特解
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    特解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一. 导言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二. 常系数线性微分方程的求解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二. 常系数线性微分方程的求解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 回顾齐次解部分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 常系数线性微分方程——特解
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#221-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.1 非齐次项为常数\(B\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-p_mt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.2 非齐次项为\(P_m(t)\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223-p_mt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3 非齐次项为\(P_m(t)\)：特殊情况
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.3 非齐次项为\(P_m(t)\)：特殊情况">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2231" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3.1 基本结论二的修正：方式一
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.3.1 基本结论二的修正：方式一">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2232" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3.2 基本结论二的修正：方式二
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2233" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3.3 基本结论二的正确修正
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#224-elambda-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.4 非齐次项为\(e^{\lambda t}\)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.4 非齐次项为\(e^{\lambda t}\)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#225-p_mtelambda-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.5 非齐次项为\(P_m(t)e^{\lambda t}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#226-p_mtcosomega-tp_mtsinomega-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.6 非齐次项为\(P_m(t)\cos{\omega t}\)或\(P_m(t)\sin{\omega t}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#227-p_mtcdot-cosomega-tcdot-esigma-tp_mtcdot-sinomega-tcdot-esigma-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.7 非齐次项为\(P_m(t)\cdot \cos{\omega t}\cdot e^{\sigma t}\)或\(P_m(t)\cdot \sin{\omega t}\cdot e^{\sigma t}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三. 总结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三. 总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 基本结论集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 综合定理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 综合定理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 非齐次项——特解对照表
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Impulse_Balance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    冲激函数系数平衡法
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1_2" id="__nav_3_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    傅里叶变换
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    傅里叶变换
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FT/CFT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    连续时间傅里叶变换（1）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FT/CFT2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    连续时间傅里叶变换（2）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DIC/Glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字芯片设计术语和流程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../verilog/Study_note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verilog HDL 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 Full-Connected NN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/Basic/ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/Basic/ch3_CNN/ch3_CNN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/Basic/ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/Basic/ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/CV/ResNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/CV/DenseNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/CV/VIT/ViT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ml/CV/PFLD/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rust
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rust/Study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 学习笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一. 导言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二. 常系数线性微分方程的求解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二. 常系数线性微分方程的求解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 回顾齐次解部分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 常系数线性微分方程——特解
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#221-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.1 非齐次项为常数\(B\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-p_mt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.2 非齐次项为\(P_m(t)\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223-p_mt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3 非齐次项为\(P_m(t)\)：特殊情况
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.3 非齐次项为\(P_m(t)\)：特殊情况">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2231" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3.1 基本结论二的修正：方式一
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.3.1 基本结论二的修正：方式一">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2232" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3.2 基本结论二的修正：方式二
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2233" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3.3 基本结论二的正确修正
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#224-elambda-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.4 非齐次项为\(e^{\lambda t}\)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.4 非齐次项为\(e^{\lambda t}\)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#225-p_mtelambda-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.5 非齐次项为\(P_m(t)e^{\lambda t}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#226-p_mtcosomega-tp_mtsinomega-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.6 非齐次项为\(P_m(t)\cos{\omega t}\)或\(P_m(t)\sin{\omega t}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#227-p_mtcdot-cosomega-tcdot-esigma-tp_mtcdot-sinomega-tcdot-esigma-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.7 非齐次项为\(P_m(t)\cdot \cos{\omega t}\cdot e^{\sigma t}\)或\(P_m(t)\cdot \sin{\omega t}\cdot e^{\sigma t}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三. 总结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三. 总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 基本结论集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 综合定理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 综合定理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 非齐次项——特解对照表
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">常系数线性微分方程的特解</h1>
+<h2 id="_2">一. 导言</h2>
+<p>本节主要介绍常系数线性微分方程的求解方法。</p>
+<h2 id="_3">二.  常系数线性微分方程的求解</h2>
+<p>描述LTI系统的常系数线性微分方程的一般形式为：</p>
+<div class="arithmatex">\[a_n\frac{d^n}{dt^n}r(t)+a_{n-1}\frac{d^{n-1}}{dt^{n-1}}r(t)+...+a_{1}\frac{d}{dt}r(t)+a_0=b_m\frac{d^m}{dt^m}e(t)+b_{m-1}\frac{d^{m-1}}{dt^{m-1}}e(t)+...+b_{1}\frac{d}{dt}e(t)+b_0\]</div>
+<p>其中，<span class="arithmatex">\(r(t)\)</span>为系统响应，<span class="arithmatex">\(e(t)\)</span>为激励信号。我们将响应部分的函数及各阶导数置于方程左侧，称这部分为微分方程的“齐次项”，将激励部分的函数及其各阶导数置于方程右侧，称这部分为微分方程的“非齐次项”。</p>
+<h3 id="21">2.1  回顾齐次解部分</h3>
+<p>上述常系数线性微分方程对应的齐次方程为：</p>
+<div class="arithmatex">\[a_n\frac{d^n}{dt^n}r(t)+a_{n-1}\frac{d^{n-1}}{dt^{n-1}}r(t)+...+a_{1}\frac{d}{dt}r(t)+a_0=0\]</div>
+<p>这里，我们直接给出该方程的特征根与齐次解的对应关系：</p>
+<table>
+<thead>
+<tr>
+<th>特征根的情况</th>
+<th>对应齐次解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\lambda_1,\lambda_2, ...\lambda_n\)</span>等<span class="arithmatex">\(n\)</span>个互不相等的实根</td>
+<td><span class="arithmatex">\(e^{\lambda_{1}t},e^{\lambda_{2}t},..., e^{\lambda_{n}t}\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\lambda_1 = \lambda_2=...\lambda_k\)</span>等<span class="arithmatex">\(k\)</span>重实根</td>
+<td><span class="arithmatex">\(e^{\lambda_{1}t},te^{\lambda_{1}t},..., t^{k-1}e^{\lambda_{1}t}\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\sigma \pm j\omega\)</span>(复数根必定以共轭形式出现)</td>
+<td><span class="arithmatex">\(e^{\sigma t}\cos(\omega t), e^{\sigma t}\sin(\omega t)\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(k\)</span>重成对共轭复根<span class="arithmatex">\(\sigma \pm j\omega\)</span></td>
+<td><span class="arithmatex">\([1,t,t^2,..., t^{k-1}][e^{\sigma t}\cos(\omega t), e^{\sigma t}\sin(\omega t)]\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>其中<span class="arithmatex">\([1,t,t^2,..., t^{k-1}][e^{\sigma t}\cos(\omega t), e^{\sigma t}\sin(\omega t)]\)</span>表示<span class="arithmatex">\(e^{\sigma t}\cos(\omega t), e^{\sigma t}\sin(\omega t),te^{\sigma t}\cos(\omega t), te^{\sigma t}\sin(\omega t),...,t^{k-1}e^{\sigma t}\cos(\omega t), t^{k-1}e^{\sigma t}\sin(\omega t)\)</span></p>
+<p>以及关于求解齐次方程的四条重要结论：<br />
+<strong>结论一：</strong> 任意一个特征根<span class="arithmatex">\(\lambda\)</span>就对应着齐次方程的一个解<span class="arithmatex">\(e^{\lambda t}\)</span><br />
+<strong>结论二：</strong> 如果线性齐次微分方程的特征根<span class="arithmatex">\(\lambda\)</span>的代数重数为<span class="arithmatex">\(k\)</span>，那么这个线性齐次微分方程的解中，必然包含：<span class="arithmatex">\(e^{-\lambda t}, \quad te^{-\lambda t},\quad t^2e^{-\lambda t},...,\quad t^{k-1}e^{-\lambda t}\)</span>，而且它们是线性无关的。<br />
+<strong>结论三：</strong> 如果特征方程存在成对共轭复数根<span class="arithmatex">\(\sigma \pm j\omega\)</span>，那么对应齐次解：<span class="arithmatex">\(e^{\sigma t}\cos(\omega t), e^{\sigma t}\sin(\omega t)\)</span>。<br />
+<strong>结论四：</strong> 常系数线性齐次微分方程中线性无关解的个数，等于原微分方程的阶数。<br></p>
+<h3 id="22">2.2  常系数线性微分方程——特解</h3>
+<p>本节的终极目标就是给出完整的求解常系数线性微分方程的方法。在之前已经介绍过齐次解的求解方法，根据线性代数的知识，任意一个线性方程的解的情况为:<br />
+完全解=齐次解+特解  <br></p>
+<p>这里我们考虑的并不是线性方程，而是线性<strong>微分</strong>方程，但是道理是一样。我们只需要找到一个特解，结合齐次解，就能完全解出常系数线性微分方程。<br />
+那么，问题是：<strong>特解怎么找呢？</strong><br />
+之前我们在求解齐次方程的时候，将非齐次项设为0，得到了齐次解。那么，为了获得特解，我们需要尽可能得从非齐次项上获取信息。<br />
+我们同样从案例出发，先看一个简单的常系数线性微分方程：</p>
+<div class="arithmatex">\[\frac{d^2}{dt^2}r(t)+3\frac{d}{dt}r(t)+2r(t)=8 \quad(1)\]</div>
+<p>很容易求出该方程的齐次解部分：</p>
+<div class="arithmatex">\[r _1(t)=e^{-t}, r_2(t)=e^{-2t}\]</div>
+<p>那么特解是多少呢？我们注意，非齐次项是一个常数，那我们不妨猜一猜：<br />
+假设<span class="arithmatex">\(r(t)=4\)</span>，那么方程：</p>
+<div class="arithmatex">\[\frac{d^2}{dt^2}r(t)+3\frac{d}{dt}r(t)+2r(t)=8\]</div>
+<p>的左侧前两项为0，第三项为8，刚好等于右侧。<br />
+所以，<span class="arithmatex">\(r(t)=4\)</span>就是这里的特解，我们可以观察到，无论齐次解的组合系数<span class="arithmatex">\(c_1,  c_2\)</span>取多少，都无法使得齐次解部分恒等于4，那么<span class="arithmatex">\(r(t)=4\)</span>这一结果就是方程的<strong>特解</strong>，为什么称作“<strong>特</strong>解”呢？因为与齐次解不同，齐次解仅仅与微分方程的齐次项的结构有关，而特解还与<strong>非齐次项</strong>有关。<br />
+因此，接下来，我们将讨论的是，特解的形式与非齐次项形式的关系。</p>
+<h3 id="221-b">2.2.1 非齐次项为常数<span class="arithmatex">\(B\)</span><a id="chapter-221"></a></h3>
+<p>这一点我们在上面的案例中已经讨论过了，这里直接给出<strong>基本结论一</strong>：<br />
+<strong>如果方程的齐次项为常数<span class="arithmatex">\(B\)</span>，那么特解也必定是常数</strong><br />
+那么如何求得这个常数呢？刚刚到案例中我们毫无逻辑的猜出<span class="arithmatex">\(r(t)=4\)</span>，发现代回原方程，发现刚好满足。现在，我们如果已经知道了特解为常数，那么我们只需要设出该常数，代回原方程就能求出。<br />
+其他各种情况也是一样的，我们只需要根据非齐次项的形式，猜出<strong>特解的形式</strong>，然后再将该特解代回原方程，求出该特解中的系数，就能确定特解。<br />
+相信看到这里的读者必定很疑惑，证明一会儿又是非齐次项，一会儿又是特解，一会儿又是系数。但不用担心，通过下面的例子演示，读者就能完全理解<strong>求特解</strong>这个过程。</p>
+<h3 id="222-p_mt">2.2.2 非齐次项为<span class="arithmatex">\(P_m(t)\)</span><a id="chapter-222"></a></h3>
+<p>其中<span class="arithmatex">\(P_m(t)\)</span>为关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span>次多项式，例如</p>
+<div class="arithmatex">\[a_mt^m+a_{m-1}t^{m-1}+...+a_1t+a_0\]</div>
+<p>我们同样不加证明的给出结论（<strong>基本结论二</strong>）：<br />
+<strong>非齐次项为<span class="arithmatex">\(P_m(t)\)</span>时，特解应该设为:<span class="arithmatex">\(r(t)=Q_m(t)\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式：<span class="arithmatex">\(b_mt^m+b_{m-1}t^{m-1}+...+b_1t+b_0\)</span></strong><br />
+至于为什么要这么设，请读者先自行思索。如果思考过后毫无头绪，请看下面提示：</p>
+<blockquote>
+<p>提示：最高次项对齐<br />
+ 这里的系数<span class="arithmatex">\(b_m～b_0\)</span>，就是我们需要通过代回原方程求解的量。<br />
+ 以一道例题为例：</p>
+</blockquote>
+<p>$$\frac{d^2}{dt^2}r(t)+3\frac{d}{dt}r(t)+2r(t)=t^3+t-3  \quad(2) $$</p>
+<p>右侧非齐次项为关于<span class="arithmatex">\(t\)</span>的三次多项式，因此，特解应该也是关于<span class="arithmatex">\(t\)</span>的三次多项式，我们设为：</p>
+<p>$<span class="arithmatex">\(r(t)=b_3t^3+b_2t^2+b_1t+b_0\)</span>$</p>
+<p>回代原方程，有：</p>
+<p>$<span class="arithmatex">\(\frac{d}{dt}r(t)=3b_3t^2+2b_2t+b_1\)</span>$</p>
+<p>$<span class="arithmatex">\(\frac{d^2}{dt^2}r(t)=6b_3t+2b_2\)</span>$</p>
+<p>因此有：</p>
+<p>$<span class="arithmatex">\(2b_3t^3+(2b_2+9b_3)t^2+(2b_1+6b_2+6b_3)t+(2b_0+3b_1+2b_2)=t^3+t-3\)</span>$</p>
+<p>解得：</p>
+<p>$<span class="arithmatex">\(b_3=\frac{1}{2},b_2=-\frac{9}{2},b_1=\frac{25}{2},b_0=-\frac{63}{4}\)</span>$</p>
+<p>因此特解为：</p>
+<p>$<span class="arithmatex">\(r(t)=\frac{1}{2}t^3-\frac{9}{2}t^2+\frac{25}{2}t-\frac{63}{4}\)</span>$</p>
+<p>结合齐次解：</p>
+<p>$<span class="arithmatex">\(r(t)=c_1e^{-t}+c_2e^{-2t}\)</span>$</p>
+<p>因此该常系数线性微分方程的完全解为：</p>
+<p>$$r(t)=c_1e^{-t}+c_2e^{-2t}+\frac{1}{2}t^3-\frac{9}{2}t^2+\frac{25}{2}t-\frac{63}{4}   $$</p>
+<blockquote>
+<p>可能会有读者有疑惑，为什么我们能够通过回代原方程求出特解的系数（例如上例中的<span class="arithmatex">\(b_m～b_0\)</span>），但是却无法求出齐次解的系数（例如上例中的<span class="arithmatex">\(c_1, c_2\)</span>）。<br />
+原因就在于，齐次方程的解是有无限多的。这些解都是由几个最基本的解进行线性组合构成的。<br />
+在实际的物理系统中，方程的解必定是确定的，即c_1,c_2也是能够通过其他外加条件确定的。读者可以想一想所谓的“外加条件”到底是什么？</p>
+</blockquote>
+<h3 id="223-p_mt">2.2.3 非齐次项为<span class="arithmatex">\(P_m(t)\)</span>：特殊情况<a id="chapter-223"></a></h3>
+<p>经过2.2.2的例子，相信读者已经理解了整个求解的过程。那我们再来看一个例子：</p>
+<div class="arithmatex">\[\frac{d^2}{dt^2}r(t)+3\frac{d}{dt}r(t)=t^3   \quad(3)    \]</div>
+<p>那根据基本结论二，非齐次项依旧是一个3次多项式，那么我们依旧设特解为：</p>
+<div class="arithmatex">\[r(t)=b_3t^3+b_2t^2+b_1t+b_0\]</div>
+<p>回代原方程，有：<br />
+$<span class="arithmatex">\(9b_3t^2+(6b_2+6b_3)t+(3b_1+2b_2)=t^3\)</span>$</p>
+<p><strong>读者一眼就能看出问题，这个方程是无解的，因为最高次没有对齐！</strong><br />
+为什么会出现这种情况呢？我们对比2.2.1中，将特解回代入原方程后得到的方程：</p>
+<div class="arithmatex">\[2b_3t^3+(2b_2+9b_3)t^2+(2b_1+6b_2+6b_3)t+(2b_0+3b_1+2b_2)=t^3+t-3\]</div>
+<p>可以发现，方程<span class="arithmatex">\(9b_3t^2+(6b_2+6b_3)t+(3b_1+2b_2)=t^3\)</span>中完全看不到<span class="arithmatex">\(b_0\)</span>！</p>
+<p><strong>更本质一点，原因就是：方程(3)中没有原函数<span class="arithmatex">\(r(t)\)</span></strong><br />
+换句话说，<strong>方程(3)的特征根中，有一个是0！</strong><br />
+这两个说法是等价的。请读者自行思考这是为什么。<br />
+所以，我们的基本结论二，其实是有适用条件的，我们必须对其进行修正，为了兼容上面那个例子。<br />
+针对基本结论二，我们有两种修正方式：</p>
+<h4 id="2231">2.2.3.1 基本结论二的修正：方式一</h4>
+<p>我们观察到方程(3)中没有原函数，因此这个方程实际上等价于：</p>
+<div class="arithmatex">\[\frac{d}{dt}g(t)+3g(t)=t^3 \quad \quad(3-1)\]</div>
+<p>其中，<span class="arithmatex">\(g(t)=\frac{d}{dt}r(t)\)</span><br />
+只要解出<span class="arithmatex">\(g(t)\)</span>，我们就能解出<span class="arithmatex">\(r(t)\)</span>，只需要一次积分即可。<br />
+方程(3-1)，完全适用于基本结论二，不会出现方程(3)的特殊情况。<br />
+因此，基本结论二可以修正为：<br />
+<strong>当0不是特征方程的根时，非齐次项为<span class="arithmatex">\(P_m(t)\)</span>时，特解应该设为:<span class="arithmatex">\(r(t)=Q_m(t)\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式：<span class="arithmatex">\(b_mt^m+b_{m-1}t^{m-1}+...+b_1t+b_0\)</span>。当0是特征方程的根时，需对原微分方程降阶后，再进行求解。</strong></p>
+<h5 id="2232">2.2.3.2 基本结论二的修正：方式二</h5>
+<p>事实上，在求解微分方程时，我们并不希望对原函数进行先求导再积分这样繁琐的步骤。我们希望基本结论二能被修正成这样，即即便特征根含0，仍能够直接给出特解形式。<br />
+怎么做呢，我们再回到之前的分析：<br />
+当我们设</p>
+<div class="arithmatex">\[r(t)=b_3t^3+b_2t^2+b_1t+b_0\]</div>
+<p>时，有：</p>
+<div class="arithmatex">\[9b_3t^2+(6b_2+6b_3)t+(3b_1+2b_2)=t^3\]</div>
+<p>既然<span class="arithmatex">\(r(t)\)</span>项的缺失导致最高次项<span class="arithmatex">\(t^3\)</span>无法匹配，那我们不放在设出<span class="arithmatex">\(r(t)\)</span>时，手动添加一项更高次项——<span class="arithmatex">\(t^4\)</span>，这样的话，有：</p>
+<div class="arithmatex">\[r(t)=b_4t^4+b_3t^3+b_2t^2+b_1t+b_0\]</div>
+<p>代入原方程，有：</p>
+<div class="arithmatex">\[12b_4t^3+(12b_4+9b_3)t^2+(6b_2+6b_3)t+(3b_1+2b_2)=t^3\]</div>
+<p>我们先不去解这个方程，我们先观察，这个方程还有没有奇怪的地方？<br />
+<strong>——没有<span class="arithmatex">\(b_0\)</span></strong><br />
+这也是因为原微分方程中缺少原函数项导致原函数中的常数项再求导后消失，因此，我们即便设出该常数，也不可求出来，因为特解根本不含常数项（当然也可以说常数项为0）。无论基于哪种情况，我们在设出特解的时候，都不必考虑常数项<span class="arithmatex">\(b_0\)</span>，因此，特解实际上应该设为：</p>
+<div class="arithmatex">\[r(t)=b_4t^4+b_3t^3+b_2t^2+b_1t\]</div>
+<p>更一般的说法是，在这种情况下，我们说，特解可以设为：</p>
+<div class="arithmatex">\[r(t)=t(b_4t^3+b_3t^2+b_2t+b_1)=tQ_3(t)\]</div>
+<p>其中，<span class="arithmatex">\(Q_3(t)\)</span>是关于<span class="arithmatex">\(t\)</span>的三次多项式。<br />
+因此，我们便基于上面的分析，得到了基本结论二的这样的修正：<br />
+<strong>当0不是特征方程的根时，非齐次项为<span class="arithmatex">\(P_m(t)\)</span>时，特解应该设为:<span class="arithmatex">\(r(t)=Q_m(t)\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式：<span class="arithmatex">\(b_mt^m+b_{m-1}t^{m-1}+...+b_1t+b_0\)</span>。当0是特征方程的根时，特解应该设为:<span class="arithmatex">\(r(t)=tQ_m(t)\)</span></strong></p>
+<h4 id="2233">2.2.3.3 基本结论二的正确修正<a id="chapter-2223"></a></h4>
+<p>事实上，2.2.2.1和2.2.2.2的两种方式，都还没有考虑到更一般的情况，也就是说，在某些情况下，还是会出现不适用——<strong>这些情况就是特征根中0的代数重数大于1的情况</strong>。在这里，我们直接给出基本结论二的正确修正：<br />
+<strong>基本结论二：若非齐次项为<span class="arithmatex">\(P_m(t)\)</span>，当0不是特征方程的根时，特解应该设为:<span class="arithmatex">\(r(t)=Q_m(t)\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式：<span class="arithmatex">\(b_mt^m+b_{m-1}t^{m-1}+...+b_1t+b_0\)</span>。当0是特征方程的<span class="arithmatex">\(k\)</span>重特征根时，特解应该设为:<span class="arithmatex">\(r(t)=t^kQ_m(t)\)</span></strong></p>
+<p>为什么会用<span class="arithmatex">\(t^k\)</span>倍乘呢？我们可以这样理解：<br />
+如果方程的特征根不止含一个零，那么当我们考虑修正方式一时，那我们就要考虑<strong>多次积分</strong>，这样的话，特解中的<span class="arithmatex">\(t\)</span>低次幂就会消失的越来越多，同时会由更高次幂来补全。这一点从修正方式二中可以观察的更为直观。</p>
+<h3 id="224-elambda-t">2.2.4 非齐次项为<span class="arithmatex">\(e^{\lambda t}\)</span><a id="chapter-224"></a></h3>
+<p>我们不加证明的直接给出结论（饶是如此，相信读者想要理解这个结论，也是非常直观和容易的）：<br />
+<strong>基本结论三(pre): 当非齐次项为<span class="arithmatex">\(e^{\lambda t}\)</span>时，特解应该设为：<span class="arithmatex">\(b e^{\lambda t}\)</span></strong></p>
+<p>举例：</p>
+<div class="arithmatex">\[\frac{d^2}{dt^2}r(t)+3\frac{d}{dt}r(t)+2r(t)=e^t  \quad \quad (4-1) \]</div>
+<p>我们直接应用基本结论三(pre)，设特解：<span class="arithmatex">\(r(t)=be^t\)</span><br />
+代回方程(4-1)得到：</p>
+<div class="arithmatex">\[6be^t=e^t\]</div>
+<p>得：</p>
+<div class="arithmatex">\[r(t)=\frac{1}{6}e^t\]</div>
+<p>我们再来看一道例子：</p>
+<div class="arithmatex">\[\frac{d^2}{dt^2}r(t)+3\frac{d}{dt}r(t)+2r(t)=e^{-t}  \quad \quad (4-2) \]</div>
+<p>我们依照结论，设出特解：<span class="arithmatex">\(r(t)=be^{-t}\)</span><br />
+代入原方程，得到:</p>
+<div class="arithmatex">\[0=e^{-t}\]</div>
+<p>这看起来是一件很诡异的事，但其实是理所应当的，为什么呢？</p>
+<blockquote>
+<p>因为<span class="arithmatex">\(e^{-t}\)</span>是齐次解！所以代入方程(4-2)理所应当左侧为零。</p>
+</blockquote>
+<p>所以我们得出了什么样的结论呢？也就是说：<br />
+<strong>当非齐次项<span class="arithmatex">\(e^{\lambda t}\)</span>中的<span class="arithmatex">\(\lambda\)</span>为方程特征根时，特解不能简单设为:<span class="arithmatex">\(be^{\lambda t}\)</span>，因为这会与齐次解冲突</strong>，<br />
+那么该怎么办呢？难道说这种方程没有特解吗？<br />
+<strong>当然不是，既然有齐次项(齐次项不为0)，那么必然会存在特解，这是肯定的。</strong><br />
+那么应该怎么设呢？<br />
+我们不妨令：</p>
+<div class="arithmatex">\[r(t)=v(t)e^{-t}\]</div>
+<p>代入方程(4-2)，得到：</p>
+<div class="arithmatex">\[v''(t)e^{-t}=0\]</div>
+<p>答案很明朗了，我们只需要解出</p>
+<div class="arithmatex">\[v''(t)=0\]</div>
+<p>即可，很显然，<span class="arithmatex">\(v(t)=bt+a\)</span>，其中<span class="arithmatex">\(A\)</span>和<span class="arithmatex">\(B\)</span>是待定系数，同时，又由于<span class="arithmatex">\(ae^{-t}\)</span>代回方程后，又会成为齐次解，故，实际上有效的特解应该是：</p>
+<p>$<span class="arithmatex">\(r(t)=bte^{-t}\)</span>$<br />
+这样，代回原方程之后，就能成立，并且不会与齐次解冲突。<br />
+<strong>更进一步的，当非齐次项<span class="arithmatex">\(e^{\lambda t}\)</span>中的<span class="arithmatex">\(\lambda\)</span>为方程的<span class="arithmatex">\(k\)</span>特征根时，情况也会产生一些变化</strong>，并且，可以告诉读者的是，这种变化与<a href="#chapter-2223">2.2.2.3</a>中的变化完全相同，因此，我们直接给出基本结论三的正确形式：<br />
+<strong>基本结论三: 当非齐次项为<span class="arithmatex">\(e^{\lambda t}\)</span>时，并且<span class="arithmatex">\(\lambda\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解应该设为：<span class="arithmatex">\(bt^ke^{\lambda t}\)</span></strong></p>
+<h4 id="225-p_mtelambda-t">2.2.5 非齐次项为<span class="arithmatex">\(P_m(t)e^{\lambda t}\)</span></h4>
+<p>有了<a href="#chapter-222">2.2.2</a>~<a href="#chapter-224">2.2.4</a>的求解经验，这里我们直接给出<strong>基本结论四</strong>：<br />
+<strong>当非齐次项为<span class="arithmatex">\(P_{m}(t)e^{\lambda t}\)</span>时，并且<span class="arithmatex">\(\lambda\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解应该设为：<span class="arithmatex">\(t^kQ_m(t)e^{\lambda t}\)</span>,<span class="arithmatex">\(\quad\)</span>其中<span class="arithmatex">\(Q_m(t)\)</span>是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式：<span class="arithmatex">\(b_mt^m+b_{m-1}t^{m-1}+...+b_1t+b_0\)</span>。</strong><br />
+这里就不在给读者分析了，如果读者感到疑惑，不妨假设一些例子动手做做。<br />
+<strong>比较有意思的是，当<span class="arithmatex">\(\lambda=0\)</span>时，基本结论四还原为<a href="#chapter-2223">基本结论二</a></strong>，这是一个很重要的结论，是本文最后给出<strong>综合定理</strong>的基础之一。</p>
+<p>接下来，我们在给出两个情况及其对应结论，就可以解决常系数线性微分方程特解求解的所有情况。同样，我们不再给出证明，只是稍微的提示一下，请读者自行思考(~~其实是实在没有时间写了~~，阔咩纳塞🥺🥺🥺)。</p>
+<h4 id="226-p_mtcosomega-tp_mtsinomega-t">2.2.6 非齐次项为<span class="arithmatex">\(P_m(t)\cos{\omega t}\)</span>或<span class="arithmatex">\(P_m(t)\sin{\omega t}\)</span></h4>
+<p><strong>基本结论五：非齐次项为<span class="arithmatex">\(P_m(t)\cos{\omega t}\)</span>或<span class="arithmatex">\(P_m(t)\sin{\omega t}\)</span>时，并且<span class="arithmatex">\(\pm j\omega\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解设为：<span class="arithmatex">\(t^k[P_m(t)\cos{\omega t}+R_m(t)\sin{\omega t}]\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>和<span class="arithmatex">\(R_m(t)\)</span>都是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式</strong><br />
+在基本结论中，应用欧拉公式：</p>
+<div class="arithmatex">\[e^{jt}=\cos{t}+j\sin{t}\]</div>
+<p>可以直接得出基本结论五。</p>
+<h4 id="227-p_mtcdot-cosomega-tcdot-esigma-tp_mtcdot-sinomega-tcdot-esigma-t">2.2.7 非齐次项为<span class="arithmatex">\(P_m(t)\cdot \cos{\omega t}\cdot e^{\sigma t}\)</span>或<span class="arithmatex">\(P_m(t)\cdot \sin{\omega t}\cdot e^{\sigma t}\)</span></h4>
+<p><strong>基本结论六：非齐次项为<span class="arithmatex">\(P_m(t)\cdot \cos{\omega t}\cdot e^{\sigma t}\)</span>或<span class="arithmatex">\(P_m(t)\cdot \sin{\omega t}\cdot e^{\sigma t}\)</span>时，并且<span class="arithmatex">\(\sigma \pm j\omega\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解设为：<span class="arithmatex">\(t^ke^{\sigma t}[P_m(t)\cos{\omega t}+R_m(t)\sin{\omega t}]\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>和<span class="arithmatex">\(R_m(t)\)</span>都是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式</strong></p>
+<p>至此，常系数线性微分方程，常见的非齐次项形式以及特解设法，均全部给大家介绍完毕</p>
+<h2 id="_4">三.  总结</h2>
+<h3 id="31">3.1 基本结论集</h3>
+<p>本文的所有核心知识点，全部总结在上述各种“<strong>基本结论</strong>”字样中，这里再次给大家列出：<br />
+<strong>(1) 基本结论一</strong>：如果方程的齐次项为常数<span class="arithmatex">\(B\)</span>，并且0不是方程特征根时，特解也必定是常数<br />
+<strong>(2) 基本结论二</strong>：若非齐次项为<span class="arithmatex">\(P_m(t)\)</span>，当0不是特征方程的根时，特解应该设为:<span class="arithmatex">\(r(t)=Q_m(t)\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式：<span class="arithmatex">\(b_mt^m+b_{m-1}t^{m-1}+...+b_1t+b_0\)</span>。当0是特征方程的<span class="arithmatex">\(k\)</span>重特征根时，特解应该设为:<span class="arithmatex">\(r(t)=t^kQ_m(t)\)</span><br />
+<strong>(3) 基本结论三</strong>：当非齐次项为<span class="arithmatex">\(e^{\lambda t}\)</span>时，并且<span class="arithmatex">\(\lambda\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解应该设为：<span class="arithmatex">\(bt^ke^{\lambda t}\)</span><br />
+<strong>(4) 基本结论四</strong>：当非齐次项为<span class="arithmatex">\(P_{m}(t)e^{\lambda t}\)</span>时，并且<span class="arithmatex">\(\lambda\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解应该设为：<span class="arithmatex">\(t^kQ_m(t)e^{\lambda t}\)</span>,<span class="arithmatex">\(\quad\)</span>其中<span class="arithmatex">\(Q_m(t)\)</span>是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式：<span class="arithmatex">\(b_mt^m+b_{m-1}t^{m-1}+...+b_1t+b_0\)</span>。<br />
+<strong>(5) 基本结论五</strong>：非齐次项为<span class="arithmatex">\(P_m(t)\cos{\omega t}\)</span>或<span class="arithmatex">\(P_m(t)\sin{\omega t}\)</span>时，并且<span class="arithmatex">\(\pm j\omega\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解设为：<span class="arithmatex">\(t^k[P_m(t)\cos{\omega t}+R_m(t)\sin{\omega t}]\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>和<span class="arithmatex">\(R_m(t)\)</span>都是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式<br />
+<strong>(6) 基本结论六</strong>：非齐次项为<span class="arithmatex">\(P_m(t)\cdot \cos{\omega t}\cdot e^{\sigma t}\)</span>或<span class="arithmatex">\(P_m(t)\cdot \sin{\omega t}\cdot e^{\sigma t}\)</span>时，并且<span class="arithmatex">\(\sigma \pm j\omega\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解设为：<span class="arithmatex">\(t^ke^{\sigma t}[P_m(t)\cos{\omega t}+R_m(t)\sin{\omega t}]\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>和<span class="arithmatex">\(R_m(t)\)</span>都是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式</p>
+<h3 id="32">3.2 综合定理</h3>
+<p>前文提到过，对于本文分析的所有请况，实际上有一个<strong>综合定理</strong>存在，其实，这个结论就是：<br />
+基本结论六！<br />
+<strong>综合定理</strong>：非齐次项为<span class="arithmatex">\(P_m(t)\cdot \cos{\omega t}\cdot e^{\sigma t}\)</span>或<span class="arithmatex">\(P_m(t)\cdot \sin{\omega t}\cdot e^{\sigma t}\)</span>时，并且<span class="arithmatex">\(\sigma \pm j\omega\)</span>为方程的<span class="arithmatex">\(k\)</span>重特征根时(若不是特征根，则<span class="arithmatex">\(k=0\)</span>)，特解设为：<span class="arithmatex">\(t^ke^{\sigma t}[P_m(t)\cos{\omega t}+R_m(t)\sin{\omega t}]\)</span>，其中<span class="arithmatex">\(Q_m(t)\)</span>和<span class="arithmatex">\(R_m(t)\)</span>都是关于<span class="arithmatex">\(t\)</span>的<span class="arithmatex">\(m\)</span> 次多项式<br />
+<strong>本文给出的所有案例，所有的分析，所有的基本结论都可以在综合定理中找到！</strong><br />
+为什么呢？请读者看以下分析:<br />
+(1) 当<span class="arithmatex">\(m=0,\sigma = 0,\omega=0\)</span>时，综合定理还原为<strong>基本结论一</strong>；<br />
+(2) 当<span class="arithmatex">\(\sigma = 0,\omega=0\)</span>时，综合定理还原为<strong>基本结论二</strong>；<br />
+(3) 当<span class="arithmatex">\(m=0,\omega=0\)</span>时，综合定理还原为<strong>基本结论三</strong>；<br />
+(4) 当<span class="arithmatex">\(\omega=0\)</span>时，综合定理还原为<strong>基本结论四</strong>；<br />
+(5) 当<span class="arithmatex">\(\sigma=0\)</span>时，综合定理还原为<strong>基本结论五</strong>。</p>
+<h4 id="33">3.3 非齐次项——特解对照表</h4>
+<table>
+<thead>
+<tr>
+<th>非齐次项</th>
+<th>特征根，重数</th>
+<th>特解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>常数<span class="arithmatex">\(B\)</span></td>
+<td>0,0</td>
+<td>常数<span class="arithmatex">\(b\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(P_m(t)\)</span></td>
+<td>0,<span class="arithmatex">\(k\)</span></td>
+<td><span class="arithmatex">\(t^kQ_m(t)\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(e^{\lambda t}\)</span></td>
+<td><span class="arithmatex">\(\lambda, k\)</span></td>
+<td><span class="arithmatex">\(bt^ke^{\lambda t}\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(P_{m}(t)e^{\lambda t}\)</span></td>
+<td><span class="arithmatex">\(\lambda, k\)</span></td>
+<td><span class="arithmatex">\(t^kQ_m(t)e^{\lambda t}\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(P_m(t)\cos{\omega t}\)</span>或<span class="arithmatex">\(P_m(t)\sin{\omega t}\)</span></td>
+<td><span class="arithmatex">\(\pm j\omega,k\)</span></td>
+<td><span class="arithmatex">\(t^k[P_m(t)\cos{\omega t}+R_m(t)\sin{\omega t}]\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(P_m(t)\cdot \cos{\omega t}\cdot e^{\sigma t}\)</span>或<span class="arithmatex">\(P_m(t)\cdot \sin{\omega t}\cdot e^{\sigma t}\)</span></td>
+<td><span class="arithmatex">\(\sigma \pm j\omega,k\)</span></td>
+<td><span class="arithmatex">\(t^ke^{\sigma t}[P_m(t)\cos{\omega t}+R_m(t)\sin{\omega t}]\)</span></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../javascripts/extra.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+        <script src="../../../../javascripts/katex.js"></script>
+      
+    
+  </body>
+</html>
