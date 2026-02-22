@@ -17,16 +17,20 @@ plugins:
 
 # 配置 Markdown 扩展（启用数学公式支持）
 markdown_extensions:
+  - nl2br # 将换行符转换为 <br> 标签，启用单回车换行支持
   - pymdownx.arithmatex:
       generic: true
 
 # 引入自定义 CSS（用于背景动画和按钮）
 extra_css:
   - stylesheets/extra.css
+  - https://unpkg.com/katex@0/dist/katex.min.css # 添加 KaTeX CSS
+
 extra_javascript:
   - javascripts/extra.js
-  - javascripts/mathjax.js # 引入 MathJax 的 JavaScript 文件
-  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+  - https://unpkg.com/katex@0/dist/katex.min.js # 先引入 KaTeX 核心
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js # 引入 KaTeX 自动渲染插件
+  - javascripts/katex.js # 最后引入初始化脚本
   
 nav:
   - 首页: index.md

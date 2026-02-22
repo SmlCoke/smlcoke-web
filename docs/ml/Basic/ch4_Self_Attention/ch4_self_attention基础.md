@@ -85,17 +85,17 @@
 
 4. **Softmax 归一化**
     将所有源位置的得分归一化为概率分布，得到注意力权重：
-    $$
-    \alpha'_{i,j} = \frac{\exp(\alpha_{i,j})}{\sum_{k} \exp(\alpha_{i,k})}
-    $$
+    
+    $$\alpha'_{i,j} = \frac{\exp(\alpha_{i,j})}{\sum_{k} \exp(\alpha_{i,k})}$$
+    
     此步骤确保 $\sum_j \alpha'_{i,j} = 1$，权重具有可解释性（概率意义）。
     ![alt text](image-12.png)
 
 5. 加权求和：生成输出
     最终，位置 $i$ 的输出 $\mathbf{b}^i$ 由所有位置的值向量 $\mathbf{v}^j$（通常 $\mathbf{v}^j = W^v \mathbf{a}^j$）按权重加权求和得到：
-    $$
-    \mathbf{b}^i = \sum_j \alpha'_{i,j} \mathbf{v}^j
-    $$
+    
+    $$\mathbf{b}^i = \sum_j \alpha^{\prime}_{i,j} \mathbf{v}^j$$
+
     ![alt text](image-13.png)
     这样做得到的效果就是，哪一个向量与$\mathbf{a_1}$的相关性越高，其得分$\alpha_{1,i}$就越大，其位置的值向量$\mathbf{v_i}$就会**占主导地位。**
 
@@ -106,6 +106,7 @@
 ### 3.2 我们用矩阵来表示这种逻辑过程
 如下的向量默认是列向量
 **第一步：得到$q_i$, $k_i$, $v_i$**
+
 $$\begin{aligned}
 [\mathbf{q^1}, \mathbf{q^2}, \mathbf{q^3}, \mathbf{q^4}] &= \mathbf{W}^q [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}]  \\
 [\mathbf{k^1}, \mathbf{k^2}, \mathbf{k^3}, \mathbf{k^4}] &=  \mathbf{W}^k [\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}] \\
@@ -113,14 +114,16 @@ $$\begin{aligned}
 \Rightarrow \\
 \mathbf{Q} &= \mathbf{W}^q \mathbf{I} \\
 \mathbf{K} &= \mathbf{W}^k \mathbf{I} \\
-\mathbf{V} &= \mathbf{W}^v \mathbf{I}
-\end{aligned}$$
+\mathbf{V} &= \mathbf{W}^v \mathbf{I} \end{aligned}$$
 
 **第二部：计算attention分数**
-$\alpha_{1,1} = k^1 q^1, \alpha_{1,2} = k^2 q^1, \alpha_{1,3} = k^3 q^1, \alpha_{1,4} = k^4 q^1$
+
+$$\alpha_{1,1} = k^1 q^1, \alpha_{1,2} = k^2 q^1, \alpha_{1,3} = k^3 q^1, \alpha_{1,4} = k^4 q^1$$
+
 此时$k$是行向量
 因此：
-$\begin{bmatrix}
+
+$$\begin{bmatrix}
 \mathbf{\alpha_{1,1}}\\ 
 \mathbf{\alpha_{1,2}}\\ 
 \mathbf{\alpha_{1,3}}\\ 
@@ -129,9 +132,11 @@ $\begin{bmatrix}
  k^2\\
  k^3\\
  k^4\\
-\end{bmatrix} \mathbf{q^1}$
+\end{bmatrix} \mathbf{q^1}$$
+
 同理可得：
-$\begin{bmatrix}
+
+$$\begin{bmatrix}
 \mathbf{\alpha_{2,1}}\\ 
 \mathbf{\alpha_{2,2}}\\ 
 \mathbf{\alpha_{2,3}}\\ 
@@ -140,10 +145,12 @@ $\begin{bmatrix}
  k^2\\
  k^3\\
  k^4\\
-\end{bmatrix} \mathbf{q^2}$
+\end{bmatrix} \mathbf{q^2}$$
+
 等
 因此最终：
-$\begin{bmatrix}
+
+$$\begin{bmatrix}
 \mathbf{\alpha_{1,1}}\quad \mathbf{\alpha_{2,1}}\quad \mathbf{\alpha_{3,1}}\quad \mathbf{\alpha_{4,1}}\\ 
 \mathbf{\alpha_{1,2}}\quad \mathbf{\alpha_{2,2}}\quad \mathbf{\alpha_{3,2}}\quad \mathbf{\alpha_{4,2}}\\ 
 \mathbf{\alpha_{1,3}}\quad \mathbf{\alpha_{2,3}}\quad \mathbf{\alpha_{3,3}}\quad \mathbf{\alpha_{4,3}}\\ 
@@ -152,12 +159,15 @@ $\begin{bmatrix}
  k^2\\
  k^3\\
  k^4\\
-\end{bmatrix} [\mathbf{q^1}\quad \mathbf{q^2}\quad \mathbf{q^3}\quad \mathbf{q^4}]$
+\end{bmatrix} [\mathbf{q^1}\quad \mathbf{q^2}\quad \mathbf{q^3}\quad \mathbf{q^4}]$$
+
 $$\mathbf{A} = \mathbf{K}^T \mathbf{Q}$$
 
 **第三步：Softmax归一化**
 按column做Softmax
+
 $$\mathbf{A'} = \text{Softmax}(\mathbf{A})$$
+
 这里的$A'$，就称为：**attention matrix**
 
 **第四步：加权求和，得到输出**
