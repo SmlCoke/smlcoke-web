@@ -2403,3 +2403,232 @@ fn it_adds_two() {
     assert_eq!(result, 4);
 }
 ```
+
+## 十二. 实战：构建一个命令行程序
+
+一些技巧：
+**(1) Vec<String> 的问题**
+这段代码有误❌️
+```rust
+let args: Vec<String> = env::args().collect();
+let query = &args[1];
+```
+原因：因为这样会在 vector 内部产生一个空洞，Rust 不允许 vector 出现空洞，否则到了 vector 离开作用域时，内存会被二次释放
+
+**(2) std::fs**
+`fs::read_to_string` 返回 `Result<String>`
+
+**(3) 返回 `Result` 而不是调用 `panic!`**
+接着修改 `main` 将 `Err` 成员转换为对用户更友好的错误，而不是 `panic!` 调用产生的关于 thread `'main'` 和 RUST_BACKTRACE 的文本。
+
+**(4) unwrap_or_else**
+```rust
+let config = Config::build(&args).unwrap_or_else(|err| {
+        panic!("Problem parsing arguments: {err}");
+        process::exit(1);
+        }
+    );
+```
+它定义于标准库的 `Result<T, E>` 上。使用 `unwrap_or_else` 可以进行一些自定义的非 `panic!` 的错误处理。当 `Result` 是 `Ok` 时，这个方法的行为类似于 `unwrap`：它返回 `Ok` 内部封装的值。然而，当其值是 `Err` 时，该方法会调用一个闭包（closure），也就是一个我们定义的作为参数传递给 `unwrap_or_else` 的匿名函数。
+
+**(5) run**
+我们将提取一个叫做 `run` 的函数来存放目前 `main` 函数中**不属于设置配置或处理错误的所有逻辑**。
+
+**(6) trait 对象 Box<dyn Error>**
+前只需知道 `Box<dyn Error>` 意味着函数**会返回实现了 `Error` trait 的类型**，**不过无需指定具体将会返回的值的类型**。
+这提供了在**不同的错误场景可能有不同类型的错误返回值的灵活性**。这也就是 `dyn`，它是“动态的”（“dynamic”）的缩写。
+
+**(7) 编写测试**
+```rust
+        let contents = "\
+Rust:
+safe, fast, productive.
+Pick three.";
+```
+注意双引号之后的反斜杠，这告诉 Rust 不要在字符串字面值内容的开头加入换行符
+
+**(8) 生命周期**
+```rust
+// 在这个案例中，返回值的声明周期应该与 contents 参数相关联
+// 换句话说，我们告诉 Rust 函数 search 返回的数据将与 search 函数中的参数 contents 的数据存在的一样久。
+// 解惑：“生命周期不应该跟更短的那个参数相同吗？”
+// 你提到的“跟最短的那个一致”通常发生在你同时使用了两个参数作为数据源的情况下。
+pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    vec![]
+}
+```
+在 Rust 中标记生命周期的金律：**看数据的来源**。
+- 谁是数据的源头：**返回的引用（指针）指向哪块内存，就把谁和返回值绑定在一起**。
+- 为什么标记：为了防止“皮之不存，毛将焉附”。contents 是皮，返回的切片是毛。
+
+**(9) 标准输出与标准错误**
+
+- `stdout`: 标准输出，通常用于正常的程序输出。
+- `stderr`: 标准错误，通常用于输出错误信息。
+- `println!()`: 默认将输出发送到标准输出。
+- `eprintln!()`: 将输出发送到标准错误。
+
+## 十三. 函数式语言特性：迭代器与闭包
+Rust 的 闭包（closures）是可以**保存在变量中或作为参数传递给其他函数的匿名函数**。你可以在一个地方创建闭包，然后在不同的上下文中执行闭包运算。
+不同于函数，**闭包允许捕获其被定义时所在作用域中的值**。我们将展示这些闭包特性如何支持代码复用和行为定制。
+
+### 13.1 闭包
+
+#### 13.1.1 闭包
+在 Rust 里，闭包就是“短工”函数。
+- 普通函数 (`fn`)：是“正式员工”。它定义在外面，很独立。它不知道你在函数外面定义了什么变量，除非你通过参数传给它。
+- 闭包 (`||`)：是“临时工”。它直接写在代码逻辑里。它最大的特权是：它可以直接拿它“出生环境”里的变量来用。
+
+#### 13.1.2 闭包的写法
+```rust
+fn main() {
+    // 闭包写法 1：最全的写法（带类型，带花括号）
+    let add_one_v2 = |x: i32| -> i32 { x + 1 };
+
+    // 闭包写法 2：常用的“偷懒”写法（编译器自动推导类型，去掉了花括号）
+    let add_one_v3 = |x| x + 1;
+
+    // 调用方式和函数一模一样
+    println!("{}", add_one_v3(5)); // 输出 6
+}
+```
+
+#### 13.1.3 闭包的三种捕获方式
+
+- 只读党 (`Fn`)：闭包里**只是读了一下外面的变量，没改它**。
+  特点：这种闭包最温和，**可以被多次调用**。
+  例子：`|x| x + secret`（只读了 secret）。
+  这本只是一种**不可变借用**，**也就是说闭包存在期间，外边的变量不能被修改了**。
+- 篡改党 (`FnMut`)：闭包里**修改了外面的变量**（前提是变量得是 `mut` 的）。
+  特点：因为它要改状态，所以调用它时，闭包自己也得是 `mut` 的。
+  例子：计数器。
+  ```rust
+  let mut count = 0;
+  let mut add_count = || { 
+        count += 1; // 修改了外面的 count
+        println!("Count: {}", count); 
+  };
+  add_count(); // 1
+  add_count(); // 2
+  ```
+- 一次性党 (FnOnce)：闭包把外面的变量**吃掉（Move）**了。
+  特点：因为**变量的所有权被它拿走**了，所以这个闭包只能被调用一次。**用完一次后，闭包连同它肚子里的变量一起报废**。
+  例子：
+  ```rust
+  let real_consume_s = || {
+        println!("我要打印 s: {}", s);
+        
+        // 【关键操作】：显式销毁 s，或者把 s 移交给别人
+        // drop 函数要求传入所有权，所以闭包必须把 s 从外面“抢”进来
+        drop(s); 
+    }; 
+  ```
+
+#### 13.1.4 `move` 关键字：强制闭包获取外部变量的所有权
+`move` 的作用：**强制闭包把用到的变量打包带走（获取所有权）**。
+```rust
+use std::thread;
+
+fn main() {
+    let key = String::from("SecretKey");
+
+    // 错误写法：
+    // thread::spawn(|| println!("{}", key)); 
+    // 报错：虽然闭包只想读 key，但主线程可能先结束，key 就没了。
+
+    // 正确写法：
+    thread::spawn(move || {
+        // move 就像是把 key 塞进了闭包的背包里，彻底归闭包所有
+        println!("在子线程中: {}", key);
+    }).join().unwrap();
+    
+    // println!("{}", key); // 这里报错！因为 key 已经被 move 进子线程了
+}
+```
+
+
+### 13.2 迭代器(iterator)
+#### 13.2.1 迭代器及其用法
+在 Rust 中，迭代器是惰性的（lazy），这意味着在调用消费迭代器的方法之前不会执行任何操作。例如:
+```rust
+let v1 = vec![1, 2, 3]
+let v1_iter = v1.iter();
+```
+
+用法：
+```rust
+for val in v1_iter {
+    println!("Got: {val}");
+}
+```
+
+#### 13.2.2 `next` 方法
+
+迭代器的核心方法是 `next`，它返回迭代器中的下一个元素(Some)。**当迭代器结束时，`next` 返回 `None`**。
+```rust
+pub trait Iterator {
+    type Item;
+
+    fn next(&mut self) -> Option<Self::Item>;
+
+    // 此处省略了方法的默认实现
+}
+```
+- `next` 方法要自己实现
+- 类似 Python(PyTorch) 中的 `__getitem__`
+- 迭代器的 `.next()` 方法可以直接调用
+  ```rust
+  let mut v1_iter = v1.iter();
+  assert_eq!(v1_iter.next(), Some(&1));
+  ```
+
+#### 13.2.3 所有权问题
+- 从 `next` 调用中获取的值是对 vector 中值的不可变引用。`iter` 方法生成一个**不可变引用的迭代器**。
+- 如果我们需要一个获取 v1 所有权并**返回拥有所有权**的迭代器，则可以调用 `into_iter` 而不是 `iter`。
+- 类似地，如果我们希望**迭代可变引用**，可以调用 `iter_mut` 而不是 `iter`。
+
+#### 13.2.4 迭代器适配器
+迭代器适配器是定义在 `Iterator` trait 上的**方法**，它们**返回一个新的迭代器**，这个迭代器在原有迭代器的基础上进行了某些处理。
+- `map`：接受一个闭包作为参数，闭包会被应用到迭代器的每个元素上，并返回一个新的迭代器，新的迭代器会产生闭包返回的值。
+- `filter`：接受一个闭包作为参数，闭包会被应用到，迭代器的每个元素上，并返回一个新的迭代器，新的迭代器会产生闭包返回值为 `true` 的元素。
+- `take`：接受一个整数 `n` 作为参数，并返回一个新的迭代器，这个迭代器会产生前 `n` 个元素。
+- `zip`：接受另一个迭代器作为参数，并返回一个新的迭代器，这个迭代器会产生一个元组，元组的第一个元素来自第一个迭代器，第二个元素来自第二个迭代器。
+
+案例：
+```rust
+let v1: Vec<i32> = vec![1, 2, 3];
+v1.iter().map(|x| x + 1);
+```
+上述代码实际上并没有做任何事；**所指定的闭包从未被调用过。警告提醒了我们原因所在：迭代器适配器是惰性的，因此我们需要在此处消费迭代器。**
+
+消费方法例如：
+- `sum`：消费迭代器，**将迭代器中的所有元素相加并返回总和**。
+- `collect`：消费迭代器，**将迭代器中的所有元素收集到一个集合中**，例如 `Vec<T>` 或 `HashMap<K, V>`。
+
+```rust
+let v1: Vec<i32> = vec![1, 2, 3];
+let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
+assert_eq!(v2, vec![2, 3, 4]);
+```
+
+
+### 13.3 使用迭代器改进前面的 I/O 项目
+
+#### 13.3.1 `build` 函数从接受 `&[String]` 改编为接受迭代器
+```rust
+impl Config {
+    pub fn build(
+        mut args: impl Iterator<Item = String>,
+    ) -> Result<Config, &'static str> {
+        // --snip--
+```
+
+注意，这里用到了 `Trait Bound` 的语法糖 `impl Trait`，即：
+- `mut args` 是要传入的参数，并且根据前文，是一个迭代器
+- `impl Iterator<Item = String>` 是参数的类型，表示任何实现了 `Iterator` trait 且其 `Item` 类型为 `String` 的类型。
+
+### 13.4 性能对比：循环 VS 迭代器
+为了决定是否使用循环或迭代器，你需要了解哪个实现更快：使用显式 `for` 循环的 `search` 函数版本，还是使用迭代器的版本。
+
+关键在于：**迭代器，作为一个高级的抽象，被编译成了与手写的底层代码大体一致性能的代码。迭代器是 Rust 的零成本抽象（zero-cost abstractions）之一**，它意味着抽象并不会引入额外的运行时开销，它与本贾尼·斯特劳斯特卢普（C++ 的设计和实现者）在《Foundations of C++》（2012）中所定义的零开销（zero-overhead）如出一辙：
+> In general, C++ implementations obey the zero-overhead principle: What you don’t use, you don’t pay for. And further: What you do use, you couldn’t hand code any better.
