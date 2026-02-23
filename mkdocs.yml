@@ -44,4 +44,5 @@ nav:
   - 机器学习: ml/Basic/index.md
   - 计算机视觉: ml/CV/index.md
   - Rust:
-    - Rust 学习笔记: rust/Study.md
+    - Rust 学习笔记: rust/notes/Study.md
+    - Rust 加密/解密在线工具: rust/crypto/
