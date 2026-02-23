@@ -815,7 +815,7 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
-          <time datetime="2026-02-21 00:00:00+00:00">2026年2月21日</time></li>
+          <time datetime="2026-02-23 00:00:00+00:00">2026年2月23日</time></li>
         
           <li class="md-meta__item">
             分类于
@@ -836,22 +836,59 @@
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="_1"><a class="toclink" href="../../2026/02/21/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/">当前进度</a></h2>
-<h3 id="1"><a class="toclink" href="../../2026/02/21/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#1">1. 部署到公网上 ✅️</a></h3>
+    <h2 id="_1"><a class="toclink" href="../../2026/02/23/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/">当前进度</a></h2>
+<h3 id="1-rust"><a class="toclink" href="../../2026/02/23/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#1-rust">1. Rust 加密工具 ✅️</a></h3>
+<p>Rust 的加密工具 <code>ciphery</code> 已经完成了基本的功能开发（虽然目前只支持 <code>Caesar</code> 加密）。<br />
+成功 Release，这个比较简单。<br />
+然后再利用 WASM 技术将其部署到了本网站，期间发现 Rust 的 <code>#[cfg(target = 'wasm32')]</code> 条件编译功能非常强大，可以让我们<strong>在同一份代码中针对不同的目标平台编写不同的实现</strong>，非常方便。缓过神来才发现这一点跟之前的自动编写测试 <code>#[cfg(test)]</code> 如出一辙。</p>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2026-02-22 00:00:00+00:00">2026年2月22日</time></li>
+        
+          <li class="md-meta__item">
+            分类于
+            
+              <a href="./" class="md-meta__link">日记</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              需要 1 分钟阅读时间
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="_1"><a class="toclink" href="../../2026/02/22/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/">当前进度</a></h2>
+<h3 id="1"><a class="toclink" href="../../2026/02/22/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#1">1. 部署到公网上 ✅️</a></h3>
 <p>在 Namesilo 购买了 smlcoke.com 域名，并且借助 github pages 成功部署了这个网站，同时还启用了 Cloudflare 的 CDN 服务。</p>
 <p>github pages 的部署流程：<br />
 1. 在 github 上创建一个新的 repository，命名为 <code>smlcoke.github.io</code>。<br />
 2. 将 MkDocs 生成的静态文件推送到这个 repository 的 <code>main</code> 分支。<br />
 3. 在 repository 的设置中启用 GitHub Pages，选择 <code>main</code> 分支作为发布源。</p>
 <p>全流程所花时间只有2h（by Google AI Studio Gemini 3.1 Pro Preview），但是从购买域名到 Cloudflare 配置一系列操作全靠 Gemini 知道，自己一路懵逼，不知道这些操作是什么意思。所幸聊天记录尚在，以后有时间看看吧。</p>
-<h3 id="2"><a class="toclink" href="../../2026/02/21/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#2">2. 同步专业课程笔记‼️</a></h3>
+<h3 id="2"><a class="toclink" href="../../2026/02/22/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#2">2. 同步专业课程笔记‼️</a></h3>
 <p>遭遇一些阻碍，课程笔记均为 <code>.npy</code> 格式导出的 <code>.pdf</code>，尝试过部署到 github pages，并且也通过 <code>smlcoke.com</code> 成功访问。</p>
 <p>但是...</p>
 <p>相比 markdown 很不优雅，无法直接在博客里展示，必须借助浏览器pdf阅读器，也无法支持 OCR 搜索，体验极差。故删除，不知道以后还有没有时间搞。</p>
-<h3 id="3-rust"><a class="toclink" href="../../2026/02/21/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#3-rust">3. Rust 加密工具 ▶️</a></h3>
+<h3 id="3-rust"><a class="toclink" href="../../2026/02/22/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#3-rust">3. Rust 加密工具 ▶️</a></h3>
 <p>上午做完了教程了的命令行 <code>minigrep</code> 工具，程序很简单，预估 <code>ciphery</code> 要用到的东西会很多，暂时搁置。</p>
 <p>然后去看闭包，头炸了🤯</p>
-<h3 id="4"><a class="toclink" href="../../2026/02/21/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#4">4. 日记</a></h3>
+<h3 id="4"><a class="toclink" href="../../2026/02/22/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6/#4">4. 日记</a></h3>
 <p>不知道是不是可以把以前的日记加进来🤔🤔🤔？<br />
 什么时候做一做。</p>
     
