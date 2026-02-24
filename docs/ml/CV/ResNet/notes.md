@@ -29,11 +29,11 @@ The **depth** of representations is of central importance for many visual recogn
 low/mid/highlevel features: 在图像识别任务中，神经网络的不同层会学习到不同抽象程度的特征。浅层通常**学习边缘、纹理等低级特征**；中间层学习到**部分对象结构**等中级特征；深层则学习到**更抽象、更具语义信息**的高级特征，例如识别出完整的物体。
 classifier: 网络的最终层
 end-to-end: 意味着整个网络从输入原始数据（如图像）到输出最终结果（如分类标签）是一个**完整的、连续的系统**，中间**无需人工干预或分阶段处理**
-随着网络深度的增加，​​特征的“层次”得到丰富​​：网络能够学习到更多样化、更复杂、更抽象的特征表示。==每一层都可以在前一层的基础上提取更高级别的语义信息。==
+随着网络深度的增加，​​特征的“层次”得到丰富​​：网络能够学习到更多样化、更复杂、更抽象的特征表示。**每一层都可以在前一层的基础上提取更高级别的语义信息。**
 
 ### 1.2 深度
 > Recent evidence [41, 44] reveals that network depth is of crucial importance
-> ==深度很重要==
+> **深度很重要**
 
 ### 1.3 归一化解决梯度消失/梯度爆炸
 > An obstacle to answering this question was the notorious problem of vanishing/exploding gradients [1, 9] 
@@ -43,7 +43,7 @@ end-to-end: 意味着整个网络从输入原始数据（如图像）到输出�
 
 Normalized Initialization（归一化初始化）：归一化初始化是指在训练神经网络之前，对**网络的权重进行精心设置，使其服从特定的分布（通常是均值为0，方差为特定值的正态分布或均匀分布）**。这样做的目的是确保在网络的前向传播和反向传播过程中，各层激活值的**方差**和**梯度的方差**保持在一个合理的范围内，避免它们**过大或过小**。
 
-==需要精心设置初始化权重，例如：如果权重初始值很大，对于sigmoid这种函数，很容易进入饱和区==
+**需要精心设置初始化权重，例如：如果权重初始值很大，对于sigmoid这种函数，很容易进入饱和区**
 
 Intermediate Normalization Layers（中间归一化层）：中间归一化层是指在神经网络的**中间层中插入的特殊层**，它们对该层的**输入进行归一化处理**。最著名的例子是**​​Batch Normalization (BN)​**​。
 ![alt text](image.png)
@@ -85,7 +85,7 @@ Intermediate Normalization Layers（中间归一化层）：中间归一化层�
 ### 1.6 什么是shortcut
 这根飞线就是shortcut
 ![alt text](image-1.png)
-具有“shortcut connections(快捷链接)”的“feedforward neuron network(前馈神经网络)”，可以“skip one or more layers(跨越多层)”，本论文中仅执行恒等映射(identity mapping)，==不会引入额外参数，也不会增加计算复杂度==
+具有“shortcut connections(快捷链接)”的“feedforward neuron network(前馈神经网络)”，可以“skip one or more layers(跨越多层)”，本论文中仅执行恒等映射(identity mapping)，**不会引入额外参数，也不会增加计算复杂度**
 
 
 ## II. Part2. Realted Work
@@ -95,20 +95,20 @@ Intermediate Normalization Layers（中间归一化层）：中间归一化层�
 
 - **Residual Vector and Origin Vector**
   1. 在深度学习时代，**origin vector**可能是 CNN 的某一层特征 patch（512 维）
-  2. “CNN某一层特征patch”可以理解为==某一层输出张量中，某一空间位置 (i, j) 上所有通道的值组成的 C 维向量。==
+  2. “CNN某一层特征patch”可以理解为**某一层输出张量中，某一空间位置 (i, j) 上所有通道的值组成的 C 维向量。**
   3. **residual vector**: 当你有一个“字典（dictionary）”或者“聚类中心（cluster center）”时，一个原始向量不直接编码，而是计算它相对于某个中心的差值（residual）：$\mathbf{r}=\mathbf{x}-\mathbf{c}$
   $\mathbf{x}$=原始向量
   $\mathbf{c}$=字典中的一个中心（也叫 visual word、codeword）
   $\mathbf{r}$=residual vector（残差向量）
-  这与Residual Network一样，==编码“变化量”比编码“整体映射”更容易。==
-  ==论文作者想说明：ResNet 的思想不是凭空出现，而是在传统视觉里已经验证过“残差比原始表示更好”。==
+  这与Residual Network一样，**编码“变化量”比编码“整体映射”更容易。**
+  **论文作者想说明：ResNet 的思想不是凭空出现，而是在传统视觉里已经验证过“残差比原始表示更好”。**
 
 - VLAD（Vector of Locally Aggregated Descriptors）
   VLAD 的核心就是：对每个特征 x，找到它最近的中心 c，然后**把“残差向量 (x − c)”累加起来，作为图像的特征。**
   公式（概念性的）：
-  \[
-  VLAD = \sum_{x \in \text{image}} (x - c(x))
-  \]
+  
+  $$\text{VLAD} = \sum_{x \in \text{image}} (x - c(x))$$
+  
   其中 c(x) 是 x 最接近的 cluster center。
   **图像中的所有 x 的残差向量被聚合在一起 → 得到全图的向量表示。**
 
@@ -152,8 +152,10 @@ Intermediate Normalization Layers（中间归一化层）：中间归一化层�
 
 ### 3.3 写法的疑惑
 > We adopt residual learning to every few stacked layers. A building block is shown in Fig. 2. Formally, in this paper we consider a building block defined as:
-$$y = F(x, {W_i}) + x$$
-Here $\mathbf{x}$ and $\mathbf{y}$ are the input and output vectors of the layers considered. The function $F(x; \{W_i\})$ represents the residual mapping to be learned. Forthe example in Fig. 2 that has two layers, $F=W_2\sigma(W_1 x)$ in which $\sigma$ denotes ReLU [29] and the biases are omitted for simplifying notations. The operation $F + x$ is performed by a shortcut connection and element-wise addition. We adopt the second nonlinearity after the addition (i.e., $\sigma(y)$, see Fig. 2)
+
+> $$y = F(x, {W_i}) + x$$
+
+> Here $\mathbf{x}$ and $\mathbf{y}$ are the input and output vectors of the layers considered. The function $F(x; \{W_i\})$ represents the residual mapping to be learned. Forthe example in Fig. 2 that has two layers, $F=W_2\sigma(W_1 x)$ in which $\sigma$ denotes ReLU [29] and the biases are omitted for simplifying notations. The operation $F + x$ is performed by a shortcut connection and element-wise addition. We adopt the second nonlinearity after the addition (i.e., $\sigma(y)$, see Fig. 2)
 >
 > 我们对每几个堆叠层采用残差学习。图2展示了一个构建模块的示意图。形式上，本文考虑的构建模块定义为：
 $y = F(x, {W_i}) + x$
@@ -165,8 +167,8 @@ $y = F(x, {W_i}) + x$
   而且，输入张量摊平成一个长向量 $x_{\text{flat}}$，然后卷积核展开成一个稀疏大矩阵 $W_{\text{conv}}$，然后进行运算$y = x_{\text{flat}}W_{\text{conv}}$在数学上是严格等价的
 
 - shortcut 的加法要求两边维度严格一致。因此 ResNet 的设计必须保证 F(x) 的输出和 x 有同样的 shape。
-  例如当输入/输出通道数改变时，可能出现维度不匹配的情况，=="we can perform a linear projection(线性投影) Ws by the shortcut connections to match the dimensions:"==
-  $$\mathbf{y} = \mathcal{F}(\mathbf{x};\{W_i\})+W_s \mathbf{x}$$
+  例如当输入/输出通道数改变时，可能出现维度不匹配的情况，**"we can perform a linear projection(线性投影) Ws by the shortcut connections to match the dimensions:"**
+  $\mathbf{y} = \mathcal{F}(\mathbf{x};\{W_i\})+W_s \mathbf{x}$
 
 
 ### 3.4 F建立在多个卷积层以及BN, ReLU上
@@ -180,16 +182,9 @@ $y = F(x, {W_i}) + x$
   * 被归纳为一个函数 F
 
 - 为什么 F(x) 不应该只有一层（single-layer residual block）
-  \[
-  y = W_1 x + x
-  \]
-
+  $y = W_1 x + x$
   如果你把多层这样的 block 堆起来：
-
-  \[
-  y = W_2(W_1 x + x) + (W_1 x + x)
-  \]
-
+  $y = W_2(W_1 x + x) + (W_1 x + x)$
   整个网络将趋近于**线性变换的叠加组合**，非线性不足。
   即使有 ReLU，也太弱了。
 
@@ -240,7 +235,7 @@ $y = F(x, {W_i}) + x$
   对 ImageNet 的 RGB 像素做 PCA，得到 **3 个主成分方向，对每张训练图像沿这 3 个方向随机扰动颜色**
 
   > 对颜色做一个随机的旋转/扰动，让图像的颜色更丰富，防止模型只记住某种特定的颜色模式。
-- ==数据增强==
+- **数据增强**
   是指对训练图像做一些“结构保持但外观变化”的操作，**使模型更加鲁棒，避免过拟合。**
   典型的数据增强包括：
 
@@ -256,19 +251,17 @@ $y = F(x, {W_i}) + x$
     * PCA color augmentation（AlexNet）
     * hue jitter、color jitter
 
-- ==BN==
+- **BN**
   * BN的位置：conv后，ReLU前：conv $\rightarrow$ BN $\rightarrow$ ReLU
-  * ==深度网络中，每层输入分布不断变化，导致训练难==, BN 让每层的输入都保持“标准化”：
-  \[
-  x_{norm} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}
-  \] 
+  * **深度网络中，每层输入分布不断变化，导致训练难**, BN 让每层的输入都保持“标准化”：
+  $x_{norm} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}$
   * BN可以加快收敛速度（Learning rate更大），防止overfitting（因为增加了噪声）
 
-- ==什么叫 “train … from scratch”？还能不从头吗？==
+- **什么叫 “train … from scratch”？还能不从头吗？**
   * 从头开始，即我们不适用预训练权重，随机初始化：即：$W \sim \mathcal{N}(0, \sigma^2)$
   * 不从头开始，叫 **fine-tuning（迁移学习）**，使用 ImageNet 上别人训练好的权重，然后在自己的网络上微调。微调通常比从头训练效果更好、收敛更快、算力需求更低
   
-- ==weight decay==
+- **weight decay**
   * weight decay 就是 **L2 正则化**。在损失函数中加入：
   $L_{total} = L_{data} + \lambda ||W||^2$
   其中 λ=0.0001。

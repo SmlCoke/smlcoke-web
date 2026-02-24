@@ -120,8 +120,11 @@ Transformer最初是用来处理自然语言（文本）的，输入是一串单
     *   **细节：** 作者使用的是标准的**可学习的1D位置编码**。尽管图片是2D的，但实验表明直接用1D序列号（1, 2, 3...196）效果就已经很好了，不需要复杂的2D坐标编码（附录D.4有详细讨论）。
 
 因此，我们向 Encoder 传入的 Sequence 为：
+
 $$\mathbf{z}_0 = [\mathbf{x}_{\text{class}};\, \mathbf{x}_{p}^{1}\mathbf{E};\, \mathbf{x}_{p}^{2}\mathbf{E};\, \mathbf{x}_{p}^{3}\mathbf{E};\, \cdots \mathbf{x}_{p}^{N}\mathbf{E};\,] + \mathbf{E}_{\text{pos}}$$
+
 其中：
+
 $$\mathbf{E} \in \mathbb{R}^{P^2 \cdot C} \times D, \mathbf{E}_{\text{pos}} \in \mathbb{R}^{(N+1) \times D}$$
 
 #### 第三步：Encoder 内部

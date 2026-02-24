@@ -25,7 +25,9 @@
 
 ### 2.3 Output Size Calculation
 假设输入特征图大小为 $W \times H$，滤波器大小为 $F \times F$，步长为 $S$，填充为 $P$。则输出尺寸为：
+
 $$W_{out} = \lfloor \frac{W - F + 2P}{S} \rfloor + 1$$
+
 $$H_{out} = \lfloor \frac{H - F + 2P}{S} \rfloor + 1$$
 
 ### 2.4 Feature Map

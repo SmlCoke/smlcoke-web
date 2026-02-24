@@ -170,9 +170,7 @@ Each grid cell predicts B bounding boxes and confidence scores for those boxes. 
 
 2️⃣ $\text{IOU}^{truth}_{pred}$
 
-\[
-\text{IOU} = \frac{\text{Area of Intersection}}{\text{Area of Union}}
-\]
+$$\text{IOU} = \frac{\text{Area of Intersection}}{\text{Area of Union}}$$
 
 * 衡量预测框和真实框的重合程度
 * ∈ [0, 1]
@@ -207,10 +205,8 @@ Each grid cell predicts B bounding boxes and confidence scores for those boxes. 
 1. class 是什么？
    1. 这里的 **class** 指的是：**目标检测数据集中的“语义类别”**
    2. 如果数据集有 **C 个类别**，那么：
-      **每个 grid cell 会输出**：
-      \[
-      Pr(Class_1|Object), \dots, Pr(Class_C|Object)
-      \]
+      **每个 grid cell 会输出**：$Pr(Class_1|Object), \dots, Pr(Class_C|Object)$
+      
       即：**cell 会计算出 C 中每个类别 class i 的条件概率**
 2. 为什么是条件概率？
    1. 作者明确说的是：**Pr(Class_i | Object)**而不是**Pr(Class_i)**。原因是：**YOLO 把“有没有物体”和“物体是什么类别”这两件事拆开了**。
@@ -261,10 +257,7 @@ bounding box负责：$\boxed{\text{Pr(Object)} \times \text{IOU}^{\text{truth}}_
 
 1. $\text{Confidence Loss} = \sum{(c_{\text{pred}}-c_{\text{gt}})^2}$，其中：
 2. $c_{\text{pred}}$：是网络前向传播输出的某一个 bounding box predictor 对“这个 box 的置信度”的预测值。
-   1. 也就是论文中说的：
-  \[
-  \boxed{\text{Pr(Object)} \times IOU^{\text{truth}}_{\text{pred}}}
-  \]
+   1. 也就是论文中说的：$\boxed{\text{Pr(Object)} \times IOU^{\text{truth}}_{\text{pred}}}$
    2. 图片中的每一个 grid cell，每个 grid cell 中的每一个 bounding box predictor，都会有一个自己的$c_{\text{pred}}$分数，**但是一张图片中可能只有几个grid cell有GT对应，也就是说可能一张图片中只有几个bounding box predictor的$c_{\text{pred}}$分数不为0，其余都等于0** 
 3. $c_{\text{gt}}$：是训练时人为构造的“这个 box predictor 应该预测的正确置信度”。它不是网络算出来的，而是：
    1. 由 **GT 框 + IOU 规则 + 责任分配规则**决定的
@@ -273,15 +266,10 @@ bounding box负责：$\boxed{\text{Pr(Object)} \times \text{IOU}^{\text{truth}}_
       1. 计算出该 cell 内的所有 B 个 bounding box **与 GT 的 IOU**
       2. 找到$IOU$最大的那个 bounding box
       3. 设定：
-      * 该 predictor：
-        \[
-        c_{\text{gt}} = IOU^{\text{pred box}}_{\text{GT box}}
-        \]
-      * 其余 predictor：
-        \[
-        c_{\text{gt}} = 0
-        \]
-
+      * 该 predictor：$c_{\text{gt}} = IOU^{\text{pred box}}_{\text{GT box}}$
+        
+      * 其余 predictor：$c_{\text{gt}} = 0$
+        
 因为空白bounding box太多了，所以它们的confidence下降对于Loss值的降低是非常明显的，导致真正的目标 box 在 梯度合成中 发挥的作用不明显，也就是说所即便模型没有很好地提高目标 box 的 confidence，只要它成功地把大量 no-object box 的 confidence 压低，总 loss 仍然可以持续下降。
 > 之前误以为 \(x,y,w,h\) 是直接被优化的自变量，但实际上真正被优化的是共享的卷积核和全连接层参数；\(x,y,w,h,c\) 只是这些参数在不同 grid cell 和 predictor 上的输出。由于 no-object box 数量巨大，它们在 confidence loss 上产生的大量梯度会共同作用于同一套网络参数，从而主导参数更新方向，使得网络更倾向于压低整体 confidence，而不是优先提升 object box 的 confidence。
 
@@ -370,12 +358,8 @@ $+ \sum_{i=0}^{S^2} \mathbb{1}_{i}^{\text{obj}} \sum_{c \in \text{classes}} \lef
 **YOLO 的 box 回归不是“cell-specific 学习”，而是“模式学习”**
 
 - 1️⃣ 预测 box 的不是 cell，而是共享网络参数
-  > 所有 cell 的输出：
-  > \[
-  > (x,y,w,h,c)_{i,j} = f_\theta(\text{feature at cell } i)
-  > \]
-  > 共享**同一套参数 \(\theta\)**，在不同空间位置被重复使用（卷积）
-  > 
+  > 所有 cell 的输出：$(x,y,w,h,c)_{i,j} = f_\theta(\text{feature at cell } i)$
+  > 共享**同一套参数 \(\theta\)**，在不同空间位置被重复使用（卷积） 
   > 这意味着：**只要某个视觉模式在多个 cell 出现过，那些 cell 的输出就可能产生“相似的预测行为”**
 
 - 2️⃣ 大物体 ≠ 只在一个 cell 出现
@@ -393,9 +377,8 @@ detection 领域的**经典后处理算法**。
 
 我们假设已经算出了：
 
-\[
-\text{score} = \Pr(\text{Class}_i) \times \text{IOU}
-\]
+$$\text{score} = \Pr(\text{Class}_i) \times \text{IOU}$$
+
 1. Step 0️⃣：按类别分组（通常）
   对每个类别 **单独做 NMS**（YOLO v1 原论文就是这样理解的）
 
@@ -407,10 +390,7 @@ detection 领域的**经典后处理算法**。
 
 4. Step 3️⃣：抑制重叠框
   对剩余 box：计算它们与**“当前最大框”的 IOU**
-  如果：
-  \[
-  \text{IOU} > \text{threshold} \quad (\text{如 } 0.5)
-  \]
+  如果：$\text{IOU} > \text{threshold} \quad (\text{如 } 0.5)$
    **删除这个 box**
 5. Step 4️⃣：重复
   对剩余 box，回到 Step 2，直到没有 box 为止

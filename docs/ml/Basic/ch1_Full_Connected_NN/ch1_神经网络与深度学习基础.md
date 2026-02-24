@@ -87,28 +87,28 @@ class as one-hot vector:
 #### 1️⃣ 输入
 
 输入一张图片，经过卷积或 Transformer，得到一个特征向量：
-\[
-\mathbf{h} = [h_1, h_2, h_3, \ldots, h_d]
-\]
+
+$$\mathbf{h} = [h_1, h_2, h_3, \ldots, h_d]$$
+
 
 #### 2️⃣ 全连接层（Linear Layer）
 
 将特征映射到类别数目的维度（例如 3 类）：
-\[
-\mathbf{z} = W \mathbf{h} + b
-\]
+
+$$\mathbf{z} = W \mathbf{h} + b$$
+
 这得到一个“打分向量”（logits）：
-\[
-\mathbf{z} = [z_{\text{猫}}, z_{\text{狗}}, z_{\text{鸟}}]
-\]
+
+$$\mathbf{z} = [z_{\text{猫}}, z_{\text{狗}}, z_{\text{鸟}}]$$
+
 例如 `[2.1, 0.9, -1.3]`
 
 #### 3️⃣ Softmax 层
 
 把 logits 转为概率：
-\[
-\mathbf{p} = \text{Softmax}(\mathbf{z}) = [0.70, 0.25, 0.05]
-\]
+
+$$\mathbf{p} = \text{Softmax}(\mathbf{z}) = [0.70, 0.25, 0.05]$$
+
 表示模型认为：
 
 * 猫的概率 70%
@@ -118,24 +118,20 @@ class as one-hot vector:
 #### 4️⃣ 计算损失（Loss）
 
 训练时我们知道真实标签（one-hot 向量）：
-\[
-\mathbf{y} = [1, 0, 0]
-\]
+
+$$\mathbf{y} = [1, 0, 0]$$
 
 模型输出：
-\[
-\mathbf{p} = [0.70, 0.25, 0.05]
-\]
+
+$$\mathbf{p} = [0.70, 0.25, 0.05]$$
 
 损失函数（通常是 **交叉熵 Cross-Entropy Loss**）：
-\[
-L = -\sum_i y_i \log(p_i)
-\]
+
+$$L = -\sum_i y_i \log(p_i)$$
 
 只对正确类别（猫）的概率起作用：
-\[
-L = -\log(0.70)
-\]
+
+$$L = -\log(0.70)$$
 
 训练目标：让正确类别的概率尽可能接近 1。
 
@@ -158,10 +154,13 @@ L = -\log(0.70)
 
 ### 4.4 softmax函数
 ![alt text](image-28.png)
+
 $$\text{softmax:} \quad V = \{z_i\}, z_{j}'=\frac{e^{z_j}}{\sum_{i}e^{z_i}}$$
 
 ### 4.5 Loss函数
+
 $$\text{MSE:} \quad e = \sum_{j} (\hat{y_j}-y_j')^2$$
+
 $$\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}$$
 
 **MSE VS Cross-Entropy**
