@@ -9,7 +9,7 @@
 ### YOLOv1
 
 * 每个 grid cell **直接回归 bounding box**：
-  \[(x, y, w, h)\]
+  $(x, y, w, h)$
 * 回归空间大，
   * 大物体：单 cell 压力过大
   * 小物体：易冲突
@@ -18,25 +18,20 @@
 ### YOLOv2
 
 * 引入 **Anchor Boxes（先验框）**
-* 网络不再预测 box 本身，而是预测 **相对于 anchor 的偏移量**：
+* 网络不再预测 box 本身，而是预测 **相对于 anchor 的偏移量**：$(t_x, t_y, t_w, t_h)$
 
-\[
-(t_x, t_y, t_w, t_h)
-\]
 
 最终 box 由：
 
-\[
-\begin{aligned}
+$$\begin{aligned}
 b_x &= \sigma(t_x) + c_x \\
 b_y &= \sigma(t_y) + c_y \\
 b_w &= p_w \cdot e^{t_w} \\
 b_h &= p_h \cdot e^{t_h}
-\end{aligned}
-\]
+\end{aligned}$$
 
-* \((p_w, p_h\))：anchor 宽高
-* \((c_x, c_y\))：grid cell 左上角
+* $(p_w, p_h)$：anchor 宽高
+* $(c_x, c_y)$：grid cell 左上角
 
 📌 **效果**：
 
@@ -47,16 +42,10 @@ b_h &= p_h \cdot e^{t_h}
 
 ## II. Anchor 的来源：K-means 聚类（数据驱动）
 
-* 对训练集 GT box 的 \((w, h)\) 做 K-means
-* 距离度量：
-
-\[
-d(box, centroid) = 1 - IOU
-\]
+* 对训练集 GT box 的 $(w, h)$ 做 K-means
+* 距离度量：$d(box, centroid) = 1 - IOU$
 
 📌 Anchor ≈ 数据集中最常见的物体形状（先验）
-
-
 
 ## III. “责任分配”机制的变化
 
@@ -79,9 +68,9 @@ d(box, centroid) = 1 - IOU
 
 ## IV. Bounding box 参数化改进（稳定训练）
 
-* 使用 \(\sigma(t_x), \sigma(t_y)\)：
+* 使用 $\sigma(t_x), \sigma(t_y)$：
   * 限制中心点在 cell 内（0,1）
-* 使用 \(e^{t_w}, e^{t_h}\)：
+* 使用 $e^{t_w}, e^{t_h}$：
 
   * 保证宽高为正
   * 相对缩放更稳定

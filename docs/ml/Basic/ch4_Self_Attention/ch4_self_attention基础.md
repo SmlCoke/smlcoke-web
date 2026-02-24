@@ -49,7 +49,7 @@
 
 **如果我们需要考虑一整个sequence作为一个window进入FC呢？开一个巨大的window意味着FC的参数量很大，同时容易Overfitting**
 
-==重要引入：Self Attention==
+**重要引入：Self Attention**
 ![alt text](image-8.png)
 即引入一个self-attention层，并且，我们可以像CNN中堆叠卷积层一样堆叠多个self-attention层：
 ![alt text](image-9.png)
@@ -69,7 +69,8 @@
     计算逻辑：
        1. 输入向量分别通过权重矩阵$\mathbf{W}^q$、$\mathbf{W}^k$得到 **查询(query)** 向量 $\mathbf{q}$、**键(key)** 向量$\mathbf{k}$；
        2. 注意力得分$\alpha$由$\mathbf{q}$和$\mathbf{k}$的点积直接计算：
-    $$\alpha = \mathbf{q} \cdot \mathbf{k}$$
+    
+       $$\alpha = \mathbf{q} \cdot \mathbf{k}$$
 
 
     2. 加性注意力（Additive Attention）
@@ -77,6 +78,7 @@
        1. 输入向量同样通过$\mathbf{W}^q$、$\mathbf{W}^k$得到$\mathbf{q}$、$\mathbf{k}$；
        2. 先将$\mathbf{q}$和$\mathbf{k}$相加，经过$\text{tanh}$激活函数；
        3. 再通过 **权重矩阵** $\mathbf{W}$变换得到注意力得分$\alpha$（过程可表示为）：
+        
         $$\alpha = \mathbf{W} \cdot \text{tanh}(\mathbf{q} + \mathbf{k})$$
 
 

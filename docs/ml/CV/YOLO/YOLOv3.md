@@ -86,10 +86,8 @@
 但仍然：
 
 * 计算 objectness loss
-* 目标是：
-  \[
-  \text{objectness} = 0
-  \]
+* 目标是：$\text{objectness} = 0$
+  
 
 即：
 
@@ -103,20 +101,14 @@
 
 - 单个类别的 BCE 公式
     对某个类别 (c)：真实标签：\(y_c \in {0,1}\)，预测概率：\(p_c \in (0,1\))，则：
-    \[
-    \mathcal{L}_{\text{BCE}}(y_c, p_c)
-    = - \left[ y_c \log p_c + (1-y_c)\log(1-p_c) \right]
-    \]
-    如果 \(y_c = 1\)，你就希望 \(p_c \to 1\)；如果 \(y_c = 0\)，你就希望 \(p_c \to 0\)
+    $\mathcal{L}_{\text{BCE}}(y_c, p_c) = - \left[ y_c \log p_c + (1-y_c)\log(1-p_c) \right]$
+  
+    如果 $y_c = 1$，你就希望 $p_c \to 1$；如果 $y_c = 0$，你就希望 $p_c \to 0$
 
 - 多类别时的 BCE（YOLOv3 实际用的）
     对一个 box，有 (C) 个类别：
-
-    \[
-    \mathcal{L}_{\text{class}}
-    = \sum_{c=1}^{C}
-    \mathcal{L}_{\text{BCE}}(y_c, p_c)
-    \]
+    
+    $\mathcal{L}_{\text{class}} = \sum_{c=1}^{C} \mathcal{L}_{\text{BCE}}(y_c, p_c)$
 
     **逐类独立求和**，没有归一化，没有类别之间的“竞争”
 
@@ -125,17 +117,15 @@
 也就是说：**一个 bounding box 可以同时属于多个类别**，每个类别是一个**独立的二分类问题**
 
 > **传统做法：softmax（单标签分类）**
-softmax 的隐含假设是：
-\[
-\sum_{c=1}^C p_c = 1
-\]
+softmax 的隐含假设是：$\sum_{c=1}^C p_c = 1$
+
 也就是：**一个框只能属于一个类别**
 例如：这个框要么是 `Person`,要么是 `Dog`,不可能同时是两个,这在 **VOC / COCO 的早期版本** 里大致成立。
 **YOLOv3 的做法：multilabel + sigmoid**
 YOLOv3 改成：每个类别 **一个 sigmoid**，各类别 **互不竞争**
-\[
-p_c = \sigma(z_c), \quad c = 1,\dots,C
-\]
+
+$p_c = \sigma(z_c), \quad c = 1,\dots,C$
+
 $z_c$是线性分类器的原始输出，范围是$(-\infty, +\infty)$
 意味着：一个 box 可以同时满足，`Person = 1`，`Woman = 1`，`Adult = 1`
 

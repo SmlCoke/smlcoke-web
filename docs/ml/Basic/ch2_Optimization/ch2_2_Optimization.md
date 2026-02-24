@@ -25,12 +25,11 @@ $H$是负定矩阵（所有特征值小于0），则$v^T H v$ 恒 $<0$
 ![alt text](image-4.png)
 g: 一阶导数/梯度
 H: Hessian矩阵：
-$$
-\begin{bmatrix}
+
+$$\begin{bmatrix}
 \frac{\partial L^2}{\partial ^2 w_1} & \frac{\partial L^2}{\partial w_1 \partial w_2} \\
 \frac{\partial L^2}{\partial w_1 \partial w_2} & \frac{\partial L^2}{\partial ^2 w_2}
-\end{bmatrix}
-$$
+\end{bmatrix}$$
 
 **解决sddle point**
 
