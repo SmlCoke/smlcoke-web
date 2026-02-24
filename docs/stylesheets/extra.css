@@ -102,10 +102,10 @@
 .section-hero.cv-hero {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
-.section-hero.me-de-hero {
+.section-hero.me-hero {
   background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
 }
-.section-hero.me-ft-hero {
+.section-hero.me-ss-hero {
   background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
 }
 
@@ -244,6 +244,14 @@
 .note-card.indigo { border-left: 4px solid #6366f1; }
 .note-card.indigo:hover { background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); }
 .note-card.indigo::after { color: #6366f1; }
+
+.note-card.yellow { border-left: 4px solid #eab308; }
+.note-card.yellow:hover { background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%); }
+.note-card.yellow::after { color: #eab308; }
+
+.note-card.gray { border-left: 4px solid #6b7280; }
+.note-card.gray:hover { background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); }
+.note-card.gray::after { color: #6b7280; }
 
 /* Section subtitle divider */
 .section-subtitle {
