@@ -3,7 +3,7 @@
 这是 SmlCoke 的第一个 Rust 项目。通过 WebAssembly 技术，这段加解密逻辑直接运行在你的浏览器中，**不经过服务器**，极速且隐私。
 
 <div id="crypto-app" style="background: #fdfdfd; padding: 25px; border: 1px solid #ddd; border-radius: 15px; margin-top: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); color: #333;">
-    <h3 style="margin-top: 0; color: #1980a8;">凯撒密码 (Caesar Cipher)</h3>
+    <h3 style="margin-top: 0; color: #1980a8;">CipherY</h3>
     
     <div style="margin-bottom: 15px;">
         <label style="font-weight: bold; display: block; margin-bottom: 5px;">算法：</label>
