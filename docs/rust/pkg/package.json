@@ -1,0 +1,15 @@
+{
+  "name": "ciphery",
+  "type": "module",
+  "version": "0.2.0",
+  "files": [
+    "ciphery_bg.wasm",
+    "ciphery.js",
+    "ciphery.d.ts"
+  ],
+  "main": "ciphery.js",
+  "types": "ciphery.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
