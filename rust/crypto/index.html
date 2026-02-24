@@ -1211,12 +1211,14 @@
         <label style="font-weight: bold; display: block; margin-bottom: 5px;">算法：</label>
         <select id="algo" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
             <option value="caesar">Caesar</option>
+            <option value="rot13">ROT13</option>
+            <option value="vigenere">Vigenere</option>
         </select>
     </div>
 
     <div style="margin-bottom: 15px;">
-        <label style="font-weight: bold; display: block; margin-bottom: 5px;">密钥 (Shift 偏移量)：</label>
-        <input type="number" id="key" value="3" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+        <label style="font-weight: bold; display: block; margin-bottom: 5px;">密钥：</label>
+        <input type="text" id="key" value="3" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;" placeholder="Caesar/ROT13 填数字，Vigenere 填字母如 LEMON">
     </div>
 
     <div style="margin-bottom: 15px;">
