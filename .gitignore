@@ -1,2 +1,5 @@
 # main 分支不必同步 site/ 目录，因为它是由 docs/ 目录通过 MkDocs 构建生成的，且通常不需要手动编辑。我们只需要在 main 分支中维护 docs/ 目录的内容，构建后生成的 site/ 目录会自动更新并部署到 GitHub Pages 上。
 site/
+
+# 开发笔记
+dev/

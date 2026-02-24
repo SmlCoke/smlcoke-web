@@ -24,7 +24,7 @@ markdown_extensions:
 
 # 引入自定义 CSS（用于背景动画和按钮）
 extra_css:
-  - stylesheets/extra.css
+  - stylesheets/extra.css?v=20260224 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
   - https://unpkg.com/katex@0/dist/katex.min.css # 添加 KaTeX CSS
 
 extra_javascript:
@@ -37,9 +37,8 @@ nav:
   - 首页: index.md
   - 博客: blog/ # 博客插件会自动接管这个目录
   - 微电子: 
-    - 信号与系统:
-      - 常系数线性微分方程: me/SS/Linear_Differential_Equations/index.md
-      - 傅里叶变换: me/SS/FT/index.md
+    - me/index.md
+    - 信号与系统: me/SS/index.md
     - 数字芯片设计术语和流程: me/DIC/Glossary.md
     - Verilog HDL 基础: me/verilog/Study_note.md
   - 机器学习:
