@@ -13,6 +13,10 @@
         <link rel="canonical" href="https://smlcoke.com/ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/">
       
       
+        <link rel="prev" href="../../">
+      
+      
+        <link rel="next" href="../../ch2_Optimization/ch2_2_Optimization/">
       
       
         
@@ -23,7 +27,7 @@
     
     
       
-        <title>Nerual Network and Deep Learning Basics - SmlCoke Home</title>
+        <title>全连接神经网络 - SmlCoke Home</title>
       
     
     
@@ -102,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Nerual Network and Deep Learning Basics
+              全连接神经网络
             
           </span>
         </div>
@@ -226,6 +230,8 @@
           
   
   
+    
+  
   微电子
 
         </a>
@@ -241,18 +247,23 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../../" class="md-tabs__link">
-        
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
   
   
     
   
   机器学习
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -261,17 +272,20 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../../../CV/" class="md-tabs__link">
-        
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../CV/" class="md-tabs__link">
+          
   
   
     
   
   计算机视觉
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -286,6 +300,8 @@
         <a href="../../../../rust/notes/Study/" class="md-tabs__link">
           
   
+  
+    
   
   Rust
 
@@ -390,6 +406,14 @@
   
     
     
+      
+        
+      
+        
+      
+        
+      
+    
     
     
       
@@ -440,6 +464,14 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
       
@@ -453,8 +485,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
         
           
-          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../me/SS/Linear_Differential_Equations/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -468,8 +501,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_1">
@@ -482,32 +521,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../me/SS/Linear_Differential_Equations/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    常系数线性微分方程
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -613,11 +626,47 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+  
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -631,7 +680,474 @@
   
   
 
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全连接神经网络
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全连接神经网络
+  
+
+    
+  </span>
+  
+  
+
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-basic-of-neural-network-and-deep-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. Basic of Neural Network and Deep Learning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I. Basic of Neural Network and Deep Learning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-how-to-solve-large-traninig-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. How to Solve Large Traninig Loss
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. How to Solve Large Traninig Loss">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-bias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方法一：Model bias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimization-issue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方法二：Optimization Issue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-how-to-solve-large-testing-loss-with-small-training-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. How to solve Large Testing Loss with small Training Loss
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. How to solve Large Testing Loss with small Training Loss">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overfitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        问题一：如何解决Overfitting的问题：
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="问题一：如何解决Overfitting的问题：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-biasoverfitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        所以Model bias和Overfitting存在一定矛盾
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        问题二：Mismatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-classfication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. Classfication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IV. Classfication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-regression-as-classfication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Regression as Classfication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 分类模型的整体流程：
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 分类模型的整体流程：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1️⃣ 输入
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-linear-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2️⃣ 全连接层（Linear Layer）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3️⃣ Softmax 层
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4️⃣ 计算损失（Loss）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 自回归 vs 分类：类比理解
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 softmax函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Loss函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    优化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch3_CNN/ch3_CNN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -642,9 +1158,44 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../../CV/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../CV/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -658,7 +1209,227 @@
   
   
 
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/ResNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/DenseNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/YOLO/YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/YOLO/YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/YOLO/YOLOv3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/VIT/ViT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CV/PFLD/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -670,6 +1441,12 @@
   
   
     
+    
+      
+        
+      
+        
+      
     
     
     
@@ -1142,48 +1919,32 @@ mismatch意味着：<strong>test data和Training data</strong>的分布不一样
 <h3 id="42">4.2 分类模型的整体流程：</h3>
 <p>我们以“图片分类”为例，但文本、语音也类似。</p>
 <h4 id="1">1️⃣ 输入</h4>
-<p>输入一张图片，经过卷积或 Transformer，得到一个特征向量：<br />
-[<br />
-\mathbf{h} = [h_1, h_2, h_3, \ldots, h_d]<br />
-]</p>
+<p>输入一张图片，经过卷积或 Transformer，得到一个特征向量：</p>
+<div class="arithmatex">\[\mathbf{h} = [h_1, h_2, h_3, \ldots, h_d]\]</div>
 <h4 id="2-linear-layer">2️⃣ 全连接层（Linear Layer）</h4>
-<p>将特征映射到类别数目的维度（例如 3 类）：<br />
-[<br />
-\mathbf{z} = W \mathbf{h} + b<br />
-]<br />
-这得到一个“打分向量”（logits）：<br />
-[<br />
-\mathbf{z} = [z_{\text{猫}}, z_{\text{狗}}, z_{\text{鸟}}]<br />
-]<br />
-例如 <code>[2.1, 0.9, -1.3]</code></p>
+<p>将特征映射到类别数目的维度（例如 3 类）：</p>
+<div class="arithmatex">\[\mathbf{z} = W \mathbf{h} + b\]</div>
+<p>这得到一个“打分向量”（logits）：</p>
+<div class="arithmatex">\[\mathbf{z} = [z_{\text{猫}}, z_{\text{狗}}, z_{\text{鸟}}]\]</div>
+<p>例如 <code>[2.1, 0.9, -1.3]</code></p>
 <h4 id="3-softmax">3️⃣ Softmax 层</h4>
-<p>把 logits 转为概率：<br />
-[<br />
-\mathbf{p} = \text{Softmax}(\mathbf{z}) = [0.70, 0.25, 0.05]<br />
-]<br />
-表示模型认为：</p>
+<p>把 logits 转为概率：</p>
+<div class="arithmatex">\[\mathbf{p} = \text{Softmax}(\mathbf{z}) = [0.70, 0.25, 0.05]\]</div>
+<p>表示模型认为：</p>
 <ul>
 <li>猫的概率 70%</li>
 <li>狗的概率 25%</li>
 <li>鸟的概率 5%</li>
 </ul>
 <h4 id="4-loss">4️⃣ 计算损失（Loss）</h4>
-<p>训练时我们知道真实标签（one-hot 向量）：<br />
-[<br />
-\mathbf{y} = [1, 0, 0]<br />
-]</p>
-<p>模型输出：<br />
-[<br />
-\mathbf{p} = [0.70, 0.25, 0.05]<br />
-]</p>
-<p>损失函数（通常是 <strong>交叉熵 Cross-Entropy Loss</strong>）：<br />
-[<br />
-L = -\sum_i y_i \log(p_i)<br />
-]</p>
-<p>只对正确类别（猫）的概率起作用：<br />
-[<br />
-L = -\log(0.70)<br />
-]</p>
+<p>训练时我们知道真实标签（one-hot 向量）：</p>
+<div class="arithmatex">\[\mathbf{y} = [1, 0, 0]\]</div>
+<p>模型输出：</p>
+<div class="arithmatex">\[\mathbf{p} = [0.70, 0.25, 0.05]\]</div>
+<p>损失函数（通常是 <strong>交叉熵 Cross-Entropy Loss</strong>）：</p>
+<div class="arithmatex">\[L = -\sum_i y_i \log(p_i)\]</div>
+<p>只对正确类别（猫）的概率起作用：</p>
+<div class="arithmatex">\[L = -\log(0.70)\]</div>
 <p>训练目标：让正确类别的概率尽可能接近 1。</p>
 <h3 id="43-vs">4.3 自回归 vs 分类：类比理解</h3>
 <table>
@@ -1228,11 +1989,11 @@ L = -\log(0.70)<br />
 分类预测“输入属于哪一个类别”。</p>
 </blockquote>
 <h3 id="44-softmax">4.4 softmax函数</h3>
-<p><img alt="alt text" src="../image-28.png" /><br />
-$<span class="arithmatex">\(\text{softmax:} \quad V = \{z_i\}, z_{j}'=\frac{e^{z_j}}{\sum_{i}e^{z_i}}\)</span>$</p>
+<p><img alt="alt text" src="../image-28.png" /></p>
+<div class="arithmatex">\[\text{softmax:} \quad V = \{z_i\}, z_{j}'=\frac{e^{z_j}}{\sum_{i}e^{z_i}}\]</div>
 <h3 id="45-loss">4.5 Loss函数</h3>
-<div class="arithmatex">\[\text{MSE:} \quad e = \sum_{j} (\hat{y_j}-y_j')^2$$
-$$\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}\]</div>
+<div class="arithmatex">\[\text{MSE:} \quad e = \sum_{j} (\hat{y_j}-y_j')^2\]</div>
+<div class="arithmatex">\[\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}\]</div>
 <p><strong>MSE VS Cross-Entropy</strong><br />
 <img alt="alt text" src="../image-29.png" /><br />
 <strong>Cross-Entropy不容易卡住，可以从左上角走到右下角</strong></p>
@@ -1291,7 +2052,7 @@ $$\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}\]</div>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
