@@ -65,3 +65,213 @@
   background-color: #f8f9fa;
   color: #23a6d5;
 }
+
+/* ===== Section Index Page Card Styles ===== */
+
+/* Section hero banner */
+.section-hero {
+  padding: 48px 32px;
+  border-radius: 16px;
+  margin-bottom: 32px;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -20px); }
+}
+
+/* Color themes for different sections */
+.section-hero.ml-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.section-hero.cv-hero {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+.section-hero.me-de-hero {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+.section-hero.me-ft-hero {
+  background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+}
+
+.section-hero h1 {
+  color: white !important;
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.section-hero p {
+  color: rgba(255,255,255,0.92);
+  font-size: 1.15rem;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Stats bar inside hero */
+.section-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.section-stats .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.95rem;
+}
+
+/* Card grid layout */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 4px;
+}
+
+/* Individual note card */
+.note-card {
+  display: block;
+  border-radius: 12px;
+  padding: 24px;
+  background: var(--md-default-bg-color, #ffffff);
+  border: 1px solid var(--md-default-fg-color--lightest, #e0e0e0);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  text-decoration: none !important;
+  color: inherit !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.note-card::after {
+  content: '→';
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  opacity: 0;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  border-color: transparent;
+}
+
+.note-card:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.note-card .card-icon {
+  font-size: 2.2rem;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.note-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--md-default-fg-color, #333);
+}
+
+.note-card .card-desc {
+  font-size: 0.88rem;
+  color: var(--md-default-fg-color--light, #666);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Card color variants */
+.note-card.purple { border-left: 4px solid #764ba2; }
+.note-card.purple:hover { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); }
+.note-card.purple::after { color: #764ba2; }
+
+.note-card.pink { border-left: 4px solid #ec4899; }
+.note-card.pink:hover { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); }
+.note-card.pink::after { color: #ec4899; }
+
+.note-card.blue { border-left: 4px solid #3b82f6; }
+.note-card.blue:hover { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
+.note-card.blue::after { color: #3b82f6; }
+
+.note-card.cyan { border-left: 4px solid #06b6d4; }
+.note-card.cyan:hover { background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); }
+.note-card.cyan::after { color: #06b6d4; }
+
+.note-card.green { border-left: 4px solid #22c55e; }
+.note-card.green:hover { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+.note-card.green::after { color: #22c55e; }
+
+.note-card.teal { border-left: 4px solid #14b8a6; }
+.note-card.teal:hover { background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); }
+.note-card.teal::after { color: #14b8a6; }
+
+.note-card.orange { border-left: 4px solid #f59e0b; }
+.note-card.orange:hover { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); }
+.note-card.orange::after { color: #f59e0b; }
+
+.note-card.red { border-left: 4px solid #ef4444; }
+.note-card.red:hover { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); }
+.note-card.red::after { color: #ef4444; }
+
+.note-card.indigo { border-left: 4px solid #6366f1; }
+.note-card.indigo:hover { background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); }
+.note-card.indigo::after { color: #6366f1; }
+
+/* Section subtitle divider */
+.section-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color--light, #555);
+  margin: 28px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--md-default-fg-color--lightest, #e0e0e0);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section-hero {
+    padding: 32px 20px;
+  }
+  .section-hero h1 {
+    font-size: 1.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+}

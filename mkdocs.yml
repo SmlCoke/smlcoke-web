@@ -9,6 +9,7 @@ theme:
     - navigation.tabs # 将左侧导航栏变为顶部的标签页，看起来更像官网
     - navigation.top # 添加返回顶部按钮
     - header.autohide # 页面向下滚动时自动隐藏导航栏
+    - navigation.indexes # 允许 index.md 作为分区首页
 
 # 配置插件（启用搜索和博客功能）
 plugins:
@@ -41,8 +42,22 @@ nav:
       - 傅里叶变换: me/SS/FT/index.md
     - 数字芯片设计术语和流程: me/DIC/Glossary.md
     - Verilog HDL 基础: me/verilog/Study_note.md
-  - 机器学习: ml/Basic/index.md
-  - 计算机视觉: ml/CV/index.md
+  - 机器学习:
+    - ml/Basic/index.md
+    - 全连接神经网络: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
+    - 优化: ml/Basic/ch2_Optimization/ch2_2_Optimization.md
+    - CNN: ml/Basic/ch3_CNN/ch3_CNN.md
+    - Self-Attention: ml/Basic/ch4_Self_Attention/ch4_self_attention基础.md
+    - Transformer: ml/Basic/ch5_Transformer/ch5_transformer基础.md
+  - 计算机视觉:
+    - ml/CV/index.md
+    - ResNet: ml/CV/ResNet/notes.md
+    - DenseNet: ml/CV/DenseNet/notes.md
+    - YOLO v1: ml/CV/YOLO/YOLO.md
+    - YOLO v2: ml/CV/YOLO/YOLOv2.md
+    - YOLO v3: ml/CV/YOLO/YOLOv3.md
+    - ViT: ml/CV/VIT/ViT.md
+    - PFLD: ml/CV/PFLD/PFLD.md
   - Rust:
     - Rust 学习笔记: rust/notes/Study.md
     - Rust 加密/解密在线工具: rust/crypto/
