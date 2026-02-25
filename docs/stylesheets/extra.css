@@ -92,7 +92,7 @@ body, .md-typeset {
 /* 确保只选中行内代码，不影响大代码块 */
 .md-typeset p > code, .md-typeset li > code, .md-typeset table code, .md-typeset h2 > code, .md-typeset h3 > code {
   background-color: #f3f5f7;       /* 高级灰底色 */
-  padding: 0.25em 0.5em;           /* 舒适的内边距 */
+  padding: 0.2em 0.4em;           /* 舒适的内边距 */
   border-radius: 6px;              /* 圆角 */
   border: 1px solid #e2e8f0;       /* 极细的灰色边框，增加质感 */
   color: #e73c7e;                  /* 保持文字有一点亮色，方便扫视 */
@@ -240,6 +240,9 @@ body, .md-typeset {
 .section-hero.me-ss-hero {
   background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
 }
+.section-hero.ai-hero {
+  background: linear-gradient(135deg, #f953c6 0%, #b91d73 100%);
+}
 
 .section-hero h1 {
   color: white !important;
@@ -248,6 +251,11 @@ body, .md-typeset {
   margin: 0 0 12px 0;
   position: relative;
   z-index: 1;
+}
+
+/* 分区首页 hero 中的 H1 不显示底部渐变装饰线 */
+.md-typeset .section-hero h1::after {
+  display: none;
 }
 
 .section-hero p {
