@@ -2048,12 +2048,13 @@ feature map: 卷积层或池化层输出的多通道张量</p>
    思路：<strong>训练时随机“删除”某些残差层，让网络变得更浅 → 训练更稳定</strong><br />
    具体做法是：<br />
     在训练某一批输入时：<br />
-<code>with probability p: 保留该 residual block
-    with probability (1 – p): 跳过该 block（只用 shortcut 直接传递）</code> <br />
+    <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>with probability p: 保留该 residual block
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>with probability (1 – p): 跳过该 block（只用 shortcut 直接传递）
+</span></code></pre></div><br />
     这样使得梯度更“短”，更可靠！<br />
-    ==stochastic depth的提出直接证明了：ResNet中很多深层残差块几乎不重要，被跳过也不影响性能。==</li>
+<mark>stochastic depth的提出直接证明了：ResNet中很多深层残差块几乎不重要，被跳过也不影响性能。</mark></li>
 <li><strong>DenseNet</strong><br />
-   🟢 ==“既然 ResNet 中有很多冗余层，那我们就直接把有用信息保存下来，让所有层共享特征”==</li>
+   🟢 <mark>“既然 ResNet 中有很多冗余层，那我们就直接把有用信息保存下来，让所有层共享特征”</mark></li>
 </ol>
 <h3 id="22-goolgenet">2.2 GoolgeNet</h3>
 <blockquote>
@@ -2078,7 +2079,7 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 <p>However, the identity function and the output of Hℓ are combined by summation, which may impede the information flow in the network.</p>
 <p>残差网络（ResNet）的一个优势在于梯度能够通过恒等映射直接从后续层流向浅层。然而，恒等函数与<span class="arithmatex">\(H_{\ell}\)</span>的输出通过求和相结合，这种操作可能会阻碍网络中的信息流动。</p>
 </blockquote>
-<p>==什么叫做阻碍信息流？为什么会阻碍？==<br />
+<p><mark>什么叫做阻碍信息流？为什么会阻碍？</mark><br />
 1. <span class="arithmatex">\(\mathbf{x}_\ell = H_l(\mathbf{x}_{\ell-1}) + \mathbf{x}_{\ell-1}\)</span><br />
    这相当于把两个feature map直接压缩合并为一个，但是 <strong>“合并”的动作本质上会丢掉一部分细节，导致早期特征信息被掩盖。</strong> 例如把“素描图（边缘）”和“纹理图”叠在一起混成一张新图，这显然是不合理的。（这就是 DenseNet 使用 concat（拼接）而不是 add（加法） 的根本原因。）</p>
 <h3 id="33-dense-connectivity">3.3 Dense connectivity</h3>
@@ -2117,7 +2118,7 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 <ol>
 <li>
 <p>后面的 layer 能够看到前面所有 feature maps，它们像一个“知识库”（<strong>collective knowledge</strong>）。当前 layer 的 feature map 也会被写入这个“知识库”供后面使用。<br />
-==DenseNet好就好在：即便每层只新增 12 个通道（k=12），效果仍然很好==</p>
+<mark>DenseNet好就好在：即便每层只新增 12 个通道（k=12），效果仍然很好</mark></p>
 </li>
 <li>
 <p>DenseNet 不需要“重复学习”</p>
@@ -2200,7 +2201,7 @@ $<span class="arithmatex">\([x_0, x_1, x_2, ..., x_{\ell-1}]\)</span>$<br />
 <p>"refers to the concatenation of the feature-maps produced in layers <span class="arithmatex">\(0 \dots l-1\)</span>." [cite: 134]<br />
 "we concatenate the multiple inputs ... into a single tensor."</p>
 </blockquote>
-<p>==这是 DenseNet 和 ResNet 最大的区别。==</p>
+<p><mark>这是 DenseNet 和 ResNet 最大的区别。</mark></p>
 <ul>
 <li><strong>ResNet:</strong> 使用 <strong>相加 (Summation)</strong>。<span class="arithmatex">\(H_l(x_{l-1}) + x_{l-1}\)</span>。这要求输入的 Channel 数和输出的 Channel 数通常要一致（<strong>或者是为了相加而强行对齐</strong>）。</li>
 <li><strong>DenseNet:</strong> 使用 <strong>拼接 (Concatenation)</strong>。</li>
@@ -2293,23 +2294,23 @@ $<span class="arithmatex">\([x_0, x_1, x_2, ..., x_{\ell-1}]\)</span>$<br />
 <h2 id="v-dicussion">V. Dicussion</h2>
 <h3 id="51-classifier">5.1 classifier对前面所有层的直接监督</h3>
 <blockquote>
-<p>a single classifier on top of the network provides direct supervision to all layers through at most two or three transition layers</p>
+<p>a single classifier on top of the network provides direct supervision to all layers through at most two or three transition layers<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Loss
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a> ↑
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Transition layer
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a> ↑
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Dense Block L
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a> ↑
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Dense Block L-1 （直接输入前层输出）
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a> ↑
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Dense Block L-2 （直接输入更前层输出）
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a> ↑
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>...
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a> ↑
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Input Image Feature Map
+</span></code></pre></div><br />
+虽然不同DenseBlock之间没有直接通路，但是DenseBolock之内所有层与前驱层都有直接通路。因此这样的话，最后一层想要看到第一层就只用经过几层Transitional Layer。</p>
 </blockquote>
-<pre><code>Loss
- ↑
-Transition layer
- ↑
-Dense Block L
- ↑
-Dense Block L-1 （直接输入前层输出）
- ↑
-Dense Block L-2 （直接输入更前层输出）
- ↑
-...
- ↑
-Input Image Feature Map
-</code></pre>
-<p>虽然不同DenseBlock之间没有直接通路，但是DenseBolock之内所有层与前驱层都有直接通路。因此这样的话，最后一层想要看到第一层就只用经过几层Transitional Layer。</p>
 
 
 
@@ -2365,7 +2366,7 @@ Input Image Feature Map
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

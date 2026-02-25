@@ -13,8 +13,10 @@
         <link rel="canonical" href="https://smlcoke.com/blog/2026/02/23/date260223/">
       
       
-        <link rel="prev" href="../date260224/">
+        <link rel="prev" href="../../22/date260222/">
       
+      
+        <link rel="next" href="../../24/date260224/">
       
       
         
@@ -1299,9 +1301,9 @@
 <li>Rust 的加密工具 <code>ciphery</code> 已经完成了基本的功能开发（虽然目前只支持 <code>Caesar</code> 加密）。</li>
 <li>成功 Release，这个比较简单。</li>
 <li>然后再利用 WASM 技术将其部署到了本网站，期间发现 Rust 的 <br />
-<code>rust
-   #[cfg(target_arch = "wasm32")]
-   #[wasm_bindgen]</code><br />
+   <div class="language-rust highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#[cfg(target_arch = </span><span class="s">&quot;wasm32&quot;</span><span class="cp">)]</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#[wasm_bindgen]</span>
+</span></code></pre></div><br />
    条件编译功能非常强大，可以<strong>在同一份代码中针对不同的目标平台编写不同的实现</strong>，非常方便。缓过神来才发现这一点跟之前的自动编写测试 <code>#[cfg(test)]</code> 如出一辙。</li>
 <li>测试好后利用 <code>wasm-pack build --target web</code> 命令将 Rust 代码编译成 WebAssembly 模块。</li>
 <li>将 <code>pkg</code> 文件夹中的文件防止 web 项目，加密工具主页由 crypto.md 提供。内置一个简单的 UI。</li>
@@ -1366,7 +1368,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
       <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
