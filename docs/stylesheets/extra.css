@@ -1,3 +1,135 @@
+/* =========================================
+   1. 字体替换：端正极客中文字体 + Maple Mono
+   ========================================= */
+/* 引入鸿蒙字体 CDN */
+@import url('https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css');
+/* 引入 Maple Mono，极客专属等宽字体 */
+@import url('https://fastly.jsdelivr.net/npm/maple-mono@6.4.0/css/maple-mono.min.css');
+
+/* 全局正文字体：端正、现代、极客 */
+body, .md-typeset {
+  font-family: "HarmonyOS_Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* 代码块和行内代码使用 Maple Mono，并开启全部连字 (Ligatures) 特效！ */
+.md-typeset code, .md-typeset pre, .md-typeset kbd {
+  font-family: "Maple Mono", monospace !important;
+  font-variant-ligatures: normal !important;
+  font-feature-settings: "liga" 1, "calt" 1 !important; /* 强制开启连字如 =>, !=, === */
+  font-size: 0.95em;
+}
+
+
+/* =========================================
+   3. Markdown 元素深度美化 (打造 Hexo 质感)
+   ========================================= */
+
+/* 美化一级标题：极客蓝 + 大字体 + 强烈的文字阴影 */
+.md-typeset h1 {
+  font-size: 2.6em;          /* 字体放大 */
+  font-weight: 900;          /* 极粗的字重，非常有力量感 */
+  color: #23a6d5;            /* 使用极客蓝 */
+  letter-spacing: 1.5px;     /* 字间距微微拉开 */
+  margin-bottom: 30px;
+  /* 加一层极其精致的文字阴影，让它像悬浮在页面上 */
+  text-shadow: 2px 4px 8px rgba(35, 166, 213, 0.15);
+  position: relative;
+}
+/* 给 H1 底部加一个非常炫酷的短粗渐变线条装饰 */
+.md-typeset h1::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 6px;
+  background: linear-gradient(90deg, #23a6d5, #e73c7e);
+  border-radius: 3px;
+  margin-top: 12px;
+}
+
+
+/* 美化各级小标题：加点呼吸感和底部边框 */
+.md-typeset h2 {
+  border-bottom: 2px solid #f0f2f6;
+  padding-bottom: 8px;
+  margin-top: 2em;
+  color: #1980a8; /* 标题用你的主题蓝色 */
+}
+
+.md-typeset h3 {
+  border-left: 4px solid #e73c7e; /* 左侧加一条粉色竖线装饰 */
+  padding-left: 10px;
+  margin-top: 1.5em;
+}
+
+/* 美化原生引用框 (Blockquote) */
+.md-typeset blockquote {
+  border-left: 4px solid #23a6d5;
+  background-color: #f8f9fa; /* 浅灰色背景 */
+  padding: 15px 20px;
+  margin: 1.5em 0;
+  border-radius: 0 8px 8px 0;
+  color: #555;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* 行内小代码块加上淡淡的背景色和圆角 */
+.md-typeset code {
+  background-color: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  color: #e73c7e; /* 行内代码用醒目的颜色 */
+}
+
+/* 公式稍微放大一点，更像学术论文 */
+.md-typeset .arithmatex {
+  font-size: 1.05em;
+}
+
+
+/* =========================================
+   3. 行内代码 ( `code` ) 全局圆角灰底框
+   ========================================= */
+/* 确保只选中行内代码，不影响大代码块 */
+.md-typeset p > code, .md-typeset li > code, .md-typeset table code, .md-typeset h2 > code, .md-typeset h3 > code {
+  background-color: #f3f5f7;       /* 高级灰底色 */
+  padding: 0.25em 0.5em;           /* 舒适的内边距 */
+  border-radius: 6px;              /* 圆角 */
+  border: 1px solid #e2e8f0;       /* 极细的灰色边框，增加质感 */
+  color: #e73c7e;                  /* 保持文字有一点亮色，方便扫视 */
+  font-weight: 600;                /* 稍微加粗 */
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.04); /* 微微的下凹按键感 */
+}
+
+
+/* =========================================
+   4. 大代码块 ( ``` ) 三维贴纸悬浮效果
+   ========================================= */
+/* 在 MkDocs 中，代码块的最外层容器是 .highlight */
+.md-typeset .highlight {
+  background-color: #f8f9fa;
+  border-radius: 12px;             /* 大圆角 */
+  /* 核心：极其柔和的三维阴影，模拟贴纸或悬浮窗 */
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  margin: 2.5em 0;                 /* 上下留出大片空间，悬浮感更强 */
+  border: 1px solid #e2e8f0;       /* 边缘描边，防止在纯白背景下糊成一片 */
+  transition: all 0.3s ease;       /* 给个平滑的动画时间 */
+}
+
+/* 保证内部的代码本身也贴合圆角 */
+.md-typeset .highlight pre {
+  border-radius: 12px;
+  margin: 0;
+}
+
+/* 魔法交互：当鼠标悬停在代码块上时，贴纸会进一步微微“浮起”！ */
+.md-typeset .highlight:hover {
+  transform: translateY(-4px);     /* 向上浮起 4 像素 */
+  box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -2px rgba(0, 0, 0, 0.06); /* 阴影放大变深 */
+}
+
+/* ================== 首页样式 ================== */
+
+
 /* 隐藏首页默认的标题和主内容区域多余的空白 */
 .md-main__inner {
   margin-top: 0;
@@ -66,7 +198,7 @@
   color: #23a6d5;
 }
 
-/* ===== Section Index Page Card Styles ===== */
+/* ========== Section Index Page Card Styles ========== */
 
 /* Section hero banner */
 .section-hero {
