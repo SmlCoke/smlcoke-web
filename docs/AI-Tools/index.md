@@ -15,7 +15,13 @@ hide:
 <div class="card-grid">
 
 <a class="note-card green" href="Claude-Code/">
-  <span class="card-icon">🟢</span>
+  <span class="card-icon">📠</span>
   <div class="card-title">Claude Code</div>
   <p class="card-desc">CC 的安装与使用方法</p>
+</a>
+
+<a class="note-card purple" href="MCP/mcp_server/">
+  <span class="card-icon">🔌</span>
+  <div class="card-title">MCP Server</div>
+  <p class="card-desc">AI 时代的 USB 接口</p>
 </a>

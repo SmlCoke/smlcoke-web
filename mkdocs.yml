@@ -76,3 +76,4 @@ nav:
   - 人工智能:
     - AI-Tools/index.md
     - Claude Code: AI-Tools/Claude-Code.md
+    - MCP Server: AI-Tools/MCP/mcp_server.md
