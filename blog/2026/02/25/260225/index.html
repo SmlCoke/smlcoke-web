@@ -10,13 +10,13 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/blog/2026/02/23/date260223/">
+        <link rel="canonical" href="https://smlcoke.com/blog/2026/02/25/260225/">
       
       
-        <link rel="prev" href="../../22/date260222/">
+        <link rel="prev" href="../../24/date260224/">
       
       
-        <link rel="next" href="../../24/date260224/">
+        <link rel="next" href="../date260225/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Date260223 - SmlCoke Home</title>
+        <title>260225 - SmlCoke Home</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#1-rust" class="md-skip">
+        <a href="#claude-code" class="md-skip">
           跳转至
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Date260223
+              260225
             
           </span>
         </div>
@@ -1324,10 +1324,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-rust" class="md-nav__link">
+  <a href="#claude-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Rust 加密工具 ✅️
+        Claude Code 工具
       
     </span>
   </a>
@@ -1371,7 +1371,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-02-23 00:00:00+00:00" class="md-ellipsis">2026年2月23日</time>
+                        <time datetime="2026-02-25 00:00:00+00:00" class="md-ellipsis">2026年2月25日</time>
                       </div>
                     </li>
                     
@@ -1382,7 +1382,7 @@
                           <span class="md-ellipsis">
                             分类于
                             
-                              <a href="../../../../category/%E6%97%A5%E8%AE%B0/">日记</a></span>
+                              <a href="../../../../category/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/">工作记录</a></span>
                         </div>
                       </li>
                     
@@ -1417,21 +1417,13 @@
 
 
 
-  <h1>Date260223</h1>
+  <h1>260225</h1>
 
-<h2 id="1-rust">1. Rust 加密工具 ✅️</h2>
+<h2 id="claude-code">Claude Code 工具</h2>
+<p>(Done with Gemini 3.1 Pro(Preview))</p>
 <!-- more -->
-<ol>
-<li>Rust 的加密工具 <code>ciphery</code> 已经完成了基本的功能开发（虽然目前只支持 <code>Caesar</code> 加密）。</li>
-<li>成功 Release，这个比较简单。</li>
-<li>然后再利用 WASM 技术将其部署到了本网站，期间发现 Rust 的 <br />
-   <div class="language-rust highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#[cfg(target_arch = </span><span class="s">&quot;wasm32&quot;</span><span class="cp">)]</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#[wasm_bindgen]</span>
-</span></code></pre></div><br />
-   条件编译功能非常强大，可以<strong>在同一份代码中针对不同的目标平台编写不同的实现</strong>，非常方便。缓过神来才发现这一点跟之前的自动编写测试 <code>#[cfg(test)]</code> 如出一辙。</li>
-<li>测试好后利用 <code>wasm-pack build --target web</code> 命令将 Rust 代码编译成 WebAssembly 模块。</li>
-<li>将 <code>pkg</code> 文件夹中的文件防止 web 项目，加密工具主页由 crypto.md 提供。内置一个简单的 UI。</li>
-</ol>
+<p>尝试了一下 Claude Code + MiniMax-M2.5(国内无法调用 <code>Claude</code> 模型，所以用 <code>MiniMax-M2.5</code> 代替)。</p>
+<p><code>log</code> 详见 <a href="../../../../../AI-Tools/Claude-Code/">Claude Code</a></p>
 
 
 

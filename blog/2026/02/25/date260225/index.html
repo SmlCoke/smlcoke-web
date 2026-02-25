@@ -10,13 +10,11 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/blog/2026/02/23/date260223/">
+        <link rel="canonical" href="https://smlcoke.com/blog/2026/02/25/date260225/">
       
       
-        <link rel="prev" href="../../22/date260222/">
+        <link rel="prev" href="../260225/">
       
-      
-        <link rel="next" href="../../24/date260224/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>Date260223 - SmlCoke Home</title>
+        <title>Date260225 - SmlCoke Home</title>
       
     
     
@@ -72,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#1-rust" class="md-skip">
+        <a href="#1-test" class="md-skip">
           跳转至
         </a>
       
@@ -106,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Date260223
+              Date260225
             
           </span>
         </div>
@@ -1324,10 +1322,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-rust" class="md-nav__link">
+  <a href="#1-test" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Rust 加密工具 ✅️
+        1. 排版组件 test
       
     </span>
   </a>
@@ -1371,7 +1369,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-02-23 00:00:00+00:00" class="md-ellipsis">2026年2月23日</time>
+                        <time datetime="2026-02-25 00:00:00+00:00" class="md-ellipsis">2026年2月25日</time>
                       </div>
                     </li>
                     
@@ -1417,21 +1415,35 @@
 
 
 
-  <h1>Date260223</h1>
+  <h1>Date260225</h1>
 
-<h2 id="1-rust">1. Rust 加密工具 ✅️</h2>
+<h2 id="1-test">1. 排版组件 test</h2>
+<p>Google AI Studio Gemini 3.1 Pro(Preview) 给出指导，在 <code>extra.css</code> 中增添了排版组件、markdown标题、字体、代码的样式定义。例如如下卡片：</p>
+<div class="admonition note">
+<p class="admonition-title">学习笔记</p>
+<p>这是 MkDocs 原生支持的提示框！底色、图标都是全自动生成的，非常适合用来高亮重点内容。</p>
+</div>
 <!-- more -->
-<ol>
-<li>Rust 的加密工具 <code>ciphery</code> 已经完成了基本的功能开发（虽然目前只支持 <code>Caesar</code> 加密）。</li>
-<li>成功 Release，这个比较简单。</li>
-<li>然后再利用 WASM 技术将其部署到了本网站，期间发现 Rust 的 <br />
-   <div class="language-rust highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#[cfg(target_arch = </span><span class="s">&quot;wasm32&quot;</span><span class="cp">)]</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#[wasm_bindgen]</span>
+
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>推导这个机器学习公式的时候，千万不要把矩阵的转置弄错了。</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">点击展开查看 Python 源码</p>
+<p>你可以用 <code>???</code> 把它变成一个默认折叠的手风琴菜单！<br />
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">():</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;代码高亮也有了，右上角还有复制按钮！&quot;</span><span class="p">)</span>
 </span></code></pre></div><br />
-   条件编译功能非常强大，可以<strong>在同一份代码中针对不同的目标平台编写不同的实现</strong>，非常方便。缓过神来才发现这一点跟之前的自动编写测试 <code>#[cfg(test)]</code> 如出一辙。</li>
-<li>测试好后利用 <code>wasm-pack build --target web</code> 命令将 Rust 代码编译成 WebAssembly 模块。</li>
-<li>将 <code>pkg</code> 文件夹中的文件防止 web 项目，加密工具主页由 crypto.md 提供。内置一个简单的 UI。</li>
-</ol>
+测试：<code>python</code></p>
+</div>
+<p>其他相关细节...<br />
+（<strong>所有样式均在<code>docs/stylesheets/extra.css</code>中完成修改和定义</strong>）<br />
+- 字体：HarmonyOS_Regular<br />
+- 代码：Maple Mono, 启用所有连字特效<br />
+- 小代码框：灰底色，圆角<br />
+- 大代码框：3D悬浮特效<br />
+- 各级标题自定义主题，<code>#</code> 第一级标题最鲜明</p>
 
 
 
