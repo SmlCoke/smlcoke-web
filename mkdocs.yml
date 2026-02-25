@@ -10,6 +10,7 @@ theme:
     - navigation.top # 添加返回顶部按钮
     - header.autohide # 页面向下滚动时自动隐藏导航栏
     - navigation.indexes # 允许 index.md 作为分区首页
+    - content.code.copy # 🔥 新增：代码块右上角的一键复制按钮
 
 # 配置插件（启用搜索和博客功能）
 plugins:
@@ -21,6 +22,18 @@ markdown_extensions:
   - nl2br # 将换行符转换为 <br> 标签，启用单回车换行支持
   - pymdownx.arithmatex:
       generic: true
+  # 👇 下面全是让网页变美的魔法扩展 👇
+  - admonition # 极其漂亮的提示/警告框！
+  - pymdownx.details # 允许折叠提示框
+  - pymdownx.superfences # 高级代码块
+  - pymdownx.highlight: # 代码高亮美化
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite # 行内代码高亮
+  - pymdownx.mark # 允许使用 ==高亮文字==
+  - pymdownx.tilde # 允许使用 ~~删除线~~
+  - attr_list # 允许给图片加居中等样式
 
 # 引入自定义 CSS（用于背景动画和按钮）
 extra_css:
