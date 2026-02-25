@@ -3210,6 +3210,8 @@
       
         
       
+        
+      
     
     
     
@@ -3277,6 +3279,34 @@
     
   
     Claude Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../AI-Tools/MCP/mcp_server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Server
   
 
     
@@ -5404,24 +5434,80 @@ Rust 在重新编译项目之前，会检查自上次编译以来，项目的源
 两种数据类型子集：scalar 和 compound</p>
 <h4 id="241-scalar-types">2.4.1 标量类型（Scalar Types）</h4>
 <p>Rust中的四种基本标量类型：整型、浮点型、布尔类型和字符类型</p>
-<p><strong>整型：</strong><br />
-|长度|    有符号|    无符号|<br />
-|----|-------|-------|<br />
-|8-bit| i8| u8|<br />
-|16-bit|    i16|    u16|<br />
-|32-bit|    i32|    u32|<br />
-|64-bit|    i64|    u64|<br />
-|128-bit|   i128|   u128|<br />
-|架构相关|  isize|  usize|</p>
+<p><strong>整型：</strong></p>
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>有符号</th>
+<th>无符号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8-bit</td>
+<td>i8</td>
+<td>u8</td>
+</tr>
+<tr>
+<td>16-bit</td>
+<td>i16</td>
+<td>u16</td>
+</tr>
+<tr>
+<td>32-bit</td>
+<td>i32</td>
+<td>u32</td>
+</tr>
+<tr>
+<td>64-bit</td>
+<td>i64</td>
+<td>u64</td>
+</tr>
+<tr>
+<td>128-bit</td>
+<td>i128</td>
+<td>u128</td>
+</tr>
+<tr>
+<td>架构相关</td>
+<td>isize</td>
+<td>usize</td>
+</tr>
+</tbody>
+</table>
 <p>范围：<span class="arithmatex">\(-2^{n-1} \sim 2^{n-1}-1\)</span></p>
-<p>整型字面值：<br />
-|数字字面值| 例子|<br />
-|----------|-----|<br />
-|Decimal (十进制)| 98_222|<br />
-|Hex (十六进制)|    0xff|<br />
-|Octal (八进制)|   0o77|<br />
-|Binary (二进制)|  0b1111_0000|<br />
-|Byte (单字节字符)(仅限于u8)|   b'A'|</p>
+<p>整型字面值：</p>
+<table>
+<thead>
+<tr>
+<th>数字字面值</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Decimal (十进制)</td>
+<td>98_222</td>
+</tr>
+<tr>
+<td>Hex (十六进制)</td>
+<td>0xff</td>
+</tr>
+<tr>
+<td>Octal (八进制)</td>
+<td>0o77</td>
+</tr>
+<tr>
+<td>Binary (二进制)</td>
+<td>0b1111_0000</td>
+</tr>
+<tr>
+<td>Byte (单字节字符)(仅限于u8)</td>
+<td>b'A'</td>
+</tr>
+</tbody>
+</table>
 <p>可以是多种数字类型的数字字面值允许使用类型后缀，例如 57u8 来指定类型，同时也允许使用 _ 做为分隔符以方便读数，例如1_000，它的值与你指定的 1000 相同。</p>
 <p>整型默认是: <code>i32</code></p>
 <p><strong>浮点型</strong><br />
