@@ -10,7 +10,7 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/blog/category/%E6%97%A5%E8%AE%B0/">
+        <link rel="canonical" href="https://smlcoke.com/AI-Tools/OpenRouter/openrouter-full/">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>日记 - SmlCoke Home</title>
+        <title>OpenRouter - SmlCoke Home</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#openrouter" class="md-skip">
           跳转至
         </a>
       
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              日记
+              OpenRouter
             
           </span>
         </div>
@@ -194,7 +194,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../" class="md-tabs__link">
+      <a href="../../../blog/" class="md-tabs__link">
         
   
   
@@ -303,7 +303,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../AI-Tools/" class="md-tabs__link">
+        <a href="../../" class="md-tabs__link">
           
   
   
@@ -384,7 +384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../../../blog/" class="md-nav__link">
         
   
   
@@ -1223,7 +1223,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../AI-Tools/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -1267,7 +1267,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../AI-Tools/ClaudeCode/Claude-Code/" class="md-nav__link">
+      <a href="../../ClaudeCode/Claude-Code/" class="md-nav__link">
         
   
   
@@ -1295,7 +1295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../AI-Tools/MCP/mcp_server/" class="md-nav__link">
+      <a href="../../MCP/mcp_server/" class="md-nav__link">
         
   
   
@@ -1323,7 +1323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../AI-Tools/OpenRouter/openrouter/" class="md-nav__link">
+      <a href="../openrouter/" class="md-nav__link">
         
   
   
@@ -1371,6 +1371,64 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-openrouter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I OpenRouter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I OpenRouter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ii-deno-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II Deno Deploy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iii-cloudflare-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III Cloudflare Worker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. 数据流向梳理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1378,197 +1436,123 @@
             
           
           
-  <div class="md-content" data-md-component="content">
-    <div class="md-content__inner">
-      <header class="md-typeset">
-        <h1 id="_1">日记</h1>
-      </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-02-25 00:00:00+00:00">2026年2月25日</time></li>
-        
-          <li class="md-meta__item">
-            分类于
-            
-              <a href="./" class="md-meta__link">日记</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              需要 1 分钟阅读时间
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="date260225"><a class="toclink" href="../../2026/02/25/date260225/">Date260225</a></h2>
-<h3 id="1-test"><a class="toclink" href="../../2026/02/25/date260225/#1-test">1. 排版组件 test</a></h3>
-<p>Google AI Studio Gemini 3.1 Pro(Preview) 给出指导，在 <code>extra.css</code> 中增添了排版组件、markdown标题、字体、代码的样式定义。例如如下卡片：</p>
-<div class="admonition note">
-<p class="admonition-title">学习笔记</p>
-<p>这是 MkDocs 原生支持的提示框！底色、图标都是全自动生成的，非常适合用来高亮重点内容。</p>
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="openrouter">OpenRouter</h1>
+<h2 id="i-openrouter">I OpenRouter</h2>
+<p>由 OpenRouter 提供 API Key.</p>
+<h3 id="ii-deno-deploy">II Deno Deploy</h3>
+<p>在 Deno Deploy部署了一个二次转发节点（https://important-camel-97.smlcoke.deno.net）：<br />
+<div class="language-ts highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">Deno</span><span class="p">.</span><span class="nx">serve</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="p">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="c1">// 智能补全 Claude Code 需要的路径</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">endsWith</span><span class="p">(</span><span class="s2">&quot;/messages&quot;</span><span class="p">))</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/api/v1/messages&quot;</span><span class="p">;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">path</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s2">&quot;/api/v1&quot;</span><span class="p">))</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/api/v1&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">path</span><span class="p">;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="c1">// 目标直接锁定 OpenRouter</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">targetUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`https://openrouter.ai</span><span class="si">${</span><span class="nx">path</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Headers</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">);</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="c1">// 致命杀招：彻底抹除一切可能暴露真实地理位置的 Header</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nx">headers</span><span class="p">.</span><span class="ow">delete</span><span class="p">(</span><span class="s2">&quot;x-forwarded-for&quot;</span><span class="p">);</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nx">headers</span><span class="p">.</span><span class="ow">delete</span><span class="p">(</span><span class="s2">&quot;x-real-ip&quot;</span><span class="p">);</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="nx">headers</span><span class="p">.</span><span class="ow">delete</span><span class="p">(</span><span class="s2">&quot;cf-connecting-ip&quot;</span><span class="p">);</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="c1">// 兼容 Claude Code 发送的 API Key</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">auth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">headers</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;x-api-key&quot;</span><span class="p">);</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">auth</span><span class="p">)</span><span class="w"> </span><span class="nx">headers</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;authorization&quot;</span><span class="p">,</span><span class="w"> </span><span class="sb">`Bearer </span><span class="si">${</span><span class="nx">auth</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="nx">targetUrl</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="kt">request.method</span><span class="p">,</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="nx">headers</span><span class="p">,</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="kt">request.body</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="p">});</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="p">});</span>
+</span></code></pre></div><br />
+Free Plan, 每月 10, 000k 次请求</p>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>此时已经可以通过 <code>https://important-camel-97.smlcoke.deno.net</code> 这个地址访问 OpenRouter 的 API 了，但由于 Deno Deploy 的服务器在国外，访问速度可能不太稳定，所以我们还需要一个国内的中转结点。<br />
+如果想要直接通过这个域名调用大模型，这里以<code>Claude Code</code>为例（已经测试通过<code>Claude Opus 4.6</code>）：<br />
+设置<strong>临时</strong>环境变量（<strong>powershell语法</strong>）<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$env:ANTHROPIC_AUTH_TOKEN=&quot;&quot;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$env:ANTHROPIC_BASE_URL=&quot;https://important-camel-97.smlcoke.deno.net&quot;
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>$env:ANTHROPIC_API_KEY=&quot;sk-or-v1...&quot;
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>$env:ANTHROPIC_MODEL=&quot;anthropic/claude-opus-4.6&quot;
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>$env:ANTHROPIC_DEFAULT_OPUS_MODEL=&quot;anthropic/claude-opus-4.6&quot;
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>$env:ANTHROPIC_DEFAULT_SONNET_MODEL=&quot;anthropic/claude-sonnet-4.6&quot;
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>$env:ANTHROPIC_DEFAULT_HAIKU_MODEL=&quot;anthropic/claude-haiku-4.5&quot;
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>$env:CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=&quot;1&quot;
+</span></code></pre></div><br />
+然后启动 <code>Claude Code</code> 即可正常使用。<br />
+<mark>但是这里有一个问题：<code>Gemini</code> 无法使用，暂时不清楚原因。</mark></p>
 </div>
+<h3 id="iii-cloudflare-worker">III Cloudflare Worker</h3>
+<p><strong>创建Cloudflare Worker</strong>：编写并部署 <code>smlcoke-ai-worker</code>(worker的名字) 代码，通过绑定子域名 <code>api.smlcoke.com</code>，搭建一个属于自己的、国内可直接访问的代理服务器：<br />
+<div class="language-js highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="c1">// 🔥 将这里的网址替换成你刚才在 Deno 生成的真实域名 🔥</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="c1">// 注意：保留 https://，且结尾不要带斜杠</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">denoUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://important-camel-97.smlcoke.deno.net&quot;</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="c1">// 拼装最终发送给 Deno 的地址</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">targetUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">denoUrl</span><span class="si">}${</span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="si">}${</span><span class="nx">url</span><span class="p">.</span><span class="nx">search</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="c1">// Cloudflare 只做国内加速的搬运工，什么头都不改，原封不动发给 Deno</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">Request</span><span class="p">(</span><span class="nx">targetUrl</span><span class="p">,</span><span class="w"> </span><span class="nx">request</span><span class="p">));</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="p">};</span>
+</span></code></pre></div></p>
+<h3 id="iv">IV. 数据流向梳理</h3>
+<p><strong>1. 客户端发起 (Windows PowerShell)</strong><br />
+*   <strong>动作</strong>：你在 <code>claude</code> 命令行输入 "Hello"。<br />
+*   <strong>环境</strong>：Claude Code 读取到环境变量 <code>$env:ANTHROPIC_BASE_URL="https://api.smlcoke.com"</code>。<br />
+*   <strong>打包</strong>：Claude Code (Anthropic SDK) 将你的请求打包成 JSON，附带上 <code>x-api-key</code>（你的 OpenRouter 密钥），目标指向 <code>https://api.smlcoke.com/messages</code>。</p>
+<p><strong>2. 第一跳：国内加速跳板 (Cloudflare Worker)</strong><br />
+*   <strong>位置</strong>：Cloudflare 边缘节点（通常是香港/日本/台湾，离你最近）。<br />
+*   <strong>逻辑</strong>：你的 <code>smlcoke-ai-worker</code> 收到请求。<br />
+*   <strong>操作</strong>：它完全不处理业务逻辑，只是把请求的目标地址从 <code>api.smlcoke.com</code> 替换为 <code>important-camel-97.smlcoke.deno.net</code>。<br />
+*   <strong>意义</strong>：这一步保证了你在国内访问速度极快，且不用挂本地梯子。</p>
+<p><strong>3. 第二跳：IP 清洗与伪装 (Deno Deploy)</strong><br />
+*   <strong>位置</strong>：Google Cloud 美国机房（Deno 的底层设施）。<br />
+*   <strong>逻辑</strong>：Deno 收到来自 Cloudflare 的请求。<br />
+*   <strong>操作（关键）</strong>：<br />
+    *   它<strong>剥离</strong>了所有可能暴露你来源的请求头（如 <code>cf-connecting-ip</code>, <code>x-forwarded-for</code>）。<br />
+    *   它将 Claude Code 发送的 <code>x-api-key</code> 转换为 OpenRouter 需要的 <code>Authorization: Bearer</code> 格式。<br />
+    *   它用<strong>自己的美国原生 IP</strong> 向 OpenRouter 发起请求。<br />
+*   <strong>意义</strong>：这一步骗过了 OpenRouter 和 Anthropic 的区域检测，让他们以为请求是一个纯正的美国开发者发出的。</p>
+<p><strong>4. 第三跳：聚合与计费 (OpenRouter)</strong><br />
+*   <strong>位置</strong>：美国。<br />
+*   <strong>逻辑</strong>：OpenRouter 收到请求，看到是美国 IP，且 Authorization 密钥正确。<br />
+*   <strong>操作</strong>：扣除你的支付宝充值余额，然后将请求转发给 Anthropic 官方 API。</p>
+<p><strong>5. 终点：模型推理 (Anthropic)</strong><br />
+*   <strong>响应</strong>：Claude Opus 4.6 收到上下文，开始推理，生成代码或文本，原路返回。</p>
 
-    
-      <nav class="md-post__action">
-        <a href="../../2026/02/25/date260225/">
-          继续阅读
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-02-24 00:00:00+00:00">2026年2月24日</time></li>
-        
-          <li class="md-meta__item">
-            分类于
-            
-              <a href="./" class="md-meta__link">日记</a></li>
-        
-        
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
           
-          <li class="md-meta__item">
-            
-              需要 1 分钟阅读时间
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="date260224"><a class="toclink" href="../../2026/02/24/date260224/">Date260224</a></h2>
-<h3 id="1"><a class="toclink" href="../../2026/02/24/date260224/#1">1. 分区首页美化</a></h3>
-<p>利用 CSS 增加彩色卡片，规范词条布局</p>
-<h3 id="2"><a class="toclink" href="../../2026/02/24/date260224/#2">2. 加密工具</a></h3>
-<p>增加 Rot13 算法和 Vigenere 算法</p>
-
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-02-23 00:00:00+00:00">2026年2月23日</time></li>
-        
-          <li class="md-meta__item">
-            分类于
-            
-              <a href="./" class="md-meta__link">日记</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              需要 1 分钟阅读时间
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="date260223"><a class="toclink" href="../../2026/02/23/date260223/">Date260223</a></h2>
-<h3 id="1-rust"><a class="toclink" href="../../2026/02/23/date260223/#1-rust">1. Rust 加密工具 ✅️</a></h3>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/02/23/date260223/">
-          继续阅读
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2026-02-22 00:00:00+00:00">2026年2月22日</time></li>
-        
-          <li class="md-meta__item">
-            分类于
-            
-              <a href="./" class="md-meta__link">日记</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              需要 1 分钟阅读时间
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="date260222"><a class="toclink" href="../../2026/02/22/date260222/">Date260222</a></h2>
-<h3 id="1"><a class="toclink" href="../../2026/02/22/date260222/#1">1. 部署到公网上 ✅️</a></h3>
-<p>在 Namesilo 购买了 smlcoke.com 域名，并且借助 github pages 成功部署了这个网站，同时还启用了 Cloudflare 的 CDN 服务。</p>
-<p>github pages 的部署流程：<br />
-1. 在 github 上创建一个新的 repository，命名为 <code>smlcoke.github.io</code>。<br />
-2. 将 MkDocs 生成的静态文件推送到这个 repository 的 <code>main</code> 分支。<br />
-3. 在 repository 的设置中启用 GitHub Pages，选择 <code>main</code> 分支作为发布源。</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2026/02/22/date260222/">
-          继续阅读
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-      
-        
-          
-
-
-
-<nav class="md-pagination">
-  
-</nav>
-        
-      
-    </div>
-  </div>
-
           
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
