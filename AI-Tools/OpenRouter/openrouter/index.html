@@ -1218,6 +1218,8 @@
       
         
       
+        
+      
     
     
     
@@ -1471,6 +1473,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Aider/aider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1564,7 +1594,8 @@
 <h2 id="i-openrouter">I OpenRouter</h2>
 <p>由 OpenRouter 提供 API Key.</p>
 <h3 id="ii-deno-deploy">II Deno Deploy</h3>
-<p>在 Deno Deploy部署了一个二次转发节点（https://important-camel-97.smlcoke.deno.net）：<br />
+<p>在 Deno Deploy部署了一个二次转发节点：<br />
+点击<code>New Playground</code>，在出现的代码框中写入：<br />
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">Deno</span><span class="p">.</span><span class="nx">serve</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="p">;</span>
@@ -1593,14 +1624,15 @@
 </span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="p">});</span>
 </span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="p">});</span>
 </span></code></pre></div><br />
-Free Plan, 每月 10, 000k 次请求</p>
+写入之后，点击<code>Deploy</code>，就会得到一个二级域名（以下记作<code>xxx.deno.net</code>），这个域名就是我们<strong>访问 OpenRouter API 的入口</strong>了。</p>
+<p>Free Plan, 每月 10, 000k 次请求</p>
 <div class="admonition note">
 <p class="admonition-title">Important</p>
-<p>此时已经可以通过 <code>https://important-camel-97.smlcoke.deno.net</code> 这个地址访问 OpenRouter 的 API 了，但由于 Deno Deploy 的服务器在国外，访问速度可能不太稳定，所以我们还需要一个国内的中转结点。<br />
+<p>此时已经可以通过 <code>xxx.deno.net</code> 这个地址访问 OpenRouter 的 API 了，但由于 Deno Deploy 的服务器在国外，访问速度可能不太稳定，所以我们还需要一个国内的中转结点。<br />
 如果想要直接通过这个域名调用大模型，这里以<code>Claude Code</code>为例（已经测试通过<code>Claude Opus 4.6</code>）：<br />
 设置<strong>临时</strong>环境变量（<strong>powershell语法</strong>）<br />
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$env:ANTHROPIC_AUTH_TOKEN=&quot;&quot;
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$env:ANTHROPIC_BASE_URL=&quot;https://important-camel-97.smlcoke.deno.net&quot;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$env:ANTHROPIC_BASE_URL=&quot;xxx.deno.net&quot;
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>$env:ANTHROPIC_API_KEY=&quot;sk-or-v1...&quot;
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>$env:ANTHROPIC_MODEL=&quot;anthropic/claude-opus-4.6&quot;
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>$env:ANTHROPIC_DEFAULT_OPUS_MODEL=&quot;anthropic/claude-opus-4.6&quot;
@@ -1612,14 +1644,14 @@ Free Plan, 每月 10, 000k 次请求</p>
 <mark>但是这里有一个问题：<code>Gemini</code>, <code>GPT</code>无法使用，暂时不清楚原因。</mark></p>
 </div>
 <h3 id="iii-cloudflare-worker">III Cloudflare Worker</h3>
-<p><strong>创建Cloudflare Worker</strong>：编写并部署 <code>smlcoke-ai-worker</code>(worker的名字) 代码，通过绑定子域名 <code>api.smlcoke.com</code>，搭建一个属于自己的、国内可直接访问的代理服务器：<br />
+<p>在<code>Build/Compute/Worker&amp;Pages</code>界面，点击<code>Create application</code>，选择<code>Start with hello world</code>，进入编辑界面，为你的 worker 起一个名字，然后<strong>替换默认代码为以下代码</strong>，点击<code>Deploy</code><strong>部署</strong>：</p>
 <div class="language-js highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="c1">// 🔥 将这里的网址替换成你刚才在 Deno 生成的真实域名 🔥</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="c1">// 注意：保留 https://，且结尾不要带斜杠</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">denoUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://important-camel-97.smlcoke.deno.net&quot;</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">denoUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;xxx.deno.net&quot;</span><span class="p">;</span><span class="w"> </span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="c1">// 拼装最终发送给 Deno 的地址</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">targetUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">denoUrl</span><span class="si">}${</span><span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="si">}${</span><span class="nx">url</span><span class="p">.</span><span class="nx">search</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
@@ -1628,7 +1660,13 @@ Free Plan, 每月 10, 000k 次请求</p>
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">Request</span><span class="p">(</span><span class="nx">targetUrl</span><span class="p">,</span><span class="w"> </span><span class="nx">request</span><span class="p">));</span>
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="p">};</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
+<p>接下来需要<strong>绑定域名</strong>，在 <code>Settings</code> 界面，<code>Domains &amp; Routes</code> 这一栏，留意它的右侧或下方，会有一个 "+ Add" 或者 "<code>Add Custom Domain</code>" (添加自定义域) 的按钮。<br />
+点击它，在弹出的输入框中填入你想要的子域名，比如：<code>api.smlcoke.com</code><br />
+点击 "<code>Add domain</code>" (添加域) 进行确认。</p>
+<p>!!! note '提示'<br />
+<code>smlcoke.com</code> 域名原本就托管在 Cloudflare，系统会自动帮你添加 DNS 解析记录并配置好 SSL 证书。<br />
+    如果此前没有域名，Cloudflare 也提供免费的二级域名，直接使用 <code>xxx.workers.dev</code> 这样的地址也是完全没问题的。</p>
 <div class="admonition warning">
 <p class="admonition-title">Bug</p>
 <p>依旧无法在 <code>Claude Code</code> 中使用 <code>Gemini</code> 和 <code>GPT</code> 模型，怀疑是 <code>Claude Code</code> 这边对返回的响应做了某些处理，导致无法正确解析响应中的模型列表。<br />
