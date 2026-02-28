@@ -1665,6 +1665,19 @@
 4. Architect 模式<br />
    - 这是 Aider 的“架构师模式”，适合在项目初期使用。它会帮你设计整个项目的文件结构和代码框架，甚至生成一些样板代码。<strong>在这个模式下，Aider 会更注重整体设计，而不是细节实现</strong>。<br />
    - 用法：使用 <code>/chat-mode architect</code>，在这种模式下，Aider 会先跟你讨论方案（架构师角色），等方案定下来了，它再切换到编码模式。这比直接改代码的成功率高出非常多。</p>
+<div class="admonition note">
+<p class="admonition-title">aider与<code>.env</code></p>
+<p>当你进入文件夹并输入 aider 时，发生了以下动作：<br />
+1. <strong>启动程序</strong>：Python 运行 Aider 脚本。<br />
+2. <strong>寻找配置</strong>：Aider 程序的代码里写了一行逻辑：“请检查当前运行目录（Current Working Directory）下有没有一个3. 叫 .env 的文件”。<br />
+3. <strong>加载内存</strong>：如果找到了，Aider 会把文件里的内容读取出来，并临时塞进它自己运行时的“内存环境变量”中。<br />
+4. <strong>生效</strong>：接下来的执行过程中，Aider 就会用这些加载进来的值去连接 Deno 和 OpenRouter。</p>
+<p>如果你同时在多个地方设置了配置，Aider 的听从顺序是：<br />
+1. <strong>命令行参数（最高）</strong>：例如 aider --model ...。<br />
+2. <strong>环境变量</strong>：你在 PowerShell 里手动输入的 $env:AIDER_MODEL = ...。<br />
+3. <strong>当前目录的 .env 文件</strong>。<br />
+4. <strong>Aider 的全局配置文件（通常在用户目录下的 .aider.conf.yml</strong>）。</p>
+</div>
 
 
 
