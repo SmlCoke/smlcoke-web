@@ -42,7 +42,7 @@ npm install -g opencode-ai@latest --prefix "D:\OpenCode"
     "provider": {
       "openrouter": {
         "options": {
-          "apiKey": "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",
+          "apiKey": "sk-or-v1...",
           "baseURL": "https://api.smlcoke.com/api/v1"
         },
         "models": {
