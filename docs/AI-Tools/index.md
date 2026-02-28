@@ -37,3 +37,9 @@ hide:
   <div class="card-title">OpenCode</div>
   <p class="card-desc">OpenCode CLI 以及 API Key 接入</p>
 </a>
+
+<a class="note-card purple" href="Aider/aider/">
+  <span class="card-icon">🪛</span>
+  <div class="card-title">Aider</div>
+  <p class="card-desc">Aider CLI 以及 API Key 接入</p>
+</a>
