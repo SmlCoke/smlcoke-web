@@ -75,5 +75,6 @@ nav:
     - Rust 加密/解密在线工具: rust/crypto/
   - 人工智能:
     - AI-Tools/index.md
-    - Claude Code: AI-Tools/Claude-Code.md
+    - Claude Code: AI-Tools/ClaudeCode/Claude-Code.md
     - MCP Server: AI-Tools/MCP/mcp_server.md
+    - OpenRouter: AI-Tools/OpenRouter/openrouter.md
