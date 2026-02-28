@@ -31,3 +31,9 @@ hide:
   <div class="card-title">OpenRouter</div>
   <p class="card-desc">获取大模型的API Key</p>
 </a>
+
+<a class="note-card purple" href="OpenCode/openrouter/">
+  <span class="card-icon">🔧</span>
+  <div class="card-title">OpenCode</div>
+  <p class="card-desc">OpenCode CLI 以及 API Key 接入</p>
+</a>
