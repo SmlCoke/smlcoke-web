@@ -72,10 +72,11 @@ nav:
     - PFLD: ml/CV/PFLD/PFLD.md
   - Rust:
     - Rust 学习笔记: rust/notes/Study.md
-    - Rust 加密/解密在线工具: rust/crypto/
+    - Rust 加密/解密在线工具: rust/crypto.md
   - 人工智能:
     - AI-Tools/index.md
     - Claude Code: AI-Tools/ClaudeCode/Claude-Code.md
     - MCP Server: AI-Tools/MCP/mcp_server.md
     - OpenRouter: AI-Tools/OpenRouter/openrouter.md
     - OpenCode: AI-Tools/OpenCode/opencode.md
+    - Aider: AI-Tools/Aider/aider.md
