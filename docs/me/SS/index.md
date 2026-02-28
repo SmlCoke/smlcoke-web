@@ -40,13 +40,13 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card orange" href="CFT1/">
+<a class="note-card orange" href="FT/CFT1/">
   <span class="card-icon">📊</span>
   <div class="card-title">连续时间傅里叶变换（1）</div>
   <p class="card-desc">傅里叶变换的基本定义、性质与常见信号的变换</p>
 </a>
 
-<a class="note-card red" href="CFT2/">
+<a class="note-card red" href="FT/CFT2/">
   <span class="card-icon">📈</span>
   <div class="card-title">连续时间傅里叶变换（2）</div>
   <p class="card-desc">傅里叶变换的高级性质与应用</p>
