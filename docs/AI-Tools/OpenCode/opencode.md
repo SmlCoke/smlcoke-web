@@ -57,3 +57,16 @@ npm install -g opencode-ai@latest --prefix "D:\OpenCode"
       ```
       尝试更新过 `OpenCode` 版本，无用。
       此外，关于`opencode.json`的写法尝试了很久，最终由 `Copilot Claude Sonnet 4.6` 给出正确回答，现在来看还不如直接用 `Copilot`
+
+!!! success "解决"
+    2026-03-01 再次尝试，发现问题突然解决了🤔
+    在 `opencode.json` 中写入：
+    ```json
+    "models": {
+      "google/gemini-3.1-pro-preview": { "name": "Gemini 3.1 Pro Preview (OpenRouter)" },
+    }
+    ```
+    之后居然调用成功了？
+    ![alt text](image.png)
+    去 OpenRouter Activity 页面查看，发现果真发起了调用，消耗了 tokens：
+    ![alt text](image-1.png)
