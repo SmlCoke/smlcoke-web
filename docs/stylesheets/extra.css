@@ -423,3 +423,18 @@ body, .md-typeset {
     gap: 8px;
   }
 }
+
+
+/* =========================================
+   Giscus 评论区样式
+   ========================================= */
+.giscus {
+  margin-top: 2rem;
+}
+
+/* 让评论区标题与整体风格一致 */
+h2#__comments {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
