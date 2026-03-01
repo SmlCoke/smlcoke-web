@@ -1629,6 +1629,19 @@
   尝试更新过 <code>OpenCode</code> 版本，无用。<br />
   此外，关于<code>opencode.json</code>的写法尝试了很久，最终由 <code>Copilot Claude Sonnet 4.6</code> 给出正确回答，现在来看还不如直接用 <code>Copilot</code></p>
 </div>
+<div class="admonition success">
+<p class="admonition-title">解决</p>
+<p>2026-03-01 再次尝试，发现问题突然解决了🤔<br />
+在 <code>opencode.json</code> 中写入：<br />
+<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">&quot;models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;google/gemini-3.1-pro-preview&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Gemini 3.1 Pro Preview (OpenRouter)&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">}</span>
+</span></code></pre></div><br />
+之后居然调用成功了？<br />
+<img alt="alt text" src="../image.png" /><br />
+去 OpenRouter Activity 页面查看，发现果真发起了调用，消耗了 tokens：<br />
+<img alt="alt text" src="../image-1.png" /></p>
+</div>
 
 
 
