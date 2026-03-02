@@ -53,7 +53,13 @@ nav:
   - 微电子: 
     - me/index.md
     - 信号与系统: me/SS/index.md
-    - 数字芯片设计术语和流程: me/DIC/Glossary.md
+    - 数字集成电路设计: 
+      - 数字集成电路设计术语和设计流程: me/DIC/Glossary.md
+      - 数字集成电路设计课程设计: 
+        - Init: me/DIC/CourseDesign/init.md
+        - 课程介绍: me/DIC/CourseDesign/introduction.md
+        - 电路设计规范: me/DIC/CourseDesign/Design_Specifications.md
+        - 知识基础-重量化操作的电路实现: me/DIC/CourseDesign/Re-quantization.md
     - Verilog HDL 基础: me/verilog/Study_note.md
   - 机器学习:
     - ml/Basic/index.md
@@ -81,4 +87,4 @@ nav:
     - OpenRouter: AI-Tools/OpenRouter/openrouter.md
     - OpenCode: AI-Tools/OpenCode/opencode.md
     - Aider: AI-Tools/Aider/aider.md
-  - 评论: comments/index.md
+  - 留言板: comments/index.md
