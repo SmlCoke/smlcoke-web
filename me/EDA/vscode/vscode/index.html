@@ -2340,10 +2340,10 @@
 <h3 id="13">1.3 运行！</h3>
 <p>假设当前目录有一个编译不报错的 Verilog 文件项目</p>
 <h4 id="131">1.3.1 编译</h4>
-<p>VS Code 中 *<em>Ctrl + <code>** 打开 PowerShell（或者你在 setting.json 中配置的启动终端，Windows 默认是 PowerShell）：
+<p>VS Code 中 <mark>Ctrl + `</mark> 打开 PowerShell（或者你在 setting.json 中配置的启动终端，Windows 默认是 PowerShell）：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>iverilog<span class="w"> </span>-g2005-sv<span class="w"> </span>-o<span class="w"> </span>simv<span class="w"> </span>*.v
 </span></code></pre></div>
-其中</code>-g2005-sv<code>是告诉编译器使用 SystemVerilog 2005 标准，</code>-o simv<code>是指定输出的可执行文件名为</code>simv<code>，</code></em>.v<code>是编译当前目录下的所有</code>.v` 文件。</p>
+<p>其中 <code>-g2005-sv</code> 是告诉编译器使用 SystemVerilog 2005 标准，<code>-o simv</code> 是指定输出的可执行文件名为 <code>simv</code>，<code>*.v</code> 是编译当前目录下的所有 <code>.v</code> 文件。</p>
 <h4 id="132">1.3.2 仿真</h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>vvp<span class="w"> </span>simv
 </span></code></pre></div>
@@ -2398,7 +2398,7 @@
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">&quot;verilog.linting.linter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;iverilog&quot;</span><span class="p">,</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">&quot;verilog.linting.iverilog.runAtFileLocation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="c1">// 【关键1】让 iverilog 在当前文件所在目录运行</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nt">&quot;verilog.linting.iverilog.arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-y .&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// 【关键2】告诉 iverilog 去当前目录(&#39;.&#39;)寻找未知的子模块！解决误报！</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nt">&quot;verilog.ctags.path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// 禁用 mshr-h 自己的半残 ctags</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nt">&quot;verilog.ctags.path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;改成你的ctags.exe的绝对路径&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// 防止控制台吭哧吭哧刷报错</span>
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nt">&quot;verilog.hover.enable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="c1">// 开启悬停提示</span>
 </span></code></pre></div><br />
 之后，就可以同时完成<strong>语法检查</strong>了，但是 <code>SystemVerilog</code> 插件的<strong>语法高亮效果会损失一部分（如下图，可以与之前的高亮效果对比以下）</strong>，<strong>但跨文件跳转功能正常</strong>。<br />
