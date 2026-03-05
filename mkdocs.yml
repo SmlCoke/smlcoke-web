@@ -61,6 +61,8 @@ nav:
         - 电路设计规范: me/DIC/CourseDesign/Design_Specifications.md
         - 知识基础-重量化操作的电路实现: me/DIC/CourseDesign/Re-quantization.md
     - Verilog HDL 基础: me/verilog/Study_note.md
+    - EDA 工具链:
+      - VS Code + Verilog : me/EDA/vscode/vscode.md
   - 机器学习:
     - ml/Basic/index.md
     - 全连接神经网络: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
