@@ -70,4 +70,11 @@ hide:
   <p class="card-desc">Verilog HDL 语言的基础知识与学习笔记</p>
 </a>
 
+<a class="note-card green" href="EDA/vscode/vscode">
+  <span class="card-icon">📝</span>
+  <div class="card-title">VS Code</div>
+  <p class="card-desc">VS Code 中配置 Verilog 生态</p>
+</a>
+
 </div>
+
