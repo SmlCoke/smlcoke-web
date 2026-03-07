@@ -62,13 +62,16 @@ gtkwave --version
 
 #### 1.3.1 编译
 
-VS Code 中 **Ctrl + `** 打开 PowerShell（或者你在 setting.json 中配置的启动终端，Windows 默认是 PowerShell）：
+VS Code 中 ==Ctrl + `== 打开 PowerShell（或者你在 setting.json 中配置的启动终端，Windows 默认是 PowerShell）：
+
 ```bash
 iverilog -g2005-sv -o simv *.v
 ```
+
 其中 `-g2005-sv` 是告诉编译器使用 SystemVerilog 2005 标准，`-o simv` 是指定输出的可执行文件名为 `simv`，`*.v` 是编译当前目录下的所有 `.v` 文件。
 
 #### 1.3.2 仿真
+
 ```bash
 vvp simv
 ```
@@ -130,7 +133,7 @@ SystemVerilog
     **但请注意**：如果启用 `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog` 插件，会导致 `SystemVerilog` 插件的语法高亮效果损失一部分，但是跨文件跳转功能正常。 
 
 
-!!! success "也不是完全不行？"
+???+ success "也不是完全不行？"
     ==见第三步的黑魔法，能够同时启用语法高亮、跨文件跳转功能和语法检查功能==。
 
 ## III. Verilog-HDL/SystemVerilog/Bluespec SystemVerilog 插件：语法检查
@@ -147,7 +150,7 @@ VS Code 插件市场搜索 `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog`，
 "verilog.linting.linter": "iverilog",
 "verilog.linting.iverilog.runAtFileLocation": true, // 【关键1】让 iverilog 在当前文件所在目录运行
 "verilog.linting.iverilog.arguments": "-y .", // 【关键2】告诉 iverilog 去当前目录('.')寻找未知的子模块！解决误报！
-"verilog.ctags.path": "none", // 禁用 mshr-h 自己的半残 ctags
+"verilog.ctags.path": "<改成你的ctags.exe的绝对路径>", // 防止控制台吭哧吭哧刷报错
 "verilog.hover.enable": true, // 开启悬停提示
 ```
 之后，就可以同时完成**语法检查**了，但是 `SystemVerilog` 插件的**语法高亮效果会损失一部分（如下图，可以与之前的高亮效果对比以下）**，**但跨文件跳转功能正常**。

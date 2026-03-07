@@ -393,6 +393,51 @@ body, .md-typeset {
 .note-card.gray:hover { background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); }
 .note-card.gray::after { color: #6b7280; }
 
+/* Color: Sky */
+.note-card.sky { border-left: 4px solid #0ea5e9; }
+.note-card.sky:hover { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
+.note-card.sky::after { color: #0ea5e9; }
+
+/* Color: Lime */
+.note-card.lime { border-left: 4px solid #84cc16; }
+.note-card.lime:hover { background: linear-gradient(135deg, #f7fee7 0%, #ecfccb 100%); }
+.note-card.lime::after { color: #84cc16; }
+
+/* Color: Emerald */
+.note-card.emerald { border-left: 4px solid #10b981; }
+.note-card.emerald:hover { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); }
+.note-card.emerald::after { color: #10b981; }
+
+/* Color: Amber */
+.note-card.amber { border-left: 4px solid #f59e0b; }
+.note-card.amber:hover { background: linear-gradient(135deg, #fffbeb 0%, #fde68a 100%); }
+.note-card.amber::after { color: #f59e0b; }
+
+/* Color: Rose */
+.note-card.rose { border-left: 4px solid #f43f5e; }
+.note-card.rose:hover { background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%); }
+.note-card.rose::after { color: #f43f5e; }
+
+/* Color: Violet */
+.note-card.violet { border-left: 4px solid #8b5cf6; }
+.note-card.violet:hover { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); }
+.note-card.violet::after { color: #8b5cf6; }
+
+/* Color: Slate */
+.note-card.slate { border-left: 4px solid #475569; }
+.note-card.slate:hover { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); }
+.note-card.slate::after { color: #475569; }
+
+/* Color: Stone */
+.note-card.stone { border-left: 4px solid #78716c; }
+.note-card.stone:hover { background: linear-gradient(135deg, #fafaf9 0%, #e7e5e4 100%); }
+.note-card.stone::after { color: #78716c; }
+
+/* Color: Brown */
+.note-card.brown { border-left: 4px solid #92400e; }
+.note-card.brown:hover { background: linear-gradient(135deg, #fef7ed 0%, #fde7c7 100%); }
+.note-card.brown::after { color: #92400e; }
+
 /* Section subtitle divider */
 .section-subtitle {
   font-size: 1rem;

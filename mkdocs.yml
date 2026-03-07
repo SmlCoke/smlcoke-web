@@ -60,6 +60,10 @@ nav:
         - 课程介绍: me/DIC/CourseDesign/introduction.md
         - 电路设计规范: me/DIC/CourseDesign/Design_Specifications.md
         - 知识基础-重量化操作的电路实现: me/DIC/CourseDesign/Re-quantization.md
+      - VLSI数字通信原理与设计: 
+        - me/DIC/VLSI/index.md
+        - 数字通信系统基础: me/DIC/VLSI/ch1-introduction/introduction.md
+        - 基带信号的调制与解调: me/DIC/VLSI/ch2-modulation/modulation.md
     - Verilog HDL 基础: me/verilog/Study_note.md
     - EDA 工具链:
       - VS Code + Verilog : me/EDA/vscode/vscode.md
