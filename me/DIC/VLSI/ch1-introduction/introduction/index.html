@@ -1,0 +1,3297 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SmlCoke">
+      
+      
+        <link rel="canonical" href="https://smlcoke.com/me/DIC/VLSI/ch1-introduction/introduction/">
+      
+      
+        <link rel="prev" href="../../">
+      
+      
+        <link rel="next" href="../../ch2-modulation/modulation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>数字通信系统基础 - SmlCoke Home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260224">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vlsi" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SmlCoke Home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              数字通信系统基础
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../blog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  博客
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  微电子
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../ml/Basic/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  机器学习
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../ml/CV/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  计算机视觉
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../rust/notes/Study/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Rust
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../AI-Tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  人工智能
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../comments/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  留言板
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SmlCoke Home
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    博客
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微电子
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    微电子
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../SS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    信号与系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字集成电路设计
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    数字集成电路设计
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字集成电路设计术语和设计流程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_2" id="__nav_3_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字集成电路设计课程设计
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    数字集成电路设计课程设计
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/init/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Init
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程介绍
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/Design_Specifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    电路设计规范
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/Re-quantization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    知识基础-重量化操作的电路实现
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VLSI数字通信原理与设计
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_3" id="__nav_3_3_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    VLSI数字通信原理与设计
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字通信系统基础
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字通信系统基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、通信系统基础认知
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、通信系统基础认知">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 信息系统的三大核心环节
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 通信系统通用模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 基带与带通信号核心定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、模拟通信系统 vs 数字通信系统
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、模拟通信系统 vs 数字通信系统">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 核心信号辨析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 两类系统核心差异
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 数字通信系统的核心优缺点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 数字通信系统的核心优缺点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心优势
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心不足
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、数字通信系统完整链路与核心模块
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、数字通信系统完整链路与核心模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 端到端完整传输链路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 信源编码与解码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 信道编码与译码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 调制与解调
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 其他核心单元
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、通信系统分类与通信方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、通信系统分类与通信方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 通信系统主流分类方式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 核心通信方式（按消息传输方向与时间划分）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、无线通信系统详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、无线通信系统详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 无线通信核心挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 无线通信系统核心分类
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 无线宽带接入标准核心参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-wifi-wlan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 WiFi WLAN标准演进
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 蜂窝通信系统代际演进
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、数字通信核心关键技术
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、数字通信核心关键技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 多址技术
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-ofdm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 OFDM（正交频分复用）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-mimo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 MIMO（多输入多输出）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 高性能信道编码技术
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、通信系统发展趋势与6G展望
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、通信系统发展趋势与6G展望">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 无线通信核心发展趋势
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-6g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 6G研究核心基点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习适配提示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch2-modulation/modulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基带信号的调制与解调
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../verilog/Study_note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verilog HDL 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EDA 工具链
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    EDA 工具链
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/vscode/vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VS Code + Verilog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../ml/Basic/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全连接神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    优化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch3_CNN/ch3_CNN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../ml/CV/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/ResNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/DenseNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/VIT/ViT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/PFLD/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rust
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../rust/notes/Study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 学习笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../rust/crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 加密/解密在线工具
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../AI-Tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    人工智能
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    人工智能
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/ClaudeCode/Claude-Code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/MCP/mcp_server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/OpenRouter/openrouter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenRouter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/OpenCode/opencode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/Aider/aider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    留言板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、通信系统基础认知
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、通信系统基础认知">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 信息系统的三大核心环节
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 通信系统通用模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 基带与带通信号核心定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、模拟通信系统 vs 数字通信系统
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、模拟通信系统 vs 数字通信系统">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 核心信号辨析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 两类系统核心差异
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 数字通信系统的核心优缺点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 数字通信系统的核心优缺点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心优势
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心不足
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、数字通信系统完整链路与核心模块
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、数字通信系统完整链路与核心模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 端到端完整传输链路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 信源编码与解码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 信道编码与译码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 调制与解调
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 其他核心单元
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、通信系统分类与通信方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、通信系统分类与通信方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 通信系统主流分类方式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 核心通信方式（按消息传输方向与时间划分）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、无线通信系统详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、无线通信系统详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 无线通信核心挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 无线通信系统核心分类
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 无线宽带接入标准核心参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-wifi-wlan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 WiFi WLAN标准演进
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 蜂窝通信系统代际演进
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、数字通信核心关键技术
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、数字通信核心关键技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 多址技术
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-ofdm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 OFDM（正交频分复用）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-mimo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 MIMO（多输入多输出）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 高性能信道编码技术
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、通信系统发展趋势与6G展望
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、通信系统发展趋势与6G展望">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 无线通信核心发展趋势
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-6g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 6G研究核心基点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习适配提示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="vlsi">VLSI数字通信原理与设计 核心学习笔记</h1>
+<hr />
+<h2 id="_1">一、通信系统基础认知</h2>
+<h3 id="11">1.1 信息系统的三大核心环节</h3>
+<ol>
+<li><strong>信息的产生与获取</strong>：涵盖数据、语音、图像等多类型信息</li>
+<li><strong>信息的处理与存储</strong>：核心是模拟信息转数字信息、信息压缩编码</li>
+<li><strong>信息的传输与网络</strong>：时间传输（信息存储）、空间传输（媒质传输）</li>
+</ol>
+<h3 id="12">1.2 通信系统通用模型</h3>
+<p>通信系统是传输信息所需技术设备的总和，核心组成如下：<br />
+| 模块 | 核心功能 |<br />
+|------|----------|<br />
+| 信源 | 产生/发出消息的人或机器，是信息的起点 |<br />
+| 发送设备 | 将信源消息信号变换为适配信道传输的形式 |<br />
+| 信道 | 信息传输的物理媒质，分为有线/无线两类 |<br />
+| 噪声 | 信道中不可避免的干扰源，是传输误码的核心来源 |<br />
+| 接收设备 | 从带干扰的接收信号中恢复原始消息信号 |<br />
+| 信宿 | 接收消息的人或机器，是信息的终点 |</p>
+<h3 id="13">1.3 基带与带通信号核心定义</h3>
+<ul>
+<li><strong>基带信号</strong>：<strong>信号幅度在零频附近不全为零，其他频率幅度全为零</strong>，是未经载波调制的<strong>原始数字/模拟信号</strong></li>
+<li><strong>带通信号</strong>：<strong>信号幅度在以<span class="arithmatex">\(f=\pm f_c\)</span>为中心的频带内不全为零，其中<span class="arithmatex">\(f_c&gt;&gt;0\)</span>，<span class="arithmatex">\(f_c\)</span>称为载波频率</strong></li>
+<li><strong>传输重点</strong>：实际工程应用中，<strong>数字信号的带通传输</strong>是核心落地场景</li>
+</ul>
+<div class="admonition question">
+<p class="admonition-title"><strong>Q：基带信号为什么无法实现无线信道传输？</strong></p>
+<p>无线信号的辐射 / 接收要求<strong>天线尺寸与信号波长 λ 为同一数量级（通常要求天线长度≥λ/4，辐射效率才会达标）</strong>，而波长与频率的关系为：<br />
+$$ \lambda = \frac{c}{f} $$<br />
+其中 <span class="arithmatex">\(c\)</span> 是光速，<span class="arithmatex">\(f\)</span> 是信号频率。<br />
+基带语音信号最高频率按照<span class="arithmatex">\(4kHz\)</span>考虑，因此其波长为：<br />
+$$ \lambda = \frac{3 \times 10^8}{4 \times 10^3} = 75,000 \text{ m} $$<br />
+这意味着<strong>天线长度要大于18750m！</strong></p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">核心概念解释</p>
+<ul>
+<li><strong>码元</strong><span class="arithmatex">\(T_s\)</span>: 指<strong>一个码元的持续时间</strong>，也叫码元周期，是数字信号中单个二进制（或多进制）符号对应的时间长度，其倒数<span class="arithmatex">\(1/T_s\)</span>为码元速率（波特率）。</li>
+<li><span class="arithmatex">\(g_T(t)\)</span>: 工程中最常用<strong>矩形脉冲信号</strong>（矩形波），也可根据需求用升余弦滚降脉冲、高斯脉冲等；核心是在<span class="arithmatex">\(0≤t≤T_s\)</span>内有确定幅值，其余时间为0，是承载单个码元的基础波形。</li>
+<li><strong>二进制序列转基带数字波形的硬件实现</strong>：核心是<strong>串并转换+脉冲成形电路</strong></li>
+<li><strong>2ASK调制的硬件实现</strong>：最简易实现是<strong>选通开关电路</strong></li>
+</ul>
+</div>
+<hr />
+<h2 id="vs">二、模拟通信系统 vs 数字通信系统</h2>
+<h3 id="21">2.1 核心信号辨析</h3>
+<table>
+<thead>
+<tr>
+<th>信号类型</th>
+<th>核心定义</th>
+<th>关键特征</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模拟信号</td>
+<td>特征量（幅度、频率、相位）取值连续的信号</td>
+<td>取值无限多，抗干扰能力弱，噪声会随传输积累</td>
+</tr>
+<tr>
+<td>数字信号</td>
+<td>特征量（幅度、频率、相位）取值离散的信号</td>
+<td>取值有限个（核心为0/1二进制），抗干扰能力强，噪声不积累</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22">2.2 两类系统核心差异</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>模拟通信系统</th>
+<th>数字通信系统</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>传输信号</td>
+<td>直接传输原始模拟信号</td>
+<td>仅传输0/1数字化信号，需先完成模数转换</td>
+</tr>
+<tr>
+<td>典型系统</td>
+<td>模拟电视、AM广播</td>
+<td>手机蜂窝通信、计算机以太网</td>
+</tr>
+<tr>
+<td>发展现状</td>
+<td>逐步被数字系统取代</td>
+<td>当前通信系统的主流实现方案</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23">2.3 数字通信系统的核心优缺点</h3>
+<h4 id="_2">核心优势</h4>
+<ol>
+<li><strong>抗干扰能力强</strong>，传输过程中噪声不积累（通过电平判决可消除噪声叠加）</li>
+<li>可通过<strong>纠错编码精准控制传输差错</strong>，提升传输可靠性</li>
+<li>易于加密处理，信息保密度高</li>
+<li>数字信号便于标准化处理、变换与存储</li>
+<li>数字电路易于集成，适配VLSI设计，方便设备小型化</li>
+</ol>
+<h4 id="_3">核心不足</h4>
+<ol>
+<li>相同传输带宽下，数字信号占用的有效数据率更高</li>
+<li>对收发端同步精度要求极高，是系统设计的核心难点</li>
+<li>编解码、同步、调制解调等模块带来更高的实现复杂度</li>
+</ol>
+<hr />
+<h2 id="_4">三、数字通信系统完整链路与核心模块</h2>
+<h3 id="31">3.1 端到端完整传输链路</h3>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>发送端：信源 → 信源编码 → 加密 → 信道编码 → 调制 → 传输信道
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>接收端：传输信道 → 解调 → 信道译码 → 解密 → 信源解码 → 信宿
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>配套支撑：同步系统、信道噪声与干扰
+</span></code></pre></div><br />
+<img alt="alt text" src="../image.png" /></p>
+<h3 id="32">3.2 信源编码与解码</h3>
+<ul>
+<li><strong>核心功能</strong>：将信源信息转换为二进制数据，同时完成信息压缩，去除冗余；信源解码是其逆过程</li>
+<li><strong>核心流程</strong>：采样（遵循采样定理）→ 量化 → 模数转换 → 压缩编码<br />
+<img alt="alt text" src="../image-1.png" /></li>
+<li><strong>工程实例</strong>：</li>
+<li>语音编码：语音信号频率范围300Hz~3400Hz，典型采样率8kHz，8bit量化原始码率64kbps；GSM系统压缩至9kbps，极限可压缩至1kbps以下</li>
+<li>图像压缩：图像由像素阵列构成，彩色图像含RGB三基色，高清电视信号传输需几十兆比特/秒的带宽，需通过压缩降低传输开销</li>
+</ul>
+<h3 id="33">3.3 信道编码与译码</h3>
+<ul>
+<li><strong>核心目标</strong>：通过<strong>添加冗余信息，保证接收端0/1序列的正确性，对抗信道传输误码</strong></li>
+<li><strong>核心能力</strong>：</li>
+<li>错误检测：添加少量冗余，可判断接收信息是否正确，但无法纠正错误</li>
+<li>错误纠正：添加更多冗余，可同时完成错误检测与纠正</li>
+<li><strong>重传机制：系统仅能检错无法纠错时使用，会额外引入传输时延</strong></li>
+<li><strong>核心边界</strong>：冗余信息仅能提升检错纠错能力，<strong>无法覆盖所有错误场景，存在无法检测与纠正的错误</strong></li>
+</ul>
+<h3 id="34">3.4 调制与解调</h3>
+<ul>
+<li><strong>调制核心定义</strong>：<strong>将二进制数字序列映射为对应时间波形，同时把基带信号的频谱搬移到高频载波频段，适配信道的传输特性</strong></li>
+<li><strong>解调核心定义</strong>：调制的逆过程，从接收的带通信号中恢复出原始基带数字序列</li>
+<li><strong>核心价值</strong>：解决基带信号无法在无线信道远距离传输的问题，同时可通过不同调制方式提升频谱利用率与抗干扰能力</li>
+<li><strong>典型实例</strong>：PAM（脉冲幅度调制），通过不同幅度电平映射二进制序列，分为基带PAM与带通PAM两类实现</li>
+</ul>
+<p>!!! note "调制的数学说明"<br />
+      二进制数字序列映射到基带数字波形：<span class="arithmatex">\(s(t) = \sum_{n=-\infty}^{+\infty} a_n \cdot g_T(t-nT_s)\)</span><br />
+      其中：<br />
+      - <span class="arithmatex">\(a_n\)</span>：二进制符号，<span class="arithmatex">\(a_n=1\)</span>（对应数字1），<span class="arithmatex">\(a_n=0\)</span>（对应数字0）；<br />
+      - <span class="arithmatex">\(g_T(t)\)</span>：矩形脉冲波形，<span class="arithmatex">\(0≤t≤T_s\)</span>时<span class="arithmatex">\(g_T(t)=1\)</span>，其余时间<span class="arithmatex">\(g_T(t)=0\)</span>；</p>
+<div class="language-text highlight"><pre><span></span><code>  高频载波信号：$c(t) = A_c \cos(2\pi f_c t + \varphi_0)$
+  - 载波频率：$f_c &gt;&gt;$ 基带最高频率$f_m$
+
+  数字调制——2ASK: $\boldsymbol{e_{2ASK}(t) = s(t) \cdot \cos(2\pi f_c t)}$
+  - 傅里叶变换：$E_{2ASK}(\omega) = \frac{1}{2} \left[ S(\omega-\omega_c) + S(\omega+\omega_c) \right]$
+</code></pre></div>
+<p><img alt="alt text" src="../image-2.png" /></p>
+<h3 id="35">3.5 其他核心单元</h3>
+<ul>
+<li><strong>加密/解密</strong>：对编码后的数字序列进行加密处理，提升传输安全性，数字信号天然适配各类加密算法</li>
+<li><strong>同步</strong>：数字通信系统正常工作的前提，涵盖载波同步、码元同步、帧同步、网同步，是系统设计的核心难点</li>
+<li><strong>信道与噪声</strong>：<strong>传输媒质分为有线（主流光纤）和无线（主流无线电）两类</strong>，噪声是所有传输信道的固有干扰，决定了系统的误码率下限</li>
+</ul>
+<hr />
+<h2 id="_5">四、通信系统分类与通信方式</h2>
+<h3 id="41">4.1 通信系统主流分类方式</h3>
+<ol>
+<li><strong>按通信业务划分</strong>：电话通信系统、数据通信系统、图像通信系统、多媒体通信系统</li>
+<li><strong>按是否采用调制划分</strong>：基带传输系统、频带（带通）传输系统</li>
+<li><strong>按传输媒质划分</strong>：有线通信系统、无线通信系统</li>
+</ol>
+<h3 id="42">4.2 核心通信方式（按消息传输方向与时间划分）</h3>
+<table>
+<thead>
+<tr>
+<th>通信方式</th>
+<th>核心定义</th>
+<th>典型应用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单工通信</td>
+<td>消息只能单向传输，收发端角色固定</td>
+<td>广播、遥控、无线寻呼</td>
+</tr>
+<tr>
+<td>半双工通信</td>
+<td>通信双方均具备收发能力，但收发不能同时工作，仅支持单条信道</td>
+<td>对讲机、传统串口通信</td>
+</tr>
+<tr>
+<td>全双工通信</td>
+<td>收发双方可同时进行双向消息传输，需双向信道支撑</td>
+<td>手机蜂窝通信、以太网、TDD时分双工（TD-SCDMA）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_6">五、无线通信系统详解</h2>
+<h3 id="51">5.1 无线通信核心挑战</h3>
+<ol>
+<li>随时随地的泛在网络连接需求</li>
+<li>多业务（语音/数据/音视频）、多设备的融合适配</li>
+<li>硬件产品的小型化、低功耗、低成本设计需求（与VLSI设计强相关）</li>
+</ol>
+<h3 id="52">5.2 无线通信系统核心分类</h3>
+<table>
+<thead>
+<tr>
+<th>系统类别</th>
+<th>核心细分</th>
+<th>典型标准/技术</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>蜂窝通信系统</td>
+<td>2G/3G/4G/5G/6G</td>
+<td>GSM、WCDMA、TD-SCDMA、LTE、5G NR</td>
+</tr>
+<tr>
+<td>无线接入系统</td>
+<td>无线个域网（WPAN）</td>
+<td>Bluetooth、UWB、Zigbee</td>
+</tr>
+<tr>
+<td></td>
+<td>无线局域网（WLAN）</td>
+<td>WiFi 802.11a/b/g/n/ac/ax</td>
+</tr>
+<tr>
+<td></td>
+<td>无线城域网（WMAN）</td>
+<td>WiMAX 802.16系列</td>
+</tr>
+<tr>
+<td>广播电视系统</td>
+<td>地面数字电视、移动手机电视</td>
+<td>DVB-T、ISDB-T、CMMB</td>
+</tr>
+<tr>
+<td>卫星通信系统</td>
+<td>卫星传输、导航定位</td>
+<td>DVB-S/S2、GPS、北斗</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53">5.3 无线宽带接入标准核心参数</h3>
+<table>
+<thead>
+<tr>
+<th>网络类型</th>
+<th>覆盖范围</th>
+<th>典型传输速率</th>
+<th>核心协议标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PAN（个域网）</td>
+<td>&lt;10m</td>
+<td>~1Mbit/s</td>
+<td>802.15.1(Bluetooth)、802.15.4(ZigBee)</td>
+</tr>
+<tr>
+<td>WLAN（局域网）</td>
+<td>&lt;100m</td>
+<td>11-54Mbit/s（峰值10Gbps）</td>
+<td>802.11a/b/g/n/ac/ax(WiFi)</td>
+</tr>
+<tr>
+<td>MAN（城域网）</td>
+<td>&lt;5km</td>
+<td>70Mbit/s</td>
+<td>802.16a/e/m(WiMAX)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-wifi-wlan">5.4 WiFi WLAN标准演进</h3>
+<ol>
+<li><strong>802.11b</strong>：<strong>2.4GHz ISM频段</strong>，DSSS技术，峰值速率11Mbps，覆盖约500英尺</li>
+<li><strong>802.11a/g</strong>：<strong>5GHz/2.4GHz频段</strong>，OFDM技术，峰值速率54Mbps，覆盖100-200英尺</li>
+<li><strong>802.11n/ac/ax</strong>：2.4GHz+5GHz双频段，OFDM+MIMO技术，支持20/40/80/160MHz频宽，峰值速率最高10Gbps（ax），多用户MIMO增强</li>
+</ol>
+<h3 id="55">5.5 蜂窝通信系统代际演进</h3>
+<ul>
+<li><strong>2G（90年代）</strong>：核心支撑数字语音业务，主流技术TDMA/CDMA，代表标准GSM、IS-95</li>
+<li><strong>3G（IMT-2000）</strong>：核心支撑宽带数据业务，三大标准WCDMA、cdma2000、TD-SCDMA，<strong>CDMA为核心技术</strong></li>
+<li><strong>4G（LTE/LTE-Advanced）</strong>：核心支撑多媒体业务，关键技术<strong>OFDM、MIMO</strong>，应对WiMAX市场竞争，向ITU 4G标准对齐</li>
+<li><strong>5G</strong>：核心指标为峰值速率&gt;10Gbps、空口时延&lt;1ms、10年终端续航、海量设备连接，覆盖eMBB、uRLLC、mMTC三大场景</li>
+</ul>
+<hr />
+<h2 id="_7">六、数字通信核心关键技术</h2>
+<h3 id="61">6.1 多址技术</h3>
+<p>多址技术解决多用户同时接入信道的资源分配问题，主流实现分为三类：<br />
+1.  <strong>FDMA（频分多址）</strong>：按频率划分信道，不同用户占用互不重叠的频段<br />
+2.  <strong>TDMA（时分多址）</strong>：按时间划分时隙，不同用户占用互不重叠的时间片<br />
+3.  <strong>CDMA（码分多址）</strong>：<strong>按正交码字区分用户，同频同时隙共享信道，靠不同正交码字区分用户，是3G系统的核心技术</strong></p>
+<p><img alt="alt text" src="../image-3.png" /></p>
+<h3 id="62-ofdm">6.2 OFDM（正交频分复用）</h3>
+<ul>
+<li><strong>本质</strong>：一种特殊的多载波调制技术，将高速串行数据流拆分为多路低速并行数据流，<strong>调制到相互正交的子载波</strong>上</li>
+<li><strong>核心优势</strong>：</li>
+<li>大幅提升频谱利用率，子载波正交重叠，节省频带资源</li>
+<li>多子载波设计，天然抵抗频率选择性衰落</li>
+<li>延长符号周期，有效对抗多径衰落引起的码间干扰（ISI）</li>
+<li>可通过FFT/IFFT算法实现，大幅简化VLSI硬件实现结构</li>
+</ul>
+<p><img alt="alt text" src="../image-4.png" /></p>
+<h3 id="63-mimo">6.3 MIMO（多输入多输出）</h3>
+<ul>
+<li><strong>本质</strong>：多天线技术，通过多根发射天线、多根接收天线构建多条并行传输信道</li>
+<li><strong>核心突破</strong>：将无线信道的多径效应从不利干扰因素，转化为提升系统容量的有利因素</li>
+<li><strong>核心优势</strong>：在独立同分布的高斯信道下，当接收天线数大于发射天线数时，MIMO系统的容量随发射天线数近似线性增长</li>
+<li><strong>技术演进</strong>：Massive MIMO（大规模天线阵列），是5G系统的核心关键技术</li>
+</ul>
+<h3 id="64">6.4 高性能信道编码技术</h3>
+<p>核心目标是逼近Shannon信道容量限，提升传输可靠性，主流技术如下：<br />
+1.  <strong>LDPC码</strong>：1962年由Gallager提出，凭借优异的纠错性能与硬件可实现性，成为5G数据信道的编码标准<br />
+2.  <strong>Polar码</strong>：2008年由Arikan教授提出，理论上可达到Shannon限，被3GPP采纳为5G控制信道的编码标准<br />
+3.  <strong>Turbo码</strong>：3G/4G系统的主流信道编码方案，性能逼近Shannon限，硬件实现复杂度高于LDPC码</p>
+<hr />
+<h2 id="6g">七、通信系统发展趋势与6G展望</h2>
+<h3 id="71">7.1 无线通信核心发展趋势</h3>
+<ol>
+<li>宽带化：传输速率从Mbps向Tbps量级持续演进</li>
+<li>移动化：全场景无缝泛在连接，实现全域移动覆盖</li>
+<li>低功耗化：适配海量物联网终端，实现超长续航</li>
+<li>高集成化：深度适配VLSI设计，实现芯片小型化、低成本、高可靠性</li>
+</ol>
+<h3 id="72-6g">7.2 6G研究核心基点</h3>
+<ol>
+<li><strong>核心前提</strong>：6G需从基础理论研究做起，5G商用进程过快导致基础理论储备不足，6G需实现颠覆性技术创新</li>
+<li><strong>潜在创新方向</strong>：<ul>
+<li>基于大数据/AI的大范围干扰抵消技术，探索非蜂窝网络架构</li>
+<li>基于超材料科学的天线技术突破</li>
+<li>信息论基础理论的进一步挖潜</li>
+<li>核心网架构的颠覆性创新</li>
+</ul>
+</li>
+<li><strong>核心关注方向</strong>：相比5G，6G需更聚焦低碳节能、网络与信息安全两大核心命题</li>
+</ol>
+<hr />
+<h3 id="_8">学习适配提示</h3>
+<ol>
+<li>结合<strong>数字信号处理</strong>基础，重点理解OFDM的FFT/IFFT实现、调制解调的信号处理流程、多径衰落的抑制算法</li>
+<li>结合<strong>概率论与数理统计</strong>基础，深入分析信道编码的误码率性能、MIMO系统的信道容量、噪声对传输链路的影响</li>
+<li>结合<strong>集成电路设计</strong>基础，聚焦各模块的VLSI实现复杂度、硬件可实现性、低功耗设计与面积优化，贴合课程“VLSI数字通信设计”的核心目标</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../../javascripts/extra.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+        <script src="../../../../../javascripts/katex.js"></script>
+      
+    
+  </body>
+</html>
