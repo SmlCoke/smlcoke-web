@@ -52,10 +52,22 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card yellow" href="DIC/Glossary">
+<a class="note-card yellow" href="DIC/Glossary/">
   <span class="card-icon">💾</span>
   <div class="card-title">数字IC设计术语表</div>
   <p class="card-desc">数字集成电路设计中常用术语的解释与总结</p>
+</a>
+
+<a class="note-card sky" href="DIC/VLSI/">
+  <span class="card-icon">📻️</span>
+  <div class="card-title">VLSI数字通信原理与设计</div>
+  <p class="card-desc">VLSI数字通信系统的基本原理与设计方法</p>
+</a>
+
+<a class="note-card lime" href="DIC/CourseDesign/introduction/">
+  <span class="card-icon">📱</span>
+  <div class="card-title">数字集成电路设计课程设计</div>
+  <p class="card-desc">基于 Verilog 实现的 CNN 硬件加速器</p>
 </a>
 
 </div>
