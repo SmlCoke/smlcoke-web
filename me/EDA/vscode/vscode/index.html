@@ -2506,7 +2506,7 @@
 1. 搜索 https://github.com/universal-ctags/ctags<br />
 2. Release 页面下载 Windows 版本的预编<code>.zip</code>包<br />
 3. 解压到任意目录，例如 <code>D:\EDA\ctags</code><br />
-4. 添加 <code>D:\EDA\ctags\bin</code> 到系统环境变量 <code>Path</code> 中</p>
+4. 将 <code>ctags.exe</code> <strong>所在文件夹的路径添加到系统环境变量</strong> <code>Path</code> 中，或者记住该绝对路径，后续在 VS Code 插件设置中需要用到。</p>
 <p>之后，在 VS Code 按 <code>Crtl + Shift + P</code>，输入 <code>setting.json</code>用户设置，添加如下键值对：<br />
 <div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">&quot;systemverilog.ctags&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;你的c</span><span class="kc">ta</span><span class="err">gs.exe的绝对路径，注意反斜杠转义&gt;</span><span class="p">,</span><span class="w"> </span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">&quot;systemverilog.disableLinting&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span>
