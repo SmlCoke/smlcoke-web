@@ -1292,6 +1292,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V. 一些调试反馈
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="V. 一些调试反馈">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 跨文件跳转的 bug
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2414,6 +2442,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V. 一些调试反馈
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="V. 一些调试反馈">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 跨文件跳转的 bug
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2564,6 +2620,10 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>pip<span class="w"> </span>install<span class="w"> </span>yowasp-yosys
 </span></code></pre></div></p>
 <p>如果你不想污染你的全局python环境，当然可以使用 venv, uv, conda等方法虚拟环境，这里不再介绍。</p>
+<p>安装完毕后，必须确保命令行能够找到 <code>yowasp-yosys</code>，可以在 PowerShell 中输入：<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>yowasp-yosys<span class="w"> </span>-V
+</span></code></pre></div><br />
+如果能够返回版本信息，则说明安装成功。</p>
 <h3 id="43-teroshdl">4.3 TerosHDL 配置步骤</h3>
 <p>在 VS Code 插件市场中搜索 <code>TerosHDL</code>，安装。</p>
 <ol>
@@ -2578,8 +2638,8 @@
     回到配置页面，左侧导航栏找到 Linter settings，点击，进去将所有项设置为 <code>Disabled</code> 即可。<br />
     然后点击 <code>Apply</code>。<br />
     然后打开 <code>setting.json</code> 用户设置，添加如下键值对：<br />
-    <div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">&quot;teroshdl.linter.verilog.linter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;None&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">// 封杀 TerosHDL 的查错</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">&quot;teroshdl.formatter.verilog.formatter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;None&quot;</span><span class="w">      </span><span class="c1">// 封杀 TerosHDL 的格式化</span>
+    <div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&quot;teroshdl.linter.verilog.linter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;None&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">// 封杀 TerosHDL 的查错</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">&quot;teroshdl.formatter.verilog.formatter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;None&quot;</span><span class="w">      </span><span class="c1">// 封杀 TerosHDL 的格式化</span>
 </span></code></pre></div></li>
 </ol>
 <h3 id="44">4.4 使用示例</h3>
@@ -2590,6 +2650,12 @@
 - <code>Schematic Viewer</code>：自动解析代码连线，生成可交互的 RTL 原理图。<br />
 - <code>State Machine Viewer</code>：自动提取 always 块中的 case 逻辑，绘制状态转移图（FSM）。</p>
 <p><strong>尤其是后面两个效果很不错，写完 RTL 后可以快速帮你排查当前模块的功能实现是不是符合你的预期！</strong></p>
+<h2 id="v">V. 一些调试反馈</h2>
+<h3 id="51-bug">5.1 跨文件跳转的 bug</h3>
+<div class="admonition bug">
+<p class="admonition-title">SystemVerilog 插件的跨文件跳转功能偶尔会失效</p>
+<p>只有当待跳转的模块打开后，才能跨文件跳转，并且不保证100%成功，目前不清楚原因，也没有找到一个稳定的解决方案。</p>
+</div>
 
 
 
