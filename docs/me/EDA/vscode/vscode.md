@@ -111,10 +111,10 @@ SystemVerilog
 - 跨文件跳转✅️
 
 注意，**跨文件跳转功能需要额外下载一个叫做 `ctags` 的工具**，安装方法：
-1. 搜索 https://github.com/universal-ctags/ctags
+1. 搜索 https://github.com/universal-ctags/ctags-win32
 2. Release 页面下载 Windows 版本的预编`.zip`包
 3. 解压到任意目录，例如 `D:\EDA\ctags`
-4. 添加 `D:\EDA\ctags\bin` 到系统环境变量 `Path` 中
+4. 将 `ctags.exe` **所在文件夹的路径添加到系统环境变量** `Path` 中，或者记住该绝对路径，后续在 VS Code 插件设置中需要用到。
 
 之后，在 VS Code 按 `Crtl + Shift + P`，输入 `setting.json`用户设置，添加如下键值对：
 ```json
@@ -193,6 +193,11 @@ pip install yowasp-yosys
 
 如果你不想污染你的全局python环境，当然可以使用 venv, uv, conda等方法虚拟环境，这里不再介绍。
 
+安装完毕后，必须确保命令行能够找到 `yowasp-yosys`，可以在 PowerShell 中输入：
+```bash
+yowasp-yosys -V
+```
+如果能够返回版本信息，则说明安装成功。
 
 ###  4.3 TerosHDL 配置步骤
 在 VS Code 插件市场中搜索 `TerosHDL`，安装。
@@ -223,3 +228,10 @@ VS Code中随便打开一个 `.v` 或者 `.sv` 文件，在编辑器右上角会
 - `State Machine Viewer`：自动提取 always 块中的 case 逻辑，绘制状态转移图（FSM）。
 
 **尤其是后面两个效果很不错，写完 RTL 后可以快速帮你排查当前模块的功能实现是不是符合你的预期！**
+
+## V. 一些调试反馈
+
+### 5.1 跨文件跳转的 bug 
+
+!!! bug "SystemVerilog 插件的跨文件跳转功能偶尔会失效"
+    只有当待跳转的模块打开后，才能跨文件跳转，并且不保证100%成功，目前不清楚原因，也没有找到一个稳定的解决方案。
