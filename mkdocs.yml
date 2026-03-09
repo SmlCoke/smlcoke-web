@@ -64,6 +64,8 @@ nav:
         - me/DIC/VLSI/index.md
         - 数字通信系统基础: me/DIC/VLSI/ch1-introduction/introduction.md
         - 基带信号的调制与解调: me/DIC/VLSI/ch2-modulation/modulation.md
+      - 通用及图形处理器架构与系统:
+          - 第一章：硬件/软件接口: me/DIC/PU/ch1-the_software_hardware_interface/note.md
     - Verilog HDL 基础: me/verilog/Study_note.md
     - EDA 工具链:
       - VS Code + Verilog : me/EDA/vscode/vscode.md

@@ -253,8 +253,9 @@ body, .md-typeset {
   z-index: 1;
 }
 
-/* 分区首页 hero 中的 H1 不显示底部渐变装饰线 */
-.md-typeset .section-hero h1::after {
+/* 分区首页 hero 与网站首页主视觉标题都不显示底部渐变装饰线 */
+.md-typeset .section-hero h1::after,
+.md-typeset .hero-container .hero-title::after {
   display: none;
 }
 
