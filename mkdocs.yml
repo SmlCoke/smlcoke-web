@@ -52,22 +52,22 @@ nav:
   - 博客: blog/ # 博客插件会自动接管这个目录
   - 微电子: 
     - me/index.md
-    - 信号与系统: me/SS/index.md
-    - 数字集成电路设计: 
-      - 数字集成电路设计术语和设计流程: me/DIC/Glossary.md
-      - 数字集成电路设计课程设计: 
+    - Signal and Systems: me/SS/index.md
+    - Digital Integrated Circuits: 
+      - Glossary: me/DIC/Glossary.md
+      - Course Design: 
         - Init: me/DIC/CourseDesign/init.md
-        - 课程介绍: me/DIC/CourseDesign/introduction.md
-        - 电路设计规范: me/DIC/CourseDesign/Design_Specifications.md
-        - 知识基础-重量化操作的电路实现: me/DIC/CourseDesign/Re-quantization.md
-      - VLSI数字通信原理与设计: 
+        - Introduction: me/DIC/CourseDesign/introduction.md
+        - Specification: me/DIC/CourseDesign/Design_Specifications.md
+        - Re-quantization: me/DIC/CourseDesign/Re-quantization.md
+      - VLSI: 
         - me/DIC/VLSI/index.md
-        - 数字通信系统基础: me/DIC/VLSI/ch1-introduction/introduction.md
-        - 基带信号的调制与解调: me/DIC/VLSI/ch2-modulation/modulation.md
-      - 通用及图形处理器架构与系统:
-          - 第一章：硬件/软件接口: me/DIC/PU/ch1-the_software_hardware_interface/note.md
-    - Verilog HDL 基础: me/verilog/Study_note.md
-    - EDA 工具链:
+        - Ch 1 Basics: me/DIC/VLSI/ch1-introduction/introduction.md
+        - Ch 2 Modulation and Demodulation: me/DIC/VLSI/ch2-modulation/modulation.md
+      - Processors:
+          - Ch 1 ISA: me/DIC/PU/ch1-the_software_hardware_interface/note.md
+    - Verilog HDL Basics: me/verilog/Study_note.md
+    - EDA Tools:
       - VS Code + Verilog : me/EDA/vscode/vscode.md
   - 机器学习:
     - ml/Basic/index.md
