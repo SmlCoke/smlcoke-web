@@ -69,6 +69,7 @@ nav:
     - Verilog HDL Basics: me/verilog/Study_note.md
     - EDA Tools:
       - VS Code + Verilog : me/EDA/vscode/vscode.md
+      - MobaXterm + Linux : me/EDA/mobaxterm/mobaxterm.md 
   - 机器学习:
     - ml/Basic/index.md
     - 全连接神经网络: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
