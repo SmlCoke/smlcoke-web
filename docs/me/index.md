@@ -88,5 +88,11 @@ hide:
   <p class="card-desc">VS Code 中配置 Verilog 生态</p>
 </a>
 
+<a class="note-card green" href="EDA/mobaxterm/mobaxterm">
+  <span class="card-icon">🛜</span>
+  <div class="card-title">MobaXterm</div>
+  <p class="card-desc">MobaXterm 图形转发</p>
+</a>
+
 </div>
 
