@@ -243,6 +243,24 @@ body, .md-typeset {
 .section-hero.ai-hero {
   background: linear-gradient(135deg, #f953c6 0%, #b91d73 100%);
 }
+.section-hero.tools-hero {
+  background:
+    radial-gradient(1200px 320px at 10% -10%, rgba(34, 211, 238, 0.35) 0%, rgba(34, 211, 238, 0) 60%),
+    radial-gradient(900px 260px at 90% 120%, rgba(16, 185, 129, 0.22) 0%, rgba(16, 185, 129, 0) 65%),
+    linear-gradient(125deg, #0b1220 0%, #12355b 45%, #0f766e 100%);
+}
+
+.section-hero.tools-hero::before {
+  background: conic-gradient(from 210deg at 50% 50%, rgba(255,255,255,0.14), rgba(255,255,255,0.02), rgba(255,255,255,0.14));
+  animation: shimmer 11s linear infinite;
+}
+
+.section-hero.tools-hero .section-stats .stat-item {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
 
 .section-hero h1 {
   color: white !important;
