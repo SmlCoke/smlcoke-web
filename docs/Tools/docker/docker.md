@@ -88,3 +88,146 @@ D:\Docker
 
 > **总结**：只要 `docker_data.vhdx` 老老实实待在 D 盘，就可以放心大胆地在 Docker 里折腾任何庞大的 AI 编译环境！
 
+## 四、Docker 的使用
+
+两个关键点：
+1. Docker 的一切拉取镜像、运行容器等数据操作全部在 `docker_data.vhdx` 里进行，**这个文件就是 Docker 的“数据仓库”**。
+2. 运行 Docker 时，必须保持 Docker Desktop 的主界面左下角显示绿色的 `Engine running`，**这表示 Docker 的引擎正在正常运行**。
+
+### 4.1 Demo
+
+- 验证安装/显示版本号：`docker --version`
+- 测试镜像：`docker run hello-world`
+
+#### 镜像与容器
+1. 镜像(Image)：镜像是一个静态的、只读的模板，包含了运行某个应用所需的代码、库、环境变量等。就像一个预先打包好的“软件安装包”。
+2. 容器(Container)：容器是镜像的一个运行实例，是一个动态的、可读写的环境。当你运行一个镜像时，Docker 会创建一个容器来执行这个镜像中的应用。容器是隔离的，互相之间不会干扰，就像在不同的“沙箱”里运行一样。
+
+### 4.2 常用命令
+
+#### 4.2.1 与镜像有关的指令
+
+
+**(1) 拉取镜像**
+```bash
+docker pull <registry>/<namespace>/<image>:<tag>
+```
+
+- registry：镜像仓库地址（如 Docker Hub、阿里云等），`docker.io` 是默认的 Docker Hub。
+- namespace：镜像的命名空间，通常是用户名或组织名。`library` 是 Docker Hub 的官方镜像命名空间。其他用户上传的镜像会在自己的命名空间下，如 `SmlCoke`。
+- image：镜像名称。
+- tag：镜像标签，用于区分同一镜像的不同版本。
+
+!!! tip "可选参数"
+    (1) `--platform`：指定平台架构，如 `linux/amd64`、`linux/arm64` 等，确保拉取与当前系统兼容的镜像。应用场景：嵌入式开发设备
+
+
+**(2) 列出本地镜像**
+```bash
+docker images
+```
+
+**(3) 删除镜像**
+```bash
+docker rmi <image_id>
+```
+
+#### 4.2.2 与容器有关的指令
+**(1) 运行容器**
+带有最常用参数的运行指令如下：
+```bash
+docker run -d -p <host_port>:<container_port> -v <host_path>:<container_path> --name <container_name> <image_name>
+```
+
+- `-d`：detach mode, 后台运行容器。
+- `-p`：端口映射，将容器内的 `<container_port>` 映射到主机的 `<host_port>`。
+- `-v`：卷挂载，将主机的 `<host_path>` 挂载到容器内的 `<container_path>`，实现数据持久化。
+- `--name`：为容器指定一个名字，方便管理和识别。注意，容器名称必须唯一。
+- `<image_name>`：要运行的镜像名称，可以带标签，如 `myapp:latest`。
+
+**什么是端口映射？**
+端口映射是将容器内部的端口映射到主机的端口，使得外部可以通过主机的端口访问容器内部的服务。
+例如，`-p 8080:80` 表示将容器内的 80 端口映射到主机的 8080 端口，这样访问 `http://localhost:8080` **就相当于访问容器内的 80 端口。**
+
+**什么是卷挂载？**
+卷挂载是将主机的目录或文件挂载到容器内，使得容器内的应用可以直接访问主机上的数据。
+例如，`-v D:\data:/app/data` 表示将主机的 `D:\data` 目录挂载到容器内的 `/app/data` 目录，这样容器内的应用就可以访问 `D:\data` 中的数据。
+
+!!! note "相对路径与绝对路径"
+    在使用 `-v` 参数时，可以使用相对路径或绝对路径。相对路径是**相对于 Docker 命令执行目录的路径**，而绝对路径是完整的文件系统路径。
+
+**(2) 列出容器**
+列出正在运行的容器：
+```bash
+docker ps
+```
+
+列出所有容器（包括未运行的）：
+```bash
+docker ps -a
+```
+
+**(3) 停止与启动容器**
+停止容器：
+```bash
+docker stop <container_id>
+```
+
+启动容器：
+```bash
+docker start <container_id>
+```
+
+注意，停止然后再次启动后，**之前启动时设定的可选参数仍然有效**。
+
+**(4) 删除容器**
+```bash
+docker rm <container_id>
+```
+
+
+**(5) 运行交互式容器**
+
+```bash
+docker run -it ubuntu bash
+```
+- `-i`: 交互式模式（Interactive）。
+- `-t`: 分配一个伪终端（TTY）。
+- `ubuntu`: 使用 Ubuntu 官方镜像。
+- `bash`: 进入容器后执行的命令。
+
+## 4.3 进阶命令
+
+### 4.3.1 进入正在后台运行的容器
+```bash
+docker exec -it <container_id> bash
+```
+
+> 注：如果镜像里没有 bash，可以尝试换成 sh
+
+### 4.3.2 查看容器日志
+如果你的代码在容器里崩溃了，或者你想看 Web 服务器的访问记录，看日志是第一步。
+```bash
+# 打印历史日志
+docker logs my-nginx
+
+# 持续滚动查看日志（类似 Linux 的 tail -f）
+docker logs -f my-nginx
+```
+
+### 4.3.3 “永不宕机”
+```bash
+docker run -d --name <container_name> --restart always <image_name>
+```
+
+- `--restart always` 参数会让 Docker 在容器崩溃或 Docker 重启后自动重新启动容器，确保你的服务始终在线。
+
+### 4.3.4 空间清理
+使用 Docker 一段时间后，你会发现下载了较多的镜像、生成了无数停止的容器，宿主机磁盘空间减少。Docker 提供了一键清理功能：
+```bash
+# 清理所有停止的容器、无用的网络和悬空镜像 (安全操作)
+docker system prune
+
+# 终极清理：不仅清理上述内容，还会把你下载的、当前没有被任何容器使用的镜像统统删掉！
+docker system prune -a
+```
