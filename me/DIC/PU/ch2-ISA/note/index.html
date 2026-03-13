@@ -3226,7 +3226,7 @@
 </span></code></pre></div></p>
 <p><strong>示例：C代码编译为RISC-V汇编</strong><br />
 C代码：<br />
-<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
 </span></code></pre></div><br />
 编译后的RISC-V汇编：<br />
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>add t0, g, h   # 临时寄存器t0 = g + h
@@ -3261,7 +3261,7 @@ C代码：<br />
 <h4 id="_4">内存操作示例</h4>
 <p><strong>示例1：数组读取</strong><br />
 C代码：<br />
-<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1">// g对应x20，h对应x21，数组A的基地址对应x22</span>
 </span></code></pre></div><br />
 编译后的汇编：<br />
@@ -3270,7 +3270,7 @@ C代码：<br />
 </span></code></pre></div></p>
 <p><strong>示例2：数组写入</strong><br />
 C代码：<br />
-<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">A</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">A</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1">// h对应x21，数组A的基地址对应x22</span>
 </span></code></pre></div><br />
 编译后的汇编：<br />
@@ -3420,25 +3420,126 @@ C代码：<br />
 - <code>funct3/funct7</code>：扩展操作码，区分同opcode下的不同指令<br />
 - <code>immediate</code>：立即数字段，不同格式拆分方式不同</p>
 <h4 id="521-r-type-">5.2.1 R-type（寄存器-寄存器型）</h4>
-<p><strong>字段结构</strong>：<br />
-| funct7 | rs2 | rs1 | funct3 | rd | opcode |<br />
-|--------|-----|-----|--------|----|--------|<br />
-| 7位    | 5位 | 5位 | 3位    | 5位| 7位    |<br />
-- 固定opcode：<code>0110011</code><br />
-- 核心指令：<code>add/sub/sll/srl/sra/or/and/xor</code><br />
-- 编码示例：<code>add x9, x20, x21</code><br />
-  二进制：<code>0000000 10101 10100 000 01001 0110011</code><br />
-  十六进制：<code>0x015A04B3</code></p>
+<p><strong>字段结构</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>funct7</th>
+<th>rs2</th>
+<th>rs1</th>
+<th>funct3</th>
+<th>rd</th>
+<th>opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7位</td>
+<td>5位</td>
+<td>5位</td>
+<td>3位</td>
+<td>5位</td>
+<td>7位</td>
+</tr>
+<tr>
+<td>- 固定opcode：<code>0110011</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>- 核心指令：<code>add/sub/sll/srl/sra/or/and/xor</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>- 编码示例：<code>add x9, x20, x21</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>二进制：<code>0000000 10101 10100 000 01001 0110011</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>十六进制：<code>0x015A04B3</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h4 id="522-i-type">5.2.2 I-type（立即数/加载型）</h4>
-<p><strong>字段结构</strong>：<br />
-| immediate[11:0] | rs1 | funct3 | rd | opcode |<br />
-|------------------|-----|--------|----|--------|<br />
-| 12位             | 5位 | 3位    | 5位| 7位    |<br />
-- 核心opcode：<br />
-  - 立即数<strong>算术</strong>：<code>0010011</code>（<code>addi/xori/ori/andi</code>等）<br />
-  - <strong>内存加载</strong>：<code>0000011</code>（<code>lw/lb/lh</code>等）<br />
-  - <strong>寄存器跳转</strong>：<code>1100111</code>（<code>jalr</code>）<br />
-- 特点：<strong>12位有符号立即数</strong>，支持符号扩展，12位有符号立即数范围为<span class="arithmatex">\(-2048\sim 2047\)</span></p>
+<p><strong>字段结构</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>immediate[11:0]</th>
+<th>rs1</th>
+<th>funct3</th>
+<th>rd</th>
+<th>opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12位</td>
+<td>5位</td>
+<td>3位</td>
+<td>5位</td>
+<td>7位</td>
+</tr>
+<tr>
+<td>- 核心opcode：</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>- 立即数<strong>算术</strong>：<code>0010011</code>（<code>addi/xori/ori/andi</code>等）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>- <strong>内存加载</strong>：<code>0000011</code>（<code>lw/lb/lh</code>等）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>- <strong>寄存器跳转</strong>：<code>1100111</code>（<code>jalr</code>）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>- 特点：<strong>12位有符号立即数</strong>，支持符号扩展，12位有符号立即数范围为<span class="arithmatex">\(-2048\sim 2047\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <p>其他指令编码格式见：<a href="../appendix/">附录</a></p>
 <hr />
 <h2 id="_5">六、逻辑与移位操作</h2>
@@ -3546,7 +3647,7 @@ C代码：<br />
 </table>
 <h3 id="72-if-else">7.2 案例：<code>if-else</code>语句编译</h3>
 <p><strong>C代码</strong>：<br />
-<div class="language-c highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="p">)</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="p">)</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">else</span>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
@@ -3566,7 +3667,7 @@ C代码：<br />
 <img alt="alt text" src="../image-2.png" /></p>
 <h3 id="73-while">7.3 案例：<code>while</code>循环语句编译</h3>
 <p><strong>C代码</strong>：<br />
-<div class="language-c highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">save</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">k</span><span class="p">)</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">save</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">k</span><span class="p">)</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">// i对应x22，k对应x24，save数组基地址对应x25</span>
 </span></code></pre></div></p>
