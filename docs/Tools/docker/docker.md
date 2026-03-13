@@ -113,10 +113,10 @@ D:\Docker
 docker pull <registry>/<namespace>/<image>:<tag>
 ```
 
-- registry：镜像仓库地址（如 Docker Hub、阿里云等），`docker.io` 是默认的 Docker Hub。
-- namespace：镜像的命名空间，通常是用户名或组织名。`library` 是 Docker Hub 的官方镜像命名空间。其他用户上传的镜像会在自己的命名空间下，如 `SmlCoke`。
-- image：镜像名称。
-- tag：镜像标签，用于区分同一镜像的不同版本。
+- `registry`：镜像仓库地址（如 Docker Hub、阿里云等），`docker.io` 是默认的 Docker Hub。
+- `namespace`：镜像的命名空间，通常是用户名或组织名。`library` 是 Docker Hub 的官方镜像命名空间。其他用户上传的镜像会在自己的命名空间下，如 `SmlCoke`。
+- `image`：镜像名称。
+- `tag`：镜像标签，用于区分同一镜像的不同版本。
 
 !!! tip "可选参数"
     (1) `--platform`：指定平台架构，如 `linux/amd64`、`linux/arm64` 等，确保拉取与当前系统兼容的镜像。应用场景：嵌入式开发设备
