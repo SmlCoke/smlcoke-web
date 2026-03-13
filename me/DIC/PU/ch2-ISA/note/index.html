@@ -1,0 +1,3183 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SmlCoke">
+      
+      
+        <link rel="canonical" href="https://smlcoke.com/me/DIC/PU/ch2-ISA/note/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>第二章 指令：计算机的语言 RISC-V - SmlCoke Home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260224">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#risc-v" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SmlCoke Home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第二章 指令：计算机的语言 RISC-V
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../blog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  博客
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  微电子
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../ml/Basic/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  机器学习
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../ml/CV/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  计算机视觉
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../rust/notes/Study/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Rust
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../AI-Tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  人工智能
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../Tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工具
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../comments/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  留言板
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SmlCoke Home
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    博客
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微电子
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    微电子
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../SS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Signal and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Integrated Circuits
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Digital Integrated Circuits
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_2" id="__nav_3_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Course Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/init/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Init
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/Design_Specifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/Re-quantization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-quantization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../VLSI/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VLSI
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_3" id="__nav_3_3_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    VLSI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch1-introduction/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch 1 Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch2-modulation/modulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch 2 Modulation and Demodulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_4" id="__nav_3_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processors
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Processors
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ch1-the_software_hardware_interface/note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch 1 ISA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../verilog/Study_note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verilog HDL Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    EDA Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/vscode/vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VS Code + Verilog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/mobaxterm/mobaxterm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MobaXterm + Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../ml/Basic/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全连接神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    优化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch3_CNN/ch3_CNN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../ml/CV/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/ResNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/DenseNet/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/VIT/ViT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/PFLD/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rust
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../rust/notes/Study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 学习笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../rust/crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 加密/解密在线工具
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../AI-Tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    人工智能
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    人工智能
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/ClaudeCode/Claude-Code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/MCP/mcp_server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/OpenRouter/openrouter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenRouter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/OpenCode/opencode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/Aider/aider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../Tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    工具
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../Tools/docker/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    留言板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#isa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、计算机系统层级与ISA核心概念
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、计算机系统层级与ISA核心概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 计算机系统全层级
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-isa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 ISA核心定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risc-v-isa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、RISC-V ISA概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、RISC-V ISA概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 基础整数指令集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 标准扩展指令集
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risc-v_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、RISC-V四大核心设计原则
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、算术操作与操作数体系
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、算术操作与操作数体系">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 算术操作基础
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 寄存器操作数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 内存操作数
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 内存操作数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心特性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心内存指令
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        内存操作示例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 内存对齐规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 大小端序详解
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 立即数与零操作数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 符号扩展
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risc-v-32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、RISC-V 32位指令编码格式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、RISC-V 32位指令编码格式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 六大指令格式总览
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 各格式详细字段定义
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 各格式详细字段定义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521-r-type-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2.1 R-type（寄存器-寄存器型）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#522-i-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2.2 I-type（立即数/加载型）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、逻辑与移位操作
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、逻辑与移位操作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 位操作指令映射
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 核心位操作用途
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、控制流：分支与跳转
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、控制流：分支与跳转">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 核心控制流指令
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-if-else" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 案例：if-else语句编译
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-while" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 案例：while循环语句编译
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="risc-v">第二章 指令：计算机的语言 RISC-V</h1>
+<h2 id="isa">一、计算机系统层级与ISA核心概念</h2>
+<h3 id="11">1.1 计算机系统全层级</h3>
+<p>从上层应用到底层硬件的完整层级如下，<strong>ISA是软硬件的核心分界层</strong>：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>应用(问题) → 算法 → 编程语言 → 操作系统/虚拟机 → 指令集体系结构(ISA) → 微体系结构 → 功能部件 → 器件/电路
+</span></code></pre></div><br />
+- 上层：程序员面向编程语言、操作系统开发<br />
+- 中层：架构师基于ISA设计微体系结构<br />
+- 底层：电子工程师实现电路与器件</p>
+<h3 id="12-isa">1.2 ISA核心定义</h3>
+<p><strong>指令集体系结构(ISA)是计算机支持的指令集合，是软硬件之间的标准接口</strong>：<br />
+- 不同计算机的指令集存在差异，但核心设计有大量共性<br />
+- 早期计算机与现代RISC架构均采用简单指令集，简化硬件实现<br />
+- RISC-V是本课程的核心示例ISA，为免费开源的标准化ISA，由RISC-V基金会维护</p>
+<hr />
+<h2 id="risc-v-isa">二、RISC-V ISA概述</h2>
+<p>RISC-V指令固定编码为32位指令字，采用少量规整的指令格式，核心特性是<strong>规整性</strong>。分为基础整数指令集和可选扩展指令集。</p>
+<h3 id="21">2.1 基础整数指令集</h3>
+<table>
+<thead>
+<tr>
+<th>指令集</th>
+<th>描述</th>
+<th>版本</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RV32I</td>
+<td>32bit 基础整数指令</td>
+<td>2.1</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>RV32E</td>
+<td>32bit 嵌入式精简指令</td>
+<td>1.9</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>RV64I</td>
+<td>64bit 基础整数指令</td>
+<td>2.1</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>RV128I</td>
+<td>128bit 基础整数指令</td>
+<td>1.7</td>
+<td>批准</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22">2.2 标准扩展指令集</h3>
+<table>
+<thead>
+<tr>
+<th>扩展代号</th>
+<th>描述</th>
+<th>版本</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td>乘除法指令扩展</td>
+<td>2.0</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>A</td>
+<td>原子指令扩展</td>
+<td>2.1</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>F</td>
+<td>单精度浮点指令扩展</td>
+<td>2.2</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>D</td>
+<td>双精度浮点指令扩展</td>
+<td>2.2</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>Zicsr</td>
+<td>控制和状态寄存器指令</td>
+<td>2.0</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>Zifence</td>
+<td>Fence 内存屏障指令扩展</td>
+<td>2.0</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>C</td>
+<td>压缩指令扩展</td>
+<td>2.0</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>H</td>
+<td>虚拟化指令扩展</td>
+<td>1.0</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>B</td>
+<td>比特操作指令扩展</td>
+<td>1.0</td>
+<td>开放</td>
+</tr>
+<tr>
+<td>P</td>
+<td>SIMD 指令扩展</td>
+<td>0.2</td>
+<td>开放</td>
+</tr>
+<tr>
+<td>K</td>
+<td>加解密指令扩展</td>
+<td>1.0</td>
+<td>开放</td>
+</tr>
+<tr>
+<td>V</td>
+<td>向量指令扩展</td>
+<td>1.0</td>
+<td>开放</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>通用组合：<code>RV32IMAFD</code> 称为<strong>G通用组合</strong>，是最常用的基础配置。</p>
+</blockquote>
+<hr />
+<h2 id="risc-v_1">三、RISC-V四大核心设计原则</h2>
+<p>这是RISC-V架构设计的核心思想，贯穿整个指令集规范：<br />
+1.  <strong>Simplicity favors regularity（简洁源于规整性）</strong><br />
+    所有算术操作采用统一的三操作数格式（2源1目的），规整的指令格式大幅简化硬件解码与实现，以低成本实现更高性能。<br />
+2.  <strong>Smaller is faster（越小越快）</strong><br />
+<strong>采用32个32位的寄存器文件</strong>，容量远小于主存，但访问延迟远低于内存，高频访问数据优先放入寄存器，是性能优化的核心手段。<br />
+3.  <strong>Make the common case fast（让常见场景更快）</strong><br />
+    程序中小常数的使用非常普遍，<strong>指令内置立即数操作数，避免额外的内存load指令</strong>，大幅提升常用操作的执行效率。<br />
+4.  <strong>Good design demands good compromises（优秀的设计需要合理的折中）</strong><br />
+    多指令格式虽增加了解码复杂度，但<strong>保证了所有指令统一32位固定长度</strong>，且各格式的核心字段位置尽可能对齐，平衡了编程灵活性与硬件实现难度。</p>
+<hr />
+<h2 id="_1">四、算术操作与操作数体系</h2>
+<h3 id="41">4.1 算术操作基础</h3>
+<p>RISC-V所有算术指令采用<strong>三操作数格式</strong>，固定为「<strong>2个源操作数 + 1个目的操作数</strong>」，格式如下：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>add a, b, c   # 语义：a = b + c
+</span></code></pre></div></p>
+<p><strong>示例：C代码编译为RISC-V汇编</strong><br />
+C代码：<br />
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
+</span></code></pre></div><br />
+编译后的RISC-V汇编：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>add t0, g, h   # 临时寄存器t0 = g + h
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>add t1, i, j   # 临时寄存器t1 = i + j
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>sub f, t0, t1  # f = t0 - t1
+</span></code></pre></div></p>
+<h3 id="42">4.2 寄存器操作数</h3>
+<p>寄存器是CPU中最快的存储单元，是算术指令的核心操作数：<br />
+- RV32I包含<strong>32个32位通用寄存器</strong>，编号x0<span class="arithmatex">\(\sim\)</span>x31，32位数据称为1个<strong>字（word）</strong><br />
+- 核心特性：<strong>x0寄存器硬编码为常数0，无法被改写</strong>，是简化指令设计的关键<br />
+- 汇编规范：x0<span class="arithmatex">\(\sim\)</span>x31为寄存器编号，也可使用ABI别名（如t0<span class="arithmatex">\(\sim\)</span>t6为临时寄存器，s0<span class="arithmatex">\(\sim\)</span>s11为保存寄存器）</p>
+<p><strong>寄存器操作示例</strong><br />
+已知f<span class="arithmatex">\(\sim\)</span>j分别对应寄存器x19<span class="arithmatex">\(\sim\)</span>x23，上述C代码的精确汇编：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>add x5, x20, x21   # x5 = g + h
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>add x6, x22, x23   # x6 = i + j
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>sub x19, x5, x6    # x19(f) = x5 - x6
+</span></code></pre></div></p>
+<h3 id="43">4.3 内存操作数</h3>
+<p>主存用于存储数组、结构体、动态数据等复合数据，算术操作无法直接作用于内存，必须遵循「先加载到寄存器，运算后写回内存」的规则。</p>
+<h4 id="_2">核心特性</h4>
+<ul>
+<li>内存按<strong>字节编址</strong>：每个地址对应1个8位字节</li>
+<li>字对齐约束：<strong>32位字的地址必须是4的倍数，非对齐访问会触发地址错误异常</strong></li>
+<li>字节序：RV32I默认采用<strong>小端序（Little Endian）</strong>，即<strong>最低有效字节存放在最低地址</strong></li>
+</ul>
+<h4 id="_3">核心内存指令</h4>
+<p>RISC-V 只提供两类指令与内存交互：<code>Load</code>指令从内存加载数据到寄存器，<code>Store</code>指令将寄存器数据存储到内存：<br />
+| 指令 | 全称 | 语义 |<br />
+|------|------|------|<br />
+| <code>lw</code> | Load Word | 从内存加载32位字到寄存器 |<br />
+| <code>sw</code> | Store Word | 将寄存器的32位字存储到内存 |</p>
+<h4 id="_4">内存操作示例</h4>
+<p><strong>示例1：数组读取</strong><br />
+C代码：<br />
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1">// g对应x20，h对应x21，数组A的基地址对应x22</span>
+</span></code></pre></div><br />
+编译后的汇编：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>lw x9, 32(x22)    # 计算地址：x22 + 32（4字节/字 × 下标8），加载A[8]到x9
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>add x20, x21, x9  # g = h + A[8]
+</span></code></pre></div></p>
+<p><strong>示例2：数组写入</strong><br />
+C代码：<br />
+<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">A</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1">// h对应x21，数组A的基地址对应x22</span>
+</span></code></pre></div><br />
+编译后的汇编：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>lw x9, 32(x22)    # 加载A[8]到x9
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>add x9, x21, x9   # x9 = h + A[8]
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>sw x9, 48(x22)    # 将x9写入A[12]，地址偏移48=4×12
+</span></code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">Memory 与 Register</p>
+<p>Compiler must <strong>use registers for variables as much as possible</strong><br />
+- Only spill to memory for less frequently used variables<br />
+- Register optimization is important!<br />
+一般来叔，我们尽量多使用寄存器操作，减少内存的访问。</p>
+</div>
+<h3 id="44">4.4 内存对齐规则</h3>
+<p>RISC-V对不同位宽的内存访问有严格的对齐要求，非对齐访问会触发异常：</p>
+<table>
+<thead>
+<tr>
+<th>访问位宽</th>
+<th>对齐要求</th>
+<th>合法地址特征</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1字节（Byte）</td>
+<td>无限制</td>
+<td>任意地址均对齐</td>
+</tr>
+<tr>
+<td>2字节（Half Word）</td>
+<td>2字节对齐</td>
+<td>地址最低1位为0</td>
+</tr>
+<tr>
+<td>4字节（Word）</td>
+<td>4字节对齐</td>
+<td>地址最低2位为0</td>
+</tr>
+<tr>
+<td>8字节（Double Word）</td>
+<td>8字节对齐</td>
+<td>地址最低3位为0</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="alt text" src="../image.png" /></p>
+<h3 id="45">4.5 大小端序详解</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>定义</th>
+<th>典型架构</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大端序（Big Endian）</td>
+<td>最高有效字节（MSB）存放在最低地址</td>
+<td>Motorola 68000、PowerPC、SPARC V9前</td>
+</tr>
+<tr>
+<td>小端序（Little Endian）</td>
+<td>最低有效字节（LSB）存放在最低地址</td>
+<td>x86、RISC-V、6502</td>
+</tr>
+<tr>
+<td>双端序（Bi-endian）</td>
+<td>支持大小端切换</td>
+<td>ARM、PowerPC、SPARC V9</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例</strong>：32位数<code>0xOAOBOCOD</code>的内存存储<br />
+- 大端序：地址a存0xOA，a+1存0xOB，a+2存0xOC，a+3存0xOD<br />
+- 小端序：地址a存0xOD，a+1存0xOC，a+2存0xOB，a+3存0xOA</p>
+<h3 id="46">4.6 立即数与零操作数</h3>
+<ul>
+<li>立即数算术指令：<code>addi</code>，直接在指令中嵌入常数，无需额外内存加载，示例：<br />
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>addi x22, x22, 4   # x22 = x22 + 4
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>addi x22, x22, -1  # 无专用减法立即数指令，用负数立即数实现减法
+</span></code></pre></div></li>
+<li>x0寄存器的妙用：实现寄存器间数据移动，无需专用mov指令<br />
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>add x2, x1, x0  # x2 = x1 + 0 = x1，等价于mov x2, x1
+</span></code></pre></div></li>
+</ul>
+<h3 id="47">4.7 符号扩展</h3>
+<p>符号扩展是用更多比特表示数字，同时保持数值不变的规则：<br />
+- 有符号数：<strong>复制符号位到高位</strong><br />
+- 无符号数：高位补0<br />
+- 示例：8位数扩展为16位数<br />
+  - +2：<code>0000 0010</code> → <code>0000 0000 0000 0010</code><br />
+  - -2：<code>1111 1110</code> → <code>1111 1111 1111 1110</code><br />
+- RISC-V应用：<code>addi</code>、<code>lb/lh</code>、<code>beq/bne</code>等指令均会自动执行符号扩展</p>
+<hr />
+<h2 id="risc-v-32">五、RISC-V 32位指令编码格式</h2>
+<p>RISC-V所有指令均为<strong>32位固定长度</strong>，分为6大核心格式，各格式的核心寄存器字段位置高度对齐，简化硬件解码。</p>
+<h3 id="51">5.1 六大指令格式总览</h3>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>全称</th>
+<th>核心用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R-type</td>
+<td>Register-Register</td>
+<td>寄存器间算术、逻辑、移位操作</td>
+</tr>
+<tr>
+<td>I-type</td>
+<td>Immediate</td>
+<td>立即数算术、内存加载、寄存器间接跳转</td>
+</tr>
+<tr>
+<td>S-type</td>
+<td>Store</td>
+<td>内存存储操作</td>
+</tr>
+<tr>
+<td>SB-type</td>
+<td>Branch</td>
+<td>条件分支操作</td>
+</tr>
+<tr>
+<td>U-type</td>
+<td>Upper Immediate</td>
+<td>高位立即数加载，构建32位常数</td>
+</tr>
+<tr>
+<td>UJ-type</td>
+<td>Jump</td>
+<td>无条件跳转操作</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52">5.2 各格式详细字段定义</h3>
+<p>所有格式均为32位，字段从高位（bit31）到低位（bit0）排列，核心字段说明：<br />
+- <code>opcode</code>：7位操作码，区分指令大类<br />
+- <code>rs1/rs2</code>：5位源寄存器编号，支持0<span class="arithmatex">\(\sim\)</span>31<br />
+- <code>rd</code>：5位目的寄存器编号<br />
+- <code>funct3/funct7</code>：扩展操作码，区分同opcode下的不同指令<br />
+- <code>immediate</code>：立即数字段，不同格式拆分方式不同</p>
+<h4 id="521-r-type-">5.2.1 R-type（寄存器-寄存器型）</h4>
+<p><strong>字段结构</strong>：<br />
+| funct7 | rs2 | rs1 | funct3 | rd | opcode |<br />
+|--------|-----|-----|--------|----|--------|<br />
+| 7位    | 5位 | 5位 | 3位    | 5位| 7位    |<br />
+- 固定opcode：<code>0110011</code><br />
+- 核心指令：<code>add/sub/sll/srl/sra/or/and/xor</code><br />
+- 编码示例：<code>add x9, x20, x21</code><br />
+  二进制：<code>0000000 10101 10100 000 01001 0110011</code><br />
+  十六进制：<code>0x015A04B3</code></p>
+<h4 id="522-i-type">5.2.2 I-type（立即数/加载型）</h4>
+<p><strong>字段结构</strong>：<br />
+| immediate[11:0] | rs1 | funct3 | rd | opcode |<br />
+|------------------|-----|--------|----|--------|<br />
+| 12位             | 5位 | 3位    | 5位| 7位    |<br />
+- 核心opcode：<br />
+  - 立即数<strong>算术</strong>：<code>0010011</code>（<code>addi/xori/ori/andi</code>等）<br />
+  - <strong>内存加载</strong>：<code>0000011</code>（<code>lw/lb/lh</code>等）<br />
+  - <strong>寄存器跳转</strong>：<code>1100111</code>（<code>jalr</code>）<br />
+- 特点：<strong>12位有符号立即数</strong>，支持符号扩展，12位有符号立即数范围为<span class="arithmatex">\(-2048\sim 2047\)</span></p>
+<p>其他指令编码格式见：<a href="../appendix/">附录</a></p>
+<hr />
+<h2 id="_5">六、逻辑与移位操作</h2>
+<h3 id="61">6.1 位操作指令映射</h3>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>C语言</th>
+<th>Java</th>
+<th>RISC-V指令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>逻辑左移</td>
+<td>&lt;&lt;</td>
+<td>&lt;&lt;</td>
+<td><code>sll</code>, <code>slli</code></td>
+</tr>
+<tr>
+<td>逻辑右移</td>
+<td>&gt;&gt;</td>
+<td>&gt;&gt;&gt;</td>
+<td><code>srl</code>, <code>srli</code></td>
+</tr>
+<tr>
+<td>算术右移</td>
+<td>&gt;&gt;</td>
+<td>无</td>
+<td><code>sra</code>, <code>srai</code></td>
+</tr>
+<tr>
+<td>按位与</td>
+<td>&amp;</td>
+<td>&amp;</td>
+<td><code>and</code>, <code>andi</code></td>
+</tr>
+<tr>
+<td>按位或</td>
+<td>|</td>
+<td>|</td>
+<td><code>or</code>, <code>ori</code></td>
+</tr>
+<tr>
+<td>按位异或</td>
+<td>^</td>
+<td>^</td>
+<td><code>xor</code>, <code>xori</code></td>
+</tr>
+<tr>
+<td>按位非</td>
+<td><span class="arithmatex">\(\sim\)</span></td>
+<td><span class="arithmatex">\(\sim\)</span></td>
+<td><code>xori rd, rs1, -1</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="62">6.2 核心位操作用途</h3>
+<ul>
+<li><strong>移位操作</strong>：<code>sll</code>左移i位等价于乘以<span class="arithmatex">\(2^i\)</span>；</li>
+<li><strong>AND操作</strong>：掩码操作，提取指定位、清除其他位为0</li>
+<li><strong>OR操作</strong>：置位操作，将指定位设为1</li>
+<li><strong>XOR操作</strong>：翻转指定位，实现按位非</li>
+</ul>
+<hr />
+<h2 id="_6">七、控制流：分支与跳转</h2>
+<p>控制流是计算机区别于计算器的核心能力，<strong>通过修改程序计数器（PC）实现分支、循环、函数调用等逻辑</strong>。PC保存当前正在执行指令的地址，<strong>正常执行时自增4</strong>，仅分支/跳转指令可修改。</p>
+<h3 id="71">7.1 核心控制流指令</h3>
+<table>
+<thead>
+<tr>
+<th>指令类型</th>
+<th>指令</th>
+<th>语义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>条件分支</td>
+<td><code>beq rs1, rs2, label</code></td>
+<td>若rs1 == rs2，跳转到label</td>
+</tr>
+<tr>
+<td>条件分支</td>
+<td><code>bne rs1, rs2, label</code></td>
+<td>若rs1 != rs2，跳转到label</td>
+</tr>
+<tr>
+<td>条件分支</td>
+<td><code>blt rs1, rs2, label</code></td>
+<td>若rs1 &lt; rs2（有符号），跳转到label</td>
+</tr>
+<tr>
+<td>条件分支</td>
+<td><code>bge rs1, rs2, label</code></td>
+<td>若rs1 &gt;= rs2（有符号），跳转到label</td>
+</tr>
+<tr>
+<td>条件分支</td>
+<td><code>bltu/bgeu</code></td>
+<td>无符号比较分支</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-if-else">7.2 案例：<code>if-else</code>语句编译</h3>
+<p><strong>C代码</strong>：<br />
+<div class="language-c highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">else</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1">// f/g/h对应x19/x20/x21，i/j对应x22/x23</span>
+</span></code></pre></div><br />
+程序结构：<br />
+<img alt="alt text" src="../image-1.png" /><br />
+<strong>编译后的RISC-V汇编</strong>：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>        bne x22, x23, Else  # 若i != j，跳转到Else分支
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>        add x19, x20, x21   # if分支：f = g + h
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>        beq x0, x0, Exit     # 无条件跳转到Exit，跳过else分支
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>Else:   sub x19, x20, x21   # else分支：f = g - h
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Exit:                       # 后续指令
+</span></code></pre></div></p>
+<p>注意，<code>beq x0, x0, Exit</code> 确保不会执行一次 <code>Else</code>，通过一个恒真的条件实现跳转。<br />
+程序结构：<br />
+<img alt="alt text" src="../image-2.png" /></p>
+<h3 id="73-while">7.3 案例：<code>while</code>循环语句编译</h3>
+<p><strong>C代码</strong>：<br />
+<div class="language-c highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">save</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">k</span><span class="p">)</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">// i对应x22，k对应x24，save数组基地址对应x25</span>
+</span></code></pre></div></p>
+<p>注意，<code>save</code> 数组存放在 <code>Memory</code> 中，数据位宽32，因此 C 中的索引 <code>+1</code> 不能直接用 <code>Memory</code> 的地址 <code>+1</code> 来访问，应该是地址 <code>+4</code> 来访问下一个元素才对。<br />
+<strong>编译后的RISC-V汇编</strong>：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Loop:   slli x10, x22, 2     # x10 = i * 4（字节偏移）
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>        add x10, x10, x25    # x10 = save数组基地址 + i*4 = &amp;save[i]
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>        lw x9, 0(x10)         # x9 = save[i]
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>        bne x9, x24, Exit     # 若save[i] != k，退出循环
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>        addi x22, x22, 1      # i += 1
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>        beq x0, x0, Loop      # 跳回循环开头
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>Exit:                           # 循环退出
+</span></code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../../javascripts/extra.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+        <script src="../../../../../javascripts/katex.js"></script>
+      
+    
+  </body>
+</html>
