@@ -3441,48 +3441,15 @@ C代码：<br />
 <td>5位</td>
 <td>7位</td>
 </tr>
-<tr>
-<td>- 固定opcode：<code>0110011</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- 核心指令：<code>add/sub/sll/srl/sra/or/and/xor</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- 编码示例：<code>add x9, x20, x21</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>二进制：<code>0000000 10101 10100 000 01001 0110011</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>十六进制：<code>0x015A04B3</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<ul>
+<li>固定opcode：<code>0110011</code></li>
+<li>核心指令：<code>add/sub/sll/srl/sra/or/and/xor</code></li>
+<li>编码示例：<code>add x9, x20, x21</code><br />
+  二进制：<code>0000000 10101 10100 000 01001 0110011</code><br />
+  十六进制：<code>0x015A04B3</code></li>
+</ul>
 <h4 id="522-i-type">5.2.2 I-type（立即数/加载型）</h4>
 <p><strong>字段结构</strong>：</p>
 <table>
@@ -3503,43 +3470,15 @@ C代码：<br />
 <td>5位</td>
 <td>7位</td>
 </tr>
-<tr>
-<td>- 核心opcode：</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- 立即数<strong>算术</strong>：<code>0010011</code>（<code>addi/xori/ori/andi</code>等）</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- <strong>内存加载</strong>：<code>0000011</code>（<code>lw/lb/lh</code>等）</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- <strong>寄存器跳转</strong>：<code>1100111</code>（<code>jalr</code>）</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- 特点：<strong>12位有符号立即数</strong>，支持符号扩展，12位有符号立即数范围为<span class="arithmatex">\(-2048\sim 2047\)</span></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<ul>
+<li>核心opcode：</li>
+<li>立即数<strong>算术</strong>：<code>0010011</code>（<code>addi/xori/ori/andi</code>等）</li>
+<li><strong>内存加载</strong>：<code>0000011</code>（<code>lw/lb/lh</code>等）</li>
+<li><strong>寄存器跳转</strong>：<code>1100111</code>（<code>jalr</code>）</li>
+<li>特点：<strong>12位有符号立即数</strong>，支持符号扩展，12位有符号立即数范围为<span class="arithmatex">\(-2048\sim 2047\)</span></li>
+</ul>
 <p>其他指令编码格式见：<a href="../appendix/">附录</a></p>
 <hr />
 <h2 id="_5">六、逻辑与移位操作</h2>
