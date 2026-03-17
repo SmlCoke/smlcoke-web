@@ -10,28 +10,24 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/ml/Basic/ch2_Optimization/ch2_2_Optimization/">
+        <link rel="canonical" href="https://smlcoke.com/me/DIC/VLSI/ch3-Iteration_Bound/diif_cycle/">
       
       
-        <link rel="prev" href="../../ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/">
-      
-      
-        <link rel="next" href="../../ch3_CNN/ch3_CNN/">
       
       
         
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
     
     
       
-        <title>优化 - SmlCoke Home</title>
+        <title>Diif cycle - SmlCoke Home</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
       
       
 
@@ -50,11 +46,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../stylesheets/extra.css?v=20260224">
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260224">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -72,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#optimization" class="md-skip">
+        <a href="#t_s-t_clock-t_it" class="md-skip">
           跳转至
         </a>
       
@@ -86,7 +82,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -106,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              优化
+              Diif cycle
             
           </span>
         </div>
@@ -179,7 +175,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../.." class="md-tabs__link">
+      <a href="../../../../.." class="md-tabs__link">
         
   
   
@@ -198,7 +194,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../blog/" class="md-tabs__link">
+      <a href="../../../../../blog/" class="md-tabs__link">
         
   
   
@@ -219,7 +215,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../me/" class="md-tabs__link">
+        <a href="../../../../" class="md-tabs__link">
           
   
   
@@ -237,13 +233,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../../../../ml/Basic/" class="md-tabs__link">
           
   
   
@@ -265,7 +259,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../CV/" class="md-tabs__link">
+        <a href="../../../../../ml/CV/" class="md-tabs__link">
           
   
   
@@ -287,7 +281,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../rust/notes/Study/" class="md-tabs__link">
+        <a href="../../../../../rust/notes/Study/" class="md-tabs__link">
           
   
   
@@ -309,7 +303,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../AI-Tools/" class="md-tabs__link">
+        <a href="../../../../../AI-Tools/" class="md-tabs__link">
           
   
   
@@ -331,7 +325,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../Tools/" class="md-tabs__link">
+        <a href="../../../../../Tools/" class="md-tabs__link">
           
   
   
@@ -351,7 +345,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../comments/" class="md-tabs__link">
+      <a href="../../../../../comments/" class="md-tabs__link">
         
   
   
@@ -386,7 +380,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -404,7 +398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   
@@ -431,7 +425,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../blog/" class="md-nav__link">
+      <a href="../../../../../blog/" class="md-nav__link">
         
   
   
@@ -487,7 +481,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/" class="md-nav__link ">
+            <a href="../../../../" class="md-nav__link ">
               
   
   
@@ -531,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/SS/" class="md-nav__link">
+      <a href="../../../../SS/" class="md-nav__link">
         
   
   
@@ -619,7 +613,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/Glossary/" class="md-nav__link">
+      <a href="../../../Glossary/" class="md-nav__link">
         
   
   
@@ -707,7 +701,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/CourseDesign/init/" class="md-nav__link">
+      <a href="../../../CourseDesign/init/" class="md-nav__link">
         
   
   
@@ -735,7 +729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/CourseDesign/introduction/" class="md-nav__link">
+      <a href="../../../CourseDesign/introduction/" class="md-nav__link">
         
   
   
@@ -763,7 +757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/CourseDesign/Design_Specifications/" class="md-nav__link">
+      <a href="../../../CourseDesign/Design_Specifications/" class="md-nav__link">
         
   
   
@@ -791,7 +785,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/CourseDesign/Re-quantization/" class="md-nav__link">
+      <a href="../../../CourseDesign/Re-quantization/" class="md-nav__link">
         
   
   
@@ -854,7 +848,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/DIC/VLSI/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -898,7 +892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch1-introduction/introduction/" class="md-nav__link">
+      <a href="../../ch1-introduction/introduction/" class="md-nav__link">
         
   
   
@@ -926,7 +920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch2-modulation/modulation/" class="md-nav__link">
+      <a href="../../ch2-modulation/modulation/" class="md-nav__link">
         
   
   
@@ -954,7 +948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch3-Iteration_Bound/iteration_bound/" class="md-nav__link">
+      <a href="../iteration_bound/" class="md-nav__link">
         
   
   
@@ -1046,7 +1040,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch1-the_software_hardware_interface/note/" class="md-nav__link">
+      <a href="../../../PU/ch1-the_software_hardware_interface/note/" class="md-nav__link">
         
   
   
@@ -1074,7 +1068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch2-ISA/note/" class="md-nav__link">
+      <a href="../../../PU/ch2-ISA/note/" class="md-nav__link">
         
   
   
@@ -1118,7 +1112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/verilog/Study_note/" class="md-nav__link">
+      <a href="../../../../verilog/Study_note/" class="md-nav__link">
         
   
   
@@ -1202,7 +1196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/EDA/vscode/vscode/" class="md-nav__link">
+      <a href="../../../../EDA/vscode/vscode/" class="md-nav__link">
         
   
   
@@ -1230,7 +1224,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/EDA/mobaxterm/mobaxterm/" class="md-nav__link">
+      <a href="../../../../EDA/mobaxterm/mobaxterm/" class="md-nav__link">
         
   
   
@@ -1270,8 +1264,6 @@
       
   
   
-    
-  
   
   
     
@@ -1295,21 +1287,18 @@
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../../../ml/Basic/" class="md-nav__link ">
               
   
   
@@ -1327,13 +1316,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1353,7 +1342,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+      <a href="../../../../../ml/Basic/ch1_Full_Connected_NN/ch1_%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="md-nav__link">
         
   
   
@@ -1378,37 +1367,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    优化
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch2_Optimization/ch2_2_Optimization/" class="md-nav__link">
         
   
   
@@ -1424,204 +1386,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#i-optimizer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        I. Optimizer
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="I. Optimizer">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11-local-minima-vs-saddle-point" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.1 local minima vs saddle point
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-taylor-series-approximation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 Taylor Series Approximation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13-saddle-point-vs-local-minima" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 Saddle point vs Local minima
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#14-small-gradient-saddle-point" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.4 Small gradient 与 Saddle point的解决办法
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#15-if-not-a-critical-point" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.5 If not a critical point
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1.5 If not a critical point">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1learnig-rate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        突破点1：及时修改Learnig rate
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-rmsprop" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        突破点2. RMSProp
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3learning-rate-decay-or-warm-up" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        突破点3：Learning rate decay or Warm up
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ii-batch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        II. Batch
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="II. Batch">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-small-batch-vs-large-batch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 small batch vs large batch
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-local-minimummomentum" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 另一种破解Local minimum的技术——momentum
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2.2 另一种破解Local minimum的技术——momentum">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gradient-descend" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Gradient Descend
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gradient-descend-momentum" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Gradient Descend + Momentum
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1634,7 +1398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ch3_CNN/ch3_CNN/" class="md-nav__link">
+      <a href="../../../../../ml/Basic/ch3_CNN/ch3_CNN/" class="md-nav__link">
         
   
   
@@ -1662,7 +1426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+      <a href="../../../../../ml/Basic/ch4_Self_Attention/ch4_self_attention%E5%9F%BA%E7%A1%80/" class="md-nav__link">
         
   
   
@@ -1690,7 +1454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+      <a href="../../../../../ml/Basic/ch5_Transformer/ch5_transformer%E5%9F%BA%E7%A1%80/" class="md-nav__link">
         
   
   
@@ -1760,7 +1524,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../CV/" class="md-nav__link ">
+            <a href="../../../../../ml/CV/" class="md-nav__link ">
               
   
   
@@ -1804,7 +1568,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/ResNet/notes/" class="md-nav__link">
+      <a href="../../../../../ml/CV/ResNet/notes/" class="md-nav__link">
         
   
   
@@ -1832,7 +1596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/DenseNet/notes/" class="md-nav__link">
+      <a href="../../../../../ml/CV/DenseNet/notes/" class="md-nav__link">
         
   
   
@@ -1860,7 +1624,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/YOLO/YOLO/" class="md-nav__link">
+      <a href="../../../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
         
   
   
@@ -1888,7 +1652,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/YOLO/YOLOv2/" class="md-nav__link">
+      <a href="../../../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
         
   
   
@@ -1916,7 +1680,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/YOLO/YOLOv3/" class="md-nav__link">
+      <a href="../../../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
         
   
   
@@ -1944,7 +1708,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/VIT/ViT/" class="md-nav__link">
+      <a href="../../../../../ml/CV/VIT/ViT/" class="md-nav__link">
         
   
   
@@ -1972,7 +1736,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../CV/PFLD/PFLD/" class="md-nav__link">
+      <a href="../../../../../ml/CV/PFLD/PFLD/" class="md-nav__link">
         
   
   
@@ -2063,7 +1827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../rust/notes/Study/" class="md-nav__link">
+      <a href="../../../../../rust/notes/Study/" class="md-nav__link">
         
   
   
@@ -2091,7 +1855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../rust/crypto/" class="md-nav__link">
+      <a href="../../../../../rust/crypto/" class="md-nav__link">
         
   
   
@@ -2157,7 +1921,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../AI-Tools/" class="md-nav__link ">
+            <a href="../../../../../AI-Tools/" class="md-nav__link ">
               
   
   
@@ -2201,7 +1965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/ClaudeCode/Claude-Code/" class="md-nav__link">
+      <a href="../../../../../AI-Tools/ClaudeCode/Claude-Code/" class="md-nav__link">
         
   
   
@@ -2229,7 +1993,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/MCP/mcp_server/" class="md-nav__link">
+      <a href="../../../../../AI-Tools/MCP/mcp_server/" class="md-nav__link">
         
   
   
@@ -2257,7 +2021,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/OpenRouter/openrouter/" class="md-nav__link">
+      <a href="../../../../../AI-Tools/OpenRouter/openrouter/" class="md-nav__link">
         
   
   
@@ -2285,7 +2049,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/OpenCode/opencode/" class="md-nav__link">
+      <a href="../../../../../AI-Tools/OpenCode/opencode/" class="md-nav__link">
         
   
   
@@ -2313,7 +2077,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/Aider/aider/" class="md-nav__link">
+      <a href="../../../../../AI-Tools/Aider/aider/" class="md-nav__link">
         
   
   
@@ -2371,7 +2135,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../Tools/" class="md-nav__link ">
+            <a href="../../../../../Tools/" class="md-nav__link ">
               
   
   
@@ -2415,7 +2179,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../Tools/docker/docker/" class="md-nav__link">
+      <a href="../../../../../Tools/docker/docker/" class="md-nav__link">
         
   
   
@@ -2450,7 +2214,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../comments/" class="md-nav__link">
+      <a href="../../../../../comments/" class="md-nav__link">
         
   
   
@@ -2487,8 +2251,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2497,78 +2259,34 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#i-optimizer" class="md-nav__link">
+  <a href="#t_s-t_clock-t_it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        I. Optimizer
+        不同的周期：采样周期 \(T_s\)、时钟周期 \(T_{clock}\)、迭代周期 \(T_{it}\)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="I. Optimizer">
+    <nav class="md-nav" aria-label="不同的周期：采样周期 \(T_s\)、时钟周期 \(T_{clock}\)、迭代周期 \(T_{it}\)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11-local-minima-vs-saddle-point" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.1 local minima vs saddle point
+        一、 三大周期的本质内涵
       
     </span>
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-taylor-series-approximation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 Taylor Series Approximation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13-saddle-point-vs-local-minima" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 Saddle point vs Local minima
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#14-small-gradient-saddle-point" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.4 Small gradient 与 Saddle point的解决办法
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#15-if-not-a-critical-point" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.5 If not a critical point
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1.5 If not a critical point">
+    <nav class="md-nav" aria-label="一、 三大周期的本质内涵">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1learnig-rate" class="md-nav__link">
+  <a href="#1-t_s-sample-period" class="md-nav__link">
     <span class="md-ellipsis">
       
-        突破点1：及时修改Learnig rate
+        1. 采样周期 \(T_s\) (Sample Period) —— “客户的下单速度”
       
     </span>
   </a>
@@ -2576,10 +2294,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-rmsprop" class="md-nav__link">
+  <a href="#2-t_clock-clock-period" class="md-nav__link">
     <span class="md-ellipsis">
       
-        突破点2. RMSProp
+        2. 时钟周期 \(T_{clock}\) (Clock Period) —— “工厂传送带的机械节拍”
       
     </span>
   </a>
@@ -2587,10 +2305,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3learning-rate-decay-or-warm-up" class="md-nav__link">
+  <a href="#3-t_it-iteration-period" class="md-nav__link">
     <span class="md-ellipsis">
       
-        突破点3：Learning rate decay or Warm up
+        3. 迭代周期 \(T_{it}\) (Iteration Period) —— “工厂出一个订单的平均耗时”
       
     </span>
   </a>
@@ -2602,28 +2320,23 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ii-batch" class="md-nav__link">
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        II. Batch
+        二、 场景演练：它们是如何互动的？
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="II. Batch">
+    <nav class="md-nav" aria-label="二、 场景演练：它们是如何互动的？">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-small-batch-vs-large-batch" class="md-nav__link">
+  <a href="#0base-case" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1 small batch vs large batch
+        场景 0：最原始的串行结构（Base Case）
       
     </span>
   </a>
@@ -2631,22 +2344,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-local-minimummomentum" class="md-nav__link">
+  <a href="#1pipelining" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2 另一种破解Local minimum的技术——momentum
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2.2 另一种破解Local minimum的技术——momentum">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gradient-descend" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Gradient Descend
+        场景 1：流水线处理（Pipelining）—— “切分工序，加快节拍”
       
     </span>
   </a>
@@ -2654,10 +2355,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gradient-descend-momentum" class="md-nav__link">
+  <a href="#2parallel-processing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Gradient Descend + Momentum
+        场景 2：并行处理（Parallel Processing）—— “克隆工厂，以量取胜”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3folding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        场景 3：折叠（Folding / 时分复用）—— “让设备连轴转，省面积”
       
     </span>
   </a>
@@ -2666,6 +2378,28 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、 把全章知识串起来的“顿悟时刻”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
   
 </li>
         
@@ -2691,93 +2425,86 @@
 
 
 
-<h1 id="optimization">Optimization</h1>
-<h2 id="i-optimizer">I. Optimizer</h2>
-<h3 id="11-local-minima-vs-saddle-point">1.1 local minima vs saddle point</h3>
-<p><img alt="alt text" src="../image.png" /></p>
-<h3 id="12-taylor-series-approximation">1.2 Taylor Series Approximation</h3>
-<p><img alt="alt text" src="../image-1.png" /></p>
-<p>critical point: gradient = 0, the hessian tell if <strong>local minima</strong>, <strong>local max</strong> and <strong>saddle point</strong></p>
-<p><span class="arithmatex">\(v=(\theta - \theta')\)</span></p>
-<p>我们重点关注：<span class="arithmatex">\(v^T H v\)</span><br />
-<img alt="alt text" src="../image-2.png" /></p>
-<p>没有必要去考虑任意值，有简便方法：<br />
-<span class="arithmatex">\(H\)</span>是正定矩阵（所有特征值大于0），则<span class="arithmatex">\(v^T H v\)</span> 恒 <span class="arithmatex">\(&gt;0\)</span><br />
-<span class="arithmatex">\(H\)</span>是负定矩阵（所有特征值小于0），则<span class="arithmatex">\(v^T H v\)</span> 恒 <span class="arithmatex">\(&lt;0\)</span><br />
-否则，为saddle point</p>
-<p><strong>案例</strong><br />
-<img alt="alt text" src="../image-3.png" /><br />
-<img alt="alt text" src="../image-4.png" /><br />
-g: 一阶导数/梯度<br />
-H: Hessian矩阵：</p>
-<div class="arithmatex">\[\begin{bmatrix}
-\frac{\partial L^2}{\partial ^2 w_1} &amp; \frac{\partial L^2}{\partial w_1 \partial w_2} \\
-\frac{\partial L^2}{\partial w_1 \partial w_2} &amp; \frac{\partial L^2}{\partial ^2 w_2}
-\end{bmatrix}\]</div>
-<p><strong>解决sddle point</strong></p>
-<p>找hession矩阵的负特征值的特征向量方向<br />
-<img alt="alt text" src="../image-5.png" /></p>
-<p><img alt="alt text" src="../image-6.png" /></p>
-<h3 id="13-saddle-point-vs-local-minima">1.3 Saddle point vs Local minima</h3>
-<p>会不会在更高维的空间中有路可以走<br />
-维度为高，能走的方向就越多，那么是不是说：<br />
-<strong>维度越高，Local minima就越少呢?</strong><br />
-实践：<br />
-<img alt="alt text" src="../image-7.png" /></p>
-<h3 id="14-small-gradient-saddle-point">1.4 Small gradient 与 Saddle point的解决办法</h3>
-<h3 id="15-if-not-a-critical-point">1.5 If not a critical point</h3>
-<p>当Loss不再下降时，gradient真的一定变得很小吗啊？<br />
-并非！<br />
-<img alt="alt text" src="../image-14.png" /><br />
-Error Surface：<strong>来回振荡</strong>！</p>
-<p>原因：Gradient Descend做不好，即便是连简单的训练集：<br />
-<img alt="alt text" src="../image-15.png" /></p>
-<h4 id="1learnig-rate">突破点1：及时修改Learnig rate</h4>
-<p>如上图，Learning rate代表每次梯度下降需要走的步长，Learning rate越大代表步长越大，反之越小。</p>
-<p>该方法中，将此前一直相同的Learning rate动态变化：<br />
-<img alt="alt text" src="../image-16.png" /><br />
-<span class="arithmatex">\(\sigma_{i}^{t}\)</span><strong>是参数种类的函数，也是时间的函数</strong>，由此来调控Learning rate，更新步长<span class="arithmatex">\(m\)</span></p>
-<p><span class="arithmatex">\(\sigma_{i}^{t}\)</span>的计算方法：——前面所有的梯度的<strong>均方根</strong><br />
-<img alt="alt text" src="../image-17.png" /><br />
-<img alt="alt text" src="../image-18.png" /></p>
-<p>但是，有个问题！<strong>即便是同一个参数，同一个梯度方向，我们也希望Learning rate也可以动态调整！</strong><br />
-<img alt="alt text" src="../image-19.png" /></p>
-<h4 id="2-rmsprop">突破点2. RMSProp</h4>
-<p><img alt="alt text" src="../image-20.png" /><br />
-以下图中间的大坡为例：<br />
-大的gradient需要小的步长，即大的这个时候我们希望<span class="arithmatex">\(\sigma_{i}^{t}\)</span>也尽可能大一点，这<strong>就需要我们刚刚得到的大gradient权值更重一点！</strong>，因此，我们就可以把<span class="arithmatex">\(\alpha\)</span>调小一点来解决这个问题。</p>
+  <h1>Diif cycle</h1>
+
+<h2 id="t_s-t_clock-t_it">不同的周期：采样周期 <span class="arithmatex">\(T_s\)</span>、时钟周期 <span class="arithmatex">\(T_{clock}\)</span>、迭代周期 <span class="arithmatex">\(T_{it}\)</span></h2>
 <blockquote>
-<p>个人立即RMSProp就是将之前的均方根<strong>做法修改为了梯度加权的均方根</strong>，使得Learning rate自适应gradient进行调整。<br />
-<img alt="alt text" src="../image-21.png" /></p>
+<p>by Google AI Studio Gemini 3.1 Pro 2026-03-17</p>
 </blockquote>
-<p>现在的效果：<br />
-实际应用场景：<br />
-Adam : RMSProp + momentum<br />
-<img alt="alt text" src="../image-24.png" /><br />
-<img alt="alt text" src="../image-22.png" /></p>
-<p>越快要靠近终点，<strong>Learning的调整导致的！</strong><br />
-快要靠近终点的时候，纵轴方向连续出现的梯度都很小，导致在这个方向累积了很小的<span class="arithmatex">\(\sigma\)</span>，使得纵轴方向的步长变得相对较大。</p>
-<p>解决这个问题的方法：</p>
-<h4 id="3learning-rate-decay-or-warm-up">突破点3：Learning rate decay or Warm up</h4>
-<p><img alt="alt text" src="../image-23.png" /><br />
-Learning rate 随着全局时间演进而逐渐衰减。</p>
-<h2 id="ii-batch">II. Batch</h2>
-<h3 id="21-small-batch-vs-large-batch">2.1 small batch vs large batch</h3>
-<p>合理范围内，大的Batch的迭代速度和小Batch一样，因为有GPU<br />
-但是小Batch的Noise的gradient反而可以帮助training，可以帮助逃离 Local minima 或者 saddle point<br />
-<img alt="alt text" src="../image-8.png" /></p>
-<p>Batch size 也是一个需要自己设定的<strong>超参数</strong><br />
-<img alt="alt text" src="../image-9.png" /></p>
-<h3 id="22-local-minimummomentum">2.2 另一种破解Local minimum的技术——momentum</h3>
-<p><img alt="alt text" src="../image-10.png" /></p>
-<h4 id="gradient-descend">Gradient Descend</h4>
-<p><img alt="alt text" src="../image-11.png" /></p>
-<h4 id="gradient-descend-momentum">Gradient Descend + Momentum</h4>
-<p>计算出来的梯度的反方向+前一步的方向，共同考虑<br />
-<img alt="alt text" src="../image-12.png" /><br />
-例如<span class="arithmatex">\(\mathbf{m}^2 = \lambda \mathbf{m}^1 - \eta \mathbf{g}^1\)</span></p>
-<p>示例：<br />
-<img alt="alt text" src="../image-13.png" /></p>
+<hr />
+<h3 id="_1">一、 三大周期的本质内涵</h3>
+<h4 id="1-t_s-sample-period">1. 采样周期 <span class="arithmatex">\(T_s\)</span> (Sample Period) —— “客户的下单速度”</h4>
+<ul>
+<li><strong>内涵</strong>：这是<strong>外部世界</strong>强加给你的时间约束。比如你要处理高质量音频（44.1kHz采样率），那么每隔大约 <strong>22.7微秒</strong>，就会有一个新的数据样点送进系统。</li>
+<li><strong>视角</strong>：应用场景决定。不管你内部怎么设计芯片，<span class="arithmatex">\(T_s\)</span> 是死命令。</li>
+<li><strong>实时处理的底线</strong>：你的工厂处理一个订单的平均速度，必须赶上客户下单的速度，即要求 <strong><span class="arithmatex">\(T_{it} \le T_s\)</span></strong> （通常系统刚好匹配时，我们说 <span class="arithmatex">\(T_{it} = T_s\)</span>）。</li>
+</ul>
+<h4 id="2-t_clock-clock-period">2. 时钟周期 <span class="arithmatex">\(T_{clock}\)</span> (Clock Period) —— “工厂传送带的机械节拍”</h4>
+<ul>
+<li><strong>内涵</strong>：这是<strong>底层硬件</strong>的物理节拍。芯片里两个寄存器之间最长的组合逻辑（即<strong>关键路径</strong>）决定了时钟周期。如果在两拍之间，最慢的那个加法器或乘法器算不完，传送带（时钟）就不能往前走。</li>
+<li><strong>视角</strong>：由硬件电路的具体结构（关键路径）决定。</li>
+</ul>
+<h4 id="3-t_it-iteration-period">3. 迭代周期 <span class="arithmatex">\(T_{it}\)</span> (Iteration Period) —— “工厂出一个订单的平均耗时”</h4>
+<ul>
+<li><strong>内涵</strong>：这是<strong>算法吞吐率</strong>的体现。系统执行完“一次完整的算法循环（吃进一个输入，吐出一个输出）”所需要的<strong>平均时间</strong>。</li>
+<li><strong>视角</strong>：由你采用的系统架构（是否流水线、是否并行）决定。它受限于上一节讲的“迭代边界 <span class="arithmatex">\(T_{\infty}\)</span>”（即 <span class="arithmatex">\(T_{it} \ge T_{\infty}\)</span>）。</li>
+</ul>
+<hr />
+<h3 id="_2">二、 场景演练：它们是如何互动的？</h3>
+<p>假设我们有一个极其简单的 DSP 算法（比如一个乘加运算）：<br />
+<strong>算法要求</strong>：吃进一个 <span class="arithmatex">\(x[n]\)</span>，先经过<strong>乘法器（耗时 8ns）</strong>，再经过<strong>加法器（耗时 4ns）</strong>，吐出 <span class="arithmatex">\(y[n]\)</span>。</p>
+<h4 id="0base-case">场景 0：最原始的串行结构（Base Case）</h4>
+<p>我们用一个乘法器连着一个加法器，中间没有寄存器。<br />
+*   <strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：关键路径是“乘法+加法” = <span class="arithmatex">\(8ns + 4ns = 12ns\)</span>。所以传送带每 <strong>12ns</strong> 才能打一次节拍。<br />
+*   <strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：每打一次节拍（12ns），就完整处理完一个样点。所以 <span class="arithmatex">\(T_{it} = 1 \times T_{clock} = 12ns\)</span>。<br />
+*   <strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：因为工厂 12ns 出一次货，所以客户下单的速度最快也只能是 <strong>12ns</strong> 进一个数据（对应采样率 83.3 MHz）。<br />
+*   <strong>关系</strong>：<span class="arithmatex">\(T_{clock} = T_{it} = T_s = 12ns\)</span></p>
+<hr />
+<h4 id="1pipelining">场景 1：流水线处理（Pipelining）—— “切分工序，加快节拍”</h4>
+<p><strong>做法</strong>：我们在乘法器（8ns）和加法器（4ns）之间，<strong>插入一排寄存器（流水线级）</strong>。<br />
+现在，工厂分成了两个车间，车间 A 只管乘法，车间 B 只管加法。<br />
+*   <strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：现在的关键路径变短了！最慢的车间是乘法车间（8ns），加法车间（4ns）会等它。所以传送带的节拍可以加快到 <strong><span class="arithmatex">\(T_{clock} = 8ns\)</span></strong>。<br />
+*   <strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：虽然一个样点从头走到尾需要两拍（16ns，这叫 Latency 延迟），但在流水线满载的情况下，<strong>每一个时钟节拍（8ns），工厂末端都会掉出一个成品！</strong> 所以处理一个样点的平均时间 <span class="arithmatex">\(T_{it} = 1 \times T_{clock} = 8ns\)</span>。<br />
+*   <strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：现在客户可以每 <strong>8ns</strong> 就扔进来一个数据，工厂完全吃得消。<br />
+*   <strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} = T_{it} = 8ns\)</span>。流水线<strong>缩短了时钟周期 <span class="arithmatex">\(T_{clock}\)</span></strong>，从而成比例地<strong>缩短了迭代周期 <span class="arithmatex">\(T_{it}\)</span></strong>，提升了吞吐率。</p>
+<hr />
+<h4 id="2parallel-processing">场景 2：并行处理（Parallel Processing）—— “克隆工厂，以量取胜”</h4>
+<p><strong>做法</strong>：由于某些原因（比如芯片工艺限制，或者由于上一节讲的<strong>迭代边界 <span class="arithmatex">\(T_{\infty}\)</span> 的限制导致流水线插不进去</strong>），我们时钟最快只能跑到 12ns，但客户偏偏要求 4ns 就要一个结果！怎么办？<br />
+<strong>复制 3 套原始电路！</strong> 结构依然是“无流水线的乘加”（单套时钟 12ns）。<br />
+让硬件 A 处理 <span class="arithmatex">\(x[0]\)</span>，硬件 B 处理 <span class="arithmatex">\(x[1]\)</span>，硬件 C 处理 <span class="arithmatex">\(x[2]\)</span>。它们同时开工。<br />
+*   <strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：底层硬件根本没变，关键路径还是 12ns。所以 <strong><span class="arithmatex">\(T_{clock} = 12ns\)</span></strong>。<br />
+*   <strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：这 3 套硬件熬了 12ns 后，<strong>“啪”地一下同时吐出 3 个结果</strong>！<br />
+    平均下来，算出一个结果的时间是：<span class="arithmatex">\(12ns / 3 = 4ns\)</span>。<br />
+    所以，<strong><span class="arithmatex">\(T_{it} = T_{clock} / 3 = 4ns\)</span></strong>。<br />
+*   <strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：系统现在平均每 4ns 就能消化一个样点，所以满足了外部 <strong><span class="arithmatex">\(T_s = 4ns\)</span></strong> 的严苛要求！<br />
+*   <strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} \neq T_{it}\)</span>。并行处理<strong>没有改变时钟周期</strong>，但通过空间换时间，<strong>成倍地缩短了迭代周期 <span class="arithmatex">\(T_{it}\)</span></strong>。</p>
+<hr />
+<h4 id="3folding">场景 3：折叠（Folding / 时分复用）—— “让设备连轴转，省面积”</h4>
+<p>（这是笔记里提到的第三种情况，和并行恰好相反）<br />
+<strong>做法</strong>：客户要求不高，每 24ns 才会来一个数据（<span class="arithmatex">\(T_s = 24ns\)</span>）。如果我还用 12ns 处理完，那剩下的 12ns 机器就在睡大觉。为了省钱，我们可以把算法里的两次不同加法，<strong>复用同一个加法器</strong>来算。<br />
+*   <strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：比如时钟跑到 12ns。<br />
+*   <strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：因为你要分两步复用同一个硬件，所以需要 <strong>2 个时钟拍</strong>才能完成一次完整迭代出结果。<br />
+    所以，<strong><span class="arithmatex">\(T_{it} = 2 \times T_{clock} = 24ns\)</span></strong>。<br />
+*   <strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} \neq T_{it}\)</span>。为了节省硬件面积，迭代周期变成了时钟周期的多倍。</p>
+<hr />
+<h3 id="_3">三、 把全章知识串起来的“顿悟时刻”</h3>
+<p>现在，我们将<strong>三大周期</strong>和你刚学会的<strong>迭代边界（<span class="arithmatex">\(T_{\infty}\)</span>）</strong>联动一下：</p>
+<p>假设你算出一个带反馈环路的 DSP 系统的迭代边界 <span class="arithmatex">\(T_{\infty} = 10ns\)</span>。<br />
+外部客户要求的采样周期是 <span class="arithmatex">\(T_s = 8ns\)</span>。</p>
+<p>你面临的残酷现实是：<br />
+1. 为了实时处理，你必须让 <span class="arithmatex">\(T_{it} \le 8ns\)</span>。<br />
+2. 但是老天爷（迭代边界）规定，无论你怎么折腾单套硬件，<span class="arithmatex">\(T_{it} \ge 10ns\)</span>。</p>
+<p><strong>怎么破局？</strong><br />
+*   <strong>能用流水线吗？</strong> 不能！在紧密反馈环路里盲目插入流水线寄存器，会破坏环路原来的延时数（<span class="arithmatex">\(w_L\)</span> 改变），导致算出来的结果不再是原来的算法含义了（相当于“因果关系”被延迟破坏了）。<br />
+*   <strong>能单纯加快时钟 <span class="arithmatex">\(T_{clock}\)</span> 吗？</strong> 没用！即使你用台积电 3nm 工艺把 <span class="arithmatex">\(T_{clock}\)</span> 做到 1ns，但由于反馈环路的等待机制，数据必须在环路里转完，总的 <span class="arithmatex">\(T_{it}\)</span> 依然无法突破 <span class="arithmatex">\(T_{\infty}\)</span> 的理论下限。<br />
+*   <strong>唯一出路（后续章节会讲）</strong>：必须使用<strong>算法变换技术（如 Look-Ahead 展开技术、并行多相结构等）</strong>，从数学层面上改变这个反馈环路的本质，强行打破现有的 <span class="arithmatex">\(T_{\infty}\)</span>，然后结合<strong>并行处理</strong>，让 <span class="arithmatex">\(T_{it} = T_{clock} / N\)</span>，从而达成 <span class="arithmatex">\(T_{it} = 8ns\)</span> 的目标！</p>
+<h3 id="_4">总结</h3>
+<ul>
+<li><strong><span class="arithmatex">\(T_{clock}\)</span></strong> 决定你<strong>单步走多快</strong>（看关键路径）。</li>
+<li><strong><span class="arithmatex">\(T_{it}\)</span></strong> 决定你<strong>整体跑多快</strong>（看系统架构：流水线/并行，且受限于 <span class="arithmatex">\(T_{\infty}\)</span>）。</li>
+<li><strong><span class="arithmatex">\(T_s\)</span></strong> 是你需要<strong>达标的及格线</strong>。</li>
+<li>优化的终极目标永远是：在面积功耗允许的情况下，通过调整 <span class="arithmatex">\(T_{clock}\)</span> 和软硬件架构，让 <strong><span class="arithmatex">\(T_{it} \le T_s\)</span></strong>。</li>
+</ul>
 
 
 
@@ -2833,18 +2560,18 @@ Learning rate 随着全局时间演进而逐渐衰减。</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.top", "header.autohide", "navigation.indexes", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../../../javascripts/extra.js"></script>
+        <script src="../../../../../javascripts/extra.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
       
-        <script src="../../../../javascripts/katex.js"></script>
+        <script src="../../../../../javascripts/katex.js"></script>
       
     
   </body>
