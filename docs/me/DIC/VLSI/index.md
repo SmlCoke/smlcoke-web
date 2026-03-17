@@ -16,7 +16,7 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card indigo" href="ch1-introduction/introduction/">
+<a class="note-card blue" href="ch1-introduction/introduction/">
 	<span class="card-icon">🧠</span>
 	<div class="card-title">Chapter 1 · 通信系统导论</div>
 	<p class="card-desc">通信系统模型、基带与带通、数字通信链路与核心模块总览</p>
@@ -26,6 +26,12 @@ hide:
 	<span class="card-icon">📶</span>
 	<div class="card-title">Chapter 2 · 基带调制与解调</div>
 	<p class="card-desc">数字基带传输、码型、判决与码间串扰等关键概念</p>
+</a>
+
+<a class="note-card blue" href="ch3-iteration_bound/iteration_bound/">
+	<span class="card-icon">🧿</span>
+	<div class="card-title">Chapter 3 · 迭代边界</div>
+	<p class="card-desc">带反馈环路的 DSP 系统速度极限分析</p>
 </a>
 
 </div>
@@ -50,6 +56,18 @@ hide:
 	<span class="card-icon">🧮</span>
 	<div class="card-title">高斯白噪声进阶</div>
 	<p class="card-desc">从概率分布到 PSD 与自相关，系统化理解 AWGN 模型</p>
+</a>
+
+<a class="note-card indigo" href="ch3-Iteration_bound/ib_full/">
+	<span class="card-icon">🪜</span>
+	<div class="card-title">迭代边界</div>
+	<p class="card-desc">DSP算法受限的天王老子</p>
+</a>
+
+<a class="note-card indigo" href="ch3-Iteration_bound/diif_cycle/">
+	<span class="card-icon">⏱️</span>
+	<div class="card-title">不同周期</div>
+	<p class="card-desc">采样周期、时钟周期、迭代周期的含义与关系</p>
 </a>
 
 </div>
