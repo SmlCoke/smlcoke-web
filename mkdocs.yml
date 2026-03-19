@@ -101,4 +101,5 @@ nav:
   - 工具:
     - Tools/index.md
     - Docker: Tools/docker/docker.md
+    - Git & GitHub: Tools/git/git.md
   - 留言板: comments/index.md

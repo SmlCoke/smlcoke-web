@@ -22,4 +22,11 @@ hide:
   <p class="card-desc">Docker Desktop 安装、WSL2 关系说明与 D 盘数据迁移实践</p>
 </a>
 
+<a class="note-card cyan" href="git/git/">
+  <span class="card-icon">🐵</span>
+  <div class="card-title">Git & GitHub</div>
+  <p class="card-desc">Git 基础命令与 GitHub 使用指南</p>
+</a>
+
+
 </div>
