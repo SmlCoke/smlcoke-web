@@ -72,7 +72,7 @@ hide:
 
 </div>
 
-<div class="section-subtitle">🔬 Verilog 基础</div>
+<div class="section-subtitle">🔬 EDA 工具与 Verilog</div>
 
 <div class="card-grid">
 
@@ -82,16 +82,28 @@ hide:
   <p class="card-desc">Verilog HDL 语言的基础知识与学习笔记</p>
 </a>
 
-<a class="note-card green" href="EDA/vscode/vscode">
+<a class="note-card gray" href="EDA/vscode/vscode">
   <span class="card-icon">📝</span>
   <div class="card-title">VS Code</div>
   <p class="card-desc">VS Code 中配置 Verilog 生态</p>
 </a>
 
-<a class="note-card green" href="EDA/mobaxterm/mobaxterm">
+<a class="note-card gray" href="EDA/mobaxterm/mobaxterm">
   <span class="card-icon">🛜</span>
   <div class="card-title">MobaXterm</div>
   <p class="card-desc">MobaXterm 图形转发</p>
+</a>
+
+<a class="note-card gray" href="../Tools/wsl2/assets/yosys配置">
+  <span class="card-icon">⚙️</span>
+  <div class="card-title">Yosys</div>
+  <p class="card-desc">WSL2 下的 Yosys 配置</p>
+</a>
+
+<a class="note-card gray" href="../Tools/wsl2/assets/symbiyosys配置">
+  <span class="card-icon">⚙️</span>
+  <div class="card-title">Symbiyosys</div>
+  <p class="card-desc">Symbiyosys 工具链配置</p>
 </a>
 
 </div>

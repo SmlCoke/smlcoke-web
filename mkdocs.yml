@@ -90,6 +90,7 @@ nav:
     - PFLD: ml/CV/PFLD/PFLD.md
   - Rust:
     - Rust 学习笔记: rust/notes/Study.md
+    - Rust 环境配置: rust/notes/Rust环境配置方法.md
     - Rust 加密/解密在线工具: rust/crypto.md
   - 人工智能:
     - AI-Tools/index.md
@@ -102,4 +103,5 @@ nav:
     - Tools/index.md
     - Docker: Tools/docker/docker.md
     - Git & GitHub: Tools/git/git.md
+    - WSL2: Tools/wsl2/WSL2子系统开发笔记.md
   - 留言板: comments/index.md
