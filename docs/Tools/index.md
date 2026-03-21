@@ -28,5 +28,10 @@ hide:
   <p class="card-desc">Git 基础命令与 GitHub 使用指南</p>
 </a>
 
+<a class="note-card cyan" href="wsl2/WSL2子系统开发笔记/">
+  <span class="card-icon">🐧</span>
+  <div class="card-title">WSL2 子系统开发笔记</div>
+  <p class="card-desc">WSL2 使用与 Linux 工具配置笔记</p>
+</a>
 
 </div>
