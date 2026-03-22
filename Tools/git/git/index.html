@@ -2467,6 +2467,34 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 版本回退
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.7 版本回退">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#271-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7.1 回到上一个 commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2725,6 +2753,34 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 版本回退
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.7 版本回退">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#271-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7.1 回到上一个 commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2867,6 +2923,26 @@
 <p class="admonition-title">Tip</p>
 <p>一般来说，tag 的命名方式会遵循语义化版本控制（Semantic Versioning）的规范，例如 <code>v1.0.0</code>、<code>v2.1.3</code> 等，这样可以清晰地表达版本之间的关系和更新内容。<code>vx.y.z</code> 中，修改 <code>z</code> 表示小修小补的 <strong>bug 修复</strong>，修改 <code>y</code> 表示<strong>增加了新功能</strong>但不破坏兼容性，修改 <code>x</code> 则表示<strong>有重大更新可能会破坏兼容性</strong>。<br />
 此外，也可以根据项目需求使用其他命名方式，但建议保持一致性和可读性。尤其是要写好<strong>标签信息</strong>。</p>
+</div>
+<h3 id="27">2.7 版本回退</h3>
+<h4 id="271-commit">2.7.1 回到上一个 commit</h4>
+<p>有时候我们 commit 了一个版本后，又做了一些修改，然后发现当前修改把项目改坏了，想要强制恢复到上一个commit版本，完全舍弃当前所有修改，可以这样做：</p>
+<p><strong>(1) 抹除所有以追踪的文件的修改（包括add到暂存区的）</strong><br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>HEAD
+</span></code></pre></div><br />
+<code>HEAD</code> 代表当前分支的最后一次 <code>commit</code>。<code>--hard</code> 是一个威力巨大的参数，它会<strong>强行把工作区和暂存区全部拉回 <code>HEAD</code> 的状态</strong>，刚才写坏的代码会瞬间<strong>灰飞烟灭</strong>。</p>
+<p><strong>(2) 清理所有未追踪的新文件/新文件夹（可选）</strong><br />
+如果在改废代码的过程中，还新建了一些文件或文件夹（这些文件还没被 Git 追踪过），上面的 <code>reset</code> 是管不到它们的。还需要加一条：<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>clean<span class="w"> </span>-fd
+</span></code></pre></div><br />
+<code>-f</code> 表示强制删除，<code>-d</code> 表示同时删除未追踪的文件夹。</p>
+<p>执行完这两部，当前分支就完全回退到上一个 <code>commit</code> 的状态了，之前的修改和新建的文件都不见了。</p>
+<div class="admonition warning 警告">
+<p class="admonition-title">Warning</p>
+<p>这个操作非常危险，<code>reset --hard</code> 和 <code>clean -fd</code> 属于 Git 中少有的不可逆操作！<br />
+  一旦敲下回车，改坏的那些代码将<strong>永远从硬盘上消失</strong>，连 Git 也救不回来（因为<strong>它们根本还没进入 Git 的版本库</strong>）<br><br />
+  所以无论当前的修改是否真的损坏了项目代码，都建议在执行此命令前将当前整个仓库备份一下，这是绝对稳妥的保底策略。<br><br />
+  Git 最大的设计哲学之一就是“<strong>去中心化</strong>”和“<strong>一切皆在本地</strong>”。项目里的所有历史版本、分支信息、甚至与 GitHub 的远程绑定关系（origin），都在项目根目录下一个名为 .git 的隐藏文件夹里。当我们连同这个 <code>.git/</code> 文件夹一起复制时，我们<strong>不仅复制了代码，还原封不动地复制了整个 Git 数据库</strong>。只要 <code>.git/</code>还在，就算整个仓库的代码被扬了，Git 也能救回来，这就是 Git 带来的强大安心感。</p>
 </div>
 
 
