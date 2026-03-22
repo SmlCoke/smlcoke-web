@@ -2,6 +2,11 @@
 
 > 以下操作针对：Windos 操作系统
 
+## 更新日志
+
+- 2026-03-22: 删除插件 `SystemVerilog`，因其跨文件跳转功能和语法高亮功能完全失效，改用插件 `Verilog Highlight` 来提供语法高亮功能。此外，删除了 `settings.json` 中与插件 `SystemVerilog`, `TerosHDL` 相关的键值对，因为原本键值对呈现暗色，根本无效。
+
+---
 
 ## I. Icarus Verilog 工具
 
