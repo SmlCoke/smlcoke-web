@@ -23,7 +23,7 @@ hide:
 </a>
 
 <a class="note-card cyan" href="git/git/">
-  <span class="card-icon">🐵</span>
+  <span class="card-icon" >🐙</span>
   <div class="card-title">Git & GitHub</div>
   <p class="card-desc">Git 基础命令与 GitHub 使用指南</p>
 </a>
