@@ -2480,6 +2480,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#270" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7.0 撤回暂存区
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#271-commit" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2766,6 +2777,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#270" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7.0 撤回暂存区
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#271-commit" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2925,15 +2947,22 @@
 此外，也可以根据项目需求使用其他命名方式，但建议保持一致性和可读性。尤其是要写好<strong>标签信息</strong>。</p>
 </div>
 <h3 id="27">2.7 版本回退</h3>
+<h4 id="270">2.7.0 撤回暂存区</h4>
+<p>有时候我们不小心 <code>git add</code> 了某些文件到暂存区，但又不想提交它们了，这时候可以使用以下命令将它们从暂存区撤回：<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>reset<span class="w"> </span>&lt;file&gt;
+</span></code></pre></div></p>
+<p>如果想要撤回所有文件，可以使用：<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>reset
+</span></code></pre></div></p>
 <h4 id="271-commit">2.7.1 回到上一个 commit</h4>
 <p>有时候我们 commit 了一个版本后，又做了一些修改，然后发现当前修改把项目改坏了，想要强制恢复到上一个commit版本，完全舍弃当前所有修改，可以这样做：</p>
 <p><strong>(1) 抹除所有以追踪的文件的修改（包括add到暂存区的）</strong><br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>HEAD
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>HEAD
 </span></code></pre></div><br />
 <code>HEAD</code> 代表当前分支的最后一次 <code>commit</code>。<code>--hard</code> 是一个威力巨大的参数，它会<strong>强行把工作区和暂存区全部拉回 <code>HEAD</code> 的状态</strong>，刚才写坏的代码会瞬间<strong>灰飞烟灭</strong>。</p>
 <p><strong>(2) 清理所有未追踪的新文件/新文件夹（可选）</strong><br />
 如果在改废代码的过程中，还新建了一些文件或文件夹（这些文件还没被 Git 追踪过），上面的 <code>reset</code> 是管不到它们的。还需要加一条：<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>clean<span class="w"> </span>-fd
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>git<span class="w"> </span>clean<span class="w"> </span>-fd
 </span></code></pre></div><br />
 <code>-f</code> 表示强制删除，<code>-d</code> 表示同时删除未追踪的文件夹。</p>
 <p>执行完这两部，当前分支就完全回退到上一个 <code>commit</code> 的状态了，之前的修改和新建的文件都不见了。</p>
