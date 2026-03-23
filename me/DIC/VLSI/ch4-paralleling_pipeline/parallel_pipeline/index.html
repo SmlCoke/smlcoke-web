@@ -10,13 +10,9 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/me/DIC/VLSI/ch1-introduction/introduction/">
+        <link rel="canonical" href="https://smlcoke.com/me/DIC/VLSI/ch4-paralleling_pipeline/parallel_pipeline/">
       
       
-        <link rel="prev" href="../../">
-      
-      
-        <link rel="next" href="../../ch2-modulation/modulation/">
       
       
         
@@ -27,7 +23,7 @@
     
     
       
-        <title>Ch1. Basics - SmlCoke Home</title>
+        <title>第四章 流水线和并行处理 - SmlCoke Home</title>
       
     
     
@@ -72,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#vlsi" class="md-skip">
+        <a href="#_1" class="md-skip">
           跳转至
         </a>
       
@@ -106,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Ch1. Basics
+              第四章 流水线和并行处理
             
           </span>
         </div>
@@ -215,12 +211,10 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../../../../" class="md-tabs__link">
           
   
@@ -455,8 +449,6 @@
       
   
   
-    
-  
   
   
     
@@ -478,17 +470,14 @@
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -510,13 +499,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -561,10 +550,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -583,11 +570,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -608,7 +595,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -831,8 +818,6 @@
                 
   
   
-    
-  
   
   
     
@@ -855,11 +840,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -887,7 +872,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -904,37 +889,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Ch1. Basics
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../ch1-introduction/introduction/" class="md-nav__link">
         
   
   
@@ -950,448 +908,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        一、通信系统基础认知
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="一、通信系统基础认知">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.1 信息系统的三大核心环节
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 通信系统通用模型
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 基带与带通信号核心定义
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        二、模拟通信系统 vs 数字通信系统
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="二、模拟通信系统 vs 数字通信系统">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 核心信号辨析
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 两类系统核心差异
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 数字通信系统的核心优缺点
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2.3 数字通信系统的核心优缺点">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        核心优势
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        核心不足
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        三、数字通信系统完整链路与核心模块
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="三、数字通信系统完整链路与核心模块">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 端到端完整传输链路
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 信源编码与解码
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 信道编码与译码
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 调制与解调
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 其他核心单元
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        四、通信系统分类与通信方式
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="四、通信系统分类与通信方式">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 通信系统主流分类方式
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 核心通信方式（按消息传输方向与时间划分）
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        五、无线通信系统详解
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="五、无线通信系统详解">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#51" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.1 无线通信核心挑战
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#52" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.2 无线通信系统核心分类
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#53" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.3 无线宽带接入标准核心参数
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#54-wifi-wlan" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.4 WiFi WLAN标准演进
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#55" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.5 蜂窝通信系统代际演进
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        六、数字通信核心关键技术
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="六、数字通信核心关键技术">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.1 多址技术
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-ofdm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.2 OFDM（正交频分复用）
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-mimo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.3 MIMO（多输入多输出）
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.4 高性能信道编码技术
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6g" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        七、通信系统发展趋势与6G展望
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="七、通信系统发展趋势与6G展望">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#71" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.1 无线通信核心发展趋势
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#72-6g" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.2 6G研究核心基点
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        学习适配提示
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2835,106 +2351,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        一、通信系统基础认知
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="一、通信系统基础认知">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.1 信息系统的三大核心环节
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 通信系统通用模型
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 基带与带通信号核心定义
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        二、模拟通信系统 vs 数字通信系统
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="二、模拟通信系统 vs 数字通信系统">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 核心信号辨析
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 两类系统核心差异
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 数字通信系统的核心优缺点
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2.3 数字通信系统的核心优缺点">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心优势
+        一、并行处理技术
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、并行处理技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 核心概念
       
     </span>
   </a>
@@ -2942,43 +2374,116 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#2-3-tap-fir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 设计案例：3-Tap FIR滤波器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 核心特性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 优缺点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心不足
+        二、流水线技术
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、流水线技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 核心概念
       
     </span>
   </a>
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 时序基础
+      
+    </span>
+  </a>
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 核心设计方法：割集与前馈割集
+      
+    </span>
+  </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
       
-        <li class="md-nav__item">
+        4. 设计案例
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 特性与优缺点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 特性与优缺点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        三、数字通信系统完整链路与核心模块
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="三、数字通信系统完整链路与核心模块">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 端到端完整传输链路
+        核心特性
       
     </span>
   </a>
@@ -2986,43 +2491,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#32" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.2 信源编码与解码
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 信道编码与译码
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 调制与解调
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 其他核心单元
+        优缺点
       
     </span>
   </a>
@@ -3031,40 +2503,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        四、通信系统分类与通信方式
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="四、通信系统分类与通信方式">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 通信系统主流分类方式
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 核心通信方式（按消息传输方向与时间划分）
-      
-    </span>
-  </a>
   
 </li>
         
@@ -3077,19 +2515,19 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        五、无线通信系统详解
+        三、流水线与并行处理的功耗优化
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="五、无线通信系统详解">
+    <nav class="md-nav" aria-label="三、流水线与并行处理的功耗优化">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#51" class="md-nav__link">
+  <a href="#1-cmos" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.1 无线通信核心挑战
+        1. CMOS电路功耗基础
       
     </span>
   </a>
@@ -3097,143 +2535,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#52" class="md-nav__link">
+  <a href="#2_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.2 无线通信系统核心分类
+        2. 流水线技术降低功耗
       
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="2. 流水线技术降低功耗">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#53" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.3 无线宽带接入标准核心参数
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#54-wifi-wlan" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.4 WiFi WLAN标准演进
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#55" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.5 蜂窝通信系统代际演进
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
-        六、数字通信核心关键技术
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="六、数字通信核心关键技术">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.1 多址技术
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-ofdm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.2 OFDM（正交频分复用）
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-mimo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.3 MIMO（多输入多输出）
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.4 高性能信道编码技术
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6g" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        七、通信系统发展趋势与6G展望
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="七、通信系统发展趋势与6G展望">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#71" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.1 无线通信核心发展趋势
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#72-6g" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.2 6G研究核心基点
+        核心原理
       
     </span>
   </a>
@@ -3244,7 +2561,123 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        学习适配提示
+        设计方法与公式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        应用案例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 并行处理技术降低功耗
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 并行处理技术降低功耗">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        核心原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计方法与公式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        应用案例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、核心总结与适用场景对比
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、核心总结与适用场景对比">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 流水线与并行处理的核心差异
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 适用场景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 核心价值
       
     </span>
   </a>
@@ -3273,353 +2706,181 @@
 
 
 
-<h1 id="vlsi">第一章 VLSI 数字通信原理介绍</h1>
+<h1 id="_1">第四章 流水线和并行处理</h1>
 <hr />
-<h2 id="_1">一、通信系统基础认知</h2>
-<h3 id="11">1.1 信息系统的三大核心环节</h3>
-<ol>
-<li><strong>信息的产生与获取</strong>：涵盖数据、语音、图像等多类型信息</li>
-<li><strong>信息的处理与存储</strong>：核心是模拟信息转数字信息、信息压缩编码</li>
-<li><strong>信息的传输与网络</strong>：时间传输（信息存储）、空间传输（媒质传输）</li>
-</ol>
-<h3 id="12">1.2 通信系统通用模型</h3>
-<p>通信系统是传输信息所需技术设备的总和，核心组成如下：<br />
-| 模块 | 核心功能 |<br />
-|------|----------|<br />
-| 信源 | 产生/发出消息的人或机器，是信息的起点 |<br />
-| 发送设备 | 将信源消息信号变换为适配信道传输的形式 |<br />
-| 信道 | 信息传输的物理媒质，分为有线/无线两类 |<br />
-| 噪声 | 信道中不可避免的干扰源，是传输误码的核心来源 |<br />
-| 接收设备 | 从带干扰的接收信号中恢复原始消息信号 |<br />
-| 信宿 | 接收消息的人或机器，是信息的终点 |</p>
-<h3 id="13">1.3 基带与带通信号核心定义</h3>
-<ul>
-<li><strong>基带信号</strong>：<strong>信号幅度在零频附近不全为零，其他频率幅度全为零</strong>，是未经载波调制的<strong>原始数字/模拟信号</strong></li>
-<li><strong>带通信号</strong>：<strong>信号幅度在以<span class="arithmatex">\(f=\pm f_c\)</span>为中心的频带内不全为零，其中<span class="arithmatex">\(f_c&gt;&gt;0\)</span>，<span class="arithmatex">\(f_c\)</span>称为载波频率</strong></li>
-<li><strong>传输重点</strong>：实际工程应用中，<strong>数字信号的带通传输</strong>是核心落地场景</li>
-</ul>
-<div class="admonition question">
-<p class="admonition-title"><strong>Q：基带信号为什么无法实现无线信道传输？</strong></p>
-<p>无线信号的辐射 / 接收要求<strong>天线尺寸与信号波长 λ 为同一数量级（通常要求天线长度≥λ/4，辐射效率才会达标）</strong>，而波长与频率的关系为：<br />
-$$ \lambda = \frac{c}{f} $$<br />
-其中 <span class="arithmatex">\(c\)</span> 是光速，<span class="arithmatex">\(f\)</span> 是信号频率。<br />
-基带语音信号最高频率按照<span class="arithmatex">\(4kHz\)</span>考虑，因此其波长为：<br />
-$$ \lambda = \frac{3 \times 10^8}{4 \times 10^3} = 75,000 \text{ m} $$<br />
-这意味着<strong>天线长度要大于18750m！</strong></p>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">核心概念解释</p>
-<ul>
-<li><strong>码元</strong><span class="arithmatex">\(T_s\)</span>: 指<strong>一个码元的持续时间</strong>，也叫码元周期，是数字信号中单个二进制（或多进制）符号对应的时间长度，其倒数<span class="arithmatex">\(1/T_s\)</span>为码元速率（波特率）。</li>
-<li><span class="arithmatex">\(g_T(t)\)</span>: 工程中最常用<strong>矩形脉冲信号</strong>（矩形波），也可根据需求用升余弦滚降脉冲、高斯脉冲等；核心是在<span class="arithmatex">\(0≤t≤T_s\)</span>内有确定幅值，其余时间为0，是承载单个码元的基础波形。</li>
-<li><strong>二进制序列转基带数字波形的硬件实现</strong>：核心是<strong>串并转换+脉冲成形电路</strong></li>
-<li><strong>2ASK调制的硬件实现</strong>：最简易实现是<strong>选通开关电路</strong></li>
-</ul>
-</div>
-<hr />
-<h2 id="vs">二、模拟通信系统 vs 数字通信系统</h2>
-<h3 id="21">2.1 核心信号辨析</h3>
-<table>
-<thead>
-<tr>
-<th>信号类型</th>
-<th>核心定义</th>
-<th>关键特征</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>模拟信号</td>
-<td>特征量（幅度、频率、相位）取值连续的信号</td>
-<td>取值无限多，抗干扰能力弱，噪声会随传输积累</td>
-</tr>
-<tr>
-<td>数字信号</td>
-<td>特征量（幅度、频率、相位）取值离散的信号</td>
-<td>取值有限个（核心为0/1二进制），抗干扰能力强，噪声不积累</td>
-</tr>
-</tbody>
-</table>
-<h3 id="22">2.2 两类系统核心差异</h3>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>模拟通信系统</th>
-<th>数字通信系统</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>传输信号</td>
-<td>直接传输原始模拟信号</td>
-<td>仅传输0/1数字化信号，需先完成模数转换</td>
-</tr>
-<tr>
-<td>典型系统</td>
-<td>模拟电视、AM广播</td>
-<td>手机蜂窝通信、计算机以太网</td>
-</tr>
-<tr>
-<td>发展现状</td>
-<td>逐步被数字系统取代</td>
-<td>当前通信系统的主流实现方案</td>
-</tr>
-</tbody>
-</table>
-<h3 id="23">2.3 数字通信系统的核心优缺点</h3>
-<h4 id="_2">核心优势</h4>
-<ol>
-<li><strong>抗干扰能力强</strong>，传输过程中噪声不积累（通过电平判决可消除噪声叠加）</li>
-<li>可通过<strong>纠错编码精准控制传输差错</strong>，提升传输可靠性</li>
-<li>易于加密处理，信息保密度高</li>
-<li>数字信号便于标准化处理、变换与存储</li>
-<li>数字电路易于集成，适配VLSI设计，方便设备小型化</li>
-</ol>
-<h4 id="_3">核心不足</h4>
-<ol>
-<li>相同传输带宽下，数字信号占用的有效数据率更高</li>
-<li>对收发端同步精度要求极高，是系统设计的核心难点</li>
-<li>编解码、同步、调制解调等模块带来更高的实现复杂度</li>
-</ol>
-<hr />
-<h2 id="_4">三、数字通信系统完整链路与核心模块</h2>
-<h3 id="31">3.1 端到端完整传输链路</h3>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>发送端：信源 → 信源编码 → 加密 → 信道编码 → 调制 → 传输信道
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>接收端：传输信道 → 解调 → 信道译码 → 解密 → 信源解码 → 信宿
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>配套支撑：同步系统、信道噪声与干扰
+<h2 id="_2">一、并行处理技术</h2>
+<h3 id="1">1. 核心概念</h3>
+<p>并行处理技术发掘计算中的<strong>同时性并发</strong>，通过复制硬件资源，将单输入单输出（SISO）串行系统转换为多输入多输出（MIMO）系统，实现多任务同时计算，提升系统处理能力。</p>
+<h3 id="2-3-tap-fir">2. 设计案例：3-Tap FIR滤波器</h3>
+<p>以3抽头FIR滤波器 <span class="arithmatex">\(y(2k)=b_{0}x(2k)+b_{1}x(2k-1)+b_{2}x(2k-2)\)</span> 为例：<br />
+<strong>(1) 未并行</strong></p>
+<p><img alt="alt text" src="../image.png" /></p>
+<p><strong>(2) 2级并行</strong><br />
+将输入输出按奇偶序列拆分，时钟周期内同时处理2个样点<br />
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>\begin{cases}
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>y(2k)=b_{0}x(2k)+b_{1}x(2k-1)+b_{2}x(2k-2)\\
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>y(2k+1)=b_{0}x(2k+1)+b_{1}x(2k)+b_{2}x(2k-1)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>\end{cases}
 </span></code></pre></div><br />
-<img alt="alt text" src="../image.png" /></p>
-<h3 id="32">3.2 信源编码与解码</h3>
+<img alt="alt text" src="../image-1.png" /></p>
 <ul>
-<li><strong>核心功能</strong>：将信源信息转换为二进制数据，同时完成信息压缩，去除冗余；信源解码是其逆过程</li>
-<li><strong>核心流程</strong>：采样（遵循采样定理）→ 量化 → 模数转换 → 压缩编码<br />
-<img alt="alt text" src="../image-1.png" /></li>
-<li><strong>工程实例</strong>：</li>
-<li>语音编码：语音信号频率范围300Hz~3400Hz，典型采样率8kHz，8bit量化原始码率64kbps；GSM系统压缩至9kbps，极限可压缩至1kbps以下</li>
-<li>图像压缩：图像由像素阵列构成，彩色图像含RGB三基色，高清电视信号传输需几十兆比特/秒的带宽，需通过压缩降低传输开销</li>
+<li><strong>3级并行</strong>：时钟周期内同时处理3个样点，采样周期进一步缩小</li>
 </ul>
-<h3 id="33">3.3 信道编码与译码</h3>
+<h3 id="3">3. 核心特性</h3>
+<ol>
+<li>并行系统的<strong>关键路径与原串行系统保持不变</strong>；</li>
+<li>L级并行系统一个时钟周期可处理L个样点，迭代（采样）周期缩小为原系统的<span class="arithmatex">\(1/L\)</span>；</li>
+<li>时钟周期与采样周期解耦：<span class="arithmatex">\(T_{\text{clk}} = L\times T_{\text{sample}}\)</span></li>
+<li>完整并行系统需配套<strong>串-并(S-P)转换器</strong>（输入预处理）和<strong>并-串(P-S)转换器</strong>（输出后处理）。</li>
+</ol>
+<h3 id="4">4. 优缺点</h3>
 <ul>
-<li><strong>核心目标</strong>：通过<strong>添加冗余信息，保证接收端0/1序列的正确性，对抗信道传输误码</strong></li>
-<li><strong>核心能力</strong>：</li>
-<li>错误检测：添加少量冗余，可判断接收信息是否正确，但无法纠正错误</li>
-<li>错误纠正：添加更多冗余，可同时完成错误检测与纠正</li>
-<li><strong>重传机制：系统仅能检错无法纠错时使用，会额外引入传输时延</strong></li>
-<li><strong>核心边界</strong>：冗余信息仅能提升检错纠错能力，<strong>无法覆盖所有错误场景，存在无法检测与纠正的错误</strong></li>
-</ul>
-<h3 id="34">3.4 调制与解调</h3>
-<ul>
-<li><strong>调制核心定义</strong>：<strong>将二进制数字序列映射为对应时间波形，同时把基带信号的频谱搬移到高频载波频段，适配信道的传输特性</strong></li>
-<li><strong>解调核心定义</strong>：调制的逆过程，从接收的带通信号中恢复出原始基带数字序列</li>
-<li><strong>核心价值</strong>：解决基带信号无法在无线信道远距离传输的问题，同时可通过不同调制方式提升频谱利用率与抗干扰能力</li>
-<li><strong>典型实例</strong>：PAM（脉冲幅度调制），通过不同幅度电平映射二进制序列，分为基带PAM与带通PAM两类实现</li>
-</ul>
-<p>!!! note "调制的数学说明"<br />
-      二进制数字序列映射到基带数字波形：<span class="arithmatex">\(s(t) = \sum_{n=-\infty}^{+\infty} a_n \cdot g_T(t-nT_s)\)</span><br />
-      其中：<br />
-      - <span class="arithmatex">\(a_n\)</span>：二进制符号，<span class="arithmatex">\(a_n=1\)</span>（对应数字1），<span class="arithmatex">\(a_n=0\)</span>（对应数字0）；<br />
-      - <span class="arithmatex">\(g_T(t)\)</span>：矩形脉冲波形，<span class="arithmatex">\(0≤t≤T_s\)</span>时<span class="arithmatex">\(g_T(t)=1\)</span>，其余时间<span class="arithmatex">\(g_T(t)=0\)</span>；</p>
-<div class="language-text highlight"><pre><span></span><code>  高频载波信号：$c(t) = A_c \cos(2\pi f_c t + \varphi_0)$
-  - 载波频率：$f_c &gt;&gt;$ 基带最高频率$f_m$
-
-  数字调制——2ASK: $\boldsymbol{e_{2ASK}(t) = s(t) \cdot \cos(2\pi f_c t)}$
-  - 傅里叶变换：$E_{2ASK}(\omega) = \frac{1}{2} \left[ S(\omega-\omega_c) + S(\omega+\omega_c) \right]$
-</code></pre></div>
-<p><img alt="alt text" src="../image-2.png" /></p>
-<h3 id="35">3.5 其他核心单元</h3>
-<ul>
-<li><strong>加密/解密</strong>：对编码后的数字序列进行加密处理，提升传输安全性，数字信号天然适配各类加密算法</li>
-<li><strong>同步</strong>：数字通信系统正常工作的前提，涵盖载波同步、码元同步、帧同步、网同步，是系统设计的核心难点</li>
-<li><strong>信道与噪声</strong>：<strong>传输媒质分为有线（主流光纤）和无线（主流无线电）两类</strong>，噪声是所有传输信道的固有干扰，决定了系统的误码率下限</li>
+<li>优点：可线性提升系统采样率，突破IO带宽限制；</li>
+<li>缺点：硬件开销随并行级数L线性增长，成本高。</li>
 </ul>
 <hr />
-<h2 id="_5">四、通信系统分类与通信方式</h2>
-<h3 id="41">4.1 通信系统主流分类方式</h3>
-<ol>
-<li><strong>按通信业务划分</strong>：电话通信系统、数据通信系统、图像通信系统、多媒体通信系统</li>
-<li><strong>按是否采用调制划分</strong>：基带传输系统、频带（带通）传输系统</li>
-<li><strong>按传输媒质划分</strong>：有线通信系统、无线通信系统</li>
-</ol>
-<h3 id="42">4.2 核心通信方式（按消息传输方向与时间划分）</h3>
-<table>
-<thead>
-<tr>
-<th>通信方式</th>
-<th>核心定义</th>
-<th>典型应用场景</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>单工通信</td>
-<td>消息只能单向传输，收发端角色固定</td>
-<td>广播、遥控、无线寻呼</td>
-</tr>
-<tr>
-<td>半双工通信</td>
-<td>通信双方均具备收发能力，但收发不能同时工作，仅支持单条信道</td>
-<td>对讲机、传统串口通信</td>
-</tr>
-<tr>
-<td>全双工通信</td>
-<td>收发双方可同时进行双向消息传输，需双向信道支撑</td>
-<td>手机蜂窝通信、以太网、TDD时分双工（TD-SCDMA）</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_6">五、无线通信系统详解</h2>
-<h3 id="51">5.1 无线通信核心挑战</h3>
-<ol>
-<li>随时随地的泛在网络连接需求</li>
-<li>多业务（语音/数据/音视频）、多设备的融合适配</li>
-<li>硬件产品的小型化、低功耗、低成本设计需求（与VLSI设计强相关）</li>
-</ol>
-<h3 id="52">5.2 无线通信系统核心分类</h3>
-<table>
-<thead>
-<tr>
-<th>系统类别</th>
-<th>核心细分</th>
-<th>典型标准/技术</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>蜂窝通信系统</td>
-<td>2G/3G/4G/5G/6G</td>
-<td>GSM、WCDMA、TD-SCDMA、LTE、5G NR</td>
-</tr>
-<tr>
-<td>无线接入系统</td>
-<td>无线个域网（WPAN）</td>
-<td>Bluetooth、UWB、Zigbee</td>
-</tr>
-<tr>
-<td></td>
-<td>无线局域网（WLAN）</td>
-<td>WiFi 802.11a/b/g/n/ac/ax</td>
-</tr>
-<tr>
-<td></td>
-<td>无线城域网（WMAN）</td>
-<td>WiMAX 802.16系列</td>
-</tr>
-<tr>
-<td>广播电视系统</td>
-<td>地面数字电视、移动手机电视</td>
-<td>DVB-T、ISDB-T、CMMB</td>
-</tr>
-<tr>
-<td>卫星通信系统</td>
-<td>卫星传输、导航定位</td>
-<td>DVB-S/S2、GPS、北斗</td>
-</tr>
-</tbody>
-</table>
-<h3 id="53">5.3 无线宽带接入标准核心参数</h3>
-<table>
-<thead>
-<tr>
-<th>网络类型</th>
-<th>覆盖范围</th>
-<th>典型传输速率</th>
-<th>核心协议标准</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PAN（个域网）</td>
-<td>&lt;10m</td>
-<td>~1Mbit/s</td>
-<td>802.15.1(Bluetooth)、802.15.4(ZigBee)</td>
-</tr>
-<tr>
-<td>WLAN（局域网）</td>
-<td>&lt;100m</td>
-<td>11-54Mbit/s（峰值10Gbps）</td>
-<td>802.11a/b/g/n/ac/ax(WiFi)</td>
-</tr>
-<tr>
-<td>MAN（城域网）</td>
-<td>&lt;5km</td>
-<td>70Mbit/s</td>
-<td>802.16a/e/m(WiMAX)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="54-wifi-wlan">5.4 WiFi WLAN标准演进</h3>
-<ol>
-<li><strong>802.11b</strong>：<strong>2.4GHz ISM频段</strong>，DSSS技术，峰值速率11Mbps，覆盖约500英尺</li>
-<li><strong>802.11a/g</strong>：<strong>5GHz/2.4GHz频段</strong>，OFDM技术，峰值速率54Mbps，覆盖100-200英尺</li>
-<li><strong>802.11n/ac/ax</strong>：2.4GHz+5GHz双频段，OFDM+MIMO技术，支持20/40/80/160MHz频宽，峰值速率最高10Gbps（ax），多用户MIMO增强</li>
-</ol>
-<h3 id="55">5.5 蜂窝通信系统代际演进</h3>
-<ul>
-<li><strong>2G（90年代）</strong>：核心支撑数字语音业务，主流技术TDMA/CDMA，代表标准GSM、IS-95</li>
-<li><strong>3G（IMT-2000）</strong>：核心支撑宽带数据业务，三大标准WCDMA、cdma2000、TD-SCDMA，<strong>CDMA为核心技术</strong></li>
-<li><strong>4G（LTE/LTE-Advanced）</strong>：核心支撑多媒体业务，关键技术<strong>OFDM、MIMO</strong>，应对WiMAX市场竞争，向ITU 4G标准对齐</li>
-<li><strong>5G</strong>：核心指标为峰值速率&gt;10Gbps、空口时延&lt;1ms、10年终端续航、海量设备连接，覆盖eMBB、uRLLC、mMTC三大场景</li>
-</ul>
-<hr />
-<h2 id="_7">六、数字通信核心关键技术</h2>
-<h3 id="61">6.1 多址技术</h3>
-<p>多址技术解决多用户同时接入信道的资源分配问题，主流实现分为三类：<br />
-1.  <strong>FDMA（频分多址）</strong>：按频率划分信道，不同用户占用互不重叠的频段<br />
-2.  <strong>TDMA（时分多址）</strong>：按时间划分时隙，不同用户占用互不重叠的时间片<br />
-3.  <strong>CDMA（码分多址）</strong>：<strong>按正交码字区分用户，同频同时隙共享信道，靠不同正交码字区分用户，是3G系统的核心技术</strong></p>
-<p><img alt="alt text" src="../image-3.png" /></p>
-<h3 id="62-ofdm">6.2 OFDM（正交频分复用）</h3>
-<ul>
-<li><strong>本质</strong>：一种特殊的多载波调制技术，将高速串行数据流拆分为多路低速并行数据流，<strong>调制到相互正交的子载波</strong>上</li>
-<li><strong>核心优势</strong>：</li>
-<li>大幅提升频谱利用率，子载波正交重叠，节省频带资源</li>
-<li>多子载波设计，天然抵抗频率选择性衰落</li>
-<li>延长符号周期，有效对抗多径衰落引起的码间干扰（ISI）</li>
-<li>可通过FFT/IFFT算法实现，大幅简化VLSI硬件实现结构</li>
-</ul>
+<h2 id="_3">二、流水线技术</h2>
+<h3 id="1_1">1. 核心概念</h3>
+<p>流水线技术通过在数据通路中<strong>插入寄存器</strong>，将长组合逻辑关键路径拆分为多段短路径，缩短单级组合逻辑延时，从而提升系统时钟频率，实现不同运算模块的交替式并发工作。<br />
+- 生活类比：洗衣流程（洗衣→烘干→折叠），流水线可让多批衣物的不同步骤并发执行，大幅提升总处理效率；<br />
+- 核心优势：相比并行处理，仅需增加少量寄存器硬件开销，即可显著提升性能。</p>
+<h3 id="2">2. 时序基础</h3>
+<p>寄存器与组合逻辑的时序约束公式：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>T_{co} + T_{data} + T_{su} \leq T_{clk}
+</span></code></pre></div><br />
+- <code>T_co</code>：寄存器时钟到输出的传播延时；<br />
+- <code>T_data</code>：寄存器间组合逻辑的延时；<br />
+- <code>T_su</code>：寄存器的建立时间；<br />
+- <code>T_clk</code>：系统时钟周期。</p>
+<p>插入寄存器的本质，是将长组合逻辑延时<code>T_data</code>拆分为多段，每段延时均满足时序约束，从而降低最小可实现的<code>T_clk</code>，提升时钟频率。</p>
+<h3 id="3_1">3. 核心设计方法：割集与前馈割集</h3>
+<p>流水线寄存器的插入必须遵循<strong>前馈割集规则</strong>，否则会改变系统功能与传递函数：<br />
+1.  <strong>割集</strong>：图的一组边，若移走这些边，原图会被拆分为两个互不相连的子图/孤立节点；<br />
+2.  <strong>前馈割集</strong>：在一个数据流图、组合逻辑网络或电路有向图中，选取的一组边（或信号线），把这些边去掉后，图被分成<strong>“前级”和“后级”两部分</strong>，并且<strong>所有跨越这个分割的数据流都只沿前向方向从前级流向后级</strong>，不存在从后级返回前级的反馈路径。<br />
+3.  <strong>设计规则</strong>：仅能在前馈割集的所有边上插入相同数量的寄存器，才能保证系统功能不变，同时缩短关键路径。</p>
+<p>!!! success 如何理解前馈割集与反馈环路？<br />
+    首先想一个问题？为什么在前馈割集的所有边上加入流水线寄存器不影响功能？这是由前馈割集的定义决定的，<strong>前馈割集的每条边都是从前级流向后级的单向数据流，插入寄存器后，数据仍然沿同一方向流动，系统的输入输出关系不变</strong>；<br><br />
+    那我们试想，会不会存在一个前馈割集，它的某条边是<strong>反馈环路中的某一条路径</strong>呢（或者说<strong>某个有向环的某条有向边</strong>）？<br />
+    —— 不可能！因为为了满足割集的定义，如果存在一条边 <code>e</code> 是反馈环路中的某条路径，那么 必然存在零一条边 <code>e'</code> <strong>同样属于这个反馈环路</strong>，并且 <code>e'</code> 从<strong>后级流向前级</strong>，这样就不满足前馈割集的定义了。<br><br />
+    因此，有结论：<strong>不可能存在包含一条存在于一个有向环的边的前馈割集</strong><br><br />
+    这也就是说，反馈环路的存在会限制前馈割集的选择范围，好处就是我们在选择前馈割集时，<strong>不用考虑任何属于反馈环路的边</strong>！但是缺点也很明显：<strong>反馈环路积累的延迟，就是天王老子来了也救不了！因为前馈割集无法打断反馈环路上固有的长延迟！</strong>（当然，这里只是说流水线寄存器救不了）<br><br />
+    这也就是说，反馈环路限定了一个时序电路系统的最高频率上限，无论如何添加流水线寄存器，增加流水深度，都无法突破这个上限。这个上限，就是<strong>迭代边界</strong>，或者说，所有<strong>环路边界的最大值 <span class="arithmatex">\(\underset{L}{\text{max}}\frac{D(L)}{W(L)}\)</span></strong>！</p>
+<h3 id="4_1">4. 设计案例</h3>
+<p><strong>(1) 多级MUX流水线</strong><br />
+原始多级选择器电路时钟频率400MHz，通过均等分割流水线插入寄存器后，时钟频率提升至650MHz，代价为增加寄存器开销。</p>
+<p>例如：<br />
+<img alt="alt text" src="../image-2.png" /><br />
+<img alt="alt text" src="../image-3.png" /></p>
+<p><strong>(2) FIR滤波器流水线</strong><br />
+3抽头FIR滤波器原始关键路径为<code>T_M + 2T_A</code>（乘法+2次加法），通过前馈割集插入寄存器后，关键路径缩短为<code>T_M + T_A</code>，时钟频率显著提升。</p>
 <p><img alt="alt text" src="../image-4.png" /></p>
-<h3 id="63-mimo">6.3 MIMO（多输入多输出）</h3>
+<p><strong>(4) 细粒度流水</strong></p>
+<p>针对超小时钟周期需求，可将运算单元拆分。例如乘法器延时<code>T_M=10u.t.</code>，目标时钟周期6u.t.，可将乘法器拆分为6u.t.和4u.t.的两个子单元，中间插入寄存器实现流水。</p>
+<h3 id="5">5. 特性与优缺点</h3>
+<h4 id="_4">核心特性</h4>
 <ul>
-<li><strong>本质</strong>：多天线技术，通过多根发射天线、多根接收天线构建多条并行传输信道</li>
-<li><strong>核心突破</strong>：将无线信道的多径效应从不利干扰因素，转化为提升系统容量的有利因素</li>
-<li><strong>核心优势</strong>：在独立同分布的高斯信道下，当接收天线数大于发射天线数时，MIMO系统的容量随发射天线数近似线性增长</li>
-<li><strong>技术演进</strong>：Massive MIMO（大规模天线阵列），是5G系统的核心关键技术</li>
+<li>M级流水线系统中，<strong>输入到输出任一路径的延迟数，比原系统多<span class="arithmatex">\(M-1\)</span>个时钟周期</strong>；</li>
+<li>仅能通过前馈割集插入寄存器，<strong>反馈路径不可随意插入寄存器，否则会改变系统极点与频率响应</strong>。</li>
 </ul>
-<h3 id="64">6.4 高性能信道编码技术</h3>
-<p>核心目标是逼近Shannon信道容量限，提升传输可靠性，主流技术如下：<br />
-1.  <strong>LDPC码</strong>：1962年由Gallager提出，凭借优异的纠错性能与硬件可实现性，成为5G数据信道的编码标准<br />
-2.  <strong>Polar码</strong>：2008年由Arikan教授提出，理论上可达到Shannon限，被3GPP采纳为5G控制信道的编码标准<br />
-3.  <strong>Turbo码</strong>：3G/4G系统的主流信道编码方案，性能逼近Shannon限，硬件实现复杂度高于LDPC码</p>
-<hr />
-<h2 id="6g">七、通信系统发展趋势与6G展望</h2>
-<h3 id="71">7.1 无线通信核心发展趋势</h3>
-<ol>
-<li>宽带化：传输速率从Mbps向Tbps量级持续演进</li>
-<li>移动化：全场景无缝泛在连接，实现全域移动覆盖</li>
-<li>低功耗化：适配海量物联网终端，实现超长续航</li>
-<li>高集成化：深度适配VLSI设计，实现芯片小型化、低成本、高可靠性</li>
-</ol>
-<h3 id="72-6g">7.2 6G研究核心基点</h3>
-<ol>
-<li><strong>核心前提</strong>：6G需从基础理论研究做起，5G商用进程过快导致基础理论储备不足，6G需实现颠覆性技术创新</li>
-<li><strong>潜在创新方向</strong>：<ul>
-<li>基于大数据/AI的大范围干扰抵消技术，探索非蜂窝网络架构</li>
-<li>基于超材料科学的天线技术突破</li>
-<li>信息论基础理论的进一步挖潜</li>
-<li>核心网架构的颠覆性创新</li>
+<h4 id="_5">优缺点</h4>
+<ul>
+<li>优点：大幅<strong>缩短时钟周期</strong>、提升<strong>系统时钟频率</strong>，硬件开销增加少；</li>
+<li>缺点：增加寄存器硬件开销；增加系统输出迟滞时间（Latency）；<strong>仅适合大量连续数据输入</strong>，非连续数据会产生“流水气泡”，降低流水线效率。</li>
 </ul>
-</li>
-<li><strong>核心关注方向</strong>：相比5G，6G需更聚焦低碳节能、网络与信息安全两大核心命题</li>
-</ol>
 <hr />
-<h3 id="_8">学习适配提示</h3>
+<h2 id="_6">三、流水线与并行处理的功耗优化</h2>
+<h3 id="1-cmos">1. CMOS电路功耗基础</h3>
+<p>芯片总功耗由动态功耗和静态功耗组成：<br />
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>P_{total} = P_{dynamic} + P_{static}
+</span></code></pre></div><br />
+1.  <strong>静态功耗</strong>：<span class="arithmatex">\(P_{static} = I_{leakage} × V_{DD}\)</span>，由MOS管漏电流决定，与芯片工艺强相关；<br />
+2.  <strong>动态功耗</strong>：<span class="arithmatex">\(P_{dynamic} = C_{total} × V_{DD}^2 × f\)</span>，是电路设计可优化的核心，与电源电压<span class="arithmatex">\(V_{DD}\)</span>的平方成正比，与总负载电容<span class="arithmatex">\(C_{total}\)</span>、时钟频率<span class="arithmatex">\(f\)</span>成正比；<br />
+3.  <strong>传播延时公式</strong>：<br />
+    <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>T_{pd} = \frac{C_{charge} × V_{DD}}{k × (V_{DD} - V_t)^2}
+</span></code></pre></div><br />
+    其中<code>k</code>为MOS管跨导因子，<code>V_t</code>为MOS管阈值电压，系统最高时钟频率<code>f = 1/max(T_pd)</code>。</p>
+<h3 id="2_1">2. 流水线技术降低功耗</h3>
+<h4 id="_7">核心原理</h4>
+<p>流水线原本用于提升时钟频率，若<strong>保持系统原采样率/处理能力不变</strong>，可降低时钟频率，进而大幅降低电源电压<span class="arithmatex">\(V_{DD}\)</span>；由于动态功耗与<span class="arithmatex">\(V_{DD}^2\)</span>成正比，最终可实现系统功耗的显著降低。</p>
+<h4 id="_8">设计方法与公式</h4>
 <ol>
-<li>结合<strong>数字信号处理</strong>基础，重点理解OFDM的FFT/IFFT实现、调制解调的信号处理流程、多径衰落的抑制算法</li>
-<li>结合<strong>概率论与数理统计</strong>基础，深入分析信道编码的误码率性能、MIMO系统的信道容量、噪声对传输链路的影响</li>
-<li>结合<strong>集成电路设计</strong>基础，聚焦各模块的VLSI实现复杂度、硬件可实现性、低功耗设计与面积优化，贴合课程“VLSI数字通信设计”的核心目标</li>
+<li>原始电路：关键路径传播延时<span class="arithmatex">\(T_{seq}\)</span>，电源电压<span class="arithmatex">\(V_0\)</span>，功耗<span class="arithmatex">\(P_{seq}\)</span>；</li>
+<li>M级流水线：将关键路径拆分为M段，单级传播延时<span class="arithmatex">\(T_{pipe}\)</span>，电源电压<span class="arithmatex">\(V_{pipe} = βV_0\)</span>（<code>β</code>为电压降低因子）；</li>
+<li>核心求解方程：<br />
+    <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>\frac{C_{charge}/M × \beta V_{0}}{k × (\beta V_{0} - V_t)^2} = \frac{C_{charge} × V_0}{k × (V_0 - V_t)^2}
+</span></code></pre></div><br />
+    <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>M × (\beta V_0 - V_t)^2 = \beta × (V_0 - V_t)^2
+</span></code></pre></div></li>
+<li>功耗降低比例：<span class="arithmatex">\(P_{pipe} = β^2 × P_{seq}\)</span></li>
 </ol>
+<p>电容缩小为原来的<span class="arithmatex">\(1/M\)</span>的原因：流水线将原系统的长组合逻辑路径拆分为M段，每段的负载电容约为原系统的<span class="arithmatex">\(1/M\)</span>，因此每段的动态功耗也约为原系统的<span class="arithmatex">\(1/M\)</span>。</p>
+<h4 id="_9">应用案例</h4>
+<p>3抽头FIR滤波器，<span class="arithmatex">\(C_M=5C_A\)</span>，<span class="arithmatex">\(V_t=0.6V\)</span>，<span class="arithmatex">\(V_0=5V\)</span>，采用2级流水线设计：<br />
+- 求解得<span class="arithmatex">\(\beta=0.6033\)</span>；<br />
+- 系统动态功耗降为原始电路的<span class="arithmatex">\(36.4\%\)</span>；<br />
+- 对比：若不降功耗，2级流水可将时钟周期减半、频率翻倍，功耗变为原始电路的2倍。</p>
+<p><img alt="alt text" src="../image-6.png" /></p>
+<hr />
+<h3 id="3_2">3. 并行处理技术降低功耗</h3>
+<h4 id="_10">核心原理</h4>
+<p>L级并行系统，<strong>保持系统原采样率不变</strong>，时钟频率可降低为原始系统的<code>1/L</code>，进而降低电源电压<span class="arithmatex">\(V_{DD}\)</span>；尽管总负载电容随并行级数L线性增长，但<span class="arithmatex">\(V_{DD}^2\)</span>的降低幅度更大，最终实现系统功耗下降。</p>
+<h4 id="_11">设计方法与公式</h4>
+<ol>
+<li>原始电路：关键路径传播延时<span class="arithmatex">\(T_{seq}\)</span>，电源电压<span class="arithmatex">\(V_{DD}\)</span>，功耗<span class="arithmatex">\(P_{seq}\)</span>；</li>
+<li>L级并行：时钟周期<span class="arithmatex">\(T_{para} = L×T_{seq}\)</span>，电源电压<span class="arithmatex">\(V_{para} = βV_{DD}\)</span>；</li>
+<li>核心求解方程：<br />
+    <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>\frac{C_{charge} × \beta V_{DD}}{k × (\beta V_{DD} - V_t)^2} = L × \frac{C_{charge} × V_{DD}}{k × (V_{DD} - V_t)^2}
+</span></code></pre></div><br />
+    <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>L × (\beta V_{DD} - V_t)^2 = \beta × (V_{DD} - V_t)^2
+</span></code></pre></div></li>
+<li>功耗降低比例：<span class="arithmatex">\(P_{para} = β^2 × P_{seq}\)</span></li>
+</ol>
+<h4 id="_12">应用案例</h4>
+<p>4抽头FIR滤波器，<span class="arithmatex">\(C_M=8C_A\)</span>，<span class="arithmatex">\(V_0=3.3V\)</span>，<span class="arithmatex">\(V_t=0.45V\)</span>，采用2级并行设计：<br />
+- 求解得<span class="arithmatex">\(\beta=0.6589\)</span>；<br />
+- 系统动态功耗降为原始电路的<span class="arithmatex">\(43.4\%\)</span>。</p>
+<p><img alt="alt text" src="../image-5.png" /></p>
+<hr />
+<h2 id="_13">四、核心总结与适用场景对比</h2>
+<h3 id="1_2">1. 流水线与并行处理的核心差异</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>流水线技术</th>
+<th>并行处理技术</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>并发类型</td>
+<td>交替式并发，不同模块分时复用</td>
+<td>同时性并发，多套硬件同时计算</td>
+</tr>
+<tr>
+<td>硬件开销</td>
+<td>仅增加少量寄存器，开销低</td>
+<td>运算单元随并行级数线性增长，开销高</td>
+</tr>
+<tr>
+<td>关键路径</td>
+<td>拆分后单级路径缩短，时钟频率提升</td>
+<td>关键路径与原系统一致，时钟频率不变</td>
+</tr>
+<tr>
+<td>数据依赖</td>
+<td>处理单元间有数据依赖，需通信</td>
+<td>处理单元无数据依赖，可独立运行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2_2">2. 适用场景</h3>
+<ol>
+<li><strong>流水线技术</strong>：适合<strong>通信未受限系统</strong>（关键路径延时 ≥ IO延迟边界），连续数据流场景，如视频编解码、连续信号处理；</li>
+<li><strong>并行处理技术</strong>：适合<strong>通信受限系统</strong>（关键路径延时 ≤ IO延迟边界），可通过增加IO数量突破传输速率限制，也适合高并行度的AI计算、多通道信号处理。</li>
+</ol>
+<h3 id="3_3">3. 核心价值</h3>
+<p>两种架构技术均可在不降低系统处理能力的前提下，通过降低电源电压实现动态功耗的显著降低，是VLSI数字系统高性能、低功耗设计的核心方法。</p>
 
 
 
