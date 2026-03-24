@@ -106,7 +106,7 @@ cargo build --release
 
 ## 二. 编程概念
 先贴一张图，这是我在学习 `Python` 和 `C++` 中从来没有见到过的，非常清晰的报错信息
-![alt text](image.png)
+![alt text](image.webp)
 
 ### 2.1 变量
 变量默认不可变，例如

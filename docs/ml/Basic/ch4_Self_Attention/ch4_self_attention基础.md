@@ -9,14 +9,14 @@
     > I saw a cat
 
     将词汇转化为向量的方法: (1) one-hot (2) Word Embedding
-    ![alt text](image.png)
+    ![alt text](image.webp)
 
 2. 输入是一段声音讯号
-    ![alt text](image-1.png)
+    ![alt text](image-1.webp)
     有很多方法将一个**window**中的讯号转化为一个vector
 
 3. Graph
-   ![alt text](image-2.png) 
+   ![alt text](image-2.webp) 
    每个结点就是一个向量
 
 
@@ -24,35 +24,35 @@
 
 1. Each vector has a label
    输入的每一个向量，对应一个label
-   ![alt text](image-3.png)
+   ![alt text](image-3.webp)
    **例如我们输入一个句子，机器识别句子中的每一个词的词性**
 
 2. A whole sequence has a label
    输入的一整个向量序列，对应一个label
-   ![alt text](image-4.png)
+   ![alt text](image-4.webp)
    例如输入一个句子，机器判断positive or negative
    输入一个分子，判断有没有毒性？亲水性如何？
 
 3. sequence to sequence
-   ![alt text](image-5.png)
+   ![alt text](image-5.webp)
    输入的labels个数不确定，机器要自己判断应该输出多少个label
    例如：翻译（输入输出是不同的语言，输入输出的词汇不一样），同理，语音辨识
 
 ## 三. Sequence Labeling(第一种情况)
 
 一个有瑕疵的做法——直接用一个FC
-![alt text](image-6.png)
+![alt text](image-6.webp)
 问题，所有相同的输入产生相同的输出，但是在序列中时，他们不一定对应着同一个label!
 
 **解决办法：** 把前后几个vector串起来，一起丢进FC
-![alt text](image-7.png)
+![alt text](image-7.webp)
 
 **如果我们需要考虑一整个sequence作为一个window进入FC呢？开一个巨大的window意味着FC的参数量很大，同时容易Overfitting**
 
 **重要引入：Self Attention**
-![alt text](image-8.png)
+![alt text](image-8.webp)
 即引入一个self-attention层，并且，我们可以像CNN中堆叠卷积层一样堆叠多个self-attention层：
-![alt text](image-9.png)
+![alt text](image-9.webp)
 
 ### 3.1 self-attention层的工作机制
 例如self-attention层input $\mathbf{a_1},\mathbf{a_2},\mathbf{a_3},\mathbf{a_4}$ 四个向量，output $\mathbf{b_1},\mathbf{b_2},\mathbf{b_3},\mathbf{b_4}$ 四个向量。每一个$\mathbf{b}$都需要考虑所有输入序列的向量
@@ -62,7 +62,7 @@
 
 2. **如何描述这种相关性程度呢？——利用一个数值** $\alpha$ 描述。
    常见方法——dot product(内积)和additive(加性)
-   ![alt text](image-10.png)
+   ![alt text](image-10.webp)
    这张图展示了自注意力（Self-attention）中两种计算注意力得分$\alpha$的方式：**点积（Dot-product）**和**加性（Additive）**。
 
     1. 点积注意力（Dot-product Attention）
@@ -83,7 +83,7 @@
 
 
 3. **计算出**$\mathbf{a_1}$跟其他每一个向量$\mathbf{a_i}$的 **相关性分数** $\alpha_{1,i}$(包括自己也要计算)
-   ![alt text](image-11.png)
+   ![alt text](image-11.webp)
 
 4. **Softmax 归一化**
     将所有源位置的得分归一化为概率分布，得到注意力权重：
@@ -91,14 +91,14 @@
     $$\alpha'_{i,j} = \frac{\exp(\alpha_{i,j})}{\sum_{k} \exp(\alpha_{i,k})}$$
     
     此步骤确保 $\sum_j \alpha'_{i,j} = 1$，权重具有可解释性（概率意义）。
-    ![alt text](image-12.png)
+    ![alt text](image-12.webp)
 
 5. 加权求和：生成输出
     最终，位置 $i$ 的输出 $\mathbf{b}^i$ 由所有位置的值向量 $\mathbf{v}^j$（通常 $\mathbf{v}^j = W^v \mathbf{a}^j$）按权重加权求和得到：
     
     $$\mathbf{b}^i = \sum_j \alpha^{\prime}_{i,j} \mathbf{v}^j$$
 
-    ![alt text](image-13.png)
+    ![alt text](image-13.webp)
     这样做得到的效果就是，哪一个向量与$\mathbf{a_1}$的相关性越高，其得分$\alpha_{1,i}$就越大，其位置的值向量$\mathbf{v_i}$就会**占主导地位。**
 
 
@@ -184,7 +184,7 @@ $$\begin{bmatrix}
 $$\mathbf{O} = \mathbf{V} \mathbf{A'}$$
 
 流程图一览：
-![alt text](image-14.png)
+![alt text](image-14.webp)
 
 ### 3.3 Multi-Head Attention
 我们可以并行多个self-attention机制，称为multi-head attention。我们用Head=2举例。
@@ -194,22 +194,22 @@ $q^1$再乘上另外两个矩阵，得到$q^{1,1}$和$q^{1,2}$
 同理，$k^1$和$v^1$也会分别得到$k^{1,1}$、$k^{1,2}$和$v^{1,1}$、$v^{1,2}$。
 然后，一组和二组就分别由自己的$\mathbf{Q}$, $\mathbf{K}$, $\mathbf{V}$, $\mathbf{A}$，$\mathbf{O}$，计算出自己的输出$\mathbf{O}$：$\mathbf{O^1}$和$\mathbf{O^2}$。
 然后，将$\mathbf{O^1}$和$\mathbf{O^2}$拼接起来，乘上一个矩阵，得到最终的输出$\mathbf{O}$。
-![alt text](image-15.png)
+![alt text](image-15.webp)
 
 ### 3.4 Position Encoding
 Self-attention机制本身没有考虑序列中各个向量的顺序信息，因此我们需要引入**位置编码(Position Encoding)**，将位置信息注入到输入向量中。
-![alt text](image-16.png)
+![alt text](image-16.webp)
 
 ## 四. Self-Attention for image
 ### 4.1 
-![alt text](image-17.png)
+![alt text](image-17.webp)
 
 ### 4.2 Self-Attention and CNN
-![alt text](image-18.png)
+![alt text](image-18.webp)
 “CNN 是简化版的 Self-attention, Self-attention 是复杂化的 CNN”
 **CNN 中的 receptive field 的范围和大小是人为划定的，但是在 self-attention 中，vector 之间的关系是学习出来的。**
-![alt text](image-19.png)
+![alt text](image-19.webp)
 
 ## 五. Self-attention 与 RNN
 RNN的考虑是单向的，没有self-attention全面
-![alt text](image-20.png)
+![alt text](image-20.webp)

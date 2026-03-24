@@ -91,7 +91,7 @@ gtkwave <你的波形文件名字>.vcd
 ```
 之后 powershell 调用 GTKWave 工具就会弹出一个图形界面，选择你生成的波形文件，就可以查看波形了。
 
-![alt text](image.png)
+![alt text](image.webp)
 
 
 
@@ -130,7 +130,7 @@ SystemVerilog
 之后重启 VS Code，**就可以点击子模块实现跨文件跳转了**。
 
 `SystemVerilog` 插件还附加了非常漂亮的**语法高亮**，能够让代码更清晰易读。例如：
-![alt text](image-1.png)
+![alt text](image-1.webp)
 
 !!! warning "语法检查功能缺失"
     此外，还有一个非常头疼的点就是，`SystemVerilog` 插件**似乎无法做语法检查**，例如 `always @` 语句少了一个`@`，该插件无法检测出来，虽然我们的编译工具和综合工具能够在综合时发现问题，但无法在编辑时提供实时反馈，影响开发效率。
@@ -159,7 +159,7 @@ VS Code 插件市场搜索 `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog`，
 "verilog.hover.enable": true, // 开启悬停提示
 ```
 之后，就可以同时完成**语法检查**了，但是 `SystemVerilog` 插件的**语法高亮效果会损失一部分（如下图，可以与之前的高亮效果对比以下）**，**但跨文件跳转功能正常**。
-![alt text](image-2.png)
+![alt text](image-2.webp)
 
 ### 3.2 黑魔法
 
@@ -225,7 +225,7 @@ yowasp-yosys -V
 
 ### 4.4 使用示例
 VS Code中随便打开一个 `.v` 或者 `.sv` 文件，在编辑器右上角会出现这三个图标：
-![alt text](image-3.png)
+![alt text](image-3.webp)
 
 从左到右分别是：
 - `自动例化与文档生成`：自动化生成该 RTL 的端口分析文档。

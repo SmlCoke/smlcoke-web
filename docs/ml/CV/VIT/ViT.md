@@ -73,7 +73,7 @@ Transformer 架构的一个重要优点是其良好的可扩展性。
 在模型设计中，我们尽可能**严格遵循原始Transformer架构（Vaswani等人，2017）**。这种刻意保持简洁的设计有个显著优势：可扩展的NLP Transformer架构及其高效实现几乎可以即插即用。
 
 ### 3.1 Vision Transformer
-![alt text](image.png)
+![alt text](image.webp)
 > An overview of the model is depicted in Figure 1. The standard Transformer receives as input a 1D sequence of token embeddings. To handle 2D images, we reshape the image $x \in R^{H\times W \times C}$ into a sequence of flattened 2D patches $x_p \in R^{N\times(P^2·C)}$, where $(H, W)$ is the resolution of the original image, C is the number of channels, $(P, P)$ is the resolution of each image patch, and $N = HW/P^2$ is the resulting number of patches, which also serves as the effective input sequence length for the Transformer. The Transformer uses **constant latent vector size $D$ through all of its layers**, so we **flatten the patches and map to D dimensions with a trainable linear projection (Eq. 1)**. We refer to the output of this projection as the patch embeddings.
 > 模型概览如图1所示。标准Transformer的输入为一维的token嵌入序列。为处理二维图像，我们将图像$x \in \mathbb{R}^{H\times W\times C}$重塑为扁平化的二维图像块序列$x_p \in \mathbb{R}^{N\times (P^2\cdot C)}$，其中$(H, W)$为原始图像分辨率，$C$为通道数，$(P, P)$为每个图像块的分辨率，$N = HW/P^2$为处理后图像块的数量，该数值同时作为Transformer的有效输入序列长度。Transformer在所有层中均使用恒定潜向量维度$D$，因此我们将**图像块展平后通过可训练的线性投影（式1）映射至$D$维空间**。该投影输出结果称为图像块嵌入。
 

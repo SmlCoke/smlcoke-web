@@ -228,11 +228,11 @@ bounding box负责：$\boxed{\text{Pr(Object)} \times \text{IOU}^{\text{truth}}_
 ### 2.3 Model 
 > Our system models detection as a regression problem. It divides the image into an S × S grid and for each grid cell predicts B bounding boxes, confidence for those boxes, and C class probabilities. These predictions are encoded as an S × S × (B ∗ 5 + C) tensor.
 > 模型架构。我们的系统将目标检测建模为一个回归问题。该方法将图像划分为S×S的网格单元，每个网格单元预测B个边界框、对应框的置信度以及**C个类别概率**。这些**预测结果被编码为一个S×S×(B∗5 + C)维的张量**。
-![alt text](image-1.png)
+![alt text](image-1.webp)
 
 ### 2.4 $1 \times 1$ reduction layer
 > Our network has 24 convolutional layers followed by 2 fully connected layers. Instead of the inception modules used by GoogLeNet, we **simply use 1 × 1 reduction layers followed by 3 × 3 convolutional layers**, similar to Lin et al [22]. The full network is shown in Figure 3
-![alt text](image.png)
+![alt text](image.webp)
 1. 这里的$1 \times 1$ reduction layer也是卷积层，是用来降低维度的，但是不是spatial downsampling（借助stride），而是channel-wise reduction（降通道数）
 2. 为什么不要spatial downsampling？
    1. YOLO v1 的 backbone 需要：**尽量保持空间分辨率**。因为后面要做 **grid-based detection**
@@ -452,7 +452,7 @@ Each prediction is either correct or it is classified based on the type of error
 - Background: IOU < 0.1 for any object
 
 YOLO vs Fast R-CNN:
-![alt text](image-2.png)
+![alt text](image-2.webp)
 - YOLO struggles to localize objects correctly. 
 - Fast R-CNN makes much fewer localization errors but far more background errors. 
 

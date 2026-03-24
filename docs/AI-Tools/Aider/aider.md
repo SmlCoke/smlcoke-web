@@ -33,7 +33,7 @@ AIDER_DARK_MODE="true"
 之后运行 `aider` 就可以进入交互式的命令行界面了，输入问题后按回车，等待模型回复即可。
 > 注意，这里询问模型的版本和名称无法得到准确回答。验证当前所用的究竟是否是这模型，去`OpenRouter` 官网的 `Activity` (活动记录) 页面查看。
 > 示例：
-> ![alt text](image.png)
+> ![alt text](image.webp)
 
 
 ## III. 一些其他问题

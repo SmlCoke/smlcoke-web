@@ -7,19 +7,19 @@ $c\,\text{sigmoid}(b+wx)=c\frac{1}{1+\text{exp}[-(b+wx)]}$
 
 $y = b + \sum_{i}c_i \, \text{sigmoid}(b_i+w_ix_1)\rightarrow y = b + \sum_{i}c_i \, \text{sigmoid}(b_i+\sum_{j} w_{ij}x_j)$
 
-![Alt text](image.png)
+![Alt text](image.webp)
 
-![Alt text](image-1.png)
+![Alt text](image-1.webp)
 
-![Alt text](image-2.png)
+![Alt text](image-2.webp)
 
-![Alt text](image-3.png)
+![Alt text](image-3.webp)
 
-![Alt text](image-4.png)
-![Alt text](image-5.png)
+![Alt text](image-4.webp)
+![Alt text](image-5.webp)
 
 $\mathbf{x}\rightarrow \mathbf{a}$的复杂化
-![Alt text](image-6.png)
+![Alt text](image-6.webp)
 
 
 ## II. How to Solve Large Traninig Loss
@@ -31,7 +31,7 @@ $\mathbf{x}$太小，导致$f_{\theta_1}(\mathbf{x})$, $f_{\theta_2}(\mathbf{x})
 ### 方法二：Optimization Issue
 进入local minimum
 梯度下降算法不给力，例如这种情况：
-![Alt text](image-7.png)
+![Alt text](image-7.webp)
 
 56Layer的Network弹性一定比20Layer的Network大，也就是说Model bias更小，但是无论是在训训练数据集还是在测试数据集上的效果都没有20Layer Network好，所以证明是optimization过程出现的问题。 
 
@@ -41,32 +41,32 @@ $\mathbf{x}$太小，导致$f_{\theta_1}(\mathbf{x})$, $f_{\theta_2}(\mathbf{x})
 ## III. How to solve Large Testing Loss with small Training Loss
 ==overfitting==
 一个很极端的例子：
-![Alt text](image-8.png)
-![Alt text](image-9.png)
+![Alt text](image-8.webp)
+![Alt text](image-9.webp)
 
 ### 问题一：如何解决Overfitting的问题：
 - **(1) 可能最有效的方法：增加Training Data**
-![Alt text](image-10.png)
+![Alt text](image-10.webp)
 **搜集资料**
 或者Data argumentation
 **基于已有的知识，创造一些Training data**
-![Alt text](image-11.png)
+![Alt text](image-11.webp)
 
 - **(2) 降低Model弹性：取决于对问题的理解**
 如果我们指导一些背景知识，比如说指导要拟合的这条曲线是二次曲线，就不用用三次四次高次曲线来做训练
 减少神经元数量
-![Alt text](image-12.png)
+![Alt text](image-12.webp)
 
 
 #### 所以Model bias和Overfitting存在一定矛盾
-![Alt text](image-13.png)
+![Alt text](image-13.webp)
 
 
 ### 问题二：Mismatch
 overfitting可以通过增加Training Data来解决，但是mismatch不同：
 mismatch意味着：**test data和Training data**的分布不一样
 
-![Alt text](image-14.png)
+![Alt text](image-14.webp)
 
 
 
@@ -74,12 +74,12 @@ mismatch意味着：**test data和Training data**的分布不一样
 
 ### 4.1 Regression as Classfication
 **我们将class也量化为数字**
-![alt text](image-25.png)
+![alt text](image-25.webp)
 
 class as one-hot vector:
-![alt text](image-26.png)
+![alt text](image-26.webp)
 > 为什么是one-hot ?
-> ![alt text](image-27.png)
+> ![alt text](image-27.webp)
 
 ### 4.2 分类模型的整体流程：
 我们以“图片分类”为例，但文本、语音也类似。
@@ -153,7 +153,7 @@ $$L = -\log(0.70)$$
 > 分类预测“输入属于哪一个类别”。
 
 ### 4.4 softmax函数
-![alt text](image-28.png)
+![alt text](image-28.webp)
 
 $$\text{softmax:} \quad V = \{z_i\}, z_{j}'=\frac{e^{z_j}}{\sum_{i}e^{z_i}}$$
 
@@ -164,5 +164,5 @@ $$\text{MSE:} \quad e = \sum_{j} (\hat{y_j}-y_j')^2$$
 $$\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}$$
 
 **MSE VS Cross-Entropy**
-![alt text](image-29.png)
+![alt text](image-29.webp)
 **Cross-Entropy不容易卡住，可以从左上角走到右下角**
