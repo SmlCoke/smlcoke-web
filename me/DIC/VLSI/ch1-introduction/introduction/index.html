@@ -3449,12 +3449,12 @@ $$ \lambda = \frac{3 \times 10^8}{4 \times 10^3} = 75,000 \text{ m} $$<br />
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>接收端：传输信道 → 解调 → 信道译码 → 解密 → 信源解码 → 信宿
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>配套支撑：同步系统、信道噪声与干扰
 </span></code></pre></div><br />
-<img alt="alt text" src="../image.png" /></p>
+<img alt="alt text" src="../image.webp" /></p>
 <h3 id="32">3.2 信源编码与解码</h3>
 <ul>
 <li><strong>核心功能</strong>：将信源信息转换为二进制数据，同时完成信息压缩，去除冗余；信源解码是其逆过程</li>
 <li><strong>核心流程</strong>：采样（遵循采样定理）→ 量化 → 模数转换 → 压缩编码<br />
-<img alt="alt text" src="../image-1.png" /></li>
+<img alt="alt text" src="../image-1.webp" /></li>
 <li><strong>工程实例</strong>：</li>
 <li>语音编码：语音信号频率范围300Hz~3400Hz，典型采样率8kHz，8bit量化原始码率64kbps；GSM系统压缩至9kbps，极限可压缩至1kbps以下</li>
 <li>图像压缩：图像由像素阵列构成，彩色图像含RGB三基色，高清电视信号传输需几十兆比特/秒的带宽，需通过压缩降低传输开销</li>
@@ -3486,7 +3486,7 @@ $$ \lambda = \frac{3 \times 10^8}{4 \times 10^3} = 75,000 \text{ m} $$<br />
   数字调制——2ASK: $\boldsymbol{e_{2ASK}(t) = s(t) \cdot \cos(2\pi f_c t)}$
   - 傅里叶变换：$E_{2ASK}(\omega) = \frac{1}{2} \left[ S(\omega-\omega_c) + S(\omega+\omega_c) \right]$
 </code></pre></div>
-<p><img alt="alt text" src="../image-2.png" /></p>
+<p><img alt="alt text" src="../image-2.webp" /></p>
 <h3 id="35">3.5 其他核心单元</h3>
 <ul>
 <li><strong>加密/解密</strong>：对编码后的数字序列进行加密处理，提升传输安全性，数字信号天然适配各类加密算法</li>
@@ -3629,7 +3629,7 @@ $$ \lambda = \frac{3 \times 10^8}{4 \times 10^3} = 75,000 \text{ m} $$<br />
 1.  <strong>FDMA（频分多址）</strong>：按频率划分信道，不同用户占用互不重叠的频段<br />
 2.  <strong>TDMA（时分多址）</strong>：按时间划分时隙，不同用户占用互不重叠的时间片<br />
 3.  <strong>CDMA（码分多址）</strong>：<strong>按正交码字区分用户，同频同时隙共享信道，靠不同正交码字区分用户，是3G系统的核心技术</strong></p>
-<p><img alt="alt text" src="../image-3.png" /></p>
+<p><img alt="alt text" src="../image-3.webp" /></p>
 <h3 id="62-ofdm">6.2 OFDM（正交频分复用）</h3>
 <ul>
 <li><strong>本质</strong>：一种特殊的多载波调制技术，将高速串行数据流拆分为多路低速并行数据流，<strong>调制到相互正交的子载波</strong>上</li>
@@ -3639,7 +3639,7 @@ $$ \lambda = \frac{3 \times 10^8}{4 \times 10^3} = 75,000 \text{ m} $$<br />
 <li>延长符号周期，有效对抗多径衰落引起的码间干扰（ISI）</li>
 <li>可通过FFT/IFFT算法实现，大幅简化VLSI硬件实现结构</li>
 </ul>
-<p><img alt="alt text" src="../image-4.png" /></p>
+<p><img alt="alt text" src="../image-4.webp" /></p>
 <h3 id="63-mimo">6.3 MIMO（多输入多输出）</h3>
 <ul>
 <li><strong>本质</strong>：多天线技术，通过多根发射天线、多根接收天线构建多条并行传输信道</li>

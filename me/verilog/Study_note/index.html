@@ -4239,14 +4239,14 @@ wire可以被定义为输入和输出，reg只能被定义为输出， 不能被
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="k">endmodule</span><span class="w">  </span>
 </span></code></pre></div>
 <h3 id="15">1.5 值</h3>
-<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%80%BC.png" /><br />
+<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%80%BC.webp" /><br />
 z：高阻状态，含义是电路未驱动或者断开，常见于三态门、总线空闲<br />
 x：未知状态，含义是信号逻辑值不确定，常见于==未初始化，驱动源冲突==，仿真异常</p>
 <h3 id="16">1.6 线网类型</h3>
 <p><mark>如果没有驱动，线网的缺省值是z</mark><br />
 tri本意用于描述多个驱动源同时驱动一根线的线网类型，而wire本意用于描述一个驱动源的驱动。</p>
 <p><strong>当驱动源冲突时</strong><br />
-<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E9%A9%B1%E5%8A%A8%E6%BA%90%E5%86%B2%E7%AA%81.png" /><br />
+<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E9%A9%B1%E5%8A%A8%E6%BA%90%E5%86%B2%E7%AA%81.webp" /><br />
 (1) 驱动源相同，则结果等于驱动源。<br />
 (2) 驱动源不同，且均不为z，则结果为z。<br />
 (3) 驱动源有一个是z，则结果为另一驱动源。</p>
@@ -4284,12 +4284,12 @@ realtime类型（testbench中介绍）</p>
 data_out=4’b1000; <mark>//data_in[3]=1</mark><br />
 data_in =4’b1000; <mark>//data_in[0]=1</mark></p>
 <p><strong>当位宽不一致时</strong><br />
-<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E4%BD%8D%E5%AE%BD%E4%B8%8D%E4%B8%80%E8%87%B4.png" /><br />
+<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E4%BD%8D%E5%AE%BD%E4%B8%8D%E4%B8%80%E8%87%B4.webp" /><br />
 <mark>只需要记住，赋值时的常量为32b（计算机数据宽度）</mark></p>
 <h3 id="19">1.9 存储器语法</h3>
-<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%AD%98%E5%82%A8%E5%99%A8.png" /></p>
+<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%AD%98%E5%82%A8%E5%99%A8.webp" /></p>
 <h3 id="110">1.10 变量的符号</h3>
-<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%8F%98%E9%87%8F%E7%AC%A6%E5%8F%B7.png" /></p>
+<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%8F%98%E9%87%8F%E7%AC%A6%E5%8F%B7.webp" /></p>
 <h3 id="111">1.11 位选择与连接运算符</h3>
 <p><div class="language-verilog highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">reg</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="nl">m:</span><span class="n">n</span><span class="p">]</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">assign</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">data</span><span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">],</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">5</span><span class="p">]};</span><span class="w">  </span><span class="c1">// 合法</span>
@@ -4428,7 +4428,7 @@ data_in =4’b1000; <mark>//data_in[0]=1</mark></p>
 </table>
 <p>或者从最低位到最高位运算<br />
 或者参见：<br />
-<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%BD%92%E7%BA%A6%E8%BF%90%E7%AE%97%E7%A4%BA%E6%84%8F%E5%9B%BE.png" /></p>
+<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%BD%92%E7%BA%A6%E8%BF%90%E7%AE%97%E7%A4%BA%E6%84%8F%E5%9B%BE.webp" /></p>
 <h5 id="7">⑦ 移位运算符</h5>
 <p>在移位操作中，右边的操作数总是被当成无符号数，因此在需要位扩展时总是填0。<br />
 <mark>移入的位只能是0。</mark><br />
@@ -4438,9 +4438,9 @@ data_in =4’b1000; <mark>//data_in[0]=1</mark></p>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">assign</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="p">{</span><span class="n">data</span><span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">],</span><span class="mh">3</span><span class="err">’</span><span class="n">b0</span><span class="p">};</span>
 </span></code></pre></div></p>
 <h5 id="8">⑧ 条件运算符</h5>
-<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6.png" /></p>
+<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6.webp" /></p>
 <h5 id="9">⑨ 操作符优先级</h5>
-<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7.png" /></p>
+<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7.webp" /></p>
 <div style="page-break-after: always;"></div>
 
 <h2 id="verilog_1">二、Verilog：组合逻辑与行为建模</h2>
@@ -4475,11 +4475,11 @@ fork…join结构中语句的并行执行。</p>
 </span></code></pre></div><br />
 <mark>注意：default</mark></p>
 <p><strong>case语句进行逐位比较以求完全匹配（包括x和z）</strong><br />
-<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/case.png" /><br />
+<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/case.webp" /><br />
 <strong>在casez语句中，<mark>? 和z</mark> 被当作无关值。</strong><br />
-<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/casez.png" /><br />
+<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/casez.webp" /><br />
 <strong>在casex语句中，<mark>?，z 和x</mark> 被当作无关值。</strong><br />
-<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/casex.png" /></p>
+<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/casex.webp" /></p>
 <h5 id="224">2.2.4 过程块中的循环结构</h5>
 <p>repeat：将一块语句循环执行确定次数。<br />
 repeat (次数表达式)&lt;语句&gt;</p>
@@ -4597,9 +4597,9 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 </span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="k">endmodule</span>
 </span></code></pre></div>
 <h5 id="525-testbench">5.2.5 Testbench中的常见系统函数</h5>
-<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/display.png" /><br />
-<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/monitor.png" /><br />
-<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/monitor%E4%B8%BE%E4%BE%8B.png" /></p>
+<p><img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/display.webp" /><br />
+<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/monitor.webp" /><br />
+<img alt="" src="../Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/monitor%E4%B8%BE%E4%BE%8B.webp" /></p>
 <h2 id="_4">五、状态机设计</h2>
 <p>有限状态机（Finite-state machine）是一种计算机科学与数学理论的抽象，将一些问题<br />
 抽象成一组有限状态之间的切换及其控制，是数字逻辑与程序设计的基础之一。有限状<br />
@@ -4696,7 +4696,7 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 
 <h3 id="56">5.6 考虑输出的状态设计</h3>
 <h5 id="_5">常见输出方式</h5>
-<p><img alt="" src="../Study_notes_material/%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E8%80%83%E8%99%91%E8%BE%93%E5%87%BA%E7%9A%84%E7%8A%B6%E6%80%81%E8%AE%BE%E8%AE%A1.png" /></p>
+<p><img alt="" src="../Study_notes_material/%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E8%80%83%E8%99%91%E8%BE%93%E5%87%BA%E7%9A%84%E7%8A%B6%E6%80%81%E8%AE%BE%E8%AE%A1.webp" /></p>
 <p><br><br />
 <br><br />
 <br><br />
@@ -4732,7 +4732,7 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 </span></code></pre></div><br />
 <strong>状态编码输出：</strong><br><br />
 还有一种极为特殊的输出方式，而且是性能最好的实现方式，<strong>即将输出信号包含在状态编码中，这样就能直接输出，没有任何外加延时</strong>，然而缺点就是，这给==状态的编码造成了很大困难==<br />
-<img alt="" src="../Study_notes_material/%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%8A%B6%E6%80%81%E7%BC%96%E7%A0%81%E8%BE%93%E5%87%BA.png" /><br />
+<img alt="" src="../Study_notes_material/%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%8A%B6%E6%80%81%E7%BC%96%E7%A0%81%E8%BE%93%E5%87%BA.webp" /><br />
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">assign</span><span class="w"> </span><span class="p">{</span><span class="n">ds</span><span class="p">,</span><span class="n">rd</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">];</span>
 </span></code></pre></div></p>
 <div style="page-break-after: always;"></div>
@@ -4749,7 +4749,7 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 </span></code></pre></div></p>
 <p>start和finish决定存储器将被装载的地址。start为开始地址，finish为结束地址。如果不指定开始和结束地址，$readmem开始读入数据，<strong>从存储器的最低地址开始存放</strong>。<br><br />
 示例：<br />
-<img alt="" src="../Study_notes_material/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E8%AF%BB%E6%93%8D%E4%BD%9C%E7%A4%BA%E4%BE%8B.png" /></p>
+<img alt="" src="../Study_notes_material/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E8%AF%BB%E6%93%8D%E4%BD%9C%E7%A4%BA%E4%BE%8B.webp" /></p>
 <h5 id="_8">文件格式说明</h5>
 <ol>
 <li>可指定二进制(b)或十六进制(h)数</li>
@@ -4760,7 +4760,7 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 <li>十六进制地址的大小写不敏感。</li>
 <li>在@和数字之间不允许有空格 。</li>
 </ol>
-<p><img alt="" src="../Study_notes_material/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E7%A4%BA%E4%BE%8B.png" /></p>
+<p><img alt="" src="../Study_notes_material/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E7%A4%BA%E4%BE%8B.webp" /></p>
 <h3 id="_9">文件输出</h3>
 <p>$monitor,$display等系统任务可以将结果输出到标准输出设备，相似的系统任务<strong>($fmonitor, $fdisplay)可以将结果输出到文件中</strong>。</p>
 <p>$fopen<br />
@@ -4772,9 +4772,9 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 <br><br />
 <br><br />
 <strong>文件输出举例</strong><br />
-<img alt="" src="../Study_notes_material/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA%E4%B8%BE%E4%BE%8B.png" /><br />
+<img alt="" src="../Study_notes_material/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA%E4%B8%BE%E4%BE%8B.webp" /><br />
 <strong>读写任务函数</strong><br />
-<img alt="" src="../Study_notes_material/%E6%96%87%E4%BB%B6IO/%E8%AF%BB%E5%86%99%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0.png" /></p>
+<img alt="" src="../Study_notes_material/%E6%96%87%E4%BB%B6IO/%E8%AF%BB%E5%86%99%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0.webp" /></p>
 <div style="page-break-after: always;"></div>
 
 <h2 id="_10">七、任务</h2>
@@ -4829,7 +4829,7 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 </span><span id="__span-25-18"><a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a><span class="w">  </span><span class="k">endtask</span>
 </span><span id="__span-25-19"><a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a><span class="k">endmodule</span>
 </span></code></pre></div>
-<p><img alt="" src="../Study_notes_material/%E4%BB%BB%E5%8A%A1%E4%B8%8E%E5%87%BD%E6%95%B0/%E4%BB%BB%E5%8A%A1%E4%B8%BE%E4%BE%8B2.png" /><br />
+<p><img alt="" src="../Study_notes_material/%E4%BB%BB%E5%8A%A1%E4%B8%8E%E5%87%BD%E6%95%B0/%E4%BB%BB%E5%8A%A1%E4%B8%BE%E4%BE%8B2.webp" /><br />
 <br><br />
 <br><br />
 <br><br />
@@ -5077,7 +5077,7 @@ $monitor</p>
 </li>
 <li>
 <p>在设计中，使用==一个时钟沿==工作：<br />
-<img alt="" src="../Study_notes_material/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/%E6%97%B6%E9%92%9F%E6%B2%BF.png" /><br />
+<img alt="" src="../Study_notes_material/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/%E6%97%B6%E9%92%9F%E6%B2%BF.webp" /><br />
 <br></p>
 </li>
 <li>
@@ -5126,7 +5126,7 @@ $monitor</p>
 </table>
 <ol>
 <li>常量<br />
-<img alt="" src="../Study_notes_material/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/%E5%B8%B8%E9%87%8F.png" /></li>
+<img alt="" src="../Study_notes_material/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/%E5%B8%B8%E9%87%8F.webp" /></li>
 </ol>
 
 

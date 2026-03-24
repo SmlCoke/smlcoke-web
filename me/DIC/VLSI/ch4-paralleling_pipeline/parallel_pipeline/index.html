@@ -3175,7 +3175,7 @@
 <h3 id="2-3-tap-fir">2. 设计案例：3-Tap FIR滤波器</h3>
 <p>以3抽头FIR滤波器 <span class="arithmatex">\(y(2k)=b_{0}x(2k)+b_{1}x(2k-1)+b_{2}x(2k-2)\)</span> 为例：<br />
 <strong>(1) 未并行</strong></p>
-<p><img alt="alt text" src="../image.png" /></p>
+<p><img alt="alt text" src="../image.webp" /></p>
 <p><strong>(2) 2级并行</strong><br />
 将输入输出按奇偶序列拆分，时钟周期内同时处理2个样点<br />
   <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>\begin{cases}
@@ -3183,7 +3183,7 @@
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>y(2k+1)=b_{0}x(2k+1)+b_{1}x(2k)+b_{2}x(2k-1)
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>\end{cases}
 </span></code></pre></div><br />
-<img alt="alt text" src="../image-1.png" /></p>
+<img alt="alt text" src="../image-1.webp" /></p>
 <ul>
 <li><strong>3级并行</strong>：时钟周期内同时处理3个样点，采样周期进一步缩小</li>
 </ul>
@@ -3230,11 +3230,11 @@
 <p><strong>(1) 多级MUX流水线</strong><br />
 原始多级选择器电路时钟频率400MHz，通过均等分割流水线插入寄存器后，时钟频率提升至650MHz，代价为增加寄存器开销。</p>
 <p>例如：<br />
-<img alt="alt text" src="../image-2.png" /><br />
-<img alt="alt text" src="../image-3.png" /></p>
+<img alt="alt text" src="../image-2.webp" /><br />
+<img alt="alt text" src="../image-3.webp" /></p>
 <p><strong>(2) FIR滤波器流水线</strong><br />
 3抽头FIR滤波器原始关键路径为<code>T_M + 2T_A</code>（乘法+2次加法），通过前馈割集插入寄存器后，关键路径缩短为<code>T_M + T_A</code>，时钟频率显著提升。</p>
-<p><img alt="alt text" src="../image-4.png" /></p>
+<p><img alt="alt text" src="../image-4.webp" /></p>
 <p><strong>(4) 细粒度流水</strong></p>
 <p>针对超小时钟周期需求，可将运算单元拆分。例如乘法器延时<code>T_M=10u.t.</code>，目标时钟周期6u.t.，可将乘法器拆分为6u.t.和4u.t.的两个子单元，中间插入寄存器实现流水。</p>
 <h3 id="5">5. 特性与优缺点</h3>
@@ -3280,7 +3280,7 @@
 - 求解得<span class="arithmatex">\(\beta=0.6033\)</span>；<br />
 - 系统动态功耗降为原始电路的<span class="arithmatex">\(36.4\%\)</span>；<br />
 - 对比：若不降功耗，2级流水可将时钟周期减半、频率翻倍，功耗变为原始电路的2倍。</p>
-<p><img alt="alt text" src="../image-6.png" /></p>
+<p><img alt="alt text" src="../image-6.webp" /></p>
 <hr />
 <h3 id="3_2">3. 并行处理技术降低功耗</h3>
 <h4 id="_10">核心原理</h4>
@@ -3300,7 +3300,7 @@
 <p>4抽头FIR滤波器，<span class="arithmatex">\(C_M=8C_A\)</span>，<span class="arithmatex">\(V_0=3.3V\)</span>，<span class="arithmatex">\(V_t=0.45V\)</span>，采用2级并行设计：<br />
 - 求解得<span class="arithmatex">\(\beta=0.6589\)</span>；<br />
 - 系统动态功耗降为原始电路的<span class="arithmatex">\(43.4\%\)</span>。</p>
-<p><img alt="alt text" src="../image-5.png" /></p>
+<p><img alt="alt text" src="../image-5.webp" /></p>
 <hr />
 <h2 id="_13">四、核心总结与适用场景对比</h2>
 <h3 id="1_2">1. 流水线与并行处理的核心差异</h3>

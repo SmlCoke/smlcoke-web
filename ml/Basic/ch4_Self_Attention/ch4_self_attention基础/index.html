@@ -2760,16 +2760,16 @@
 <p>输入是一段文字，其中的每一个词都是一个vector，例如：<br />
     &gt; I saw a cat</p>
 <p>将词汇转化为向量的方法: (1) one-hot (2) Word Embedding<br />
-<img alt="alt text" src="../image.png" /></p>
+<img alt="alt text" src="../image.webp" /></p>
 </li>
 <li>
 <p>输入是一段声音讯号<br />
-<img alt="alt text" src="../image-1.png" /><br />
+<img alt="alt text" src="../image-1.webp" /><br />
     有很多方法将一个<strong>window</strong>中的讯号转化为一个vector</p>
 </li>
 <li>
 <p>Graph<br />
-<img alt="alt text" src="../image-2.png" /> <br />
+<img alt="alt text" src="../image-2.webp" /> <br />
    每个结点就是一个向量</p>
 </li>
 </ol>
@@ -2778,34 +2778,34 @@
 <li>
 <p>Each vector has a label<br />
    输入的每一个向量，对应一个label<br />
-<img alt="alt text" src="../image-3.png" /><br />
+<img alt="alt text" src="../image-3.webp" /><br />
 <strong>例如我们输入一个句子，机器识别句子中的每一个词的词性</strong></p>
 </li>
 <li>
 <p>A whole sequence has a label<br />
    输入的一整个向量序列，对应一个label<br />
-<img alt="alt text" src="../image-4.png" /><br />
+<img alt="alt text" src="../image-4.webp" /><br />
    例如输入一个句子，机器判断positive or negative<br />
    输入一个分子，判断有没有毒性？亲水性如何？</p>
 </li>
 <li>
 <p>sequence to sequence<br />
-<img alt="alt text" src="../image-5.png" /><br />
+<img alt="alt text" src="../image-5.webp" /><br />
    输入的labels个数不确定，机器要自己判断应该输出多少个label<br />
    例如：翻译（输入输出是不同的语言，输入输出的词汇不一样），同理，语音辨识</p>
 </li>
 </ol>
 <h2 id="sequence-labeling">三. Sequence Labeling(第一种情况)</h2>
 <p>一个有瑕疵的做法——直接用一个FC<br />
-<img alt="alt text" src="../image-6.png" /><br />
+<img alt="alt text" src="../image-6.webp" /><br />
 问题，所有相同的输入产生相同的输出，但是在序列中时，他们不一定对应着同一个label!</p>
 <p><strong>解决办法：</strong> 把前后几个vector串起来，一起丢进FC<br />
-<img alt="alt text" src="../image-7.png" /></p>
+<img alt="alt text" src="../image-7.webp" /></p>
 <p><strong>如果我们需要考虑一整个sequence作为一个window进入FC呢？开一个巨大的window意味着FC的参数量很大，同时容易Overfitting</strong></p>
 <p><strong>重要引入：Self Attention</strong><br />
-<img alt="alt text" src="../image-8.png" /><br />
+<img alt="alt text" src="../image-8.webp" /><br />
 即引入一个self-attention层，并且，我们可以像CNN中堆叠卷积层一样堆叠多个self-attention层：<br />
-<img alt="alt text" src="../image-9.png" /></p>
+<img alt="alt text" src="../image-9.webp" /></p>
 <h3 id="31-self-attention">3.1 self-attention层的工作机制</h3>
 <p>例如self-attention层input <span class="arithmatex">\(\mathbf{a_1},\mathbf{a_2},\mathbf{a_3},\mathbf{a_4}\)</span> 四个向量，output <span class="arithmatex">\(\mathbf{b_1},\mathbf{b_2},\mathbf{b_3},\mathbf{b_4}\)</span> 四个向量。每一个<span class="arithmatex">\(\mathbf{b}\)</span>都需要考虑所有输入序列的向量</p>
 <p>举个例子，我们来看看如何产生<span class="arithmatex">\(\mathbf{b_1}\)</span>这个向量:<br />
@@ -2814,7 +2814,7 @@
 <li>
 <p><strong>如何描述这种相关性程度呢？——利用一个数值</strong> <span class="arithmatex">\(\alpha\)</span> 描述。<br />
    常见方法——dot product(内积)和additive(加性)<br />
-<img alt="alt text" src="../image-10.png" /><br />
+<img alt="alt text" src="../image-10.webp" /><br />
    这张图展示了自注意力（Self-attention）中两种计算注意力得分<span class="arithmatex">\(\alpha\)</span>的方式：<strong>点积（Dot-product）</strong>和<strong>加性（Additive）</strong>。</p>
 <ol>
 <li>点积注意力（Dot-product Attention）<br />
@@ -2836,20 +2836,20 @@
 </li>
 <li>
 <p><strong>计算出</strong><span class="arithmatex">\(\mathbf{a_1}\)</span>跟其他每一个向量<span class="arithmatex">\(\mathbf{a_i}\)</span>的 <strong>相关性分数</strong> <span class="arithmatex">\(\alpha_{1,i}\)</span>(包括自己也要计算)<br />
-<img alt="alt text" src="../image-11.png" /></p>
+<img alt="alt text" src="../image-11.webp" /></p>
 </li>
 <li>
 <p><strong>Softmax 归一化</strong><br />
     将所有源位置的得分归一化为概率分布，得到注意力权重：</p>
 <div class="arithmatex">\[\alpha'_{i,j} = \frac{\exp(\alpha_{i,j})}{\sum_{k} \exp(\alpha_{i,k})}\]</div>
 <p>此步骤确保 <span class="arithmatex">\(\sum_j \alpha'_{i,j} = 1\)</span>，权重具有可解释性（概率意义）。<br />
-<img alt="alt text" src="../image-12.png" /></p>
+<img alt="alt text" src="../image-12.webp" /></p>
 </li>
 <li>
 <p>加权求和：生成输出<br />
     最终，位置 <span class="arithmatex">\(i\)</span> 的输出 <span class="arithmatex">\(\mathbf{b}^i\)</span> 由所有位置的值向量 <span class="arithmatex">\(\mathbf{v}^j\)</span>（通常 <span class="arithmatex">\(\mathbf{v}^j = W^v \mathbf{a}^j\)</span>）按权重加权求和得到：</p>
 <div class="arithmatex">\[\mathbf{b}^i = \sum_j \alpha^{\prime}_{i,j} \mathbf{v}^j\]</div>
-<p><img alt="alt text" src="../image-13.png" /><br />
+<p><img alt="alt text" src="../image-13.webp" /><br />
 这样做得到的效果就是，哪一个向量与<span class="arithmatex">\(\mathbf{a_1}\)</span>的相关性越高，其得分<span class="arithmatex">\(\alpha_{1,i}\)</span>就越大，其位置的值向量<span class="arithmatex">\(\mathbf{v_i}\)</span>就会<strong>占主导地位。</strong></p>
 </li>
 </ol>
@@ -2917,7 +2917,7 @@
 \alpha'_{1,4}\quad \alpha'_{2,4}\quad \alpha'_{3,4}\quad \alpha'_{4,4}\end{bmatrix}\]</div>
 <div class="arithmatex">\[\mathbf{O} = \mathbf{V} \mathbf{A'}\]</div>
 <p>流程图一览：<br />
-<img alt="alt text" src="../image-14.png" /></p>
+<img alt="alt text" src="../image-14.webp" /></p>
 <h3 id="33-multi-head-attention">3.3 Multi-Head Attention</h3>
 <p>我们可以并行多个self-attention机制，称为multi-head attention。我们用Head=2举例。<br />
 此时：<br />
@@ -2926,21 +2926,21 @@
 同理，<span class="arithmatex">\(k^1\)</span>和<span class="arithmatex">\(v^1\)</span>也会分别得到<span class="arithmatex">\(k^{1,1}\)</span>、<span class="arithmatex">\(k^{1,2}\)</span>和<span class="arithmatex">\(v^{1,1}\)</span>、<span class="arithmatex">\(v^{1,2}\)</span>。<br />
 然后，一组和二组就分别由自己的<span class="arithmatex">\(\mathbf{Q}\)</span>, <span class="arithmatex">\(\mathbf{K}\)</span>, <span class="arithmatex">\(\mathbf{V}\)</span>, <span class="arithmatex">\(\mathbf{A}\)</span>，<span class="arithmatex">\(\mathbf{O}\)</span>，计算出自己的输出<span class="arithmatex">\(\mathbf{O}\)</span>：<span class="arithmatex">\(\mathbf{O^1}\)</span>和<span class="arithmatex">\(\mathbf{O^2}\)</span>。<br />
 然后，将<span class="arithmatex">\(\mathbf{O^1}\)</span>和<span class="arithmatex">\(\mathbf{O^2}\)</span>拼接起来，乘上一个矩阵，得到最终的输出<span class="arithmatex">\(\mathbf{O}\)</span>。<br />
-<img alt="alt text" src="../image-15.png" /></p>
+<img alt="alt text" src="../image-15.webp" /></p>
 <h3 id="34-position-encoding">3.4 Position Encoding</h3>
 <p>Self-attention机制本身没有考虑序列中各个向量的顺序信息，因此我们需要引入<strong>位置编码(Position Encoding)</strong>，将位置信息注入到输入向量中。<br />
-<img alt="alt text" src="../image-16.png" /></p>
+<img alt="alt text" src="../image-16.webp" /></p>
 <h2 id="self-attention-for-image">四. Self-Attention for image</h2>
 <h3 id="41">4.1</h3>
-<p><img alt="alt text" src="../image-17.png" /></p>
+<p><img alt="alt text" src="../image-17.webp" /></p>
 <h3 id="42-self-attention-and-cnn">4.2 Self-Attention and CNN</h3>
-<p><img alt="alt text" src="../image-18.png" /><br />
+<p><img alt="alt text" src="../image-18.webp" /><br />
 “CNN 是简化版的 Self-attention, Self-attention 是复杂化的 CNN”<br />
 <strong>CNN 中的 receptive field 的范围和大小是人为划定的，但是在 self-attention 中，vector 之间的关系是学习出来的。</strong><br />
-<img alt="alt text" src="../image-19.png" /></p>
+<img alt="alt text" src="../image-19.webp" /></p>
 <h2 id="self-attention-rnn">五. Self-attention 与 RNN</h2>
 <p>RNN的考虑是单向的，没有self-attention全面<br />
-<img alt="alt text" src="../image-20.png" /></p>
+<img alt="alt text" src="../image-20.webp" /></p>
 
 
 

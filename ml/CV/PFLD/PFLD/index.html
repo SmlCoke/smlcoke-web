@@ -2975,7 +2975,7 @@ is added for precisely localizing landmarks in images</p>
 <blockquote>
 <p>Similar to other CNN based models, we employ several convolutional layers to extract features and predict landmarks. Considering that human faces are of strong global structures, like symmetry and spacial relationships among eyes, mouth, nose, etc., such global structures could help localize landmarks more precisely. Therefore, instead of single scale feature maps, we extend them into multi-scale maps. The extension is finished via executing convolution operations with strides, which enlarges the receptive field. Then we perform the final prediction through fully connecting the multi-scale feature maps. The detailed configuration of the backbone subnet is summarized in Table 1.<br />
 与其他基于卷积神经网络（CNN）的模型类似，我们采用多个卷积层进行特征提取与关键点预测。考虑到人脸具有强烈的全局结构特征（如对称性及眼、口、鼻等器官的空间关系），这些全局结构有助于更精准地定位关键点。<strong>因此，我们并未使用单一尺度特征图，而是将其扩展为多尺度特征图——通过带步长的卷积操作扩大感受野来实现扩展</strong>，最终通过全连接多尺度特征图完成预测。主干子网的具体配置详见表1。<br />
-<img alt="alt text" src="../image.png" /><br />
+<img alt="alt text" src="../image.webp" /><br />
 表1：主干网络配置。每行代表一组<strong>重复<span class="arithmatex">\(n\)</span>次</strong>的相同层结构。同一序列中的<strong>所有层均具有相同数量的输出通道</strong> <span class="arithmatex">\(c\)</span>。每组序列的<strong>首层</strong>步长为<span class="arithmatex">\(s\)</span>。扩展系数<span class="arithmatex">\(t\)</span>始终作用于输入尺寸。</p>
 </blockquote>
 <p><strong>重点：MS-FC (Multi-Scale Fully Connected) Layer</strong></p>
@@ -3009,7 +3009,7 @@ PFLD 在 Backbone 推理过程中，从不同阶段引出分支（Table 1 中的
 (3) 从该旋转矩阵中计算欧拉角</p>
 </blockquote>
 <p>the input of the auxiliary net is from the 4-th block of the backbone net (see Table 1)</p>
-<p><img alt="alt text" src="../image-1.png" /></p>
+<p><img alt="alt text" src="../image-1.webp" /></p>
 <blockquote>
 <p>Table 2: The auxiliary net configuration. As the auxiliary branch is no longer needed in the testing, we do not apply the MobileNet techniques in our implementation.</p>
 </blockquote>

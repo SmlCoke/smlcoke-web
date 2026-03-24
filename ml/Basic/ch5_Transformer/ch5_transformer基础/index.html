@@ -2981,35 +2981,35 @@
 这样的任务案例有：机器翻译，语音辨识，对话系统</p>
 <h3 id="11">1.1 更多的例子</h3>
 <h4 id="1-text-to-speech">1. Text-to-Speech</h4>
-<p><img alt="alt text" src="../image.png" /></p>
+<p><img alt="alt text" src="../image.webp" /></p>
 <h4 id="2-chatbot">2. Chatbot</h4>
 <p>例如大语言模型？<br />
-<img alt="alt text" src="../image-1.png" /><br />
+<img alt="alt text" src="../image-1.webp" /><br />
 QA, NLP(Natural Language Processing)</p>
 <h4 id="3-syntactic-analysis">3. syntactic analysis</h4>
-<p><img alt="alt text" src="../image-2.png" /></p>
+<p><img alt="alt text" src="../image-2.webp" /></p>
 <h4 id="4-multi-label-classification">4. Multi-label classification</h4>
-<p><img alt="alt text" src="../image-3.png" /></p>
+<p><img alt="alt text" src="../image-3.webp" /></p>
 <h4 id="5-object-dectection">5. Object dectection</h4>
-<p><img alt="alt text" src="../image-4.png" /></p>
+<p><img alt="alt text" src="../image-4.webp" /></p>
 <h2 id="ii-encoder-and-decoder">II. Encoder and Decoder</h2>
 <h3 id="21-encoder">2.1 Encoder</h3>
 <p>“给一排向量，输出另一排向量”——Self-Attention</p>
 <p>基本的block结构<br />
-<img alt="alt text" src="../image-5.png" /></p>
+<img alt="alt text" src="../image-5.webp" /></p>
 <p>注意，这个基本的 block 包含的运算：<br />
 1. Multi-head Self-Attention<br />
 2. Add &amp; Norm(Residual Connection + Layer Normalization)<br />
 3. Feed Forward Neural Network<br />
 4. Add &amp; Norm(Residual Connection + Layer Normalization)</p>
 <p>Transformer Encoder，就是堆叠了多个基本 block 得到的结构：<br />
-<img alt="alt text" src="../image-6.png" /></p>
+<img alt="alt text" src="../image-6.webp" /></p>
 <h3 id="22-decoder">2.2 Decoder</h3>
 <p>Decoder 的整体效果<br />
-<img alt="alt text" src="../image-7.png" /><br />
+<img alt="alt text" src="../image-7.webp" /><br />
 Auto-regressive!</p>
 <p>Transformer 的整体架构<br />
-<img alt="alt text" src="../image-8.png" /><br />
+<img alt="alt text" src="../image-8.webp" /><br />
 Decoder 这里的 Self-Attention 是Masked Self-Attention，因为 Decoder 不能看到未来的信息。</p>
 <h4 id="masked-self-attention">Masked Self-Attention 工作机制详解</h4>
 <p>我们依旧以4个输入(<span class="arithmatex">\([\mathbf{a^1}, \mathbf{a^2}, \mathbf{a^3}, \mathbf{a^4}]\)</span>)的例子来说明 Masked Self-Attention 的工作机制。<br />
@@ -3028,7 +3028,7 @@ $<span class="arithmatex">\(A'=\begin{bmatrix}
 <p>也就是说，有一半数值是不用计算的。</p>
 <h3 id="23-cross-attention">2.3 Cross-Attention</h3>
 <p><span class="arithmatex">\(\mathbf{q}\)</span>来自Decoder，<span class="arithmatex">\(\mathbf{k}\)</span>和<span class="arithmatex">\(\mathbf{v}\)</span>来自Encoder。<br />
-<img alt="alt text" src="../image-9.png" /></p>
+<img alt="alt text" src="../image-9.webp" /></p>
 <p>是不是每一个decoder block 都是用的 encoder 最后一层的输出<span class="arithmatex">\(\mathbf{\alpha_{1}'}, \mathbf{\alpha_{2}'}, \mathbf{\alpha_{3}'}\)</span>呢？<br />
 是，也可以不是，这个问题值得研究。</p>
 <p><strong>这里的更重要的问题是，decoder 在进行 cross-attention 的时候，输入是什么？</strong></p>
@@ -3036,10 +3036,10 @@ $<span class="arithmatex">\(A'=\begin{bmatrix}
 <h3 id="31-train">3.1 Train</h3>
 <h4 id="objective-function">Objective Function</h4>
 <p>每一个输出位置都是一个 distribution，每一个输出（还要包含 END token）的 cross-entropy loss 之和，就是 Loss Function<br />
-<img alt="alt text" src="../image-10.png" /></p>
+<img alt="alt text" src="../image-10.webp" /></p>
 <h4 id="teacher-forcing">Teacher Forcing</h4>
 <p>此时，decoder 的输入，是 <strong>Ground Truth 的前一个 token。</strong><br />
-<img alt="alt text" src="../image-11.png" /></p>
+<img alt="alt text" src="../image-11.webp" /></p>
 <h4 id="tips">Tips</h4>
 <ul>
 <li>copy mechanism</li>
@@ -3047,7 +3047,7 @@ $<span class="arithmatex">\(A'=\begin{bmatrix}
 <li>在某些任务中（例如文本转语音），输入与输出序列之间的对齐通常是单调的。为了促使模型学习这种对齐模式，可以引入引导注意力损失函数。该损失函数会对偏离对角线模式的注意力权重施加惩罚，从而促进更直接的对齐关系。</li>
 <li>Beam Search</li>
 <li>在推理阶段，使用 Beam Search 可以帮助模型生成更优质的输出序列。Beam Search 通过在每一步保留多个最有可能的候选序列，<strong>避免了贪心搜索可能导致的次优解问题，从而提高了生成结果的质量。</strong><br />
-<img alt="alt text" src="../image-12.png" /></li>
+<img alt="alt text" src="../image-12.webp" /></li>
 </ul>
 <h3 id="32-inference">3.2 Inference</h3>
 <p>在测试时，decoder 的输入，是 <strong>上一个 time step 的预测输出。</strong></p>

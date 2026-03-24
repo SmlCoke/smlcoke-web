@@ -3004,14 +3004,14 @@
 <h3 id="definition">definition</h3>
 <p><span class="arithmatex">\(c\,\text{sigmoid}(b+wx)=c\frac{1}{1+\text{exp}[-(b+wx)]}\)</span></p>
 <p><span class="arithmatex">\(y = b + \sum_{i}c_i \, \text{sigmoid}(b_i+w_ix_1)\rightarrow y = b + \sum_{i}c_i \, \text{sigmoid}(b_i+\sum_{j} w_{ij}x_j)\)</span></p>
-<p><img alt="Alt text" src="../image.png" /></p>
-<p><img alt="Alt text" src="../image-1.png" /></p>
-<p><img alt="Alt text" src="../image-2.png" /></p>
-<p><img alt="Alt text" src="../image-3.png" /></p>
-<p><img alt="Alt text" src="../image-4.png" /><br />
-<img alt="Alt text" src="../image-5.png" /></p>
+<p><img alt="Alt text" src="../image.webp" /></p>
+<p><img alt="Alt text" src="../image-1.webp" /></p>
+<p><img alt="Alt text" src="../image-2.webp" /></p>
+<p><img alt="Alt text" src="../image-3.webp" /></p>
+<p><img alt="Alt text" src="../image-4.webp" /><br />
+<img alt="Alt text" src="../image-5.webp" /></p>
 <p><span class="arithmatex">\(\mathbf{x}\rightarrow \mathbf{a}\)</span>的复杂化<br />
-<img alt="Alt text" src="../image-6.png" /></p>
+<img alt="Alt text" src="../image-6.webp" /></p>
 <h2 id="ii-how-to-solve-large-traninig-loss">II. How to Solve Large Traninig Loss</h2>
 <h3 id="model-bias">方法一：Model bias</h3>
 <p><span class="arithmatex">\(\mathbf{x}\)</span>太小，导致<span class="arithmatex">\(f_{\theta_1}(\mathbf{x})\)</span>, <span class="arithmatex">\(f_{\theta_2}(\mathbf{x})\)</span>, <span class="arithmatex">\(f_{\theta_3}(\mathbf{x})\)</span>......函数集合整体的Loss效果上限很低<br />
@@ -3019,47 +3019,47 @@
 <h3 id="optimization-issue">方法二：Optimization Issue</h3>
 <p>进入local minimum<br />
 梯度下降算法不给力，例如这种情况：<br />
-<img alt="Alt text" src="../image-7.png" /></p>
+<img alt="Alt text" src="../image-7.webp" /></p>
 <p>56Layer的Network弹性一定比20Layer的Network大，也就是说Model bias更小，但是无论是在训训练数据集还是在测试数据集上的效果都没有20Layer Network好，所以证明是optimization过程出现的问题。 </p>
 <p>做法就是找一些比较浅的Model，进行测试对比，这些<strong>浅的model能够保证optimization过程已经做的足够好了</strong>。<br />
 然后如果我们发现一些比较深的Model效果反而不如浅的Model好，就可能是Optimization过程的问题</p>
 <h2 id="iii-how-to-solve-large-testing-loss-with-small-training-loss">III. How to solve Large Testing Loss with small Training Loss</h2>
 <p><mark>overfitting</mark><br />
 一个很极端的例子：<br />
-<img alt="Alt text" src="../image-8.png" /><br />
-<img alt="Alt text" src="../image-9.png" /></p>
+<img alt="Alt text" src="../image-8.webp" /><br />
+<img alt="Alt text" src="../image-9.webp" /></p>
 <h3 id="overfitting">问题一：如何解决Overfitting的问题：</h3>
 <ul>
 <li>
 <p><strong>(1) 可能最有效的方法：增加Training Data</strong><br />
-<img alt="Alt text" src="../image-10.png" /><br />
+<img alt="Alt text" src="../image-10.webp" /><br />
 <strong>搜集资料</strong><br />
 或者Data argumentation<br />
 <strong>基于已有的知识，创造一些Training data</strong><br />
-<img alt="Alt text" src="../image-11.png" /></p>
+<img alt="Alt text" src="../image-11.webp" /></p>
 </li>
 <li>
 <p><strong>(2) 降低Model弹性：取决于对问题的理解</strong><br />
 如果我们指导一些背景知识，比如说指导要拟合的这条曲线是二次曲线，就不用用三次四次高次曲线来做训练<br />
 减少神经元数量<br />
-<img alt="Alt text" src="../image-12.png" /></p>
+<img alt="Alt text" src="../image-12.webp" /></p>
 </li>
 </ul>
 <h4 id="model-biasoverfitting">所以Model bias和Overfitting存在一定矛盾</h4>
-<p><img alt="Alt text" src="../image-13.png" /></p>
+<p><img alt="Alt text" src="../image-13.webp" /></p>
 <h3 id="mismatch">问题二：Mismatch</h3>
 <p>overfitting可以通过增加Training Data来解决，但是mismatch不同：<br />
 mismatch意味着：<strong>test data和Training data</strong>的分布不一样</p>
-<p><img alt="Alt text" src="../image-14.png" /></p>
+<p><img alt="Alt text" src="../image-14.webp" /></p>
 <h2 id="iv-classfication">IV. Classfication</h2>
 <h3 id="41-regression-as-classfication">4.1 Regression as Classfication</h3>
 <p><strong>我们将class也量化为数字</strong><br />
-<img alt="alt text" src="../image-25.png" /></p>
+<img alt="alt text" src="../image-25.webp" /></p>
 <p>class as one-hot vector:<br />
-<img alt="alt text" src="../image-26.png" /></p>
+<img alt="alt text" src="../image-26.webp" /></p>
 <blockquote>
 <p>为什么是one-hot ?<br />
-<img alt="alt text" src="../image-27.png" /></p>
+<img alt="alt text" src="../image-27.webp" /></p>
 </blockquote>
 <h3 id="42">4.2 分类模型的整体流程：</h3>
 <p>我们以“图片分类”为例，但文本、语音也类似。</p>
@@ -3134,13 +3134,13 @@ mismatch意味着：<strong>test data和Training data</strong>的分布不一样
 分类预测“输入属于哪一个类别”。</p>
 </blockquote>
 <h3 id="44-softmax">4.4 softmax函数</h3>
-<p><img alt="alt text" src="../image-28.png" /></p>
+<p><img alt="alt text" src="../image-28.webp" /></p>
 <div class="arithmatex">\[\text{softmax:} \quad V = \{z_i\}, z_{j}'=\frac{e^{z_j}}{\sum_{i}e^{z_i}}\]</div>
 <h3 id="45-loss">4.5 Loss函数</h3>
 <div class="arithmatex">\[\text{MSE:} \quad e = \sum_{j} (\hat{y_j}-y_j')^2\]</div>
 <div class="arithmatex">\[\text{cross-entropy:} \quad e = -\sum_{j} \hat{y_j} \ln{y_j'}\]</div>
 <p><strong>MSE VS Cross-Entropy</strong><br />
-<img alt="alt text" src="../image-29.png" /><br />
+<img alt="alt text" src="../image-29.webp" /><br />
 <strong>Cross-Entropy不容易卡住，可以从左上角走到右下角</strong></p>
 
 

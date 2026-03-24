@@ -3631,12 +3631,12 @@ bounding box负责：<span class="arithmatex">\(\boxed{\text{Pr(Object)} \times 
 <blockquote>
 <p>Our system models detection as a regression problem. It divides the image into an S × S grid and for each grid cell predicts B bounding boxes, confidence for those boxes, and C class probabilities. These predictions are encoded as an S × S × (B ∗ 5 + C) tensor.<br />
 模型架构。我们的系统将目标检测建模为一个回归问题。该方法将图像划分为S×S的网格单元，每个网格单元预测B个边界框、对应框的置信度以及<strong>C个类别概率</strong>。这些<strong>预测结果被编码为一个S×S×(B∗5 + C)维的张量</strong>。<br />
-<img alt="alt text" src="../image-1.png" /></p>
+<img alt="alt text" src="../image-1.webp" /></p>
 </blockquote>
 <h3 id="24-1-times-1-reduction-layer">2.4 <span class="arithmatex">\(1 \times 1\)</span> reduction layer</h3>
 <blockquote>
 <p>Our network has 24 convolutional layers followed by 2 fully connected layers. Instead of the inception modules used by GoogLeNet, we <strong>simply use 1 × 1 reduction layers followed by 3 × 3 convolutional layers</strong>, similar to Lin et al [22]. The full network is shown in Figure 3<br />
-<img alt="alt text" src="../image.png" /><br />
+<img alt="alt text" src="../image.webp" /><br />
 1. 这里的<span class="arithmatex">\(1 \times 1\)</span> reduction layer也是卷积层，是用来降低维度的，但是不是spatial downsampling（借助stride），而是channel-wise reduction（降通道数）<br />
 2. 为什么不要spatial downsampling？<br />
    1. YOLO v1 的 backbone 需要：<strong>尽量保持空间分辨率</strong>。因为后面要做 <strong>grid-based detection</strong><br />
@@ -3897,7 +3897,7 @@ x, y: 将其参数化为特定网格单元位置的偏移量，使其值落在[0
 - Other: class is wrong, IOU &gt; 0.1<br />
 - Background: IOU &lt; 0.1 for any object</p>
 <p>YOLO vs Fast R-CNN:<br />
-<img alt="alt text" src="../image-2.png" /><br />
+<img alt="alt text" src="../image-2.webp" /><br />
 - YOLO struggles to localize objects correctly. <br />
 - Fast R-CNN makes much fewer localization errors but far more background errors. </p>
 <h3 id="53-combination-with-fast-r-cnn">5.3 Combination with Fast R-CNN</h3>

@@ -3704,8 +3704,8 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>发送端：码型变换 → 发送滤波器 → 传输信道
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>接收端：传输信道 → 接收滤波器 → 抽样判决器 → 同步提取 → 信号输出
 </span></code></pre></div>
-<p><img alt="alt text" src="../image-1.png" /></p>
-<p><img alt="alt text" src="../image-2.png" /></p>
+<p><img alt="alt text" src="../image-1.webp" /></p>
+<p><img alt="alt text" src="../image-2.webp" /></p>
 <p>各模块核心功能：<br />
 | 模块 | 核心作用 |<br />
 |------|----------|<br />
@@ -3722,7 +3722,7 @@
 2.  <strong>双极性非归零波形（NRZ）</strong><br />
     - 特点：0对应负电平，1对应正电平，等概时无直流分量，抗干扰能力强<br />
     - 应用：RS-232C接口标准、数字调制器中</p>
-<p><img alt="alt text" src="../image.png" /></p>
+<p><img alt="alt text" src="../image.webp" /></p>
 <ol>
 <li>
 <p><strong>单极性归零码（RZ）</strong></p>
@@ -3738,8 +3738,8 @@
 </ul>
 </li>
 </ol>
-<p><img alt="alt text" src="../image-3.png" /><br />
-<img alt="alt text" src="../image-4.png" /></p>
+<p><img alt="alt text" src="../image-3.webp" /><br />
+<img alt="alt text" src="../image-4.webp" /></p>
 <ol>
 <li><strong>差分波形（相对码波形）</strong><ul>
 <li>特点：用相邻码元电平的跳变/不变表示信息，分为传号差分（1跳变、0不变）、空号差分（0跳变、1不变）</li>
@@ -3753,8 +3753,8 @@
 </ul>
 </li>
 </ol>
-<p><img alt="alt text" src="../image-5.png" /><br />
-<img alt="alt text" src="../image-6.png" /></p>
+<p><img alt="alt text" src="../image-5.webp" /><br />
+<img alt="alt text" src="../image-6.webp" /></p>
 <h3 id="14">1.4 数字基带信号的数学表达式</h3>
 <p>若各码元波形相同、取值不同，基带信号可表示为随机脉冲序列：</p>
 <div class="arithmatex">\[s(t) = \sum_{n=-\infty}^{\infty} a_n g(t-nT_B)\]</div>
@@ -3783,7 +3783,7 @@
 </div>
 <hr />
 <h2 id="_3">二、基带信号解调与检测基础</h2>
-<p><img alt="alt text" src="../image-7.png" /></p>
+<p><img alt="alt text" src="../image-7.webp" /></p>
 <h3 id="21">2.1 传输误差的两大核心来源</h3>
 <ol>
 <li><strong>加性高斯白噪声（AWGN）</strong><ul>
@@ -3818,12 +3818,12 @@
 • 目的：确定发送的信码序列，再生基带信号<br />
 <strong>同步提取</strong><br />
 • 作用：提取用于抽样的位定时脉冲</p>
-<p><img alt="alt text" src="../image-8.png" /><br />
-<img alt="alt text" src="../image-9.png" /></p>
+<p><img alt="alt text" src="../image-8.webp" /><br />
+<img alt="alt text" src="../image-9.webp" /></p>
 <hr />
 <h2 id="_4">三、信号与噪声核心模型</h2>
 <h3 id="31">3.1 信号的表示</h3>
-<p><img alt="alt text" src="../image-10.png" /></p>
+<p><img alt="alt text" src="../image-10.webp" /></p>
 <h4 id="311">3.1.1 二进制发送信号</h4>
 <p>对于一个码元：<span class="arithmatex">\( s_i(t) \)</span> 表示<strong>第 <span class="arithmatex">\( i \)</span> 个码元在时域上的发送波形</strong>。</p>
 <div class="arithmatex">\[s_{i}(t)=\left\{\begin{array}{ll}
@@ -3877,7 +3877,7 @@ s_{2}(t) \quad 0 \leq t \leq T &amp; \text { for a binary } 0
 </ol>
 <p>更详细的解释可以看：<a href="../noise-pro/">噪声的数学模型-pro</a></p>
 <h3 id="33">3.3 判决</h3>
-<p><img alt="alt text" src="../image-11.png" /></p>
+<p><img alt="alt text" src="../image-11.webp" /></p>
 <h4 id="331">3.3.1 符号解读</h4>
 <p>先把每个符号对应到通信的实际场景，避免纯数学的抽象感，所有符号都和你之前学的二进制发送信号、高斯噪声完全衔接：</p>
 <table>
@@ -3985,7 +3985,7 @@ s_{2}(t) \quad 0 \leq t \leq T &amp; \text { for a binary } 0
 <p><strong>(1) 核心公式：</strong></p>
 <div class="arithmatex">\[\frac{E_b}{N_0} = \frac{ST_b}{N/W} = \frac{S/R_b}{N/W} = \frac{S}{N}\left(\frac{W}{R_b}\right)\]</div>
 <p><span class="arithmatex">\(S\)</span>：信号功率，<span class="arithmatex">\(N\)</span>：噪声功率，<span class="arithmatex">\(W\)</span>：系统带宽，<span class="arithmatex">\(R_b\)</span>：信息比特率，<span class="arithmatex">\(T_b=1/R_b\)</span>：比特周期</p>
-<p><img alt="alt text" src="../image-12.png" /></p>
+<p><img alt="alt text" src="../image-12.webp" /></p>
 <p><strong>(2) 与信噪比SNR的关系：</strong></p>
 <div class="arithmatex">\[SNR = \frac{S}{N} = \frac{E_b}{N_0} \cdot \frac{R_b}{W}\]</div>
 <p><strong>(3) 物理意义：</strong> 系统达到指定误比特率<span class="arithmatex">\(P_B\)</span>时，所需的<span class="arithmatex">\(E_b/N_0\)</span>越低，系统接收性能越好。</p>
@@ -4049,9 +4049,9 @@ s_o(t) &amp; =\int_{-\infty}^{+\infty}s(\tau)h(t-\tau)d\tau \\
 0 &amp; \text{其它} &amp; 
 \end{cases}
 \end{aligned}\]</div>
-<p><img alt="alt text" src="../image-13.png" /></p>
+<p><img alt="alt text" src="../image-13.webp" /></p>
 <h3 id="45">4.5 基于匹配滤波器的接收机</h3>
-<p><img alt="alt text" src="../image-14.png" /></p>
+<p><img alt="alt text" src="../image-14.webp" /></p>
 <div class="arithmatex">\[z(T)=\int_{0}^{T} r(t)[s_{1}(t)-s_{2}(t)]dt = \int_{0}^{T} r(t)s_{1}(t)dt - \int_{0}^{T} r(t)s_{2}(t)dt\]</div>
 <ul>
 <li>当输入为<span class="arithmatex">\(s_{1}(t)+n(t)\)</span>时，输出信号值大于零，判<span class="arithmatex">\(s_{1}(t)\)</span>出现；</li>
@@ -4111,7 +4111,7 @@ p(r|s_m) &amp; = \frac{1}{(\pi N_0)^{N/2}} \exp\left\{-\sum_{i=1}^{N}(r_i - s_{m
 <p>假设选取的判决门限是<span class="arithmatex">\(z_0^{\prime}\)</span>，那么发送<span class="arithmatex">\(s_1(t)\)</span>和<span class="arithmatex">\(s_2(t)\)</span>的判决错误概率分别是：<br />
 <span class="arithmatex">\(P_{s_1}(s_2)=\int_{z_0^{\prime}}^{+\infty} f_{s_1}(z) dz\)</span><br />
 <span class="arithmatex">\(P_{s_2}(s_1)=\int_{-\infty}^{z_0^{\prime}} f_{s_2}(z) dz\)</span><br />
-<img alt="alt text" src="../image-15.png" /></p>
+<img alt="alt text" src="../image-15.webp" /></p>
 <p>平均误码率：</p>
 <div class="arithmatex">\[\begin{aligned}P_e &amp; = P(s_1)P_{s_1}(s_2) + P(s_2)P_{s_2}(s_1)\\ &amp; = P(s_1)\int_{z_0^{\prime}}^{+\infty}f_{s1}(z)dz + P(s_2)\int_{-\infty}^{z_0^{\prime}}f_{s2}(z)dz\end{aligned}\]</div>
 <p>令其导数等于零：</p>
@@ -4162,7 +4162,7 @@ p(r|s_m) &amp; = \frac{1}{(\pi N_0)^{N/2}} \exp\left\{-\sum_{i=1}^{N}(r_i - s_{m
 <ul>
 <li>直接导致判决错误，提升系统误码率</li>
 <li>产生<strong>误码率地板效应</strong>：即使信噪比无限提升，误码率也无法下降到0，成为系统性能的瓶颈<br />
-<img alt="alt text" src="../image-16.png" /></li>
+<img alt="alt text" src="../image-16.webp" /></li>
 </ul>
 <h3 id="62">6.2 无码间串扰的时域条件</h3>
 <p>要完全消除抽样时刻的ISI，需满足：</p>
@@ -4172,13 +4172,13 @@ p(r|s_m) &amp; = \frac{1}{(\pi N_0)^{N/2}} \exp\left\{-\sum_{i=1}^{N}(r_i - s_{m
 </ul>
 <h3 id="63">6.3 信道均衡滤波器</h3>
 <p>均衡器的核心作用：补偿信道的非理想特性，减小甚至消除码间串扰，是基带接收机的关键模块。<br />
-<img alt="alt text" src="../image-17.png" /></p>
+<img alt="alt text" src="../image-17.webp" /></p>
 <h4 id="631">6.3.1 核心实现：有限长横向滤波器</h4>
 <p><strong>结构</strong>：抽头延迟线+可调系数乘法器+加法器，<span class="arithmatex">\(2N+1\)</span>个抽头，抽头间隔为码元周期<span class="arithmatex">\(T_B\)</span><br />
 <strong>输出表达式</strong>（<span class="arithmatex">\(t=kT_B\)</span>时刻）：</p>
 <div class="arithmatex">\[y(kT_B) = \sum_{i=-N}^{N} c_i x[(k-i)T_B]\]</div>
 <p><span class="arithmatex">\(c_i\)</span>：第<span class="arithmatex">\(i\)</span>个抽头的系数，<span class="arithmatex">\(x(t)\)</span>：均衡器输入信号（接收滤波器输出）</p>
-<p><img alt="alt text" src="../image-18.png" /></p>
+<p><img alt="alt text" src="../image-18.webp" /></p>
 <h4 id="632">6.3.2 迫零均衡器</h4>
 <p>最经典的均衡器设计方法，核心是<strong>强制除<span class="arithmatex">\(k=0\)</span>外，其他抽样时刻的输出均为0</strong>，消除抽样时刻的ISI。<br />
 <strong>抽头系数满足的方程组：</strong></p>

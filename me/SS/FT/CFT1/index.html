@@ -2670,7 +2670,7 @@ F(j\omega)
 </blockquote>
 <p><strong>3. 矩形脉冲信号：<span class="arithmatex">\(G_{\tau}(t)=E[u(t+\frac{\tau}{2})-u(t-\frac{\tau}{2})],\quad \tau&gt;0 \rightarrow  \mathcal{F}\{G_{\tau}(t)\} = E\tau\text{Sa}(\frac{\omega \tau}{2})\)</span></strong><a id="chapter-253"></a></p>
 <p>矩形脉冲波示意图见图1.<br />
-<img alt="" src="../%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E6%B3%A2.png" /><br />
+<img alt="" src="../%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E6%B3%A2.webp" /><br />
 图1. 矩形脉冲波示意图</p>
 <blockquote>
 <p>证明：<br />
@@ -2871,16 +2871,16 @@ F_{k}
 故其<strong>傅里叶变换</strong>为：</p>
 <div class="arithmatex">\[\mathcal{F}\{\delta_{T}(t)\}=\frac{2\pi}{T}\sum_{k-\infty}^{+\infty}\delta(\omega-k\omega_0)=\omega_0\sum_{k-\infty}^{+\infty}\delta(\omega-k\omega_0) \tag{3.10}\]</div>
 <p>周期性冲激串的主要应用是对一个信号进行采样，便于之后的模数转换、数字信号处理等步骤。例如对信号<span class="arithmatex">\(f(t)\)</span>采样，直接让周期性冲激串与该信号相乘，得到<span class="arithmatex">\(f(t)\delta_{T}(t)\)</span>，效果如图：<br />
-<img alt="" src="../%E5%91%A8%E6%9C%9F%E6%80%A7%E5%86%B2%E6%BF%80%E4%B8%B2%E9%87%87%E6%A0%B7.png" /><br />
+<img alt="" src="../%E5%91%A8%E6%9C%9F%E6%80%A7%E5%86%B2%E6%BF%80%E4%B8%B2%E9%87%87%E6%A0%B7.webp" /><br />
 图4. 周期性冲激串采样</p>
 <h4 id="323">3.2.3 周期性矩形脉冲信号</h4>
 <p>我们将非周期矩形脉冲信号<span class="arithmatex">\(G_{\tau}(t)\)</span>以<span class="arithmatex">\(T\)</span>为周期扩展成非周期信号，如图5.</p>
-<p><img alt="在这里插入图片描述" src="../%E5%91%A8%E6%9C%9F%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7.png" /></p>
+<p><img alt="在这里插入图片描述" src="../%E5%91%A8%E6%9C%9F%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7.webp" /></p>
 <p>图5. 周期性矩形脉冲信号</p>
 <p>我们在<a href="#chapter-253">2.5第3小节</a>节得到了周期性矩形脉冲信号的傅里叶级数为：<span class="arithmatex">\(F_k=\frac{E\tau}{T}\text{Sa}(\frac{k\omega_0\tau}{2})\)</span>，那么根据公式(3.5)很容易得到其傅里叶变换为：</p>
 <div class="arithmatex">\[F(j\omega)=2\pi\sum_{k=-\infty}^{+\infty}\frac{E\tau}{T}\text{Sa}(\frac{k\omega_0\tau}{2})\delta(\omega-k\omega_0)\tag{3.11}\]</div>
 <p>如图6.</p>
-<p><img alt="在这里插入图片描述" src="../%E5%91%A8%E6%9C%9F%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2.png" /></p>
+<p><img alt="在这里插入图片描述" src="../%E5%91%A8%E6%9C%9F%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2.webp" /></p>
 <p>图6. 周期矩形脉冲信号的傅里叶变换</p>
 <p>周期性矩形脉冲信号也通常用于采样，观察其傅里叶变换图像就可以看出这一特点。</p>
 
