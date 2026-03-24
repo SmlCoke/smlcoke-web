@@ -65,8 +65,8 @@ nav:
         - Ch1. Basics: me/DIC/VLSI/ch1-introduction/introduction.md
         - Ch2. Modulation and Demodulation: me/DIC/VLSI/ch2-modulation/modulation.md
         - Ch3. Iteration Bound: me/DIC/VLSI/ch3-iteration_bound/iteration_bound.md
-	- Ch4. Parallel and Pipeline: me/DIC/VLSI/ch4-paralleling_pipeline/paralle_pipeline.md
-	- Ch5. Retiming: me/DIC/VLSI/ch5-retiming/retiming.md
+        - Ch4. Parallel and Pipeline: me/DIC/VLSI/ch4-paralleling_pipeline/parallel_pipeline.md
+        - Ch5. Retiming: me/DIC/VLSI/ch5-retiming/retiming.md
       - Processors:
           - Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
           - Ch2. ISA: me/DIC/PU/ch2-ISA/note.md
