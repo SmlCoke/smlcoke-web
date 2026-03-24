@@ -3,7 +3,7 @@
 Model Context Protocol (MCP) 定义了应用程序和 AI 模型之间交换上下文信息的方式。这使得开发者能够以一致的方式将各种数据源、工具和功能连接到 AI 模型（一个中间协议层），就像 USB-C 让不同设备能够通过相同的接口连接一样。
 
 **用户输入，MCP Server, MCP 工具例如Cline 以及大模型的关系示例：**
-![alt text](image.png)
+![alt text](image.webp)
 图片来源：([MCP终极指南 - 从原理到实战，带你深入掌握MCP（基础篇）](https://www.bilibili.com/video/BV1uronYREWR/?share_source=copy_web&vd_source=ce578daf4264f98e28b6447444312fcc))
 
 以下以 VS Code 插件 Cline 为例。

@@ -5,28 +5,28 @@
 
 ### 1.1 更多的例子
 #### 1. Text-to-Speech
-![alt text](image.png)
+![alt text](image.webp)
 
 #### 2. Chatbot
 例如大语言模型？
-![alt text](image-1.png)
+![alt text](image-1.webp)
 QA, NLP(Natural Language Processing)
 
 #### 3. syntactic analysis
-![alt text](image-2.png)
+![alt text](image-2.webp)
 
 #### 4. Multi-label classification
-![alt text](image-3.png)
+![alt text](image-3.webp)
 
 #### 5. Object dectection
-![alt text](image-4.png)
+![alt text](image-4.webp)
 
 ## II. Encoder and Decoder
 ### 2.1 Encoder
 “给一排向量，输出另一排向量”——Self-Attention
 
 基本的block结构
-![alt text](image-5.png)
+![alt text](image-5.webp)
 
 注意，这个基本的 block 包含的运算：
 1. Multi-head Self-Attention
@@ -35,16 +35,16 @@ QA, NLP(Natural Language Processing)
 4. Add & Norm(Residual Connection + Layer Normalization)
 
 Transformer Encoder，就是堆叠了多个基本 block 得到的结构：
-![alt text](image-6.png)
+![alt text](image-6.webp)
 
 ### 2.2 Decoder
 
 Decoder 的整体效果
-![alt text](image-7.png)
+![alt text](image-7.webp)
 Auto-regressive!
 
 Transformer 的整体架构
-![alt text](image-8.png)
+![alt text](image-8.webp)
 Decoder 这里的 Self-Attention 是Masked Self-Attention，因为 Decoder 不能看到未来的信息。
 
 #### Masked Self-Attention 工作机制详解
@@ -66,7 +66,7 @@ $$A'=\begin{bmatrix}
 
 ### 2.3 Cross-Attention
 $\mathbf{q}$来自Decoder，$\mathbf{k}$和$\mathbf{v}$来自Encoder。
-![alt text](image-9.png)
+![alt text](image-9.webp)
 
 
 是不是每一个decoder block 都是用的 encoder 最后一层的输出$\mathbf{\alpha_{1}'}, \mathbf{\alpha_{2}'}, \mathbf{\alpha_{3}'}$呢？
@@ -79,11 +79,11 @@ $\mathbf{q}$来自Decoder，$\mathbf{k}$和$\mathbf{v}$来自Encoder。
 
 #### Objective Function
 每一个输出位置都是一个 distribution，每一个输出（还要包含 END token）的 cross-entropy loss 之和，就是 Loss Function
-![alt text](image-10.png)
+![alt text](image-10.webp)
 
 #### Teacher Forcing
 此时，decoder 的输入，是 **Ground Truth 的前一个 token。**
-![alt text](image-11.png)
+![alt text](image-11.webp)
 
 #### Tips
 - copy mechanism
@@ -91,7 +91,7 @@ $\mathbf{q}$来自Decoder，$\mathbf{k}$和$\mathbf{v}$来自Encoder。
   - 在某些任务中（例如文本转语音），输入与输出序列之间的对齐通常是单调的。为了促使模型学习这种对齐模式，可以引入引导注意力损失函数。该损失函数会对偏离对角线模式的注意力权重施加惩罚，从而促进更直接的对齐关系。
 - Beam Search
   - 在推理阶段，使用 Beam Search 可以帮助模型生成更优质的输出序列。Beam Search 通过在每一步保留多个最有可能的候选序列，**避免了贪心搜索可能导致的次优解问题，从而提高了生成结果的质量。**
-    ![alt text](image-12.png)
+    ![alt text](image-12.webp)
 
 ### 3.2 Inference
 在测试时，decoder 的输入，是 **上一个 time step 的预测输出。**

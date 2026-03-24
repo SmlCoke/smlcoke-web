@@ -8,7 +8,7 @@
 这里的weight代表什么意思？
 Layer $\ell$看到Layer$s$，或者说利用s占比多少。
 这一点通过$1 \times 1$Filter来实现。
-![alt text](image-2.png)
+![alt text](image-2.webp)
 
 ReLook:
 feature map: 卷积层或池化层输出的多通道张量
@@ -269,7 +269,7 @@ $$[x_0, x_1, x_2, ..., x_{\ell-1}]$$
 | **配置目的** | 验证**不同深度 ($L$)** 和**增长率 ($k$)** 的效果 (如 $L=40, k=12$)  | 追求在大型数据集上的 SOTA 性能 (如 DenseNet-121, 169)  |
 
 2. ImageNet数据集
-![alt text](image.png)
+![alt text](image.webp)
 
 ### 3.10 Clarify: DenseNet and DenseNet-BC
 #### 1. DenseNet
@@ -303,7 +303,7 @@ $\rightarrow \rightarrow \rightarrow \rightarrow \rightarrow$
 > For example, our 250-layer model only has 15.3M parameters, but it consistently outperforms other models such as FractalNet and Wide ResNets that have more than 30M parameters
 
 ResNet with 10.2M parameters VS DenseNet with 0.8M Parameters
-![alt text](image-1.png)
+![alt text](image-1.webp)
 
 ### 4.3 Overfitting
 > In our experiments, we observed potential overfitting in a single setting: on C10, a 4× growth of parameters produced by increasing k =12 to k =24 lead to a modest increase in error from 5.77% to 5 83%. The DenseNet-BC bottleneck and compression layers appear to be an effective way to counter this trend.

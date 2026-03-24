@@ -67,6 +67,6 @@ npm install -g opencode-ai@latest --prefix "D:\OpenCode"
     }
     ```
     之后居然调用成功了？
-    ![alt text](image.png)
+    ![alt text](image.webp)
     去 OpenRouter Activity 页面查看，发现果真发起了调用，消耗了 tokens：
-    ![alt text](image-1.png)
+    ![alt text](image-1.webp)

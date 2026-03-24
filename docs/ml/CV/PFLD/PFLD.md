@@ -67,7 +67,7 @@ $$\mathcal{L}:=\frac{1}{M} \sum_{m=1}^{M} \sum_{n=1}^{N}\left(\sum_{c=1}^{C} \om
 
 > Similar to other CNN based models, we employ several convolutional layers to extract features and predict landmarks. Considering that human faces are of strong global structures, like symmetry and spacial relationships among eyes, mouth, nose, etc., such global structures could help localize landmarks more precisely. Therefore, instead of single scale feature maps, we extend them into multi-scale maps. The extension is finished via executing convolution operations with strides, which enlarges the receptive field. Then we perform the final prediction through fully connecting the multi-scale feature maps. The detailed configuration of the backbone subnet is summarized in Table 1.
 > 与其他基于卷积神经网络（CNN）的模型类似，我们采用多个卷积层进行特征提取与关键点预测。考虑到人脸具有强烈的全局结构特征（如对称性及眼、口、鼻等器官的空间关系），这些全局结构有助于更精准地定位关键点。**因此，我们并未使用单一尺度特征图，而是将其扩展为多尺度特征图——通过带步长的卷积操作扩大感受野来实现扩展**，最终通过全连接多尺度特征图完成预测。主干子网的具体配置详见表1。
-> ![alt text](image.png)
+> ![alt text](image.webp)
 > 表1：主干网络配置。每行代表一组**重复$n$次**的相同层结构。同一序列中的**所有层均具有相同数量的输出通道** $c$。每组序列的**首层**步长为$s$。扩展系数$t$始终作用于输入尺寸。
 
 **重点：MS-FC (Multi-Scale Fully Connected) Layer**
@@ -107,7 +107,7 @@ It is worth to mention that the **quantization techniques** are totally compatib
 
 the input of the auxiliary net is from the 4-th block of the backbone net (see Table 1)
 
-![alt text](image-1.png)
+![alt text](image-1.webp)
 > Table 2: The auxiliary net configuration. As the auxiliary branch is no longer needed in the testing, we do not apply the MobileNet techniques in our implementation.
 
 ## III. Experiments

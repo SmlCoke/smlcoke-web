@@ -104,7 +104,7 @@ sudo reboot
 连接成功后，在 MobaXterm 里直接敲 `design_vision`。你会发现 Design Compiler 的图形界面直接像 Windows 软件一样弹出来了，极其丝滑！
 如图：
 
-![alt text](image.png)
+![alt text](image.webp)
 
 唯一美中不足的是这并不是 Windows 真正的软件界面，而是从虚拟机中转发的，所以清晰度会稍微差一点，但完全不影响使用。
 

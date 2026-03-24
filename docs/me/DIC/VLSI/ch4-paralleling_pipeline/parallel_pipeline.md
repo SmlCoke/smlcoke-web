@@ -10,7 +10,7 @@
 以3抽头FIR滤波器 $y(2k)=b_{0}x(2k)+b_{1}x(2k-1)+b_{2}x(2k-2)$ 为例：
 **(1) 未并行**
 
-![alt text](image.png)
+![alt text](image.webp)
 
 **(2) 2级并行**
 将输入输出按奇偶序列拆分，时钟周期内同时处理2个样点
@@ -20,7 +20,7 @@
   y(2k+1)=b_{0}x(2k+1)+b_{1}x(2k)+b_{2}x(2k-1)
   \end{cases}
   ```
-![alt text](image-1.png)
+![alt text](image-1.webp)
 
 - **3级并行**：时钟周期内同时处理3个样点，采样周期进一步缩小
 
@@ -73,13 +73,13 @@ T_{co} + T_{data} + T_{su} \leq T_{clk}
 原始多级选择器电路时钟频率400MHz，通过均等分割流水线插入寄存器后，时钟频率提升至650MHz，代价为增加寄存器开销。
 
 例如：
-![alt text](image-2.png)
-![alt text](image-3.png)
+![alt text](image-2.webp)
+![alt text](image-3.webp)
 
 **(2) FIR滤波器流水线**
 3抽头FIR滤波器原始关键路径为`T_M + 2T_A`（乘法+2次加法），通过前馈割集插入寄存器后，关键路径缩短为`T_M + T_A`，时钟频率显著提升。
 
-![alt text](image-4.png)
+![alt text](image-4.webp)
 
 **(4) 细粒度流水**
 
@@ -134,7 +134,7 @@ P_{total} = P_{dynamic} + P_{static}
 - 系统动态功耗降为原始电路的$36.4\%$；
 - 对比：若不降功耗，2级流水可将时钟周期减半、频率翻倍，功耗变为原始电路的2倍。
 
-![alt text](image-6.png)
+![alt text](image-6.webp)
 
 ---
 
@@ -159,7 +159,7 @@ L级并行系统，**保持系统原采样率不变**，时钟频率可降低为
 - 求解得$\beta=0.6589$；
 - 系统动态功耗降为原始电路的$43.4\%$。
 
-![alt text](image-5.png)
+![alt text](image-5.webp)
 
 ---
 

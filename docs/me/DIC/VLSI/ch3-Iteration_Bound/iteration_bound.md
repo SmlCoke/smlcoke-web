@@ -38,7 +38,7 @@
  y(n)=\sum_{k=0}^{N-1} h(k)x(n-k)
 \]
 
-![alt text](image.png)
+![alt text](image.webp)
 
 DSP 算法通常是**持续处理输入流**的，不像普通程序那样“执行完就结束”。因此：
 
@@ -67,7 +67,7 @@ DSP 算法通常是**持续处理输入流**的，不像普通程序那样“执
 - 常用于从系统功能角度描述 DSP 结构
 
 适合理解“系统做了什么”。
-![alt text](image-1.png)
+![alt text](image-1.webp)
 
 ### 4.2 信号流图（SFG, Signal Flow Graph）
 
@@ -79,7 +79,7 @@ DSP 算法通常是**持续处理输入流**的，不像普通程序那样“执
 - 有源节点（source node）和汇节点（sink node）
 
 适合理解**线性数字网络结构**。
-![alt text](image-2.png)
+![alt text](image-2.webp)
 
 
 #### 转置变换（Transposition）
@@ -127,7 +127,7 @@ DFG 中每条边都体现了**优先顺序约束**：
 - 强调算法计算间的依赖关系
 - 在**脉动阵列（systolic array）** 分析里很常见
 
-![alt text](image-3.png)
+![alt text](image-3.webp)
 适合看“谁依赖谁”，尤其适合映射到规则阵列结构。
 
 ---
