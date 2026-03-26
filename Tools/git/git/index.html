@@ -2577,6 +2577,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 垃圾清理
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2885,6 +2896,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 垃圾清理
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3064,6 +3086,12 @@
   所以无论当前的修改是否真的损坏了项目代码，都建议在执行此命令前将当前整个仓库备份一下，这是绝对稳妥的保底策略。<br><br />
   Git 最大的设计哲学之一就是“<strong>去中心化</strong>”和“<strong>一切皆在本地</strong>”。项目里的所有历史版本、分支信息、甚至与 GitHub 的远程绑定关系（origin），都在项目根目录下一个名为 .git 的隐藏文件夹里。当我们连同这个 <code>.git/</code> 文件夹一起复制时，我们<strong>不仅复制了代码，还原封不动地复制了整个 Git 数据库</strong>。只要 <code>.git/</code>还在，就算整个仓库的代码被扬了，Git 也能救回来，这就是 Git 带来的强大安心感。</p>
 </div>
+<h3 id="28">2.8 垃圾清理</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>git<span class="w"> </span>gc<span class="w"> </span>--prune<span class="o">=</span>now
+</span></code></pre></div>
+<p><code>git gc</code> (Garbage Collection，<strong>垃圾回收</strong>) 是一个<strong>纯本地的数据库优化命令</strong>。它就像是给你的本地电脑磁盘做了一次“碎片整理”。它压缩了文件、删除了你本地那些悬空的废弃对象（比如曾经 <code>git add</code> 但后来又撤销的文件）。<br />
+既然它只操作本地数据库的底层结构，不改变任何代码逻辑和文件内容，<strong>所以不需要（也无法）被 commit 或 push</strong>。<br />
+(注：GitHub 的<strong>远端服务器会在后台定期自动运行它自己的 <code>git gc</code></strong>，所以不用操心远端。)</p>
 
 
 
