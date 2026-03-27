@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image
 
 # ================= 配置区 =================
-DOCS_DIR = "../docs/AI-Tools" # 你的文档目录
+DOCS_DIR = "../docs/me" # 你的文档目录
 # 支持转换的原始格式
 IMAGE_EXTS = {'.png', '.jpg', '.jpeg'} 
 # WEBP 压缩质量 (0-100)，85 是画质和体积的最佳平衡点，肉眼完全看不出区别

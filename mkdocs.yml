@@ -52,58 +52,59 @@ nav:
   - 博客: blog/ # 博客插件会自动接管这个目录
   - 微电子: 
     - me/index.md
-    - Signal and Systems: me/SS/index.md
-    - Digital Integrated Circuits: 
-      - Glossary: me/DIC/Glossary.md
-      - Course Design: 
-        - Init: me/DIC/CourseDesign/init.md
-        - Introduction: me/DIC/CourseDesign/introduction.md
-        - Specification: me/DIC/CourseDesign/Design_Specifications.md
-        - Re-quantization: me/DIC/CourseDesign/Re-quantization.md
-      - VLSI: 
+    - 🟩 Signal and Systems: me/SS/index.md
+    - 🟩 Digital Integrated Circuits: 
+      - 🔶 Glossary: me/DIC/Glossary.md
+      - 🔶 Course Design: 
+        - 🔹Init: me/DIC/CourseDesign/init.md
+        - 🔹Introduction: me/DIC/CourseDesign/introduction.md
+        - 🔹Specification: me/DIC/CourseDesign/Design_Specifications.md
+        - 🔹Re-quantization: me/DIC/CourseDesign/Re-quantization.md
+      - 🔶 VLSI: 
         - me/DIC/VLSI/index.md
-        - Ch1. Basics: me/DIC/VLSI/ch1-introduction/introduction.md
-        - Ch2. Modulation and Demodulation: me/DIC/VLSI/ch2-modulation/modulation.md
-        - Ch3. Iteration Bound: me/DIC/VLSI/ch3-iteration_bound/iteration_bound.md
-        - Ch4. Parallel and Pipeline: me/DIC/VLSI/ch4-paralleling_pipeline/parallel_pipeline.md
-        - Ch5. Retiming: me/DIC/VLSI/ch5-retiming/retiming.md
-      - Processors:
-          - Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
-          - Ch2. ISA: me/DIC/PU/ch2-ISA/note.md
-    - Verilog HDL Basics: me/verilog/Study_note.md
-    - EDA Tools:
-      - VS Code + Verilog : me/EDA/vscode/vscode.md
-      - MobaXterm + Linux : me/EDA/mobaxterm/mobaxterm.md 
+        - 🔹Ch1. Basics: me/DIC/VLSI/ch1-introduction/introduction.md
+        - 🔹Ch2. Modulation and Demodulation: me/DIC/VLSI/ch2-modulation/modulation.md
+        - 🔹Ch3. Iteration Bound: me/DIC/VLSI/ch3-iteration_bound/iteration_bound.md
+        - 🔹Ch4. Parallel and Pipeline: me/DIC/VLSI/ch4-paralleling_pipeline/parallel_pipeline.md
+        - 🔹Ch5. Retiming: me/DIC/VLSI/ch5-retiming/retiming.md
+      - 🔶 Processors:
+          - 🔹Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
+          - 🔹Ch2. ISA: me/DIC/PU/ch2-ISA/note.md
+    - 🟩 Verilog HDL Basics: me/verilog/Study_note.md
+    - 🟩 EDA Tools:
+      - 🔹VS Code + Verilog : me/EDA/vscode/vscode.md
+      - 🔹MobaXterm + Linux : me/EDA/mobaxterm/mobaxterm.md 
+      - 🔹OSS CAD Suite: me/EDA/OSS/oss.md
   - 机器学习:
     - ml/Basic/index.md
-    - 全连接神经网络: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
-    - 优化: ml/Basic/ch2_Optimization/ch2_2_Optimization.md
-    - CNN: ml/Basic/ch3_CNN/ch3_CNN.md
-    - Self-Attention: ml/Basic/ch4_Self_Attention/ch4_self_attention基础.md
-    - Transformer: ml/Basic/ch5_Transformer/ch5_transformer基础.md
+    - 🔹全连接神经网络: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
+    - 🔹优化: ml/Basic/ch2_Optimization/ch2_2_Optimization.md
+    - 🔹CNN: ml/Basic/ch3_CNN/ch3_CNN.md
+    - 🔹Self-Attention: ml/Basic/ch4_Self_Attention/ch4_self_attention基础.md
+    - 🔹Transformer: ml/Basic/ch5_Transformer/ch5_transformer基础.md
   - 计算机视觉:
     - ml/CV/index.md
-    - ResNet: ml/CV/ResNet/notes.md
-    - DenseNet: ml/CV/DenseNet/notes.md
-    - YOLO v1: ml/CV/YOLO/YOLO.md
-    - YOLO v2: ml/CV/YOLO/YOLOv2.md
-    - YOLO v3: ml/CV/YOLO/YOLOv3.md
-    - ViT: ml/CV/VIT/ViT.md
-    - PFLD: ml/CV/PFLD/PFLD.md
+    - 🔹ResNet: ml/CV/ResNet/notes.md
+    - 🔹DenseNet: ml/CV/DenseNet/notes.md
+    - 🔹YOLO v1: ml/CV/YOLO/YOLO.md
+    - 🔹YOLO v2: ml/CV/YOLO/YOLOv2.md
+    - 🔹YOLO v3: ml/CV/YOLO/YOLOv3.md
+    - 🔹ViT: ml/CV/VIT/ViT.md
+    - 🔹PFLD: ml/CV/PFLD/PFLD.md
   - Rust:
-    - Rust 学习笔记: rust/notes/Study.md
-    - Rust 环境配置: rust/notes/Rust环境配置方法.md
-    - Rust 加密/解密在线工具: rust/crypto.md
+    - 🔹Rust 学习笔记: rust/notes/Study.md
+    - 🔹Rust 环境配置: rust/notes/Rust环境配置方法.md
+    - 🔹Rust 加密/解密在线工具: rust/crypto.md
   - 人工智能:
     - AI-Tools/index.md
-    - Claude Code: AI-Tools/ClaudeCode/Claude-Code.md
-    - MCP Server: AI-Tools/MCP/mcp_server.md
-    - OpenRouter: AI-Tools/OpenRouter/openrouter.md
-    - OpenCode: AI-Tools/OpenCode/opencode.md
-    - Aider: AI-Tools/Aider/aider.md
+    - 🔹Claude Code: AI-Tools/ClaudeCode/Claude-Code.md
+    - 🔹MCP Server: AI-Tools/MCP/mcp_server.md
+    - 🔹OpenRouter: AI-Tools/OpenRouter/openrouter.md
+    - 🔹OpenCode: AI-Tools/OpenCode/opencode.md
+    - 🔹Aider: AI-Tools/Aider/aider.md
   - 工具:
     - Tools/index.md
-    - Docker: Tools/docker/docker.md
-    - Git & GitHub: Tools/git/git.md
-    - WSL2: Tools/wsl2/WSL2子系统开发笔记.md
+    - 🔹Docker: Tools/docker/docker.md
+    - 🔹Git & GitHub: Tools/git/git.md
+    - 🔹WSL2: Tools/wsl2/WSL2子系统开发笔记.md
   - 留言板: comments/index.md
