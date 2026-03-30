@@ -107,7 +107,7 @@ It is worth to mention that the **quantization techniques** are totally compatib
 
 the input of the auxiliary net is from the 4-th block of the backbone net (see Table 1)
 
-![alt text](image-1.webp)
+![alt text](image-0.webp)
 > Table 2: The auxiliary net configuration. As the auxiliary branch is no longer needed in the testing, we do not apply the MobileNet techniques in our implementation.
 
 ## III. Experiments
