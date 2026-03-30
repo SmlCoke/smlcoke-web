@@ -204,3 +204,48 @@ git gc --prune=now
 `git gc` (Garbage Collection，**垃圾回收**) 是一个**纯本地的数据库优化命令**。它就像是给你的本地电脑磁盘做了一次“碎片整理”。它压缩了文件、删除了你本地那些悬空的废弃对象（比如曾经 `git add` 但后来又撤销的文件）。
 既然它只操作本地数据库的底层结构，不改变任何代码逻辑和文件内容，**所以不需要（也无法）被 commit 或 push**。
 (注：GitHub 的**远端服务器会在后台定期自动运行它自己的 `git gc`**，所以不用操心远端。)
+
+### 2.9 hook 机制
+
+#### 2.9.1 pre-commit hook
+
+有些时候，我们希望在 `git commit` 时，`git` 或者其他什么东西能够对当前的目录或者暂存区中的修改做一些检查，这些检查例如源码的版本号与文档的版本号有没有对齐，更新日期有没有同步到今天等。如果检查不通过，`git` 就会阻止这次提交，提示我们修改。
+
+事实上，`git` 确实有这种功能，在 `git` 中，实现这个功能的机制叫做 **Git Hooks（Git 钩子）**。下面我们介绍 pre-commit hook 的创建和使用方法。这里我们以**版本号和日期检查**为例。
+
+**（1）第一步：找到 Git Hooks 的藏身之处**
+
+在项目根目录下，有一个隐藏文件夹 `.git`。
+进入 `.git/hooks` 文件夹，会看到一堆以 `.sample` 结尾的文件，比如 `pre-commit.sample`。这些是 Git 官方给出的示例代码。
+
+**（2）第二步：创建自己的 `pre-commit` 脚本**
+
+在 `.git/hooks` 文件夹下，新建一个文件，名字**必须精确叫 `pre-commit`**（注意：**绝对不能**有任何后缀名，不能叫 `pre-commit.py` 或 `pre-commit.sh`）。
+
+**（3）第三步：编写拦截逻辑（用 Python 直接写）**
+
+虽然钩子文件没有 `.py` 后缀，但你可以通过在第一行指定解释器（Shebang）来让 Git 知道这是一个 Python 脚本：
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+```
+
+用代码编辑器打开这个没有任何后缀的 `pre-commit` 文件，写入拦截逻辑。这里不展示示例脚本。可以参考项目 [SonicBolt](https://github.com/SmlCoke/2026-MST3314-SonicBolt/tree/main/Scripts) 下的拦截脚本：`interception.py`。
+
+**（4）第四步：赋予执行权限（👑 必须做！）**
+
+默认创建的文件可能没有执行权限，`Git` 会直接忽略它。
+打开你的 Git Bash 终端，确保**当前在项目根目录**，运行以下命令赋予其可执行权限：
+
+```bash
+chmod +x .git/hooks/pre-commit
+```
+
+现在拦截器已经生效了！以后每次执行 `git commit`时，`git` 都会先执行这个审查脚本，无误后才会允许提交。
+
+!!! note pre-commit hook 的高级用法
+      1. **着急提交，强制放弃审查**：
+      `git commit -m "紧急修复" --no-verify`
+      2. **团队协作**：
+      `.git/hooks` 文件夹**不会**被 Git 追踪并 push 到远程仓库。这意味着合作者 `clone` 下来项目后，是没有这个拦截器的。
+      如果要在团队中强制推行，前端界通常会使用 `Husky` 工具，而 Python / C++ 界通常会使用一个叫 `pre-commit` 的第三方开源框架，它可以通过一个配置文件（`.pre-commit-config.yaml`）让团队里所有人自动安装并统一这些拦截规则。

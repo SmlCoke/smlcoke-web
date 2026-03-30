@@ -70,6 +70,7 @@ nav:
       - 🔶 Processors:
           - 🔹Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
           - 🔹Ch2. ISA: me/DIC/PU/ch2-ISA/note.md
+          - 🔹Ch3. Arithmetic: me/DIC/PU/ch3-arithmetic/arithmetic.md
     - 🟩 Verilog HDL Basics: me/verilog/Study_note.md
     - 🟩 EDA Tools:
       - 🔹VS Code + Verilog : me/EDA/vscode/vscode.md
@@ -91,6 +92,12 @@ nav:
     - 🔹YOLO v3: ml/CV/YOLO/YOLOv3.md
     - 🔹ViT: ml/CV/VIT/ViT.md
     - 🔹PFLD: ml/CV/PFLD/PFLD.md
+    - 🔸PFLD-GhostOne:
+      - ml/CV/PFLD_GhostOne/index.md
+      - 🔹Code Notes: ml/CV/PFLD_GhostOne/CodeNotes.md
+      - 🔹Loss: ml/CV/PFLD_GhostOne/Loss.md
+      - 🔹PyTorch2onnx: ml/CV/PFLD_GhostOne/PyTorch2onnx.md
+      - 🔹DA: ml/CV/PFLD_GhostOne/DA.md
   - Rust:
     - 🔹Rust 学习笔记: rust/notes/Study.md
     - 🔹Rust 环境配置: rust/notes/Rust环境配置方法.md

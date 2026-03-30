@@ -28,6 +28,12 @@ hide:
   <p class="card-desc">密集连接网络：特征复用与高效传播</p>
 </a>
 
+<a class="note-card indigo" href="VIT/ViT/">
+  <span class="card-icon">🔮</span>
+  <div class="card-title">Vision Transformer</div>
+  <p class="card-desc">将 Transformer 引入视觉：图像分块与自注意力</p>
+</a>
+
 </div>
 
 <div class="section-subtitle">🎯 目标检测 · YOLO 系列</div>
@@ -54,20 +60,26 @@ hide:
 
 </div>
 
-<div class="section-subtitle">🔮 前沿架构</div>
+<div class="section-subtitle">🔮 应用场景</div>
 
 <div class="card-grid">
-
-<a class="note-card indigo" href="VIT/ViT/">
-  <span class="card-icon">🔮</span>
-  <div class="card-title">Vision Transformer</div>
-  <p class="card-desc">将 Transformer 引入视觉：图像分块与自注意力</p>
-</a>
 
 <a class="note-card cyan" href="PFLD/PFLD/">
   <span class="card-icon">👤</span>
   <div class="card-title">PFLD</div>
   <p class="card-desc">实用人脸关键点检测：轻量级与高精度</p>
+</a>
+
+<a class="note-card purple" href="PFLD_GhostOne/">
+  <span class="card-icon">👻</span>
+  <div class="card-title">PFLD GhostOne</div>
+  <p class="card-desc">轻量级极速检测架构：重参数化与源码深入剖析</p>
+</a>
+
+<a class="note-card cyan" href="mobileone/mobileone/">
+  <span class="card-icon">🍎</span>
+  <div class="card-title">MobileOne</div>
+  <p class="card-desc">轻量级骨干网络：重参数化加持MobileNet</p>
 </a>
 
 </div>

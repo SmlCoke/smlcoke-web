@@ -70,6 +70,13 @@ hide:
   <p class="card-desc">基于 Verilog 实现的 CNN 硬件加速器</p>
 </a>
 
+<a class="note-card sky" href="DIC/PU/">
+  <span class="card-icon">🖥️</span>
+  <div class="card-title">通用及图形处理器</div>
+  <p class="card-desc">CPU 以及 GPU 硬件架构与电路实现</p>
+</a>
+
+
 </div>
 
 <div class="section-subtitle">🔬 EDA 工具与 Verilog</div>
