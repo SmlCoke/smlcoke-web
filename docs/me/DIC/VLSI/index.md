@@ -46,6 +46,12 @@ hide:
 	<p class="card-desc">打断关键路径的脊梁骨</p>
 </a>
 
+<a class="note-card blue" href="ch6-unfolding/unfolding">
+	<span class="card-icon">⏲️</span>
+	<div class="card-title">Chapter 6 · 展开技术</div>
+	<p class="card-desc">提高系统性能的另一种思路</p>
+</a>
+
 </div>
 
 <div class="section-subtitle">🧪 重点专题</div>
@@ -70,13 +76,13 @@ hide:
 	<p class="card-desc">从概率分布到 PSD 与自相关，系统化理解 AWGN 模型</p>
 </a>
 
-<a class="note-card indigo" href="ch3-Iteration_bound/ib_full/">
+<a class="note-card indigo" href="ch3-iteration_bound/ib_full/">
 	<span class="card-icon">🪜</span>
 	<div class="card-title">迭代边界</div>
 	<p class="card-desc">DSP算法受限的天王老子</p>
 </a>
 
-<a class="note-card indigo" href="ch3-Iteration_bound/diif_cycle/">
+<a class="note-card indigo" href="ch3-iteration_bound/diif_cycle/">
 	<span class="card-icon">⏱️</span>
 	<div class="card-title">不同周期</div>
 	<p class="card-desc">采样周期、时钟周期、迭代周期的含义与关系</p>

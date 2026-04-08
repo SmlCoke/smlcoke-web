@@ -126,7 +126,9 @@ Git LFS 采用了一种“狸猫换太子”的策略：
    ```
    注意，这里推送时会涉及到 Huggingface 访问令牌，需要输入 Access Token 进行身份验证。
 
-### 2.6 Tag
+### 2.6 Tag & Release
+
+#### 2.6.1 Tag
 **Tag（标签）** 是 Git 中用于**标记特定提交**的工具，常用于标记版本发布点。Tag 可以分为两种类型：轻量级标签（lightweight tag）和附注标签（annotated tag）。轻量级标签只是一个指向特定提交的指针，而附注标签则包含了更多的信息，如作者、日期和标签信息。
 
 使用 annotated tag 可以很方便的管理版本发布，其他用户很容易看出当前版本的关键版本信息，方便下载对应版本的代码。
@@ -143,9 +145,27 @@ Git LFS 采用了一种“狸猫换太子”的策略：
     一般来说，tag 的命名方式会遵循语义化版本控制（Semantic Versioning）的规范，例如 `v1.0.0`、`v2.1.3` 等，这样可以清晰地表达版本之间的关系和更新内容。`vx.y.z` 中，修改 `z` 表示小修小补的 **bug 修复**，修改 `y` 表示**增加了新功能**但不破坏兼容性，修改 `x` 则表示**有重大更新可能会破坏兼容性**。
     此外，也可以根据项目需求使用其他命名方式，但建议保持一致性和可读性。尤其是要写好**标签信息**。
 
+还有几条关于 tag 的常用命令：
+1. 查看当前仓库的所有 tag：`git tag`
+2. 查看某个 tag 的详细信息：`git show v1.0`
+3. 删除本地 tag：`git tag -d v1.0`
+
+#### 2.6.2 Release
+GitHub 上的 Release 是基于 Tag 的一个功能，它允许我们在 GitHub 上为每个版本发布一个专门的页面，包含版本说明、下载链接等信息。通过 Release，我们可以更方便地管理和分发项目的不同版本。
+创建 Release 的步骤如下：
+1. **创建 Tag**：首先需要在本地创建一个 Tag，并推送到远程仓库（如上所述）。
+   - 直接创建: `git tag -a vx.y.z`, `git push origin vx.y.z`
+   - 不覆盖原始 tag: `git tag -a <Release Name> vx.y.z^{} -m "<Release Notes>" -f`, `git push origin <Release Name>`，这个操作是想要保留原始 tag 而同时与该 tag 相同的版本 Release 的方法，其中 `<Release Name>` 就是你想要创建的 Release 的名字，`vx.y.z` 是你想要关联的 Tag 的名字。
+2. **在 GitHub 上创建 Release**：登录 GitHub，进入你的仓库，点击 "Releases" 标签页，然后点击 "Draft a new release"。
+3. **选择 Tag**：在 "Tag: Select tag" 下拉菜单中选择刚刚的 `<Release Name>`。
+4. **填写 Release Notes信息**
+5. **点击 Publish release**
+
+Release 还有更多的方法，例如创建多操作系统的 assets，或者通过 GitHub API 自动化发布流程等。
+
 ### 2.7 版本回退
 
-#### 2.7.0
+#### 2.7.0 未提交到暂存区的修改
 
 有时候我们在修改代码的过程中，可能会不小心把代码改坏了，或者做了一些尝试性的修改，结果发现这些修改并不理想，并且此时我们没有`add`这些文件到暂存区，这个时候如果想要撤回这些修改回到之前commit的状态：
 ```bash
@@ -249,3 +269,23 @@ chmod +x .git/hooks/pre-commit
       2. **团队协作**：
       `.git/hooks` 文件夹**不会**被 Git 追踪并 push 到远程仓库。这意味着合作者 `clone` 下来项目后，是没有这个拦截器的。
       如果要在团队中强制推行，前端界通常会使用 `Husky` 工具，而 Python / C++ 界通常会使用一个叫 `pre-commit` 的第三方开源框架，它可以通过一个配置文件（`.pre-commit-config.yaml`）让团队里所有人自动安装并统一这些拦截规则。
+
+
+**🚀 基于 Python 的 pre-commit 框架——团队协作开发**
+1. 在项目根目录下新建一个文件夹，比如叫 `Scripts/`
+2. 在 `Scripts/` 文件夹下创建 python 脚本，编写拦截逻辑，例如 `pre_commit.py`
+3. 在项目根目录下创建 `.pre-commit-config.yaml` 配置文件，内容如下：
+   ```yaml
+   repos:
+   - repo: local
+      hooks:
+         - id: custom-version-and-date-check
+         name: Version and V-File Date Check
+         entry: python -X utf8 Scripts/pre_commit.py
+         language: system
+         pass_filenames: false
+         always_run: true
+   ```
+4. 安装 pre-commit 框架：`pip install pre-commit`
+5. 在项目根目录下运行 `pre-commit install`，它会自动在 `.git/hooks/` 文件夹下创建一个 `pre-commit` 文件，并且这个文件会调用 pre-commit 框架来执行我们在 `.pre-commit-config.yaml` 中配置的钩子。
+6. 之后每次修改 `Scripts/pre_commit.py` 中的拦截逻辑后，需要重新 `pre-commit install` 来更新 `.git/hooks/pre-commit` 文件中的调用逻辑。
