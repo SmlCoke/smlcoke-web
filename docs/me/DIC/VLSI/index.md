@@ -52,6 +52,12 @@ hide:
 	<p class="card-desc">提高系统性能的另一种思路</p>
 </a>
 
+<a class="note-card blue" href="ch7-folding/folding">
+	<span class="card-icon">⏲️</span>
+	<div class="card-title">Chapter 7 · 折叠技术</div>
+	<p class="card-desc">完全听不懂啊</p>
+</a>
+
 </div>
 
 <div class="section-subtitle">🧪 重点专题</div>

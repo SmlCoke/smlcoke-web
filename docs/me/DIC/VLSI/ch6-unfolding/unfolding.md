@@ -13,6 +13,7 @@ $$\begin{aligned}& y(n) = ay(n-9) + x(n) \Rightarrow \\
 & y(2k) = ay(2k-9) + x(2k) = ay(2(k-5) + 1) + x(2k) \\
 & y(2k+1) = ay(2k+1-9) + x(2k+1) = ay(2(k-4)) + x(2k+1)\end{aligned}$$
 \end{aligned}$$
+
 ![alt text](image.webp)
 
 ## 二、展开图 (DFG) 的构建算法
@@ -71,7 +72,9 @@ $$\begin{aligned}& y(n) = ay(n-9) + x(n) \Rightarrow \\
 ### 3.5 展开对迭代边界的影响 (Impact on Iteration Bound)
 *   **性质**：如果原图 $G$ 的迭代边界为 $T_\infty$，那么其 $J$ 阶展开图 $G_J$ 的迭代边界为 **$J \cdot T_\infty$**。
 *   **公式推导**：
+    
     $$ T_{\infty}' = \max_l \left\{ \frac{(J/\gcd(w_l, J)) t_l}{w_l/\gcd(w_l, J)} \right\} = J \max_l \left\{ \frac{t_l}{w_l} \right\} = J T_\infty $$
+    
 *   **物理意义理解**：虽然展开后图的**绝对迭代边界变成了原来的 $J$ 倍**（$J T_\infty$），但是由于展开后的系统在**一次时钟迭代中同时处理了 $J$ 个采样点**，因此分摊到**每个采样点的有效迭代周期依然是 $T_\infty$**。这为我们后续通过**重定时等技术逼近真正的迭代边界**提供了物理空间。
 
 
