@@ -69,6 +69,7 @@ nav:
         - 🔹Ch5. Retiming: me/DIC/VLSI/ch5-retiming/retiming.md
         - 🔹Ch6. Unfolding: me/DIC/VLSI/ch6-unfolding/unfolding.md
         - 🔹Ch7. Folding: me/DIC/VLSI/ch7-folding/folding.md
+        - 🔹Ch8. Systolic Array: me/DIC/VLSI/ch8-systolic_array/systolic_array.md
       - 🔶 Processors:
           - 🔹Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
           - 🔹Ch2. ISA: me/DIC/PU/ch2-ISA/note.md
