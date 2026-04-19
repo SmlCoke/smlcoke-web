@@ -40,4 +40,10 @@ hide:
   <p class="card-desc">Windows 原生环境下的开源 EDA 工具链搭建指南</p>
 </a>
 
+<a class="note-card cyan" href="markdown/">
+  <span class="card-icon">📝</span>
+  <div class="card-title">Markdown 使用指南</div>
+  <p class="card-desc">Markdown 扩展用法</p>
+</a>
+
 </div>
