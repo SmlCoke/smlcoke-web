@@ -88,10 +88,16 @@ hide:
   <p class="card-desc">时序交叉模块：零参数与零计算</p>
 </a>
 
-<a class="note-card Violet" href="TSRNet/">
-  <span class="card-icon">🔳</span>
+<a class="note-card Slate" href="TSRNet/">
+  <span class="card-icon">💠</span>
   <div class="card-title">TSRNet</div>
   <p class="card-desc">时序超分辨率网络：自生成对抗的连续手语识别训练</p>
+</a>
+
+<a class="note-card Stone" href="MSKA/">
+  <span class="card-icon">🚀</span>
+  <div class="card-title">MSKA</div>
+  <p class="card-desc">Attention 与 Multi Stream 加持的 SLP </p>
 </a>
 
 </div>
