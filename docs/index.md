@@ -14,7 +14,7 @@ hide:
   </div>
   <div class="section-stats">
     <span class="stat-item">📚 6 个知识板块</span>
-    <span class="stat-item">🤖 5 篇 AI 工具笔记</span>
+    <span class="stat-item">🤖 多篇 AI 工具笔记</span>
     <span class="stat-item">🧠 5 篇机器学习课程</span>
   </div>
 </div>
@@ -47,10 +47,15 @@ hide:
     <div class="card-title">Rust</div>
     <p class="card-desc">Rust 学习笔记，以及基于 WebAssembly 的在线加密/解密工具。</p>
   </a>
+  <a href="Tools/" class="note-card Amber">
+    <span class="card-icon">🔧</span>
+    <div class="card-title">工具</div>
+    <p class="card-desc">Git/Docker 等传统硬核开发工具</p>
+  </a>
   <a href="AI-Tools/" class="note-card teal">
     <span class="card-icon">🤖</span>
     <div class="card-title">人工智能工具</div>
-    <p class="card-desc">Claude Code、MCP Server、OpenRouter、OpenCode、Aider 实用指南。</p>
+    <p class="card-desc">AI Agent 工具实用指南。</p>
   </a>
 </div>
 

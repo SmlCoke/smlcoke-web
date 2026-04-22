@@ -14,10 +14,10 @@ This repository maintains the source content, custom theme overrides, and static
 
 The site focuses on learning notes, technical writing, and personal records, including:
 
-- AI tools and workflow notes (Aider, Claude Code, MCP, OpenCode, OpenRouter)
+- Tools and AI tools (Git, WSL, Aider, Claude Code, etc.)
 - Machine learning notes (basic deep learning, optimization, CNN, self-attention, Transformer)
 - Computer vision notes (ResNet, DenseNet, YOLO, ViT, PFLD)
-- Digital integrated circuit and VLSI communication notes
+- Digital integrated circuit course notes (base, verilog, VLSI, processor, etc.)
 - Rust-related cryptography and study notes
 - Blog posts (work logs, random thoughts, and personal diary)
 
@@ -28,18 +28,6 @@ The site focuses on learning notes, technical writing, and personal records, inc
 - Email (SJTU): <e2.71828@sjtu.edu.cn>
 - GitHub: <https://github.com/SmlCoke>
 - Hugging Face: <https://huggingface.co/SmlCoke>
-
-## Project Structure
-
-```text
-.
-|- docs/         # Source content (Markdown, assets, pages)
-|- overrides/    # Theme override templates (for example, comments)
-|- site/         # Generated static site output
-|- dev/          # Development notes and planning
-|- mkdocs.yml    # MkDocs configuration
-`- LICENSE
-```
 
 ## License
 

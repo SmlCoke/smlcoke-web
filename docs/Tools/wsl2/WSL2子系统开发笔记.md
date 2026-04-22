@@ -7,7 +7,7 @@
 WSL2 环境：Ubuntu 22.04，无图形化界面
 
 [系统目录结构、环境变量配置说明文档](./assets/文件系统目录.md)
-【Linux 基础命令使用文档】(./assets/Linux基础命令.md)
+[Linux 基础命令使用文档](./assets/Linux基础命令.md)
 
 WSL2 启动方式：`wsl -d Ubuntu-22.04`（或者 VSCode 直接连接）
 WSL2 关断方式：`wsl --shutdown`

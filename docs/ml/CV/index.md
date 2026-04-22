@@ -82,4 +82,16 @@ hide:
   <p class="card-desc">轻量级骨干网络：重参数化加持MobileNet</p>
 </a>
 
+<a class="note-card Violet" href="TSCM/">
+  <span class="card-icon">🔳</span>
+  <div class="card-title">TSCM</div>
+  <p class="card-desc">时序交叉模块：零参数与零计算</p>
+</a>
+
+<a class="note-card Violet" href="TSRNet/">
+  <span class="card-icon">🔳</span>
+  <div class="card-title">TSRNet</div>
+  <p class="card-desc">时序超分辨率网络：自生成对抗的连续手语识别训练</p>
+</a>
+
 </div>

@@ -14,10 +14,10 @@
 
 网站的核心内容包括学习笔记、技术记录与个人文章，主要方向有：
 
-- AI 工具与工作流笔记（Aider、Claude Code、MCP、OpenCode、OpenRouter）
+- 工具与 AI 工具（Git, WSL, Aider, Claude Code, etc.）
 - 机器学习笔记（深度学习基础、优化、CNN、Self-Attention、Transformer）
 - 计算机视觉笔记（ResNet、DenseNet、YOLO、ViT、PFLD）
-- 数字集成电路与 VLSI 通信相关笔记
+- 数字集成电路设计课程笔记（基础、Verilog、VLSI、处理器等）
 - Rust 与密码学相关学习记录
 - 博客内容（工作记录、随笔、日记）
 
@@ -28,18 +28,6 @@
 - 校园邮箱（SJTU）：<e2.71828@sjtu.edu.cn>
 - GitHub：<https://github.com/SmlCoke>
 - Hugging Face：<https://huggingface.co/SmlCoke>
-
-## 项目结构
-
-```text
-.
-|- docs/         # 站点源内容（Markdown、资源、页面）
-|- overrides/    # 主题覆盖模板（如评论组件）
-|- site/         # 构建后的静态站点输出
-|- dev/          # 开发过程文档与规划
-|- mkdocs.yml    # MkDocs 主配置
-`- LICENSE
-```
 
 ## 许可证
 

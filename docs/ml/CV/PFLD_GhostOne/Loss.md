@@ -134,7 +134,7 @@ $$\operatorname{loss}(x)=\left\{\begin{array}{lll}\frac{0.5 \cdot x^{2}}{\beta},
 $x = \text{mae} = |y_{\text{true}} - y_{\text{pred}}|$
 
 $\text{loss}(x)$在$x = \beta$处的**函数值相同且一阶导数相同，保证了平滑过渡。**
-![](smooth_l1_analysis.png)
+![](smooth_l1_analysis.webp)
 
 ```python
 def smoothL1(y_true, y_pred, beta=1):

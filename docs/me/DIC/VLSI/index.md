@@ -58,6 +58,12 @@ hide:
 	<p class="card-desc">完全听不懂啊</p>
 </a>
 
+<a class="note-card blue" href="ch8-systolic_array/systolic_array">
+	<span class="card-icon">💙</span>
+	<div class="card-title">Chapter 9 · 脉动阵列</div>
+	<p class="card-desc">高度数据并行的计算架构</p>
+</a>
+
 </div>
 
 <div class="section-subtitle">🧪 重点专题</div>

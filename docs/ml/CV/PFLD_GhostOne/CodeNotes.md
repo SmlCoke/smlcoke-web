@@ -193,7 +193,7 @@ $$\operatorname{loss}(x)=\left\{\begin{array}{lll}\frac{0.5 \cdot x^{2}}{\beta},
 $x = \text{mae} = |y_{\text{true}} - y_{\text{pred}}|$
 
 $\text{loss}(x)$在$x = \beta$处的**函数值相同且一阶导数相同，保证了平滑过渡。**
-![](smooth_l1_analysis.png)
+![](smooth_l1_analysis.webp)
 
 ```python
 def smoothL1(y_true, y_pred, beta=1):
@@ -277,7 +277,7 @@ class GhostModule(Module):
 
 
 ### GhostBottleneck
-![](image-1.png)
+![](image-1.webp)
 ```python
 class GhostBottleneck(Module):
     def __init__(self, in_channel, hidden_channel, out_channel, stride):
@@ -454,7 +454,7 @@ class MobileOneBlock(nn.Module):
 ### GhostOne Module
 用于替换 Ghost Module，将 Ghost Module 中的标准卷积替换为 MobileOne 中的多分支卷积结构，**从而实现更高效的特征提取。**
 两者结构完全一致，Ghost Module **是作为主卷积的一层 PWConv + 一层廉价卷积 DWConv**，而 GhostOne Module 则是将这两层卷积都替换为 MobileOne Block。
-![](image-3.png)
+![](image-3.webp)
 
 可以看到 GhostOne Module 其实和 Ghost Module 的整体结构非常相像，两者的最大区别就是 GhostOne Module 利用 MobileOne 中的**多分支卷积结构代替了 Ghost Module 中单一的卷积操作**。在训练过程中两者的结构可能差异比较大，**一旦经过重参数化后，在推理过程中两者的结构理论上是一模一样的，计算量和参数量也都是一样的**，因此 GhostOne Module 对比原始的 Ghost Module，在推理速度上是一样的。
 
@@ -475,7 +475,7 @@ class GhostOneModule(Module):
 ```
 
 ### GhostOne bottleneck
-![](image-4.png)
+![](image-4.webp)
 通过对比Ghost Bottleneck可以看出，GhostOne Bottleneck缺少了Skip Connection，这里参考的是YoloV7的做法，YoloV7的作者发现，**当两个重参数化模块串联时，这个Skip Connection会破坏模型的特征表达能力，最终便有了上面的GhostOne Bottleneck结构**
 
 ```python
