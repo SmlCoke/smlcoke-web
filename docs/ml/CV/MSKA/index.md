@@ -59,7 +59,7 @@ We divide the keypoint sequences into four sub-sequences: **left hand, right han
 
 This segmentation helps the model more **accurately capture the relationships between different parts**, facilitating the provision of richer diversity of information
 
-![alt text](image.png)
+![alt text](image.webp)
 
 #### 4.2.2 Keypoint attention module
 
@@ -71,7 +71,7 @@ This segmentation helps the model more **accurately capture the relationships be
 
 完整的注意力模块结构如图3所示。
 
-![alt text](image-1.png)
+![alt text](image-1.webp)
 
 绿色矩形框中，输入数据 $X \in R^{C×T ×N}$ 首先会与 spatial positional encodings （**空间位置编码**） 进行融合，随后通过两个 linear mapping functions （**线性映射函数**）得到 $X \in R^{C_e×T ×N}$（其中 $C_e$ 通常小于 $C_{\text{out}}$ 以**降低特征冗余度和计算复杂度**）。The **attention map** is subjected to spatial
 **global normalization**. 需要特别说明的是，在计算注意力图谱时，我们采用**Tanh激活函数**而非Vaswani等人（2017）使用的softmax函数——这是因为Tanh函数的输出值域不受正数限制，既能**捕捉负相关关系又具有更高的灵活性**（Shi等人，2020）。最终，通过将注意力图谱与原始输入进行逐元素相乘，即可得到输出特征。
