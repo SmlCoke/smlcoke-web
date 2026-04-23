@@ -79,6 +79,7 @@ extra_css:
 
 extra_javascript:
   - javascripts/extra.js
+  - javascripts/crypto.js
   - https://unpkg.com/katex@0/dist/katex.min.js # 先引入 KaTeX 核心
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js # 引入 KaTeX 自动渲染插件
   - javascripts/katex.js # 最后引入初始化脚本

@@ -37,41 +37,8 @@
         <label style="font-weight: bold; display: block; margin-bottom: 5px;">输出结果：</label>
         <textarea id="outputText" rows="4" readonly style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #eee; background: #f9f9f9; color: #1980a8; font-family: monospace;"></textarea>
     </div>
+
+    <p id="cryptoStatus" style="display: none; margin-top: 14px; color: #b42318; font-size: 0.92rem;">
+        工具初始化失败，请刷新页面后重试。
+    </p>
 </div>
-
-<script type="module">
-    // 注意路径：这里引用的是当前目录 pkg 文件夹下的 js 文件
-    import init, { wasm_encrypt, wasm_decrypt } from '../pkg/ciphery.js';
-
-    async function start() {
-        try {
-            // 初始化 WASM
-            await init();
-            console.log("Ciphery WASM initialized!");
-
-            const encryptBtn = document.getElementById('encryptBtn');
-            const decryptBtn = document.getElementById('decryptBtn');
-            const inputText = document.getElementById('inputText');
-            const outputText = document.getElementById('outputText');
-            const algo = document.getElementById('algo');
-            const key = document.getElementById('key');
-
-            // 绑定加密逻辑
-            encryptBtn.onclick = () => {
-                const res = wasm_encrypt(algo.value, inputText.value, key.value);
-                outputText.value = res;
-            };
-
-            // 绑定解密逻辑
-            decryptBtn.onclick = () => {
-                const res = wasm_decrypt(algo.value, inputText.value, key.value);
-                outputText.value = res;
-            };
-
-        } catch (err) {
-            console.error("WASM Load Error: ", err);
-        }
-    }
-
-    start();
-</script>
