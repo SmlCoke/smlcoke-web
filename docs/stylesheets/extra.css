@@ -19,10 +19,10 @@
   --site-accent-soft-strong: rgba(14, 165, 233, 0.18);
   --site-shadow-sm: 0 10px 30px rgba(15, 23, 42, 0.06);
   --site-shadow-md: 0 24px 60px rgba(15, 23, 42, 0.12);
-  --site-code-bg: #0b1220;
-  --site-code-bg-soft: #111c30;
-  --site-code-border: rgba(56, 189, 248, 0.2);
-  --site-code-text: #dbeafe;
+  --site-code-bg: #ffffff;
+  --site-code-bg-soft: #f7fbff;
+  --site-code-border: rgba(14, 165, 233, 0.16);
+  --site-code-text: #1f2937;
   --site-math-bg: linear-gradient(135deg, rgba(2, 132, 199, 0.06), rgba(14, 165, 233, 0.03));
   --site-quote-bg: linear-gradient(135deg, rgba(14, 165, 233, 0.06), rgba(15, 118, 110, 0.03));
   --site-table-stripe: rgba(148, 163, 184, 0.08);
@@ -60,10 +60,10 @@
   --site-accent-soft-strong: rgba(34, 211, 238, 0.18);
   --site-shadow-sm: 0 18px 40px rgba(2, 6, 23, 0.28);
   --site-shadow-md: 0 28px 80px rgba(2, 6, 23, 0.4);
-  --site-code-bg: #020817;
-  --site-code-bg-soft: #0a1324;
-  --site-code-border: rgba(34, 211, 238, 0.24);
-  --site-code-text: #e2f3ff;
+  --site-code-bg: #ffffff;
+  --site-code-bg-soft: #f7fbff;
+  --site-code-border: rgba(34, 211, 238, 0.2);
+  --site-code-text: #1f2937;
   --site-math-bg: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(2, 132, 199, 0.08));
   --site-quote-bg: linear-gradient(135deg, rgba(6, 182, 212, 0.09), rgba(16, 185, 129, 0.06));
   --site-table-stripe: rgba(51, 65, 85, 0.38);
@@ -96,11 +96,30 @@ kbd {
 }
 
 body {
-  background:
-    radial-gradient(1400px 520px at 12% -10%, rgba(14, 165, 233, 0.12), transparent 62%),
-    radial-gradient(1200px 420px at 88% -18%, rgba(45, 212, 191, 0.08), transparent 62%),
-    var(--site-bg);
+  position: relative;
+  background: var(--site-bg);
   color: var(--site-text);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(60rem 18rem at 12% -2%, rgba(14, 165, 233, 0.12), transparent 72%),
+    radial-gradient(42rem 14rem at 88% 4%, rgba(59, 130, 246, 0.08), transparent 74%),
+    linear-gradient(180deg, rgba(14, 165, 233, 0.035), transparent 24%);
+  background-repeat: no-repeat;
+}
+
+[data-md-color-scheme="slate"] body::before {
+  background:
+    radial-gradient(58rem 18rem at 12% -2%, rgba(34, 211, 238, 0.12), transparent 72%),
+    radial-gradient(42rem 14rem at 88% 4%, rgba(56, 189, 248, 0.09), transparent 74%),
+    linear-gradient(180deg, rgba(6, 182, 212, 0.05), transparent 24%);
+  background-repeat: no-repeat;
 }
 
 .md-grid {
@@ -207,6 +226,34 @@ body {
 .md-nav__item .md-nav__link {
   border-radius: 10px;
   padding: 0.38rem 0.55rem;
+}
+
+.md-nav__item--nested > .md-nav__container {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  border-radius: 10px;
+}
+
+/* Nested nav items use a different DOM structure in Material.
+   We normalize it so expandable sections align with regular links. */
+.md-nav__item--nested > .md-nav__container > a.md-nav__link {
+  flex: 1;
+  margin: 0;
+  padding: 0.38rem 0.55rem;
+  border-radius: 10px;
+}
+
+.md-nav__item--nested > .md-nav__container > label.md-nav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  min-width: 2rem;
+  margin: 0;
+  padding: 0.38rem 0.35rem 0.38rem 0;
+  border-radius: 10px;
 }
 
 .md-nav__item .md-nav__link:is(:hover, :focus-visible),
@@ -354,6 +401,7 @@ body {
   border: 1px solid var(--site-code-border);
   border-radius: 18px;
   box-shadow: var(--site-shadow-md);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
 /* Keep code containers visually stable in tabs, notes and regular articles. */
@@ -361,9 +409,16 @@ body {
   overflow: hidden;
 }
 
+.md-typeset .highlight:hover,
+.md-typeset pre:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--site-accent) 28%, var(--site-code-border));
+  box-shadow: 0 24px 52px rgba(15, 23, 42, 0.12);
+}
+
 .md-typeset .highlight pre {
   margin: 0;
-  padding: 1rem 1.1rem;
+  padding: 0.86rem 1rem;
   background: transparent;
   border-radius: 18px;
 }
@@ -372,6 +427,73 @@ body {
 .md-typeset pre code {
   background: transparent;
   color: var(--site-code-text);
+}
+
+/* VS Code-like token palette for dark code blocks. */
+.md-typeset .highlight .c,
+.md-typeset .highlight .c1,
+.md-typeset .highlight .cm,
+.md-typeset .highlight .cp,
+.md-typeset .highlight .cs,
+.md-typeset .highlight .ch {
+  color: #6b7280;
+}
+
+.md-typeset .highlight .k,
+.md-typeset .highlight .kc,
+.md-typeset .highlight .kd,
+.md-typeset .highlight .kn,
+.md-typeset .highlight .kp,
+.md-typeset .highlight .kr,
+.md-typeset .highlight .kt {
+  color: #005cc5;
+}
+
+.md-typeset .highlight .s,
+.md-typeset .highlight .sa,
+.md-typeset .highlight .sb,
+.md-typeset .highlight .sc,
+.md-typeset .highlight .dl,
+.md-typeset .highlight .sd,
+.md-typeset .highlight .s1,
+.md-typeset .highlight .s2,
+.md-typeset .highlight .se,
+.md-typeset .highlight .sh,
+.md-typeset .highlight .si,
+.md-typeset .highlight .sx {
+  color: #a31515;
+}
+
+.md-typeset .highlight .m,
+.md-typeset .highlight .mb,
+.md-typeset .highlight .mf,
+.md-typeset .highlight .mh,
+.md-typeset .highlight .mi,
+.md-typeset .highlight .mo {
+  color: #0f766e;
+}
+
+.md-typeset .highlight .na,
+.md-typeset .highlight .nb,
+.md-typeset .highlight .nc,
+.md-typeset .highlight .nd,
+.md-typeset .highlight .ne,
+.md-typeset .highlight .nf,
+.md-typeset .highlight .fm,
+.md-typeset .highlight .nn,
+.md-typeset .highlight .nx {
+  color: #7c3aed;
+}
+
+.md-typeset .highlight .nt,
+.md-typeset .highlight .ow,
+.md-typeset .highlight .o {
+  color: #1f2937;
+}
+
+.md-typeset .highlight .err,
+.md-typeset .highlight .gr {
+  color: #f44747;
 }
 
 .md-typeset .highlighttable {
@@ -459,16 +581,55 @@ body {
 
 /* Block math gets a dedicated presentation frame while inline math stays subtle. */
 .md-typeset div.arithmatex {
-  padding: 1rem 1.25rem;
+  position: relative;
+  width: fit-content;
+  max-width: min(100%, 44rem);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.56rem 2.7rem 0.56rem 0.9rem;
   border: 1px solid var(--site-border-strong);
   border-radius: 16px;
   background: var(--site-math-bg);
   box-shadow: var(--site-shadow-sm);
   overflow-x: auto;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.md-typeset div.arithmatex:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--site-accent) 32%, var(--site-border-strong));
+  box-shadow: 0 20px 46px rgba(15, 23, 42, 0.12);
 }
 
 .md-typeset div.arithmatex .katex-display {
   margin: 0;
+}
+
+.md-typeset .math-copy-button {
+  position: absolute;
+  top: 0.38rem;
+  right: 0.42rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 1px solid var(--site-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--site-panel-strong) 82%, transparent);
+  color: var(--site-accent-strong);
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.md-typeset .math-copy-button:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--site-accent-soft) 92%, var(--site-panel-strong));
+}
+
+.md-typeset .math-copy-button[data-copied="true"] {
+  color: #10b981;
 }
 
 .md-typeset span.arithmatex {
