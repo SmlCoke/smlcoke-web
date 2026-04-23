@@ -52,7 +52,7 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card yellow" href="DIC/Glossary/">
+<a class="note-card yellow" href="DIC/Gloassary/">
   <span class="card-icon">💾</span>
   <div class="card-title">数字IC设计术语表</div>
   <p class="card-desc">数字集成电路设计中常用术语的解释与总结</p>

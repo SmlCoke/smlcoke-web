@@ -6,12 +6,37 @@ theme:
   name: material
   custom_dir: overrides
   language: zh
+  font:
+    text: false
+    code: false
+  palette:
+    - scheme: default
+      primary: white
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - scheme: slate
+      primary: black
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
   features:
-    - navigation.tabs # 将左侧导航栏变为顶部的标签页，看起来更像官网
+    - navigation.tabs # 将左侧导航栏变为顶部标签页
+    - navigation.tabs.sticky # 顶部标签页滚动时保持可见
     - navigation.top # 添加返回顶部按钮
-    - header.autohide # 页面向下滚动时自动隐藏导航栏
+    - navigation.instant # 页面切换更顺滑
+    - navigation.instant.progress # 页面切换时显示进度条
+    - navigation.tracking # 右侧目录随滚动高亮
     - navigation.indexes # 允许 index.md 作为分区首页
-    - content.code.copy # 🔥 新增：代码块右上角的一键复制按钮
+    - toc.follow # 右侧目录跟随滚动
+    - search.suggest # 搜索建议
+    - search.highlight # 搜索高亮
+    - header.autohide # 页面向下滚动时自动隐藏导航栏
+    - content.code.copy # 代码块右上角的一键复制按钮
+    - content.code.annotate # 启用代码注释标记
+    - content.tabs.link # 同名标签页联动切换
 
 # 配置插件（启用搜索和博客功能）
 plugins:
@@ -20,25 +45,36 @@ plugins:
 
 # 配置 Markdown 扩展（启用数学公式支持）
 markdown_extensions:
+  - admonition # 极其漂亮的提示/警告框！
+  - attr_list # 允许给图片加 class、宽度等样式
+  - def_list # 定义列表，适合术语解释
+  - footnotes # 脚注支持
+  - md_in_html # 允许在 HTML 容器中混写 Markdown
   - nl2br # 将换行符转换为 <br> 标签，启用单回车换行支持
+  - tables # 表格支持
+  - toc:
+      permalink: true
+      toc_depth: 3
   - pymdownx.arithmatex:
       generic: true
-  # 👇 下面全是让网页变美的魔法扩展 👇
-  - admonition # 极其漂亮的提示/警告框！
   - pymdownx.details # 允许折叠提示框
-  - pymdownx.superfences # 高级代码块
   - pymdownx.highlight: # 代码高亮美化
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - pymdownx.keys # 按键提示样式
   - pymdownx.inlinehilite # 行内代码高亮
   - pymdownx.mark # 允许使用 ==高亮文字==
+  - pymdownx.superfences # 高级代码块
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.tilde # 允许使用 ~~删除线~~
-  - attr_list # 允许给图片加居中等样式
 
 # 引入自定义 CSS（用于背景动画和按钮）
 extra_css:
-  - stylesheets/extra.css?v=20260224 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
+  - stylesheets/extra.css?v=20260423 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
   - https://unpkg.com/katex@0/dist/katex.min.css # 添加 KaTeX CSS
 
 extra_javascript:
@@ -49,12 +85,12 @@ extra_javascript:
   
 nav:
   - 首页: index.md
-  - 博客: blog/ # 博客插件会自动接管这个目录
+  - 博客: blog/index.md
   - 微电子: 
     - me/index.md
     - 🟩 Signal and Systems: me/SS/index.md
     - 🟩 Digital Integrated Circuits: 
-      - 🔶 Glossary: me/DIC/Glossary.md
+      - 🔶 Glossary: me/DIC/Gloassary/index.md
       - 🔶 Course Design: 
         - 🔹Init: me/DIC/CourseDesign/init.md
         - 🔹Introduction: me/DIC/CourseDesign/introduction.md
@@ -118,4 +154,7 @@ nav:
     - 🔹Docker: Tools/docker/docker.md
     - 🔹Git & GitHub: Tools/git/git.md
     - 🔹WSL2: Tools/wsl2/WSL2子系统开发笔记.md
+    - 🔹Markdown 速查: Tools/markdown/index.md
+    - 🔹Markdown 写作规范: Tools/markdown/writing_style_guide.md
+    - 🔹站点开发笔记: Tools/markdown/mkdocs_theme_notes.md
   - 留言板: comments/index.md
