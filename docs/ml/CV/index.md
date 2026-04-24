@@ -100,4 +100,10 @@ hide:
   <p class="card-desc">Attention 与 Multi Stream 加持的 SLP </p>
 </a>
 
+<a class="note-card Stone" href="MSKA-computing/">
+  <span class="card-icon">🚀</span>
+  <div class="card-title">MSKA</div>
+  <p class="card-desc">MSKA-SLR 架构的详细计算拆解 </p>
+</a>
+
 </div>
