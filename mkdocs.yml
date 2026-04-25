@@ -117,6 +117,8 @@ nav:
       - 🔹VS Code + Verilog : me/EDA/vscode/vscode.md
       - 🔹MobaXterm + Linux : me/EDA/mobaxterm/mobaxterm.md 
       - 🔹OSS CAD Suite: me/EDA/OSS/oss.md
+      - 🔹Tcl: me/EDA/tcl/index.md
+      - 🔹Report: me/EDA/report/index.md
   - 机器学习:
     - ml/Basic/index.md
     - 🔹全连接神经网络: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
