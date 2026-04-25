@@ -113,5 +113,17 @@ hide:
   <p class="card-desc">Symbiyosys 工具链配置</p>
 </a>
 
+<a class="note-card gray" href="EDA/tcl/">
+  <span class="card-icon">📜</span>
+  <div class="card-title">TCL 脚本</div>
+  <p class="card-desc">EDA 工具中的 TCL 脚本使用指南</p>
+</a>
+
+<a class="note-card gray" href="EDA/report/">
+  <span class="card-icon">🧾</span>
+  <div class="card-title">report</div>
+  <p class="card-desc">EDA 工具报告阅读指南</p>
+</a>
+
 </div>
 
