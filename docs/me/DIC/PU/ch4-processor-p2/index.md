@@ -1,4 +1,4 @@
-# 第四章：处理器架构与流水线设计
+# 第四章：处理器架构与流水线设计 (Part 2)
 
 ## VII. Exceptions and Interrupts
 
