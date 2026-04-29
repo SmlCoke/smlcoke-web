@@ -64,6 +64,12 @@ hide:
 	<p class="card-desc">高度数据并行的计算架构</p>
 </a>
 
+<a class="note-card blue" href="ch9-fading_channel/">
+	<span class="card-icon">📨</span>
+	<div class="card-title">Chapter 9 · 衰落信道</div>
+	<p class="card-desc">多径效应、多普勒频移与信道估计</p>
+</a>
+
 </div>
 
 <div class="section-subtitle">🧪 重点专题</div>
