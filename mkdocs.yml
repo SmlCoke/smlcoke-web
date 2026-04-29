@@ -111,9 +111,10 @@ nav:
           - me/DIC/PU/index.md
           - 🔹Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
           - 🔹Ch2. ISA: me/DIC/PU/ch2-ISA/note.md
-          - 🔹Ch3. Arithmetic: me/DIC/PU/ch3-arithmetic/arithmetic.md
+          - 🔹Ch3. Arithmetic: me/DIC/PU/ch3-arithmetic/index.md
           - 🔹Ch4. Processor: me/DIC/PU/ch4-processor/processor.md
           - 🔹Ch4. Processor (Part 2): me/DIC/PU/ch4-processor-p2/index.md
+          - 🔹Ch5. Memory: me/DIC/PU/ch5-memory/index.md
     - 🟩 Verilog HDL Basics: me/verilog/Study_note.md
     - 🟩 EDA Tools:
       - 🔹VS Code + Verilog : me/EDA/vscode/vscode.md

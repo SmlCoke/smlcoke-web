@@ -1,4 +1,3 @@
-
 # 第三章：计算机中的算术
 
 ## 一、整数表示（Integer Representation）

@@ -28,7 +28,7 @@ hide:
 	<p class="card-desc">Instruction Set Architecture</p>
 </a>
 
-<a class="note-card blue" href="ch3-arithmetic/arithmetic/">
+<a class="note-card blue" href="ch3-arithmetic/">
 	<span class="card-icon">🧮</span>
 	<div class="card-title">Chapter 3 · 计算机算术</div>
 	<p class="card-desc">Arithmetic for Computers</p>
@@ -44,6 +44,12 @@ hide:
 	<span class="card-icon">🚀</span>
 	<div class="card-title">Chapter 4 · 处理器 (Part 2)</div>
 	<p class="card-desc">处理器流水线设计进阶与指令级并行</p>
+</a>
+
+<a class="note-card blue" href="ch5-memory/">
+	<span class="card-icon">💾</span>
+	<div class="card-title">Chapter 5 · Memory</div>
+	<p class="card-desc">Memory Systems</p>
 </a>
 
 </div>
