@@ -1,4 +1,7 @@
 # 附录
+
+> 注：更详细的 RISC-V 指令集参考：[RISC-V 指令集参考手册](https://ai-embedded.com/risc-v/riscv-isa-manual/)
+
 ## I. RISC-V 32位指令编码格式
 RISC-V所有指令均为**32位固定长度**，分为6大核心格式，各格式的核心寄存器字段位置高度对齐，简化硬件解码。
 
