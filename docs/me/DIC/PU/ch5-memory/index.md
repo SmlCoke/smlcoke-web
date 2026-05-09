@@ -76,8 +76,8 @@
 
 **exclusive 的策略比较少，后续情况我们默认考虑 inclusive 情况**
 
-## III. Memory Technology
-### 3.1 Register File 寄存器堆
+
+## III. Register File 寄存器堆
 寄存器堆是存储层次结构的最顶层，紧邻CPU执行单元，是整个存储系统中访问速度最快的单元，也是RISC-V等ISA的核心组成部分。
 
 结构图（读逻辑与写逻辑）：
@@ -87,12 +87,12 @@
 
 
 
-#### 3.1.1 核心结构与特性
+### 3.1 核心结构与特性
 - 典型配置：RISC-V架构标准为32个32位通用整数寄存器
 - 读写端口：标准配置为**2个读端口、1个写端口（2R1W）**，支持单周期内同时读取2个寄存器、写入1个寄存器，完美匹配五级流水线的指令执行需求
 - 访问特性：寄存器访问延迟为1个时钟周期，无访问缺失，是CPU指令执行的核心数据载体
 
-#### 3.1.2 寄存器堆的Verilog实现示例
+### 3.2 寄存器堆的Verilog实现示例
 ```verilog
 module registerfile (
     Read1, Read2, WriteReg, WriteData, RegWrite,
@@ -122,10 +122,10 @@ end
 endmodule
 ```
 
-### 3.2 SRAM Technology 静态随机存储器
+## IV. SRAM Technology 静态随机存储器
 SRAM（Static Random-Access Memory）由于其极高的访问速度，主要用于实现CPU片内的 **Cache（缓存）**。从体系结构的发展来看，SRAM 经历了从片外（Off-chip）向片内（On-chip）集成的过程，极大降低了访存延迟。
 
-#### 3.2.1 SRAM 核心结构与读写机制
+### 4.1 SRAM 核心结构与读写机制
 标准的 SRAM 存储单元采用 **6T结构（6 Transistors/bit）**，利用交叉耦合的反相器锁存数据。
 
 *   **核心特性**：
@@ -144,7 +144,7 @@ SRAM 的基本读写逻辑依赖于 **字线（Wordline, WL）** 和 **位线对
     2.  拉高字线（Wordline）打开传输管。
     3.  由于**外围驱动器的驱动能力远大于内部的交叉耦合反相器**，位线上的强信号会**覆盖（Overpower）**存储单元内的旧值，完成写入。
 
-#### 3.2.2 SRAM 组织架构与译码逻辑
+### 4.2 SRAM 组织架构与译码逻辑
 为了在芯片面积、功耗和访问延迟之间取得平衡，大容量 SRAM 阵列不会采用扁平的单级译码，而是采用 **多路复用（Multiplexing）** 和 **两级译码（2-level decoding）** 结构。
 
 **(1) Multiplexing**
@@ -163,10 +163,10 @@ SRAM 的基本读写逻辑依赖于 **字线（Wordline, WL）** 和 **位线对
 ![alt text](image.webp)
 
 
-### 3.3 DRAM Technology & Organization 动态随机存储器
+## V. DRAM Technology & Organization 动态随机存储器
 DRAM（Dynamic Random-Access Memory）由于其极高的存储密度和低廉的成本，是计算机 **Main memory（主存）** 的绝对主力。
 
-#### 3.3.1 DRAM 基本存储单元特性
+### 5.1 DRAM 基本存储单元特性
 不同于 SRAM 的 6T 结构，DRAM 采用极简的 **1T1C结构（单管单电容）**：
 
 **数据存储**：数据以电荷（Charge）的形式存储在微小的电容（Capacitor）中。
@@ -180,7 +180,7 @@ DRAM（Dynamic Random-Access Memory）由于其极高的存储密度和低廉的
 
 ![alt text](image-6.webp)
 
-#### 3.3.2 DRAM 阵列组织与访问模式
+### 5.2 DRAM 阵列组织与访问模式
 DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**，核心访问逻辑是分两步走：先**选中整行**，**再挑出特定的列**。
 
 *   **行级访问**：DRAM 每次访问（Access）都会激活一整个 Row，并将其放入行缓冲区（Column latches / Row buffer）中。
@@ -190,14 +190,14 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 
 ![alt text](image-7.webp)
 
-#### 3.3.3 决定 DRAM 性能的核心因素
+### 5.3 决定 DRAM 性能的核心因素
 现代存储系统通过以下三大核心技术来榨干/提升 DRAM 的性能（特别是提升带宽）：
 1.  **Row buffer (行缓冲区)**：允许**并行读取**和刷新多个字，是实现**Burst mode**的物理基础。
 2.  **Synchronous DRAM (SDRAM, 同步DRAM)**：配合系统时钟，允许连续的**突发访问**（Consecutive accesses in bursts），**无需为每个字单独发送地址（Without needing to send each address）**，大幅提升了总线**带宽（Bandwidth）**。
 3.  **DRAM banking (多体交叉/多Bank结构)**：允许同时（Simultaneous access）访问多个不同的 DRAM Bank，通过并行流水线操作掩盖单一 Bank 漫长的内部访问延迟，成倍提升吞吐量。
 
 
-#### 3.3.4 Increasing Memory Bandwidth 提升内存带宽的系统架构设计
+### 5.4 Increasing Memory Bandwidth 提升内存带宽的系统架构设计
 为了缓解「内存墙」问题，系统架构师需要优化 CPU 与主存之间的互连架构。以下通过一个经典的计算模型，对比三种内存组织架构的 **Miss penalty（缺失代价）** 和 **Bandwidth（带宽）**。
 
 !!! note "基础假设 (Assumption)"
@@ -230,7 +230,7 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 *   *评价：用极小的硬件代价（未拓宽总线）换取了接近宽总线架构的极高带宽。*
 
 
-#### 3.3.5 DRAM 物理层级组织与存储器分类
+### 5.5 DRAM 物理层级组织与存储器分类
 
 **(1) DRAM 物理内存条架构 (DIMM Organization)**
 现代计算机的主存呈现出严密的自顶向下的层级组织结构：
@@ -256,5 +256,159 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 **HBM (High Bandwidth Memory)**：采用 3D 硅穿孔封装技术的现代高端显卡/AI加速器超高带宽显存。
 
 
+## VI. Cache Technology
+
+### 5.1 Cache 基础概念与直接映射机制 (Cache Basics & Direct Mapped Cache)
+
+作为距离 CPU 最近的存储层级，Cache 的核心目标是利用**程序的局部性（Locality）**来弥合 CPU 计算速度与主存（DRAM）读取速度之间的巨大鸿沟。在任何层级的存储器体系中，都需要解决以下四个核心问题：
+1. **Block placement（块放置）**：数据块应该放在 Cache 的什么位置？
+2. **Finding a block（查找块）**：如何判断数据块是否在 Cache 中？
+3. **Replacement on a miss（缺失替换）**：当 Cache 满了且发生 Miss 时，替换掉哪个块？
+4. **Write policy（写策略）**：发生写操作时，如何保证 Cache 与**主存**的数据一致性？
+
+#### 5.1.1 直接映射缓存 (Direct Mapped Cache)
+直接映射是**块放置（Block placement）**策略中最简单的一种：主存中的每一个数据块，在 Cache 中都有且仅有一个确定的位置可以放置（Only one choice）。
+
+*   **映射规则**：`Cache Index = (Block address) modulo (#Blocks in cache)`
+*   **硬件优化**：在实际设计中，为了避免复杂的求余（Modulo）运算，Cache 的块数（#Blocks）通常会被设计为 2 的幂次方。这样求余操作可以直接简化为**截取物理地址的低位（low-order address bits）**作为索引。
+*   **特性**：多个主存块会被映射到同一个 Cache 块上（多对一关系）。
+
+#### 5.1.2 标记 (Tag) 与 有效位 (Valid Bit)
+由于多个主存块对应同一个 Cache 位置，当 CPU 访问某个 Cache 行时，需要知道当前存储的到底是哪一个主存块，这就是 **Tag（标记）**的作用。
+
+*   **Tag（标记）**：地址的**高位部分（High-order bits）**。将地址的高位与 Cache 行中存储的 Tag 进行比较，**匹配**则说明命中目标主存块。
+*   **Valid Bit（有效位）**：1 bit，用于指示当前 Cache 行中**是否包含有效数据**（1 = present, 0 = not present）。上电初始化时，所有的 Valid bit 都应清零。
+
+#### 5.1.3 地址划分与硬件逻辑 (Address Subdivision)
+当 CPU 发出一个物理地址时，该地址会被硬件划分为三个字段：
+
+*   **Tag（标记位）**：用于和 Cache 内部存储的 Tag 比对。
+*   **Index（索引位）**：用于直接寻址（选中）特定的 Cache 行。它的位宽决定了 Cache 有多少个 Block（例如 6 bit 对应 64 个 Blocks）。
+*   **Offset（偏移位）**：包含 Byte offset 和 Block offset，用于确定所需的数据在当前 Block 的具体哪个字节。它的位宽取决于 Block 的大小（例如 **16 bytes/block** 需要 **4 bit** 作为 offset，因为 $2^4 = 16$）。
+
+> **例子（PPT第11页）：64 Blocks, 16 Bytes/block 的直接映射 Cache**
+> 假设 CPU 访问十进制地址 `1200`（二进制 `1 001011 0000`）：
+> * Offset：16 Bytes 需要 4 bit，所以低 4 位 `0000` 是 Offset。
+> * Index：64 个 Block 需要 6 bit，所以紧接着的 `001011`（十进制 11）是 Index。
+> * Tag：剩余的高位 `1` 是 Tag。
+
+#### 5.1.4 Miss and Hit
+
+**(1) Hit (命中)**：CPU 去 Cache 中找数据，发现**数据在里面**（硬件判断标准：对应位置的 Valid 位为 1，并且 Cache 里存的 Tag 和 CPU 发出的地址的 Tag 完全一致）。此时 CPU 可以全速继续运行。
+**(2) Miss (缺失)**：CPU 去 Cache 中找数据，发现**数据不在里面**（硬件判断标准：对应位置 Valid 为 0，**或者**虽然 Valid 为 1，但存的 Tag 跟 CPU 请求的 Tag 不一样）。此时 Cache 必须去主存搬运数据，CPU 必须停顿等待（Stall）。
+
+对于 8 blocks, 1 word/block 的 Cache
+
+1. 上电前，所有 block 的 **valid** 都是 **N** ；
+2. 写入 $22(10110_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **110** 个 block 写入地址 **22** 的数据；
+3. 写入 $26(11010_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **010** 个 block 写入地址 **26** 的数据；
+4. 写入 $18(10010_2)$ 时（冷启动缺失，Cold miss），valid = Y，Cache 的第 **010** 个 block 已经存在了地址 **26** 的数据，该数据会被更新为地址 **18** 的数据
+5. 访问 $22(10110_2)$ 时，Cache 的第 **110** 个 block 存在数据，**Valid = Y** 且 **tag 成功匹配**，缓存给命中（hit）
+6. 访问 $26(11010_2)$ 时，Cache 的第 **010** 个 block 存在数据，**Valid = Y** 但 **tag 不匹配**，**miss**。此时会发生**替换**（replacement），将地址 **18** 的数据替换为地址 **26** 的数据。
+7. 访问 $10(01010_2)$ 时，Cache 的第 **010** 个 block 存在数据，**Valid = Y** 但 **tag 不匹配**，**miss**。此时会发生**替换**（replacement），将地址 **26** 的数据替换为地址 **10** 的数据。
 
 
+#### 5.1.5 Cache Block Size（块大小的权衡）
+改变每个 Cache Block 的大小会对性能（Miss rate）产生显著影响，这是一个经典的体系结构 Trade-off：
+
+**增大 Block Size 的好处**：
+   - **降低 Miss rate**：能够更好地利用**空间局部性（Spatial Locality）**。因为当你访问地址 A 时，地址 A 附近的数据大概率也会被访问到，**较大的块会一次性将它们全部预取进来**。
+
+**增大 Block Size 的代价（在 Cache 总容量固定的前提下）**：
+   -  **增加竞争（More competition）**：块变大了，Cache 能容纳的**块数（Blocks）就会减少**，导致冲突增加，反而可能**提高 Miss rate**。
+   -  **缓存污染与伪共享（Pollution & False sharing）**：可能会取来大量根本用不到的数据占用宝贵的 Cache 空间；在多核架构中还会引发缓存一致性问题（False sharing）。
+   -  **增加缺失惩罚（Larger miss penalty）**：发生 Miss 时，从主存搬运一整个大块的数据需要花费更长的时间。
+
+**对应的硬件缓解策略**：
+   -  **Early restart**：只要 CPU 需要的那个字（Word）到了，就立马恢复 CPU 执行，不等待整个 Block 搬运完成。
+   -  **Critical-word-first**：要求内存控制器优先回传 CPU 触发 Miss 的那一个字。
+
+
+### 5.2 Cache 读写机制与一致性策略 (Cache Misses & Write Policies)
+
+在 Cache 的操作中，“读”相对简单，只会改变 CPU 的流水线状态；而“写”操作因为会改变数据，必须妥善处理 Cache 与底层主存（DRAM）之间的数据一致性（Data Consistency）问题。
+
+#### 5.2.1 缓存读操作 (Cache Read)
+**Read Hit（读命中）**：所需数据在 Cache 中，CPU 直接读取数据，全速流水线执行。
+
+**Read Miss（读缺失）**：所需数据不在 Cache 中。
+   1. CPU 流水线必须**暂停（Stall）**。
+   2. 通知下一级存储（下级 Cache 或主存）将包含该地址的**整个数据块（Block）**搬运到当前 Cache 中。
+   3. 数据就位后，CPU 重新启动执行（如果是指令缺失则重启取指，数据缺失则完成数据访问）。
+
+#### 5.2.2 缓存写操作 (Cache Write)
+写操作需要分别考虑**写命中（Write Hit）**和**写缺失（Write Miss）**的情况。
+
+##### (1) 写命中 (Write Hit) 的两种策略
+当 CPU 要写的数据刚好在 Cache 中时，修改了 Cache 的数据就会导致它与主存的数据不一致。硬件上有两种核心解决流派：
+
+1.  **Write-Through（写通 / 直写）**
+    **机制**：每次写 Cache 的同时，也**同步写回主存**，保证上下层数据绝对一致。
+    **痛点**：主存写入速度极慢，每次写操作都会严重拖慢 CPU。
+    **硬件补救**：引入 **Write Buffer（写缓冲）**。CPU 将数据**同时丢给 Cache 和 Write Buffer** 后即可继续执行下一条指令，Write Buffer 负责在后台将数据慢慢写入主存。（**仅当 Buffer 满时 CPU 才需要 Stall**）。
+2.  **Write-Back（写回）**
+    **机制**：CPU **只更新 Cache 中的数据**，不马上同步主存。只有当这个 Cache 块**因为冲突被 “踢出（Evict/Replace）” 时，才将它写回主存**。
+    **硬件实现**：在 Cache 行中增加一个 **Dirty Bit（脏位）**。数据**被修改时设为 1（Dirty）**。发生替换时，如果 **Dirty=1 则写回主存**；如果 Dirty=0 则直接丢弃当前 Cache 块即可。
+    **优点**：极大地节省了内存带宽，适合被频繁修改的局部变量。
+
+##### 2.2 写缺失 (Write Miss) 的两种策略
+当 CPU 要写的数据不在 Cache 中时：
+
+1.  **Write-Allocate（写分配）**：先把**包含该地址的整个 Block** 从**主存捞到 Cache 里**，然后再在 **Cache 中对它进行写修改**。
+2.  **No Write-Allocate（不写分配）**：直接绕过当前 Cache，将**新数据送到 Write Buffer 最终写入主存**。不把这个 Block 读进 Cache。
+
+---
+
+#### 5.2.3 架构师视角的“黄金搭档” (Typical Combinations)
+
+在实际的 CPU 微架构设计中，上述策略通常按以下两种方式进行固定搭配：
+
+**搭档 1：Write-Back（写回）通常搭配 Write-Allocate（写分配）**
+
+*   **架构师视角的理由**：**利用局部性原理（Locality）**。
+*   **场景举例**：比如计算 `x = a + b` 并写入变量 `x` 时发生了 Write Miss。程序在接下来的一小段时间内，极大概率会再次读取或修改这个 `x`。如果趁着这次 Miss 直接把 `x` 捞进 Cache（写分配）并标为脏数据，那么接下来对 `x` 以及它相邻数据的几百次读写，全部都会变成极其快速的 Cache Hit，收益极高。
+
+**搭档 2：Write-Through（写通）通常搭配 No Write-Allocate（不写分配）**
+*   **架构师视角的理由**：**避免缓存污染（Cache Pollution）与带宽浪费**。
+*   **场景举例**：比如进行大数组的初始化 `for(int i=0; i<100; i++) A[i] = 0;`。此时 CPU 只是无脑向内存塞入初始数据，短时间内并不会去读取它们。如果采用写分配，**不仅每次都要浪费带宽把毫无用处的旧块从内存读出来，还会把 Cache 里原本存着的其他高频热点数据给“挤掉”（缓存污染）**。因此，既然 Write-Through 无论如何都要把数据打向主存，直接绕过 Cache 丢进主存（No Write-Allocate）显然是最明智、最不影响 Cache 命中率的选择。
+
+
+### 5.3 组相联缓存与降低冲突缺失 (Set Associative Cache)
+
+在直接映射（Direct Mapped）Cache 中，不同的主存地址如果映射到同一个 Index（索引），就会发生频繁的相互驱逐（冲突缺失 Conflict Miss），导致 Cache 性能暴跌（即“缓存颠簸 Thrashing”）。为了解决这一问题，引入了**相联机制**。
+
+![alt text](image-11.webp)
+
+#### 5.3.1 Cache 组织结构的进化史
+假设 Cache 总容量固定（例如 8 个 Blocks）：
+
+*   **直接映射 (Direct Mapped / 1-way)**
+    **规则**：1 个组（Set）里只有 1 个空位（Block）。总共有 8 个 Set。
+    **查找方式**：根据 Index 找到唯一的固定坑位，只进行 **1 次** Tag 比较。
+    **特点**：冲突极为严重。
+*   **组相联 (Set Associative / N-way)**
+    **规则**：将几个 Block 绑在一起作为一个“组”。例如“2路组相联（2-way）”表示 1 个 Set 里有 2 个空位。总 Set 数量缩减为 4 个。
+    **地址变化**：因为 Set 数量减半，所以用于寻址的 Index 位宽减少（例如 3位变2位），省下来的位变成了 Tag 的一部分。
+    **查找方式**：根据 Index 找到对应的 Set 包厢，然后**并行（同时）使用 2 个比较器**，比对包厢里 2 个 Block 的 Tag。
+    **破局点**：之前冲突的数据（例如 18 和 26 映射到同一个 Set），现在可以和谐地共存在这 2 个空位中，完美化解冲突。
+*   **全相联 (Fully Associative)**
+    **规则**：干脆取消“分组（Set）”的概念。整个 Cache 就是一个拥有 8 个空位的大池子，任何主存数据可以放在**任意空位**。
+    **地址变化**：没有 Index，地址除了 Offset 之外，剩下全部是 Tag。
+    **查找方式**：由于不知道数据在哪里，必须**并行调用 8 个比较器**，同时对所有 Cache 行进行 Tag 比对。
+
+#### 2. 架构师视角的终极权衡 (The Architectural Trade-off)
+
+选择哪种 Cache 组织方式，是微架构设计中最经典的 Trade-off。这并不是拍脑袋决定的，而是依靠大量的 **软件仿真 (Simulation)**，运行标准基准测试集（如 SPEC CPU）跑出来的综合最优解：
+
+*   **硬件成本与功耗 (Hardware Cost & Power)**：直接映射最低，组相联居中，全相联最高（需要大量并行并行的比较电路）。
+*   **查找延迟 (Hit Latency)**：直接映射最快（可以直接选中数据），全相联最慢（需要极其复杂的电路来选通匹配的那一路数据）。
+*   **缺失率 (Miss Rate)**：全相联最低（只要 Cache 没满就不发生冲突），组相联居中，直接映射最高。
+
+**最终工业界结论**：
+
+*   **L1/L2/L3 Cache**：绝大多数采用 **N路组相联（Set Associative）**（通常 N = 4, 8, 16），在硬件复杂度和命中率之间取得最佳平衡（Sweet Spot）。
+*   **全相联**：由于硬件开销和延迟太大，绝不能用于数据 Cache，仅用于容量极小但极其关键的组件中（如内存管理单元的 TLB 缓存）。
+
+
+!!! question "多字节block"
+    以上我们没有提到的是**多字节block**的写入、读出情况，详见：[多字节block的读写详情](./multi-bytes_block.md)
