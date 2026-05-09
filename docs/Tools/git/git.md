@@ -17,10 +17,11 @@
 2. 在 GitHub 上创建一个新的空仓库，不要勾选 README、.gitignore 等选项。复制仓库 URL。
 3. **关联远程仓库**：`git remote add origin <github-url>`
 4. 添加文件：`git add <file>` 或 `git add .`（添加所有修改）
-5. 提交修改：`git commit -m "Commit message"`
-6. 首次推送：`git push -u origin main`，注意首次推送时要带上 `-u` 参数绑定分支。
-7. 后续推送：`git push`
-8. 拉取远程更新：`git pull`
+5. 提交暂存区：`git commit -m "Commit message"`
+6. 提交暂存区但是不覆盖上一条 commit message: "git commit --amend --no-edit"
+7. 首次推送：`git push -u origin main`，注意首次推送时要带上 `-u` 参数绑定分支。
+8. 后续推送：`git push`
+9. 拉取远程更新：`git pull`
 
 #### 1.2.2 克隆仓库版
 1. 克隆仓库：`git clone <github-url>`
