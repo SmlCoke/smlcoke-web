@@ -70,6 +70,24 @@ hide:
 	<p class="card-desc">多径效应、多普勒频移与信道估计</p>
 </a>
 
+<a class="note-card blue" href="ch10-bandpass_modulation/">
+	<span class="card-icon">😵‍💫</span>
+	<div class="card-title">Chapter 10 · 带通调制</div>
+	<p class="card-desc">带通信号的调制与解调技术</p>
+</a>
+
+<a class="note-card blue" href="ch11-mqam/">
+	<span class="card-icon">😵‍💫</span>
+	<div class="card-title">Chapter 11 · MQAM</div>
+	<p class="card-desc">多进制幅移键控调制技术</p>
+</a>
+
+<a class="note-card blue" href="ch11-ofdm/">
+	<span class="card-icon">😵‍💫</span>
+	<div class="card-title">Chapter 11 · OFDM</div>
+	<p class="card-desc">正交频分复用调制技术</p>
+</a>
+
 </div>
 
 <div class="section-subtitle">🧪 重点专题</div>
