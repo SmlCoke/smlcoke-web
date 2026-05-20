@@ -507,7 +507,7 @@ Simulation of a system with 64KB D-cache, 16-word blocks, SPEC2000
 
 ### 5.4 Sources of Miss
 
-- Compulsory misses (aka cold start misses) （强制性确实/确实）
+- Compulsory misses (aka cold start misses) （强制性缺失/冷缺失）
   - 首次访问某数据块时发生
   - 当然，如果 block 是多个 word 的话，再次访问同一 block 内的其他 word 时就不会了，因为可以一开始就 load 整个 block 进 cache
 - Capacity misses
@@ -653,3 +653,374 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 分块，每一块的元素都很少，可以**完全放入 Cache 中，充分利用空间局部性，极大提升性能**。
 
 ![alt text](image-15.webp)
+
+## VII. Virtual Memory
+
+### 6.1 Physical Memory and Virtual Memory （物理内存与虚拟内存）
+
+**物理内存**就是插在你电脑主板上的那一条条真实的内存条（DRAM）。
+
+- 它的**容量是有限的**（比如 16GB）。
+- 它的**地址是物理写死的**。如果你向物理地址 `0x0000` 写入数据，电信号就会精准地打在 DRAM 芯片的第一行第一列的电容上。
+
+**虚拟内存**是操作系统（OS）配合硬件给应用程序制造的一个**完美的幻觉**。
+- 当你运行一个程序（比如微信）时，操作系统会告诉微信：“兄弟，这是一段完全属于你个人的、连续的、庞大无比的内存空间（在 64 位系统下，这个空间大到近乎无限），里面除了你没有别人，你随便用！”
+- 同时，操作系统也会告诉另一个程序（比如游戏）同样的话。
+- **结果就是**：每个程序都以为自己独占了整个电脑的内存。微信往它的虚拟地址 `0x1000` 写数据，游戏也往它的虚拟地址 `0x1000` 写数据，两者完全不会冲突！
+
+**Motivation**
+
+- **内存不足**
+  - 需要高效的内存管理
+  - **进程 (Process)** 可能过大，超出physical memory的容量
+  - **活跃进程 (Active Process)** 数量超过了physical memory的承载能力
+
+- **多道程序设计（Multiprogramming）**
+  - 高效的protection scheme
+  - 简单的共享方式
+
+虚拟内存的**效果**：
+
+- 每个进程都拥有独立的 **private virtual address space**，用于存放其常用代码和数据（活跃部分）
+- 向每个程序，也向程序员，提供了虚拟内存容量无限的假象
+- 简化了程序的**加载执行**（reallocation）
+  > 例如启动时将程序从硬盘搬到内存时，如果内存碎片化非常严重，**很难找到一段连续的空间**，但是虚拟内存技术掩盖了这个问题。如果没有虚拟内存技术的话，会**将其他程序的内存空间数据进行搬移**，导致加载时间很长。
+- 受到其他程序的保护（注：结合上下文，此处指进程内存空间被保护，不受其他程序干扰）
+
+
+### 6.2 VA, PA and Translation
+
+#### 6.2.1 VA, PA, and Page
+
+**<span style='color:blue'>Virtual address, VA</span>**: An address in virtual memory used by programmer
+**<span style='color:green'>Physical address, PA</span>**: An address in main memory
+
+虚拟地址、物理地址及其转换由 **CPU** 中的硬件 **Memory Management Unit (MMU)** 以及**操作系统 OS** 共同管理。
+
+**<span style='color:red'>Page</span>**: **虚拟内存 (VM)** 和**物理内存**都被划分成一个个固定大小的块，叫做 Page（页）。每个 Page 的大小通常是 4KB（4096 字节），也有更大的 2MB、1GB 等选项。
+**<span style='color:red'>Page fault</span>**: 当程序访问的 virtual page 不在物理内存中时，会产生 **Page fault**，操作系统需要将该页面从磁盘加载到内存中。
+
+!!! note "转换流程"
+    VA 到 PA 的转换流程就是：
+
+    1. CPU 发出一个**虚拟地址**
+    2. MMU 截获这个地址，拿着它的“虚拟页号”，去**查字典（Page Table）**
+    3. 查到对应的“物理页号”(Physical Page Number, PPN)，再把虚拟地址的页内偏移（Page Offset）直接搬过来，拼成一个完整的物理地址
+    4. 然后发给 **Cache 和 DRAM** 去取数据
+
+
+#### 6.2.2 Page Table
+
+现代计算机通常规定 **1 个 Page 的大小是 4KB（即 $4096 = 2^{12}$ 字节）**。
+
+因此，地址的切割方式：
+
+1.  **Page Offset（页内偏移）**：
+    既然一页有 4096 个字节，为了在这 4096 个字节中精准定位到某一个字节，我们需要 **12 bit**。
+    **极其重要的一点：在虚拟地址转换为物理地址的过程中，Page Offset 是绝对不变的！**
+2.  **Page Number（页号）**：
+    地址除掉低 12 位的 Offset 后，剩下的高位（$32-12=20$位）统统叫做页号。
+    *   虚拟地址的高位叫 **VPN (Virtual Page Number，虚拟页号)**。
+    *   物理地址的高位叫 **PPN (Physical Page Number，物理页号)**。
+
+因此，Page Table 其实就是利用 **VPN** 作为索引，来查找对应的 **PPN** 的一个**映射表**。
+![alt text](image-16.webp)
+
+- Page Table 中每一个 **Entry（页表项，称为 <span style='color:red'>PTE</span>, Page Table Entry）** ，不仅要包含 20 位的 PPN ，因为本身是查表操作，所以还要有一个 <span style='color:red'>valid bit</span> 来标记这个 Entry 是否有效。
+- VPN 有20位，即 Virtual Page Number 的位宽是 20 位，**即 Page Table 要包含 1M 个 Entry**，而每一个 Entry 又要占用多个字节来存放 PPN 和状态位，所以 **Page Table** 总大小是 MB 级别的，也应该**存放到 Memory** 中。
+- 为了找到 Memory 中的 Page Table，我们还需要有 Page Table 的**基地址**，这一项任务由 CPU 中的一个特殊寄存器 **Page Table Register (PTR)** 来承担。
+
+> 现代操作系统中，**页表内部本身也会分页**，为了节省内存空间。
+
+!!! note "多页表"
+    虚拟内存的目的之一是让每段程序都以为自己独占了整个内存空间。也就是说，程序 A 和程序 B 都可能发送指令 "0x1000000", 但是他们实际指向的物理内存地址和访问的指令/数据是完全不同的。
+    ——这也就说，<span style='color:green'>每段程序都需要有自己独立的 Page Table</span> 来维护虚拟地址到物理地址的映射关系。
+    当切换不同程序时，对应的页表也要切换，准确来说是**页表的基地址也要切换**——这个操作通过 PTR 实现。
+
+!!! note "PTR 与 Process 切换"
+    虽然我们可能会执行多个程序，但是 CPU 内部只有一个 PRT，**记录当前 active process 的 page table 基地址**。当发生上下文切换时，当前 PTR 值会写回内存中的一个位置，想要切换的 PTR 值会从内存中读上来。
+    实际上，在发生 Process 切换的时候，除了 PTR, CPU 还需要保留的状态有：
+    
+    - PC
+    - Register File, RF
+    
+    因此，我们常说，进程 (Process) 间切换开销大，线程 (Thread) 间切换开销小，**就是因为线程共享进程的地址空间，所以不需要切换 PTR**。
+
+
+### 6.3 访问 Page Table —— <span style='color:green'>hit</span> or <span style='color:red'>miss</span>
+
+![alt text](image-17.webp)
+
+#### 6.3.1 hit or page fault?
+
+1. Hit: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 1，说明这个**虚拟页已经被映射到物理内存中了，可以直接拿到对应的 PPN，完成地址拼接转换**。
+2. <span style='color:red'>Page fault</span> （缺页中断）: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 0，说明数据不在 DRAM 里，它还在慢吞吞的**硬盘（Disk）**里。去主存拿数据（Cache Miss）顶多等几百个周期（$\mu\text{s}$级），但去硬盘拿数据（Page Fault）要等**几百万甚至上千万个周期（$\text{ms}$级）**！
+   - 这个时候会进行类似 replace 的操作，会从**硬盘把这个 Page 搬到 Physical Memory 中**，并且**更新 Page Table** 中对应 Entry 的 valid 位和 PPN。
+   - 如果 Physical Memory 中这个 **Page 是 Dirty 的话，还需要先把它写回硬盘**。总共就会有**两次 Disk 访问**，性能直接暴跌。
+
+#### 6.3.2 Page Fault Penalty
+
+**当发生 Page Fault 时**
+
+1.  **触发 `Page fault handler`（运行在 privileged mode 的 OS 代码）**
+2.  使用引发异常的虚拟地址找到对应的 `PTE`
+3.  定位该 `page` 在磁盘上的位置
+4.  选择一个物理页进行替换：
+    -   如果被替换的页是 `dirty`（已修改），需要先将其写回磁盘的 `swap space`
+5.  从磁盘读取所需的 `page` 到物理内存，并更新 `page table`
+6.  将进程重新标记为可运行状态
+7.  从引发 `page fault` 的指令处重新执行
+
+⚠️ 注意：整个过程需要数百万个时钟周期，耗时极长，因此有两种解决思路：
+
+1. switch to another process（切换到另一个进程）来利用 CPU 时间，这一种策略在之后讲解 GPU 设计的章节中会有更详细的介绍
+2. 降低 `page fault rate`（页错误率）主要手段包括：
+-   **采用 `Fully associative placement`（全相联放置策略）**，提高页的命中率
+-   **使用 `Smart replacement algorithms`（智能替换算法）**，优化页替换策略
+    -   即使考虑 `page fault penalty`，这类算法依然有效，能显著降低页错误率
+
+
+#### 6.3.3 Page Fault Handler
+
+除了上述 Page Fault Penalty 的处理工作外，Page Fault Handler 还**需要完成以下两项重要任务**：
+
+- 恢复引发错误的 VA
+  - 如果是指令错误，VA 位于 SEPC 中
+  - 如果是数据错误，通过**解析指令（指令地址在 SEPC 中）找到基址寄存器和偏移字段，计算出 VA**
+- 避免在底层异常处理代码执行期间发生 page fault
+  - 操作系统将**异常入口点代码和异常栈放置在 <span style='color:red'>unmapped memory</span>** 中，这部分空间不会被分页，也就**不会因为访问 page table 而触发新的 page fault**
+  - 在 MIPS 架构中，这部分位于 physical memory 的低地址区域
+
+!!! attention "不分页与分页区的不同执行流程"
+    这部分特殊的空间通常被称为 **“硬件直接映射段（Direct-Mapped Segment）”**或**“不经过 MMU 翻译的物理映射段（Unmapped Segment）”**。最为典型的代表就是 MIPS 架构中的 `kseg0` 和 `kseg1` 虚拟地址空间。
+    CPU 执行代码的流程，准确来说应该是：
+
+    1. CPU 发出地址，在地址送往 MMU（内存管理单元）和 TLB（旁路转换缓冲）之前，CPU 内部的**地址解码器（Address Decoder）**会首先拦截这个地址，并直接观察它的**最高几位（Most Significant Bits）**：如果高位指示它是普通虚拟地址，会直接送往 MMU 进行翻译；如果高位指示它是特殊的 unmapped 地址，则**直接绕过 MMU，送往物理内存访问单元（Memory Access Unit）进行访问。**
+    2. 之后 unmapped 的流程就是普通的 Cache/DRAM 访问流程了。
+#### 6.3.4 Replacement and Writes
+
+
+**Replacement 策略：**
+
+- 为降低 page fault rate，优先采用 **least-recently used (LRU)** 替换算法
+- 实际常用 **pseudo least-recently used** (LRU) 替换算法
+  - 访问页时，PTE 中的 reference bit（又称 use bit）会被**置为 1**，由 OS **周期性将其其清零**，reference bit = 0 的页表示近期未被使用
+
+**Write 策略：**
+
+- 策略1：以**块为单位一次性写入，而非单独写入单个地址**
+- 策略2：write-through 不切实际，<span style='color:red'>因此使用 write-back</span>，因为 write-through 的时间开销太大了。所以会有 **dirty bit** ：当页被写入时，PTE 中的 dirty bit 会被置位
+
+!!! note "Page Table 中的状态位"
+    总结以上分析，Page Table 中的每个 Entry（PTE）至少包含以下几个重要字段：
+    
+    - **Valid bit**：标记该页是否有效（是否已经被映射到
+    - **Drity bit**: 标记该页是否被修改过，即 DRAM 中的数据是否被修改过但还没有写回磁盘
+    - **Reference bit**: 标记该页是否被访问过，用于 **Replacement 算法**的决策
+    - **PPN**: 存储该页对应的物理页号（Physical Page Number），用于拼接 PA。
+
+### 6.4 TLB (Translation Lookaside Buffer)
+
+有了 Page Table 机制后，我们访问数据的流程变为了下列一些列步骤：
+
+1. Load/Store 指令发出一个 VA
+2. VA to PA translation：**MMU**——这里就会发生一次<span style='color:red'>访存</span>
+3. 获取真正的 PA 后，再去 Cache 和 DRAM 进行数据访问，如果运气不好，Cache miss 了，可能还会发生一次<span style='color:red'>访存</span>
+
+——所以，**每一次内存访问都可能伴随着一次甚至两次访存**，这对于性能来说是非常致命的。
+
+——解决思路：人们发现，**Page Table 中有些 PTE 也会被经常访问**，因此，我们可以为 **Page Table** 也设置一个专门的 Cache，叫做 **Translation Look-aside Buffer (TLB，转换旁路缓冲)**。
+> TLB 比较小，可以直接做在 CPU 内部，pipeline 旁边，如果运气好的话，<span style='color:green'>我们在 CPU 内部的这个 TLB 就能拿到 PA</span>
+
+TLB 结构图：
+![alt text](image-18.webp)
+
+#### 6.4.1 TLB 的设计
+
+TLB 的每个 Entry 包含：
+
+- **data: PPN**，核心数据，用于拼接地址
+- **Tag: VPN**，索引数据，用于查表。此外，由于 TLB 必须具有高命中率，因此通常采用**Fully Associative**的结构设计，即每个 Entry 都需要一个 VPN Tag 来进行比较。
+  > 这也就是说 **TLB 大小不能太大**，否则比较电路的复杂度和延迟都会大幅增加。
+- **Ref bit**: 用于记录该条目是否被访问过，通常在替换算法中使用。
+- **Dirty bit**: <span style='color:green'>与 Page Table 的 dirty bit 含义相同</span>，标记该 page **是否被修改过但还没有写回磁盘。**
+- **Valid bit**: 标记该条目是否有效，即是否包含一个合法的 VPN 到 PPN 的映射。这一个状态位与 Page Table 中的 valid bit 是<span style='color:red'>不同</span>的，指标是 Cache 空了，**不代表物理内存里没这一页**
+
+#### 6.4.2 TLB Miss 
+
+- 当 page 在内存中（仅发生 **TLB miss**）
+  - 从**内存中加载 PTE 并重试**
+  - 可由硬件处理
+    - 对于更复杂的 page table 结构，硬件处理会变得复杂
+  - 也可由软件处理
+    - 触发特殊异常，由优化后的 handler 处理
+    - MIPS 采用软件处理（约13个时钟周期）
+
+- 当 page 不在内存中（**page fault**）
+  - 由 OS 处理页的加载，并更新 page table
+    - 调用 page fault handler
+  - 之后重新执行引发异常的指令
+
+### 6.5 完整的 Memory Hierarchy
+
+![alt text](image-19.webp)
+> 暂时没看明白这张图，先存放在这里。
+
+我们从 CPU 发出一个虚拟地址开始，经历了 TLB、Cache、DRAM，甚至可能是磁盘的访问流程：
+
+（也可参见：[Memory Hierarchy](./memory-hierarchy-flow.md)）
+
+#### 第一阶段：地址翻译（从“幻觉”走向“现实”）
+
+**起点：CPU 产生虚拟地址 (VA)。**
+硬件首先将虚拟地址拆分为：**VPN (虚拟页号) + Page Offset (页内偏移)**。
+
+##### 1. TLB 查找（闪电战，绝大多数情况）
+*   **【TLB 命中 (TLB Hit)】**：
+    *   太好了！直接在 TLB 中找到了对应的 **PPN (物理页号)** 。
+    *   硬件直接将 **PPN + Page Offset** 拼接，瞬间合成出**物理地址 (PA)** 。
+    *   **直接前往【第二阶段：数据访问】** 。
+*   **【TLB 缺失 (TLB Miss)】**：
+    *   糟糕，TLB 里没有这个翻译关系，硬件不得不走慢速通道 。
+    *   **前往第 2 步**。
+
+##### 2. Page Table 查找（常规通道）
+*   MMU 顺着 **PTBR（页表基址寄存器）** 的导航，去物理内存（DRAM）中查该程序的 **Page Table（页表）** 。
+*   **【页表命中 (PTE Valid = 1)】**：
+    *   找到了！数据其实在内存里，只是刚才没缓存进 TLB 。
+    *   MMU 获取到 **PPN**，并把这个翻译关系**写进 TLB**（以防下次再 Miss） 。
+    *   拼接出**物理地址 (PA)** 。
+    *   **前往【第二阶段：数据访问】** 。
+*   **【缺页异常 (PTE Valid = 0 / Page Fault)】**：
+    *   大事不妙，数据压根不在内存里，还在硬盘上！ 
+    *   **前往第 3 步** 。
+
+##### 3. 缺页处理（操作系统介入，最慢通道）
+*   CPU 触发 **Page Fault 异常**，暂停当前程序，操作系统（OS）接管 CPU 。
+*   OS 去**硬盘 (Disk)** 中定位该页的数据。
+*   OS 查看物理内存（DRAM）是否还有空闲位置：
+    *   *如果没有空闲物理页*：OS 必须挑一个**牺牲页（Victim Page）**踢走。如果这个牺牲页是脏的（Dirty = 1），必须**将它写回硬盘（Disk）**；然后再把这个物理页腾空。
+*   OS 启动 DMA，把新页的数据从**硬盘 (Disk) 读入物理内存 (DRAM)**。
+*   OS **修改页表**（将这一页的 Valid 置 1，写入物理页号 PPN），并**更新 TLB**。
+*   OS 恢复程序执行，重新发送刚才的虚拟地址。
+*   **重新回到第 1 步**（这次一定会进入 【TLB Hit】 的快车道）。
+
+
+#### 第二阶段：数据访问（拿到真正的物理地址后）
+
+**此时：MMU 已经拼装出了绝对真实的物理地址 (PA)。**
+硬件将物理地址拆分为：**Tag (标记) + Index (索引) + Block Offset (块内偏移)**。
+
+##### 4. Cache 查找（高速通道）
+*   硬件根据 Index 找到对应的 Cache Set（组），并在该组内比对 Tag。
+*   **【Cache 命中 (Cache Hit)】**：
+    *   狂喜！数据就在 Cache 里。
+    *   如果是**读**：Cache 芯片直接吐出数据，送入 CPU 寄存器，**整个访存流程完美结束**。
+    *   如果是**写**：根据写策略（Write-Through 或 Write-Back）修改数据 [14, 15]。
+*   **【Cache 缺失 (Cache Miss)】**：
+    *   没中，只能去主存进货了。
+    *   **前往第 5 步**。
+
+##### 5. DRAM 访问（最终存储）
+*   系统总线向**物理内存 (DRAM)** 发出读请求，读取包含该物理地址的**整个数据块 (Block)**。
+*   **Cache 替换（踢人环节）**：
+    *   Cache 必须挑一个 Block 踢走以容纳新块。
+    *   如果被踢走的 Block 是脏的（Dirty = 1），必须**将它写回主存 (DRAM)**。
+*   将从 DRAM 读回的新 Block **写入 Cache**，同时提取出 CPU 需要的那部分数据，送入 CPU 寄存器。
+*   **整个访存流程结束！**
+
+### 6.6 PIPT, VIVT and VIPT Cache
+
+我们先拆解这三个缩写。它们都遵循同一个命名规则：
+
+$$\mathbf{[Index\ 方式]\ I\ [Tag\ 方式]\ T}$$
+
+*   **Index 方式**：决定了你**用什么地址去索引选通** Cache 的特定行（Set）。
+*   **Tag 方式**：决定了你在 Cache 行里存的、用来**跟 CPU 比对的“身份证”** 是物理地址还是虚拟地址。
+
+
+#### 6.6.1 PIPT
+
+这是最容易理解的方式，也是最“老实”的路线。
+
+*   **工作流程（串行）**：
+    1.  CPU 发出虚拟地址 (VA)。
+    2.  **停下！** 必须先送去 **TLB** 进行地址翻译。
+    3.  拿到物理地址 (PA)。
+    4.  用 PA 的低位（Index）去索引 Cache 行。
+    5.  用 PA 的高位（Tag）去跟 Cache 里的 Tag 进行比对。
+*   **优点（省心）**：
+    *   **绝对没有别名问题（Aliasing）**。因为物理地址在全系统是唯一的，一个物理地址在 Cache 里永远只有一个确定的位置。
+*   **缺点（慢）**：
+    *   **延迟大**。Cache 必须死等 TLB 翻译完才能开始工作，这两个动作是**串行**的。对于时钟频率极高的 CPU，这是无法容忍的。
+  
+#### 6.6.2 VIVT—— 极速但浑身是病的“疯子”
+
+*   **工作流程（超速并行/甚至不要 TLB）**：
+    1.  CPU 发出虚拟地址 (VA)。
+    2.  **不理 TLB**！直接用 VA 的低位索引 Cache，用 VA 的高位比对 Cache Tag。
+    3.  如果 Hit，直接拿走数据！**全程完全不经过 TLB 翻译**，速度快到飞起。
+    4.  只有当 Cache Miss 了，才需要去求助 TLB 翻译成物理地址，然后去主存拿数据。
+*   **优点（极快）**：
+    *   在 Cache Hit 的黄金路径上，TLB 完全是透明的，没有任何翻译开销。
+*   **缺点（著名的“别名/歧义”两大绝症）**：
+    1.  **同名异义（Homonyms）**：
+        微信说“我的虚拟地址 `0x1000` 存着聊天记录”，游戏说“我的虚拟地址 `0x1000` 存着玩家血量”。因为 VIVT 只看虚拟地址，如果不做处理，微信就会读到游戏的血量。
+        *   *解决办法*：每次进程切换，操作系统必须痛苦地把整个 L1 Cache 全部 **Flush（清空）**，性能损耗极大。在比对时，我们需要**同时比对虚拟地址和进程 ID**，才能确保拿到正确的数据。
+    2.  **同义异名（Synonyms）**：
+        微信和游戏共享了一块物理内存（比如物理地址 `0x8000`）。但微信通过虚拟地址 `0x1000` 访问，游戏通过虚拟地址 `0x4000` 访问。
+        在 VIVT 中，这会导致同一个物理数据，在 Cache 的两个不同虚拟位置上各存了一份。微信改了它的那份，游戏读它的那份却没更新，**导致严重的缓存不一致**！
+*   **现状**：因为这两个绝症太难治，现代通用 CPU（如 Intel、AMD、ARM、MIPS）已经**基本淘汰了 L1 Cache 的 VIVT 设计**。
+*   
+
+#### 6.6.3 VIPT
+
+在虚拟地址翻译成物理地址的过程中，**低 12 位的 Page Offset 是绝对不变的**！
+这就意味着：**虚拟地址的低 12 位，本质上就是物理地址的低 12 位！**
+
+工作流程（完美的时空并行）：
+
+1.  CPU 发出虚拟地址 (VA)。
+2.  **兵分两路，同时出发**：
+    *   **一路去 TLB**：把高位的 VPN 翻译成 PPN [1.2.9]。
+    *   **另一路去 Cache**：因为 **Index 通常很短**，且完全落在低 12 位（Page Offset）的范围内，所以可以直接用这部分**虚拟地址的 Index 抢先去索引选通 Cache 行**！
+3.  **终点汇合**：
+    *   Cache 此时已经选通了对应的行，并吐出了那里的物理 Tag。
+    *   此时，TLB 刚好也翻译完了，吐出了真正的 PPN。
+    *   **MMU 把翻译出来的物理 PPN（Tag）跟 Cache 吐出的物理 Tag 进行比对**。
+4.  比对成功，数据拿走。
+
+```text
+               CPU 发出虚拟地址 (VA)
+                       │
+          ┌────────────┴────────────┐
+       高位 VPN                  低位 Offset (≤12 bit)
+          │                         │
+      送往 TLB 翻译             直接作为虚拟 Index
+          │                         │
+     吐出物理 PPN              选通并读取 Cache 行
+          │                         │
+          └────────────┬────────────┘
+                       ▼
+                 比对两端的物理 Tag (Physically Tagged)
+```
+
+*   **为什么快？**：TLB 翻译和 Cache 索引**在硬件上是完全并行的**。
+*   **为什么没有同名异义（Homonym）问题？**：因为虽然我们用了虚拟 Index，但我们最后比对的是**物理 Tag（Physically Tagged）**。如果两个进程的虚拟地址撞车，<span style="color: red;">但因为它们翻译出来的 PPN 绝不相同</span>，比对 Tag 时瞬间就会发现不匹配，从而完美避开歧义。
+
+**缺点**：
+
+VIPT 看起来如此完美，但它在物理上有一个致命的**约束条件**：
+> **用于选通 Cache 的 Index（加上 Block Offset）所占用的位数，绝对不能超过 12 位（Page Offset 的宽度）。**
+
+如果我们把 L1 缓存做得很大，使得 Index 范围超过了此范围，操作系统必须介入，采用“页着色” (Page Coloring) 技术。OS 在分配物理页时，会强行保证虚拟地址越界的这几个 bit，在翻译成物理地址后**保持不变**（就像给内存涂上不同的颜色，相同颜色的虚拟页只能映射到相同颜色的物理页框）。这属于软硬件协同的高级黑科技。
+
+完整的 VIPT 设计图：
+
+![](VIPT.webp)
+
+### 6.7 Overall Operations
+
+For a memory hierarchy, **possible events** in the TLB, virtual memory and cache:
+
+![alt text](image-20.webp)
