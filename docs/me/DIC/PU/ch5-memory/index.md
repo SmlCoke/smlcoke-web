@@ -775,9 +775,9 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 
 1. switch to another process（切换到另一个进程）来利用 CPU 时间，这一种策略在之后讲解 GPU 设计的章节中会有更详细的介绍
 2. 降低 `page fault rate`（页错误率）主要手段包括：
--   **采用 `Fully associative placement`（全相联放置策略）**，提高页的命中率
--   **使用 `Smart replacement algorithms`（智能替换算法）**，优化页替换策略
-    -   即使考虑 `page fault penalty`，这类算法依然有效，能显著降低页错误率
+   - **采用 `Fully associative placement`（全相联放置策略）**，提高页的命中率
+   - **使用 `Smart replacement algorithms`（智能替换算法）**，优化页替换策略
+      - 即使考虑 `page fault penalty`，这类算法依然有效，能显著降低页错误率
 
 
 #### 6.3.3 Page Fault Handler
@@ -797,14 +797,15 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 
     1. CPU 发出地址，在地址送往 MMU（内存管理单元）和 TLB（旁路转换缓冲）之前，CPU 内部的**地址解码器（Address Decoder）**会首先拦截这个地址，并直接观察它的**最高几位（Most Significant Bits）**：如果高位指示它是普通虚拟地址，会直接送往 MMU 进行翻译；如果高位指示它是特殊的 unmapped 地址，则**直接绕过 MMU，送往物理内存访问单元（Memory Access Unit）进行访问。**
     2. 之后 unmapped 的流程就是普通的 Cache/DRAM 访问流程了。
-#### 6.3.4 Replacement and Writes
 
+
+#### 6.3.4 Replacement and Writes
 
 **Replacement 策略：**
 
 - 为降低 page fault rate，优先采用 **least-recently used (LRU)** 替换算法
 - 实际常用 **pseudo least-recently used** (LRU) 替换算法
-  - 访问页时，PTE 中的 reference bit（又称 use bit）会被**置为 1**，由 OS **周期性将其其清零**，reference bit = 0 的页表示近期未被使用
+   - 访问页时，PTE 中的 reference bit（又称 use bit）会被**置为 1**，由 OS **周期性将其其清零**，reference bit = 0 的页表示近期未被使用
 
 **Write 策略：**
 
@@ -849,17 +850,17 @@ TLB 的每个 Entry 包含：
 #### 6.4.2 TLB Miss 
 
 - 当 page 在内存中（仅发生 **TLB miss**）
-  - 从**内存中加载 PTE 并重试**
-  - 可由硬件处理
-    - 对于更复杂的 page table 结构，硬件处理会变得复杂
-  - 也可由软件处理
-    - 触发特殊异常，由优化后的 handler 处理
-    - MIPS 采用软件处理（约13个时钟周期）
+   - 从**内存中加载 PTE 并重试**
+      - 可由硬件处理
+         - 对于更复杂的 page table 结构，硬件处理会变得复杂
+   - 也可由软件处理
+      - 触发特殊异常，由优化后的 handler 处理
+      - MIPS 采用软件处理（约13个时钟周期）
 
 - 当 page 不在内存中（**page fault**）
-  - 由 OS 处理页的加载，并更新 page table
-    - 调用 page fault handler
-  - 之后重新执行引发异常的指令
+    - 由 OS 处理页的加载，并更新 page table
+      - 调用 page fault handler
+    - 之后重新执行引发异常的指令
 
 ### 6.5 完整的 Memory Hierarchy
 
@@ -1024,3 +1025,97 @@ VIPT 看起来如此完美，但它在物理上有一个致命的**约束条件*
 For a memory hierarchy, **possible events** in the TLB, virtual memory and cache:
 
 ![alt text](image-20.webp)
+
+
+## VIII. Memory Protection
+
+### 7.1 Memory Protection
+
+在多任务操作系统中，多个并发运行的进程（Tasks）共享物理内存，甚至可以共享部分虚拟地址空间（如共享库、进程间通信映射）。为了防止程序因错误指针引发的误访问（Errant Access）或恶意攻击，硬件和操作系统必须协同实现强力的**内存保护机制**。
+
+#### 1. 内存保护的基本原理 (Memory Protection Principles)
+*   **防止恶意修改**：将页表（Page Tables）放置在操作系统（OS）专属的受保护地址空间（内核空间）中。用户进程无法直接读写页表，只有 OS 可以修改页表映射。这确保了用户进程只能访问 OS 分配给它的合法内存。
+*   **防止跨进程读取**：硬件机制确保一个进程无法读取或写入另一个进程的数据。
+
+#### 2. 硬件层面的保护支持 (Hardware Support for OS Protection)
+为了让操作系统能够安全地管理页表，CPU 硬件必须提供以下支持：
+
+*   **特权模式与用户模式划分**：
+    *   **Privileged Supervisor Mode（特权监督模式，即内核模式 Kernel Mode）**：操作系统运行在此模式下，拥有最高权限。
+    *   **User Mode（用户模式）**：普通用户进程运行在此模式下，权限受限。
+*   **特权指令 (Privileged Instructions)**：诸如修改页表寄存器（PTR）、控制中断等关键指令，只有在特权模式下才能执行。如果在用户模式下强行执行，会触发硬件异常。
+*   **受保护的状态信息**：页表和其它敏感系统状态信息，在硬件上被限制为只有在特权模式下通过 OS 代码才能访问。
+*   **系统调用异常 (System Call Exception)**：用户程序通过特定的硬件陷阱（Trap）指令（例如 MIPS 中的 `syscall`）来请求操作系统服务。该指令会触发异常，使 CPU 安全地从用户模式转换到特权模式，并将控制权交给 OS 的特权代码。
+
+##### 2.1 页表项 (PTE) 中的硬件控制位
+为了在硬件层面实时检查访存权限，页表的每个表项（PTE）都集成了若干状态位：
+
+*   **V (Valid)**：有效位，标记该页是否在物理内存中。
+*   **R/W (Read/Write)**：读写控制位，标记该页是“只读（Read Only）”还是“可读写（Read/Write）”。若向只读页写入会触发保护异常。
+*   **U/S (User/Supervisor)**：权限级别位，标记该页是“普通用户页”还是“系统特权页”。用户模式下的程序无法访问 U/S 标为 Supervisor 的页。
+*   **D (Dirty)**：脏位，标记该页是否被修改过。
+*   **A (Access)**：访问位，记录该页最近是否被访问过，供操作系统的页面替换算法决策。
+
+---
+
+### 7.2 上下文切换时的保护 (Protection on Context Switch)
+当操作系统决定将当前运行的进程从 $P_1$ 切换到 $P_2$ 时，必须确保 $P_2$ 无法访问 $P_1$ 的内存空间。
+
+#### 1 无 TLB 的情况
+*   **机制**：由于每次访存都直接查内存中的页表，OS 只需要在切换时，将 CPU 内部的**页表基址寄存器（PTR / PTBR）**修改为指向 $P_2$ 的页表物理首地址。
+*   **结果**：切换完成后，CPU 发出的虚拟地址会自动映射到 $P_2$ 对应的页表中，天然实现了空间隔离。
+
+#### 2 有 TLB 的情况
+如果系统引入了 TLB，简单修改 PTR 寄存器就会带来巨大的安全隐患，因为此时 TLB 缓存中依然残留着 $P_1$ 的大量虚拟到物理地址的翻译项（PTE 拷贝）。
+
+为此，硬件架构提供了两种解决方案：
+*   **方案一：清空 TLB（Flush / Clear TLB，最简单但低效）**
+    *   **机制**：在每次进行进程上下文切换时，OS 通过特权指令强制将整个 TLB 里的所有 Valid bit 置零（全部清空）。
+    *   **缺点**：如果系统切换进程的频率很高，TLB 会频繁被清空。新进程运行初期会发生极高的 TLB Miss 率，导致严重的系统性能下降。
+*   **方案二：引入进程标识符（PID / ASID，现代 CPU 标配）**
+    *   **机制**：在虚拟地址空间中引入 **Process ID (PID) 或 Task ID（在某些架构中称为 ASID，地址空间标识符）**，用来唯一标识当前的活动进程。
+    *   **查找判定**：当 CPU 进行 TLB 比对时，**只有当“虚拟页号 (VPN)”和“进程 ID (PID)”同时匹配成功时，才判定为 TLB Hit**。
+    *   **收益**：消除了在上下文切换时频繁清空整个 TLB 的需求（除非极其罕见的特殊场合）。TLB 中可以同时安全地共存多个不同进程的缓存项，极大地提升了多任务切换时的系统运行效率。
+
+## IX. Virtual Machine
+
+虚拟化技术通过在单一物理硬件平台上模拟出多个独立的完整计算机系统，实现了计算资源的深度共享与安全隔离。
+
+### 8.1 虚拟机概述 (Overview of Virtual Machines)
+*   **角色定义**：
+    *   **Host (宿主机)**：提供底层实际物理硬件资源的计算机系统。
+    *   **Guest (客户机)**：运行在虚拟环境中的操作系统（Guest OS）及其实际应用程序。
+*   **核心优势**：
+    *   **极佳的隔离性 (Improved Isolation)**：多个 Guest OS 运行在各自完全隔离的环境中，互不干扰。
+    *   **安全性与高可靠性 (Security & Reliability)**：单一系统的崩溃或安全漏洞不会波及其他系统或物理机。
+    *   **硬件资源共享 (Sharing of Resources)**：提高服务器等物理设备的资源利用率。
+*   **性能开销**：虚拟化引入了一定的软件开销，但在现代高性能处理器的硬件支持下，该开销已降至完全可接受的范围。
+
+### 8.2 虚拟机监视器 (VMM / Hypervisor)
+虚拟机监视器（Virtual Machine Monitor, VMM，亦称 Hypervisor）是实现虚拟化最核心的软件层，其主要职能是将真实的物理资源（CPU、内存、I/O 设备）安全地映射为多套相互独立的虚拟资源。
+
+*   **运行机制 (Trap-and-Emulate)**：
+    *   为了防止 Guest OS 破坏其他虚拟系统或物理硬件，**Guest OS 的内核代码在真实硬件上只能以“用户模式（User Mode）”运行** [79]。
+    *   当 Guest OS 试图执行特权指令（如修改其虚拟页表、控制硬件中断等）时，CPU 会产生硬件异常并**下陷（Trap）至 VMM 软件** [79]。
+    *   VMM 拦截该指令后，在软件中对其进行模拟执行（Emulate），并安全地将结果返回给 Guest OS [79]。
+
+#### 8.3 虚拟化内存管理 (Virtual Memory in Virtualization)
+在虚拟化场景下，地址翻译从原本的一级映射演进为极其复杂的**两级映射（三类地址空间）**：
+
+$$\text{VA (Guest 虚拟地址)} \Rightarrow \text{PA (Guest 物理地址)} \Rightarrow \text{MA (VMM 机器物理地址)}$$
+
+*   **VA (Virtual Address)**：Guest OS 中应用程序使用的虚拟地址 [80]。
+*   **PA (Physical Address)**：Guest OS 误以为的“物理地址”，本质上是虚拟出来的中间层地址 [80]。
+*   **MA (Machine Address)**：真实的物理内存地址，由 VMM 进行统一分配与管理 [80]。
+
+由于两级映射需要查两次页表，直接翻译的软件开销极大。为了加速这一过程，依旧可以采取 Cache 的方式：VMM 在软件中维护了**影子页表（Shadow Page Table）**。
+
+*   **原理**：影子页表在软件中直接把最顶层的 **VA (Virtual Address)** 映射到最底层的 **MA (Machine Address)** [80]。
+*   **效果**：通过合并两级翻译，硬件 MMU 在实际运行时**只需查一次影子页表**即可直接定位真实物理内存，极大地加速了虚拟化环境下的内存访问 [80]。
+
+#### 8.4 处理器指令集对虚拟化的支持 (Instruction Set Support)
+虚拟化的高效运行高度依赖于处理器指令集架构（ISA）的配合 [81]：
+
+*   **严格特权控制**：所有敏感物理资源（包括页表、中断控制、I/O 寄存器）必须被严格限制，只有通过特权指令才能访问 [81]。
+*   **特权指令下陷**：当 Guest OS（运行在用户模式下）执行特权指令时，硬件必须能够精确、安全地触发 Trap 并移交控制权给 VMM [81]。
+*   **硬件虚拟化演进 (Hardware Virtualization Support)**：为了消除纯软件模拟（如影子页表）的巨大开销，现代主流指令集（如 x86 的 Intel VT-x、AMD-V，以及 ARM 的 Virtualization Extensions）都进行了硬件扩展，提供了原生的双层页表翻译（Nested Page Table / EPT）等硬件虚拟化支持 [81]。
