@@ -119,6 +119,7 @@ nav:
           - 🔹Ch4. Processor: me/DIC/PU/ch4-processor/processor.md
           - 🔹Ch4. Processor (Part 2): me/DIC/PU/ch4-processor-p2/index.md
           - 🔹Ch5. Memory: me/DIC/PU/ch5-memory/index.md
+          - 🔹Ch6. Parallel Processing: me/DIC/PU/ch6-parallel/index.md
     - 🟩 Verilog HDL Basics: me/verilog/Study_note.md
     - 🟩 EDA Tools:
       - 🔹VS Code + Verilog : me/EDA/vscode/vscode.md

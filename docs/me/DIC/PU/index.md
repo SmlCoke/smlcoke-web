@@ -52,4 +52,10 @@ hide:
 	<p class="card-desc">Memory Systems</p>
 </a>
 
+<a class="note-card blue" href="ch6-parallel/">
+	<span class="card-icon">📚️</span>
+	<div class="card-title">Chapter 6 · Parallel Processing</div>
+	<p class="card-desc">Parallel Processing</p>
+</a>
+
 </div>
