@@ -125,5 +125,11 @@ hide:
   <p class="card-desc">EDA 工具报告阅读指南</p>
 </a>
 
+<a class="note-card gray" href="EDA/modelsim/">
+  <span class="card-icon">📶</span>
+  <div class="card-title">ModelSim</div>
+  <p class="card-desc">Modelsim使用基础</p>
+</a>
+
 </div>
 
