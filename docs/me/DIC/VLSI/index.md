@@ -88,6 +88,13 @@ hide:
 	<p class="card-desc">正交频分复用调制技术</p>
 </a>
 
+
+<a class="note-card blue" href="ch12-channel_code/">
+	<span class="card-icon">📊</span>
+	<div class="card-title">Chapter 12 · 信道编码与译码</div>
+	<p class="card-desc">信道编码原理与常见译码算法</p>
+</a>
+
 </div>
 
 <div class="section-subtitle">🧪 重点专题</div>

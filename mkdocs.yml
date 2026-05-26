@@ -111,6 +111,7 @@ nav:
         - 🔹Ch10. Bandpass Modulation: me/DIC/VLSI/ch10-bandpass_modulation/index.md
         - 🔹Ch11. MQAM: me/DIC/VLSI/ch11-mqam/index.md
         - 🔹Ch11. OFDM: me/DIC/VLSI/ch11-ofdm/index.md
+        - 🔹Ch12. Channel code and decode: me/DIC/VLSI/ch12-channel_code/index.md
       - 🔶 Processors:
           - me/DIC/PU/index.md
           - 🔹Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
