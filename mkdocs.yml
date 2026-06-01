@@ -121,6 +121,7 @@ nav:
           - 🔹Ch4. Processor (Part 2): me/DIC/PU/ch4-processor-p2/index.md
           - 🔹Ch5. Memory: me/DIC/PU/ch5-memory/index.md
           - 🔹Ch6. Parallel Processing: me/DIC/PU/ch6-parallel/index.md
+          - 🔹GPGPU Architecture Overview: me/DIC/PU/gpgpu1_overview/index.md
       - 🔶 SoC:
           - 🔹Ch0. Introduction: me/DIC/soc/ch0-intro/index.md
           - 🔹Ch2. SoC Processor: me/DIC/soc/ch2-processor/index.md

@@ -202,3 +202,37 @@ SIMD 加速的方式：在原来的数据宽度的基础上，拆成更小的数
    - 相较于 scalar architecture（标量架构），在 power and energy（**功耗与能效**）方面更具优势
 - 比 ad-hoc media extensions（专用媒体扩展，如 MMX、SSE）更通用
   - 与编译器技术的适配性更好
+
+### 2.4 MISD Example: Systolic Array
+
+核心：访问存储器的代价很大，因此：
+
+**Reuse the data read from memory as many times as possible（尽可能多次地重用从内存读取的数据）**
+
+#### 脉动阵列的典型算法：矩阵乘法 GEMM 
+
+$$\begin{bmatrix}
+a_{11} & a_{12} & a_{13} \\
+a_{21} & a_{22} & a_{23} \\
+a_{31} & a_{32} & a_{33}
+\end{bmatrix}
+\times
+\begin{bmatrix}
+b_{11} & b_{12} & b_{13} \\
+b_{21} & b_{22} & b_{23} \\
+b_{31} & b_{32} & b_{33}
+\end{bmatrix}
+=
+\begin{bmatrix}
+c_{11} & c_{12} & c_{13} \\
+c_{21} & c_{22} & c_{23} \\
+c_{31} & c_{32} & c_{33}
+\end{bmatrix}$$
+
+**c 驻留**
+
+![](sa_c_remain.webp)
+
+**b 驻留**
+
+![alt text](sa_b_remain.webp)

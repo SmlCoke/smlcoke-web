@@ -12,7 +12,7 @@ hide:
 	</div>
 </div>
 
-<div class="section-subtitle">🏗️ 课程主线</div>
+<div class="section-subtitle">🏗️ RISC-V CPU 架构</div>
 
 <div class="card-grid">
 
@@ -56,6 +56,16 @@ hide:
 	<span class="card-icon">📚️</span>
 	<div class="card-title">Chapter 6 · Parallel Processing</div>
 	<p class="card-desc">Parallel Processing</p>
+</a>
+
+</div>
+
+<div class="section-subtitle">🗺️ GPGPU 架构</div>
+
+<a class="note-card blue" href="gpgpu1_overview/">
+	<span class="card-icon">📚️</span>
+	<div class="card-title">GPGPU Architecture Overview</div>
+	<p class="card-desc">Overview of GPGPU Architecture</p>
 </a>
 
 </div>
