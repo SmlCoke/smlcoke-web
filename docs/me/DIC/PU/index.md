@@ -66,8 +66,14 @@ hide:
 
 <a class="note-card blue" href="gpgpu1_overview/">
 	<span class="card-icon">📚️</span>
-	<div class="card-title">GPGPU Architecture Overview</div>
+	<div class="card-title">Architecture Overview</div>
 	<p class="card-desc">Overview of GPGPU Architecture</p>
+</a>
+
+<a class="note-card blue" href="gpgpu2_programming_model/">
+	<span class="card-icon">📚️</span>
+	<div class="card-title">Programming Model</div>
+	<p class="card-desc">CUDA: Programming Languages ​​for Controlling GPUs</p>
 </a>
 
 </div>

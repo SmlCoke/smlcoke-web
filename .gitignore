@@ -13,3 +13,9 @@ dev/
 
 # 临时文件
 *temp*
+
+# pdf 等重型文档
+*.pdf
+*.pptx
+*.docx
+*.xlsx
