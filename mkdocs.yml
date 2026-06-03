@@ -74,11 +74,11 @@ markdown_extensions:
 
 # 引入自定义 CSS（用于背景动画和按钮）
 extra_css:
-  - stylesheets/extra.css?v=20260423 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
+  - stylesheets/extra.css?v=20260603 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
   - https://unpkg.com/katex@0/dist/katex.min.css # 添加 KaTeX CSS
 
 extra_javascript:
-  - javascripts/extra.js
+  - javascripts/extra.js?v=20260603
   - javascripts/crypto.js
   - https://unpkg.com/katex@0/dist/katex.min.js # 先引入 KaTeX 核心
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js # 引入 KaTeX 自动渲染插件
@@ -89,89 +89,96 @@ nav:
   - 博客: blog/index.md
   - 微电子: 
     - me/index.md
-    - 🟩 Signal and Systems: me/SS/index.md
-    - 🟩 Digital Integrated Circuits: 
-      - 🔶 Glossary: me/DIC/Gloassary/index.md
-      - 🔶 Course Design: 
-        - 🔹Init: me/DIC/CourseDesign/init.md
-        - 🔹Introduction: me/DIC/CourseDesign/introduction.md
-        - 🔹Specification: me/DIC/CourseDesign/Design_Specifications.md
-        - 🔹Re-quantization: me/DIC/CourseDesign/Re-quantization.md
-      - 🔶 VLSI: 
+    - Signal and Systems: me/SS/index.md
+    - Digital Integrated Circuits: 
+      - Glossary: me/DIC/Gloassary/index.md
+      - Course Design: 
+        - Init: me/DIC/CourseDesign/init.md
+        - Introduction: me/DIC/CourseDesign/introduction.md
+        - Specification: me/DIC/CourseDesign/Design_Specifications.md
+        - Re-quantization: me/DIC/CourseDesign/Re-quantization.md
+      - VLSI: 
         - me/DIC/VLSI/index.md
-        - 🔹Ch1. Basics: me/DIC/VLSI/ch1-introduction/introduction.md
-        - 🔹Ch2. Modulation and Demodulation: me/DIC/VLSI/ch2-modulation/modulation.md
-        - 🔹Ch3. Iteration Bound: me/DIC/VLSI/ch3-iteration_bound/iteration_bound.md
-        - 🔹Ch4. Parallel and Pipeline: me/DIC/VLSI/ch4-paralleling_pipeline/parallel_pipeline.md
-        - 🔹Ch5. Retiming: me/DIC/VLSI/ch5-retiming/retiming.md
-        - 🔹Ch6. Unfolding: me/DIC/VLSI/ch6-unfolding/unfolding.md
-        - 🔹Ch7. Folding: me/DIC/VLSI/ch7-folding/folding.md
-        - 🔹Ch8. Systolic Array: me/DIC/VLSI/ch8-systolic_array/systolic_array.md
-        - 🔹Ch9. Fading Channel: me/DIC/VLSI/ch9-fading_channel/index.md
-        - 🔹Ch10. Bandpass Modulation: me/DIC/VLSI/ch10-bandpass_modulation/index.md
-        - 🔹Ch11. MQAM: me/DIC/VLSI/ch11-mqam/index.md
-        - 🔹Ch11. OFDM: me/DIC/VLSI/ch11-ofdm/index.md
-        - 🔹Ch12. Channel code and decode: me/DIC/VLSI/ch12-channel_code/index.md
-      - 🔶 Processors:
+        - Ch1. Basics: me/DIC/VLSI/ch1-introduction/introduction.md
+        - Ch2. Modulation and Demodulation: me/DIC/VLSI/ch2-modulation/modulation.md
+        - Ch3. Iteration Bound: me/DIC/VLSI/ch3-iteration_bound/iteration_bound.md
+        - Ch4. Parallel and Pipeline: me/DIC/VLSI/ch4-paralleling_pipeline/parallel_pipeline.md
+        - Ch5. Retiming: me/DIC/VLSI/ch5-retiming/retiming.md
+        - Ch6. Unfolding: me/DIC/VLSI/ch6-unfolding/unfolding.md
+        - Ch7. Folding: me/DIC/VLSI/ch7-folding/folding.md
+        - Ch8. Systolic Array: me/DIC/VLSI/ch8-systolic_array/systolic_array.md
+        - Ch9. Fading Channel: me/DIC/VLSI/ch9-fading_channel/index.md
+        - Ch10. Bandpass Modulation: me/DIC/VLSI/ch10-bandpass_modulation/index.md
+        - Ch11. MQAM: me/DIC/VLSI/ch11-mqam/index.md
+        - Ch11. OFDM: me/DIC/VLSI/ch11-ofdm/index.md
+        - Ch12. Channel code and decode: me/DIC/VLSI/ch12-channel_code/index.md
+      - Processors:
           - me/DIC/PU/index.md
-          - 🔹Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
-          - 🔹Ch2. ISA: me/DIC/PU/ch2-ISA/note.md
-          - 🔹Ch3. Arithmetic: me/DIC/PU/ch3-arithmetic/index.md
-          - 🔹Ch4. Processor: me/DIC/PU/ch4-processor/processor.md
-          - 🔹Ch4. Processor (Part 2): me/DIC/PU/ch4-processor-p2/index.md
-          - 🔹Ch5. Memory: me/DIC/PU/ch5-memory/index.md
-          - 🔹Ch6. Parallel Processing: me/DIC/PU/ch6-parallel/index.md
-          - 🔹GPGPU Architecture Overview: me/DIC/PU/gpgpu1_overview/index.md
-      - 🔶 SoC:
-          - 🔹Ch0. Introduction: me/DIC/soc/ch0-intro/index.md
-          - 🔹Ch2. SoC Processor: me/DIC/soc/ch2-processor/index.md
-    - 🟩 Verilog HDL Basics: me/verilog/Study_note.md
-    - 🟩 EDA Tools:
-      - 🔹VS Code + Verilog : me/EDA/vscode/vscode.md
-      - 🔹MobaXterm + Linux : me/EDA/mobaxterm/mobaxterm.md 
-      - 🔹OSS CAD Suite: me/EDA/OSS/oss.md
-      - 🔹Tcl: me/EDA/tcl/index.md
-      - 🔹Report: me/EDA/report/index.md
-      - 🔹ModelSim: me/EDA/modelsim/index.md
+          - Ch1. Introduction: me/DIC/PU/ch1-the_software_hardware_interface/note.md
+          - Ch2. ISA: me/DIC/PU/ch2-ISA/note.md
+          - Ch3. Arithmetic: me/DIC/PU/ch3-arithmetic/index.md
+          - Ch4. Processor: me/DIC/PU/ch4-processor/processor.md
+          - Ch4. Processor (Part 2): me/DIC/PU/ch4-processor-p2/index.md
+          - Ch5. Memory: me/DIC/PU/ch5-memory/index.md
+          - Ch6. Parallel Processing: me/DIC/PU/ch6-parallel/index.md
+          - GPGPU Architecture Overview: me/DIC/PU/gpgpu1_overview/index.md
+      - SoC:
+          - me/DIC/soc/index.md
+          - Introduction: me/DIC/soc/intro/index.md
+          - SoC Processor: me/DIC/soc/processor/index.md
+          - AXI Handshake: me/DIC/soc/axi/axi_handshake.md
+    - Verilog HDL Basics: me/verilog/Study_note.md
+    - EDA Tools:
+      - VS Code + Verilog : me/EDA/vscode/vscode.md
+      - MobaXterm + Linux : me/EDA/mobaxterm/mobaxterm.md 
+      - OSS CAD Suite: me/EDA/OSS/oss.md
+      - Tcl: me/EDA/tcl/index.md
+      - Report: me/EDA/report/index.md
+      - ModelSim: me/EDA/modelsim/index.md
   - 机器学习:
     - ml/Basic/index.md
-    - 🔹全连接神经网络: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
-    - 🔹优化: ml/Basic/ch2_Optimization/ch2_2_Optimization.md
-    - 🔹CNN: ml/Basic/ch3_CNN/ch3_CNN.md
-    - 🔹Self-Attention: ml/Basic/ch4_Self_Attention/ch4_self_attention基础.md
-    - 🔹Transformer: ml/Basic/ch5_Transformer/ch5_transformer基础.md
+    - 全连接神经网络: ml/Basic/ch1_Full_Connected_NN/ch1_神经网络与深度学习基础.md
+    - 优化: ml/Basic/ch2_Optimization/ch2_2_Optimization.md
+    - CNN: ml/Basic/ch3_CNN/ch3_CNN.md
+    - Self-Attention: ml/Basic/ch4_Self_Attention/ch4_self_attention基础.md
+    - Transformer: ml/Basic/ch5_Transformer/ch5_transformer基础.md
   - 计算机视觉:
     - ml/CV/index.md
-    - 🔹ResNet: ml/CV/ResNet/notes.md
-    - 🔹DenseNet: ml/CV/DenseNet/notes.md
-    - 🔹YOLO v1: ml/CV/YOLO/YOLO.md
-    - 🔹YOLO v2: ml/CV/YOLO/YOLOv2.md
-    - 🔹YOLO v3: ml/CV/YOLO/YOLOv3.md
-    - 🔹ViT: ml/CV/VIT/ViT.md
-    - 🔹PFLD: ml/CV/PFLD/PFLD.md
-    - 🔸PFLD-GhostOne:
+    - ResNet: ml/CV/ResNet/notes.md
+    - DenseNet: ml/CV/DenseNet/notes.md
+    - YOLO v1: ml/CV/YOLO/YOLO.md
+    - YOLO v2: ml/CV/YOLO/YOLOv2.md
+    - YOLO v3: ml/CV/YOLO/YOLOv3.md
+    - ViT: ml/CV/VIT/ViT.md
+    - PFLD: ml/CV/PFLD/PFLD.md
+    - MobileOne: ml/CV/mobileone/mobileone.md
+    - MSKA: ml/CV/MSKA/index.md
+    - MSKA Computing: ml/CV/MSKA-computing/index.md
+    - TSCM: ml/CV/TSCM/index.md
+    - TSRNet: ml/CV/TSRNet/index.md
+    - PFLD-GhostOne:
       - ml/CV/PFLD_GhostOne/index.md
-      - 🔹Code Notes: ml/CV/PFLD_GhostOne/CodeNotes.md
-      - 🔹Loss: ml/CV/PFLD_GhostOne/Loss.md
-      - 🔹PyTorch2onnx: ml/CV/PFLD_GhostOne/PyTorch2onnx.md
-      - 🔹DA: ml/CV/PFLD_GhostOne/DA.md
+      - Code Notes: ml/CV/PFLD_GhostOne/CodeNotes.md
+      - Loss: ml/CV/PFLD_GhostOne/Loss.md
+      - PyTorch2onnx: ml/CV/PFLD_GhostOne/PyTorch2onnx.md
+      - DA: ml/CV/PFLD_GhostOne/DA.md
   - Rust:
-    - 🔹Rust 学习笔记: rust/notes/Study.md
-    - 🔹Rust 环境配置: rust/notes/Rust环境配置方法.md
-    - 🔹Rust 加密/解密在线工具: rust/crypto.md
+    - Rust 学习笔记: rust/notes/Study.md
+    - Rust 环境配置: rust/notes/Rust环境配置方法.md
+    - Rust 加密/解密在线工具: rust/crypto.md
   - 人工智能:
     - AI-Tools/index.md
-    - 🔹Claude Code: AI-Tools/ClaudeCode/Claude-Code.md
-    - 🔹MCP Server: AI-Tools/MCP/mcp_server.md
-    - 🔹OpenRouter: AI-Tools/OpenRouter/openrouter.md
-    - 🔹OpenCode: AI-Tools/OpenCode/opencode.md
-    - 🔹Aider: AI-Tools/Aider/aider.md
+    - Claude Code: AI-Tools/ClaudeCode/Claude-Code.md
+    - MCP Server: AI-Tools/MCP/mcp_server.md
+    - OpenRouter: AI-Tools/OpenRouter/openrouter.md
+    - OpenCode: AI-Tools/OpenCode/opencode.md
+    - Aider: AI-Tools/Aider/aider.md
   - 工具:
     - Tools/index.md
-    - 🔹Docker: Tools/docker/docker.md
-    - 🔹Git & GitHub: Tools/git/git.md
-    - 🔹WSL2: Tools/wsl2/WSL2子系统开发笔记.md
-    - 🔹Markdown 速查: Tools/markdown/index.md
-    - 🔹Markdown 写作规范: Tools/markdown/writing_style_guide.md
-    - 🔹站点开发笔记: Tools/markdown/mkdocs_theme_notes.md
+    - Docker: Tools/docker/docker.md
+    - Git & GitHub: Tools/git/git.md
+    - WSL2: Tools/wsl2/WSL2子系统开发笔记.md
+    - Markdown 速查: Tools/markdown/index.md
+    - Markdown 写作规范: Tools/markdown/writing_style_guide.md
+    - 站点开发笔记: Tools/markdown/mkdocs_theme_notes.md
   - 留言板: comments/index.md

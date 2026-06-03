@@ -301,12 +301,12 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 **(1) Hit (命中)**：CPU 去 Cache 中找数据，发现**数据在里面**（硬件判断标准：对应位置的 Valid 位为 1，并且 Cache 里存的 Tag 和 CPU 发出的地址的 Tag 完全一致）。此时 CPU 可以全速继续运行。
 **(2) Miss (缺失)**：CPU 去 Cache 中找数据，发现**数据不在里面**（硬件判断标准：对应位置 Valid 为 0，**或者**虽然 Valid 为 1，但存的 Tag 跟 CPU 请求的 Tag 不一样）。此时 Cache 必须去主存搬运数据，CPU 必须停顿等待（Stall）。
 
-对于 8 blocks, 1 word/block 的 Cache
+对于 8 blocks, 1 byte/block 的 Cache
 
 1. 上电前，所有 block 的 **valid** 都是 **N** ；
 2. 写入 $22(10110_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **110** 个 block 写入地址 **22** 的数据；
 3. 写入 $26(11010_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **010** 个 block 写入地址 **26** 的数据；
-4. 写入 $18(10010_2)$ 时（冷启动缺失，Cold miss），valid = Y，Cache 的第 **010** 个 block 已经存在了地址 **26** 的数据，该数据会被更新为地址 **18** 的数据
+4. 写入 $18(10010_2)$ 时（Cold miss），valid = Y，Cache 的第 **010** 个 block 已经存在了地址 **26** 的数据，该数据会被更新为地址 **18** 的数据
 5. 访问 $22(10110_2)$ 时，Cache 的第 **110** 个 block 存在数据，**Valid = Y** 且 **tag 成功匹配**，缓存给命中（hit）
 6. 访问 $26(11010_2)$ 时，Cache 的第 **010** 个 block 存在数据，**Valid = Y** 但 **tag 不匹配**，**miss**。此时会发生**替换**（replacement），将地址 **18** 的数据替换为地址 **26** 的数据。
 7. 访问 $10(01010_2)$ 时，Cache 的第 **010** 个 block 存在数据，**Valid = Y** 但 **tag 不匹配**，**miss**。此时会发生**替换**（replacement），将地址 **26** 的数据替换为地址 **10** 的数据。
@@ -315,15 +315,13 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 #### 5.1.5 Cache Block Size（块大小的权衡）
 改变每个 Cache Block 的大小会对性能（Miss rate）产生显著影响，这是一个经典的体系结构 Trade-off：
 
-**增大 Block Size 的好处**：
+- **增大 Block Size 的<span style="color: green;">好处</span>**：
    - **降低 Miss rate**：能够更好地利用**空间局部性（Spatial Locality）**。因为当你访问地址 A 时，地址 A 附近的数据大概率也会被访问到，**较大的块会一次性将它们全部预取进来**。
-
-**增大 Block Size 的代价（在 Cache 总容量固定的前提下）**：
+- **（在 Cache 总容量固定的前提下）增大 Block Size 的<span style="color: red;">代价</span>**：
    -  **增加竞争（More competition）**：块变大了，Cache 能容纳的**块数（Blocks）就会减少**，导致冲突增加，反而可能**提高 Miss rate**。
    -  **缓存污染与伪共享（Pollution & False sharing）**：可能会取来大量根本用不到的数据占用宝贵的 Cache 空间；在多核架构中还会引发缓存一致性问题（False sharing）。
    -  **增加缺失惩罚（Larger miss penalty）**：发生 Miss 时，从主存搬运一整个大块的数据需要花费更长的时间。
-
-**对应的硬件缓解策略**：
+- **对应的硬件缓解策略**：
    -  **Early restart**：只要 CPU 需要的那个字（Word）到了，就立马恢复 CPU 执行，不等待整个 Block 搬运完成。
    -  **Critical-word-first**：要求内存控制器优先回传 CPU 触发 Miss 的那一个字。
 
@@ -373,6 +371,7 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 *   **场景举例**：比如计算 `x = a + b` 并写入变量 `x` 时发生了 Write Miss。程序在接下来的一小段时间内，极大概率会再次读取或修改这个 `x`。如果趁着这次 Miss 直接把 `x` 捞进 Cache（写分配）并标为脏数据，那么接下来对 `x` 以及它相邻数据的几百次读写，全部都会变成极其快速的 Cache Hit，收益极高。
 
 **搭档 2：Write-Through（写通）通常搭配 No Write-Allocate（不写分配）**
+
 *   **架构师视角的理由**：**避免缓存污染（Cache Pollution）与带宽浪费**。
 *   **场景举例**：比如进行大数组的初始化 `for(int i=0; i<100; i++) A[i] = 0;`。此时 CPU 只是无脑向内存塞入初始数据，短时间内并不会去读取它们。如果采用写分配，**不仅每次都要浪费带宽把毫无用处的旧块从内存读出来，还会把 Cache 里原本存着的其他高频热点数据给“挤掉”（缓存污染）**。因此，既然 Write-Through 无论如何都要把数据打向主存，直接绕过 Cache 丢进主存（No Write-Allocate）显然是最明智、最不影响 Cache 命中率的选择。
 
@@ -387,18 +386,18 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 假设 Cache 总容量固定（例如 8 个 Blocks）：
 
 *   **直接映射 (Direct Mapped / 1-way)**
-    **规则**：1 个组（Set）里只有 1 个空位（Block）。总共有 8 个 Set。
-    **查找方式**：根据 Index 找到唯一的固定坑位，只进行 **1 次** Tag 比较。
-    **特点**：冲突极为严重。
+    - **规则**：1 个组（Set）里只有 1 个空位（Block）。总共有 8 个 Set。
+    - **查找方式**：根据 Index 找到唯一的固定坑位，只进行 **1 次** Tag 比较。
+    - **特点**：冲突极为严重。
 *   **组相联 (Set Associative / N-way)**
-    **规则**：将几个 Block 绑在一起作为一个“组”。例如“2路组相联（2-way）”表示 1 个 Set 里有 2 个空位。总 Set 数量缩减为 4 个。
-    **地址变化**：因为 Set 数量减半，所以用于寻址的 Index 位宽减少（例如 3位变2位），省下来的位变成了 Tag 的一部分。
-    **查找方式**：根据 Index 找到对应的 Set 包厢，然后**并行（同时）使用 2 个比较器**，比对包厢里 2 个 Block 的 Tag。
-    **破局点**：之前冲突的数据（例如 18 和 26 映射到同一个 Set），现在可以和谐地共存在这 2 个空位中，完美化解冲突。
+    - **规则**：将几个 Block 绑在一起作为一个“组”。例如“2路组相联（2-way）”表示 1 个 Set 里有 2 个空位。总 Set 数量缩减为 4 个。
+    - **地址变化**：因为 Set 数量减半，所以用于寻址的 Index 位宽减少（例如 3位变2位），省下来的位变成了 Tag 的一部分。
+    - **查找方式**：根据 Index 找到对应的 Set 包厢，然后**并行（同时）使用 2 个比较器**，比对包厢里 2 个 Block 的 Tag。
+    - **破局点**：之前冲突的数据（例如 18 和 26 映射到同一个 Set），现在可以和谐地共存在这 2 个空位中，完美化解冲突。
 *   **全相联 (Fully Associative)**
-    **规则**：干脆取消“分组（Set）”的概念。整个 Cache 就是一个拥有 8 个空位的大池子，任何主存数据可以放在**任意空位**。
-    **地址变化**：没有 Index，地址除了 Offset 之外，剩下全部是 Tag。
-    **查找方式**：由于不知道数据在哪里，必须**并行调用 8 个比较器**，同时对所有 Cache 行进行 Tag 比对。
+    - **规则**：干脆取消“分组（Set）”的概念。整个 Cache 就是一个拥有 8 个空位的大池子，任何主存数据可以放在**任意空位**。
+    - **地址变化**：没有 Index，地址除了 Offset 之外，剩下全部是 Tag。
+    - **查找方式**：由于不知道数据在哪里，必须**并行调用 8 个比较器**，同时对所有 Cache 行进行 Tag 比对。
 
 #### 5.3.2 架构师视角的终极权衡 (The Architectural Trade-off)
 
@@ -430,8 +429,8 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 
 - 每个 set 包含 n 个 entry
 - block number 决定所属集合  
-   - block number %（set 数 in cache）  
-   - block address % (block 数 in cache)  
+    - block number %（set 数 in cache）  
+    - block address % (block 数 in cache)  
 - 同时搜索给定 set 中的所有 entry  
 - n 个比较器（成本较低）
 
@@ -452,9 +451,9 @@ Set Associative Cache 的替换策略：
 
 - 有没有空的 entry？如果有，直接放入空 entry
 - 如果没有空 entry，选择一个 entry 进行替换
-   - Random：**随机选择**一个 entry 替换
-   - Least Recently Used (LRU)：替换**最近最少**使用的 entry
-   - First In First Out (FIFO)：替换**最早进入 cache 的 entry**
+    - Random：**随机选择**一个 entry 替换
+    - Least Recently Used (LRU)：替换**最近最少**使用的 entry
+    - First In First Out (FIFO)：替换**最早进入 cache 的 entry**
 
 **Example**
 
@@ -508,15 +507,15 @@ Simulation of a system with 64KB D-cache, 16-word blocks, SPEC2000
 ### 5.4 Sources of Miss
 
 - Compulsory misses (aka cold start misses) （强制性缺失/冷缺失）
-  - 首次访问某数据块时发生
-  - 当然，如果 block 是多个 word 的话，再次访问同一 block 内的其他 word 时就不会了，因为可以一开始就 load 整个 block 进 cache
+    - 首次访问某数据块时发生
+    - 当然，如果 block 是多个 word 的话，再次访问同一 block 内的其他 word 时就不会了，因为可以一开始就 load 整个 block 进 cache
 - Capacity misses
-  - 由**缓存容量有限**导致，典型就是 Fully Associative Cache 满了 
-  - 被替换出的数据块后续再次被访问
+    - 由**缓存容量有限**导致，典型就是 Fully Associative Cache 满了 
+    - 被替换出的数据块后续再次被访问
 - Conflict misses (aka collision misses)
-  - 发生在**非Fully Associative**中
-  - 由**set 内 entry 竞争引发**
-  - 在总容量相同的Fully Associative中不会出现
+    - 发生在**非Fully Associative**中
+    - 由**set 内 entry 竞争引发**
+    - 在总容量相同的Fully Associative中不会出现
 
 ### 5.5 Cache 性能量化分析 (Measuring Cache Performance)
 
@@ -524,6 +523,7 @@ Simulation of a system with 64KB D-cache, 16-word blocks, SPEC2000
 
 #### 5.5.1 CPU 执行时间的拆解 (Components of CPU time)
 在引入了 Cache 之后，程序在 CPU 上运行的总时间被拆分成了两部分：
+
 *   **程序执行周期 (Program execution cycles)**：CPU 正常流水线工作的时间。这里面其实**已经包含了 Cache Hit Time（命中时间）**，因为只要命中，CPU 就能全速运行，不需要额外停顿。
 *   **内存停顿周期 (Memory stall cycles)**：CPU 因为 Cache Miss 而被迫停下来等待底层数据搬运所消耗的时间。这是拖慢系统性能的核心罪魁祸首。
 
@@ -585,6 +585,7 @@ $$\text{AMAT} = \text{Hit\ time} + \text{Miss\ rate} \times \text{Miss\ penalty}
 *   **系统预设参数**：CPU 基础 CPI = 1，主频 = 4GHz（1 个周期 = 0.25ns），主存访问延迟 = 100ns（折合 400 个时钟周期）。
 
 **场景 A：只有 L1 Cache**
+
 *   假设 L1 的 Miss rate = 2%。
 *   Miss penalty = 100ns / 0.25ns = 400 cycles。
 *   **Effective CPI** = **Base CPI + (Miss rate × Miss penalty)** = 1 + (0.02 × 400) = **9.0**
@@ -614,17 +615,17 @@ $$\text{AMAT} = \text{Hit\ time} + \text{Miss\ rate} \times \text{Miss\ penalty}
 ### 5.4 Interactions with Advanced CPUs
 
 - **cache miss 期间的乱序执行 (Out-of-order execute during cache miss)**
-  - 待处理存储指令 (Pending store) 保留在 load/store unit 中
-  - 相关指令 (Dependent instructions) 在 reservation stations 中等待
-  - **无关指令 (Independent instructions) 继续执行**
+    - 待处理存储指令 (Pending store) 保留在 load/store unit 中
+    - 相关指令 (Dependent instructions) 在 reservation stations 中等待
+    - **无关指令 (Independent instructions) 继续执行**
 - **非阻塞缓存 (Non-blocking cache)**
-  - 支持 `Hit under miss` 或 `Miss under miss`
+    - 支持 `Hit under miss` 或 `Miss under miss`
 - **支持多发射 (Supporting multiple issue)**
-  - 多体缓存 (Multi-banked caches)：在无存储体冲突 (bank conflicts) 的情况下，每个周期支持多次访问
+    - 多体缓存 (Multi-banked caches)：在无存储体冲突 (bank conflicts) 的情况下，每个周期支持多次访问
 - **数据预取 (Data prefetching)**
 - **缓存失效的影响取决于程序数据流 (Effect of miss depends on program data flow)**
-  - 分析难度大幅提升
-  - 需使用系统仿真 (system simulation) 进行评估
+    - 分析难度大幅提升
+    - 需使用系统仿真 (system simulation) 进行评估
 
 
 ### 5.5 Example: Software Optimization via Blocking
@@ -664,6 +665,7 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 - 它的**地址是物理写死的**。如果你向物理地址 `0x0000` 写入数据，电信号就会精准地打在 DRAM 芯片的第一行第一列的电容上。
 
 **虚拟内存**是操作系统（OS）配合硬件给应用程序制造的一个**完美的幻觉**。
+
 - 当你运行一个程序（比如微信）时，操作系统会告诉微信：“兄弟，这是一段完全属于你个人的、连续的、庞大无比的内存空间（在 64 位系统下，这个空间大到近乎无限），里面除了你没有别人，你随便用！”
 - 同时，操作系统也会告诉另一个程序（比如游戏）同样的话。
 - **结果就是**：每个程序都以为自己独占了整个电脑的内存。微信往它的虚拟地址 `0x1000` 写数据，游戏也往它的虚拟地址 `0x1000` 写数据，两者完全不会冲突！
@@ -671,13 +673,13 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 **Motivation**
 
 - **内存不足**
-  - 需要高效的内存管理
-  - **进程 (Process)** 可能过大，超出physical memory的容量
-  - **活跃进程 (Active Process)** 数量超过了physical memory的承载能力
+    - 需要高效的内存管理
+    - **进程 (Process)** 可能过大，超出physical memory的容量
+    - **活跃进程 (Active Process)** 数量超过了physical memory的承载能力
 
 - **多道程序设计（Multiprogramming）**
-  - 高效的protection scheme
-  - 简单的共享方式
+    - 高效的protection scheme
+    - 简单的共享方式
 
 虚拟内存的**效果**：
 
@@ -755,8 +757,8 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 
 1. Hit: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 1，说明这个**虚拟页已经被映射到物理内存中了，可以直接拿到对应的 PPN，完成地址拼接转换**。
 2. <span style='color:red'>Page fault</span> （缺页中断）: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 0，说明数据不在 DRAM 里，它还在慢吞吞的**硬盘（Disk）**里。去主存拿数据（Cache Miss）顶多等几百个周期（$\mu\text{s}$级），但去硬盘拿数据（Page Fault）要等**几百万甚至上千万个周期（$\text{ms}$级）**！
-   - 这个时候会进行类似 replace 的操作，会从**硬盘把这个 Page 搬到 Physical Memory 中**，并且**更新 Page Table** 中对应 Entry 的 valid 位和 PPN。
-   - 如果 Physical Memory 中这个 **Page 是 Dirty 的话，还需要先把它写回硬盘**。总共就会有**两次 Disk 访问**，性能直接暴跌。
+    - 这个时候会进行类似 replace 的操作，会从**硬盘把这个 Page 搬到 Physical Memory 中**，并且**更新 Page Table** 中对应 Entry 的 valid 位和 PPN。
+    - 如果 Physical Memory 中这个 **Page 是 Dirty 的话，还需要先把它写回硬盘**。总共就会有**两次 Disk 访问**，性能直接暴跌。
 
 #### 6.3.2 Page Fault Penalty
 
@@ -777,7 +779,7 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 2. 降低 `page fault rate`（页错误率）主要手段包括：
    - **采用 `Fully associative placement`（全相联放置策略）**，提高页的命中率
    - **使用 `Smart replacement algorithms`（智能替换算法）**，优化页替换策略
-      - 即使考虑 `page fault penalty`，这类算法依然有效，能显著降低页错误率
+       - 即使考虑 `page fault penalty`，这类算法依然有效，能显著降低页错误率
 
 
 #### 6.3.3 Page Fault Handler
@@ -785,11 +787,11 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 除了上述 Page Fault Penalty 的处理工作外，Page Fault Handler 还**需要完成以下两项重要任务**：
 
 - 恢复引发错误的 VA
-  - 如果是指令错误，VA 位于 SEPC 中
-  - 如果是数据错误，通过**解析指令（指令地址在 SEPC 中）找到基址寄存器和偏移字段，计算出 VA**
+    - 如果是指令错误，VA 位于 SEPC 中
+    - 如果是数据错误，通过**解析指令（指令地址在 SEPC 中）找到基址寄存器和偏移字段，计算出 VA**
 - 避免在底层异常处理代码执行期间发生 page fault
-  - 操作系统将**异常入口点代码和异常栈放置在 <span style='color:red'>unmapped memory</span>** 中，这部分空间不会被分页，也就**不会因为访问 page table 而触发新的 page fault**
-  - 在 MIPS 架构中，这部分位于 physical memory 的低地址区域
+    - 操作系统将**异常入口点代码和异常栈放置在 <span style='color:red'>unmapped memory</span>** 中，这部分空间不会被分页，也就**不会因为访问 page table 而触发新的 page fault**
+    - 在 MIPS 架构中，这部分位于 physical memory 的低地址区域
 
 !!! attention "不分页与分页区的不同执行流程"
     这部分特殊的空间通常被称为 **“硬件直接映射段（Direct-Mapped Segment）”**或**“不经过 MMU 翻译的物理映射段（Unmapped Segment）”**。最为典型的代表就是 MIPS 架构中的 `kseg0` 和 `kseg1` 虚拟地址空间。
@@ -805,7 +807,7 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 
 - 为降低 page fault rate，优先采用 **least-recently used (LRU)** 替换算法
 - 实际常用 **pseudo least-recently used** (LRU) 替换算法
-   - 访问页时，PTE 中的 reference bit（又称 use bit）会被**置为 1**，由 OS **周期性将其其清零**，reference bit = 0 的页表示近期未被使用
+    - 访问页时，PTE 中的 reference bit（又称 use bit）会被**置为 1**，由 OS **周期性将其其清零**，reference bit = 0 的页表示近期未被使用
 
 **Write 策略：**
 
@@ -850,16 +852,16 @@ TLB 的每个 Entry 包含：
 #### 6.4.2 TLB Miss 
 
 - 当 page 在内存中（仅发生 **TLB miss**）
-   - 从**内存中加载 PTE 并重试**
-      - 可由硬件处理
-         - 对于更复杂的 page table 结构，硬件处理会变得复杂
-   - 也可由软件处理
-      - 触发特殊异常，由优化后的 handler 处理
-      - MIPS 采用软件处理（约13个时钟周期）
+    - 从**内存中加载 PTE 并重试**
+        - 可由硬件处理
+            - 对于更复杂的 page table 结构，硬件处理会变得复杂
+    - 也可由软件处理
+        - 触发特殊异常，由优化后的 handler 处理
+        - MIPS 采用软件处理（约13个时钟周期）
 
 - 当 page 不在内存中（**page fault**）
     - 由 OS 处理页的加载，并更新 page table
-      - 调用 page fault handler
+        - 调用 page fault handler
     - 之后重新执行引发异常的指令
 
 ### 6.5 完整的 Memory Hierarchy
@@ -1069,6 +1071,7 @@ For a memory hierarchy, **possible events** in the TLB, virtual memory and cache
 如果系统引入了 TLB，简单修改 PTR 寄存器就会带来巨大的安全隐患，因为此时 TLB 缓存中依然残留着 $P_1$ 的大量虚拟到物理地址的翻译项（PTE 拷贝）。
 
 为此，硬件架构提供了两种解决方案：
+
 *   **方案一：清空 TLB（Flush / Clear TLB，最简单但低效）**
     *   **机制**：在每次进行进程上下文切换时，OS 通过特权指令强制将整个 TLB 里的所有 Valid bit 置零（全部清空）。
     *   **缺点**：如果系统切换进程的频率很高，TLB 会频繁被清空。新进程运行初期会发生极高的 TLB Miss 率，导致严重的系统性能下降。
