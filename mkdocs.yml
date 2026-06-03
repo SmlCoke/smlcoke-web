@@ -74,11 +74,11 @@ markdown_extensions:
 
 # 引入自定义 CSS（用于背景动画和按钮）
 extra_css:
-  - stylesheets/extra.css?v=20260603 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
+  - stylesheets/extra.css?v=20260603-3 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
   - https://unpkg.com/katex@0/dist/katex.min.css # 添加 KaTeX CSS
 
 extra_javascript:
-  - javascripts/extra.js?v=20260603
+  - javascripts/extra.js?v=20260603-3
   - javascripts/crypto.js
   - https://unpkg.com/katex@0/dist/katex.min.js # 先引入 KaTeX 核心
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js # 引入 KaTeX 自动渲染插件
