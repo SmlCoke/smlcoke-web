@@ -4887,19 +4887,112 @@ Wing Loss 是专门为人脸关键点检测设计的一种损失函数，<strong
 </span></code></pre></div>
 <h2 id="pfld_ghostnet">PFLD_GhostNet<a class="headerlink" href="#pfld_ghostnet" title="Permanent link">&para;</a></h2>
 <p>核心变革是将原始 PFLD 中的 InvertedResidual 模块替换为 GhostBottleneck 模块，从而提升了模型的效率和性能。<br />
-<strong>关于从 Inverted Residual 到 GhostBottleneck 的转变，只需要将 Inverted Residual 头尾的 1x1 卷积替换为 GhostModule 即可，而中间的 3x3 深度卷积保持不变。</strong><br />
-| Input | Operator | t | c | n | s | output |<br />
-| --- | --- | --- | --- | --- | --- | --- |<br />
-| 112x112x3 | Conv1: Conv3×3 | - | 64 | 1 | 2 | |<br />
-| 56x56x64 | Conv2: DW Conv3×3 | - | 64 | 1 | 1 | S1 |<br />
-| 56x56x64 | Conv3: GhostBottleneck | 2 | 80 | 3 | 2 | S2 | <br />
-| 28x28x80 | Conv4: GhostBottleneck | 3 | 96 | 3 | 2 | S3 |<br />
-| 14x14x96 | Conv5: GhostBottleneck | 4 | 144 | 4 | 2 | S4 | <br />
-| 7x7x144 | Conv6: GhostBottleneck | 2 | 16 | 1 | 1 | | <br />
-| 7x7x16 | Conv7: Conv3×3 | - | 32 | 1 | 1 | | <br />
-| 7x7x32 | Conv8: Conv7×7 | - | 128 | 1 | 1 | S5 | <br />
-| (S1) 56x56x64<br>(S2) 28x28x80<br>(S3) 14x14x96<br>(S4) 7x7x144<br>(S5) 1x1x128 | AvgPool <br> 根据输入情况 <br> 调整池化核尺寸 <br> S5 不经过池化| - | 64 | 1 | - |<br />
-| S1,S2,S3,S4,S5 | Full Connection | - | 136(512?) | 1 | - |</p>
+<strong>关于从 Inverted Residual 到 GhostBottleneck 的转变，只需要将 Inverted Residual 头尾的 1x1 卷积替换为 GhostModule 即可，而中间的 3x3 深度卷积保持不变。</strong></p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Operator</th>
+<th>t</th>
+<th>c</th>
+<th>n</th>
+<th>s</th>
+<th>output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>112x112x3</td>
+<td>Conv1: Conv3×3</td>
+<td>-</td>
+<td>64</td>
+<td>1</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td>56x56x64</td>
+<td>Conv2: DW Conv3×3</td>
+<td>-</td>
+<td>64</td>
+<td>1</td>
+<td>1</td>
+<td>S1</td>
+</tr>
+<tr>
+<td>56x56x64</td>
+<td>Conv3: GhostBottleneck</td>
+<td>2</td>
+<td>80</td>
+<td>3</td>
+<td>2</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>28x28x80</td>
+<td>Conv4: GhostBottleneck</td>
+<td>3</td>
+<td>96</td>
+<td>3</td>
+<td>2</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>14x14x96</td>
+<td>Conv5: GhostBottleneck</td>
+<td>4</td>
+<td>144</td>
+<td>4</td>
+<td>2</td>
+<td>S4</td>
+</tr>
+<tr>
+<td>7x7x144</td>
+<td>Conv6: GhostBottleneck</td>
+<td>2</td>
+<td>16</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>7x7x16</td>
+<td>Conv7: Conv3×3</td>
+<td>-</td>
+<td>32</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>7x7x32</td>
+<td>Conv8: Conv7×7</td>
+<td>-</td>
+<td>128</td>
+<td>1</td>
+<td>1</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>(S1) 56x56x64<br>(S2) 28x28x80<br>(S3) 14x14x96<br>(S4) 7x7x144<br>(S5) 1x1x128</td>
+<td>AvgPool <br> 根据输入情况 <br> 调整池化核尺寸 <br> S5 不经过池化</td>
+<td>-</td>
+<td>64</td>
+<td>1</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td>S1,S2,S3,S4,S5</td>
+<td>Full Connection</td>
+<td>-</td>
+<td>136(512?)</td>
+<td>1</td>
+<td>-</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">PFLD_GhostNet</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_size</span><span class="o">=</span><span class="mi">112</span><span class="p">,</span> <span class="n">landmark_number</span><span class="o">=</span><span class="mi">98</span><span class="p">):</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">PFLD_GhostNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -5071,13 +5164,17 @@ Wing Loss 是专门为人脸关键点检测设计的一种损失函数，<strong
 </span></code></pre></div>
 <p>最终的PFLD-GhostOne模型结构，就是在PFLD-GhostNet的基础上，<strong>直接将上述的GhostOne Bottleneck替换掉原始的Ghost Bottleneck</strong>，同时把<strong>一般的卷积操作也替换成MobileOne Block</strong>，在模型精度有比较大的提升的同时，推理速度也有了一个质的提升。</p>
 <h3 id="pfld_ghostone-vs-pfld_ghostnet">PFLD_GhostOne VS PFLD_GhostNet<a class="headerlink" href="#pfld_ghostone-vs-pfld_ghostnet" title="Permanent link">&para;</a></h3>
-<p>这两个类定义了整个 PFLD 模型的架构。<br />
-- <strong>PFLD_GhostNet</strong>: 这是基准模型。它使用标准的 <code>GhostBottleneck</code> 替换了 PFLD 原始骨干网（类似于 MobileNetV2 的 Inverted Residual Block）。这利用了 GhostNet 的优势：以更少的参数获得相似的特征表达能力。<br />
-- <strong>PFLD_GhostOne</strong>: 这是改进后的模型。它进一步将 <code>GhostBottleneck</code> 替换为 <code>GhostOneBottleneck</code>，并将标准卷积替换为 <code>MobileOneBlock</code>。</p>
-<p>核心区别：<br />
-1.  <strong>Block 组成</strong>: GhostNet 使用 <code>GhostModule</code> (标准 Conv + DW Conv)；GhostOne 使用 <code>GhostOneModule</code> (MobileOneBlock + MobileOneBlock)。<br />
-2.  <strong>推理与训练</strong>: <code>PFLD_GhostOne</code> 具有 <code>inference_mode</code> 开关。在训练时，它是一棵极其复杂的“分形树”（每个卷积层都是多分支的）；在推理时，通过重参数化，它折叠成一个非常简洁的“光杆”（单层卷积）。<br />
-3.  <strong>性能权衡</strong>: <code>PFLD_GhostOne</code> 在训练期间需要更多的显存和计算时间，但能在推理时以相同的计算量提供更强的特征提取能力。</p>
+<p>这两个类定义了整个 PFLD 模型的架构。</p>
+<ul>
+<li><strong>PFLD_GhostNet</strong>: 这是基准模型。它使用标准的 <code>GhostBottleneck</code> 替换了 PFLD 原始骨干网（类似于 MobileNetV2 的 Inverted Residual Block）。这利用了 GhostNet 的优势：以更少的参数获得相似的特征表达能力。</li>
+<li><strong>PFLD_GhostOne</strong>: 这是改进后的模型。它进一步将 <code>GhostBottleneck</code> 替换为 <code>GhostOneBottleneck</code>，并将标准卷积替换为 <code>MobileOneBlock</code>。</li>
+</ul>
+<p>核心区别：</p>
+<ol>
+<li><strong>Block 组成</strong>: GhostNet 使用 <code>GhostModule</code> (标准 Conv + DW Conv)；GhostOne 使用 <code>GhostOneModule</code> (MobileOneBlock + MobileOneBlock)。</li>
+<li><strong>推理与训练</strong>: <code>PFLD_GhostOne</code> 具有 <code>inference_mode</code> 开关。在训练时，它是一棵极其复杂的“分形树”（每个卷积层都是多分支的）；在推理时，通过重参数化，它折叠成一个非常简洁的“光杆”（单层卷积）。</li>
+<li><strong>性能权衡</strong>: <code>PFLD_GhostOne</code> 在训练期间需要更多的显存和计算时间，但能在推理时以相同的计算量提供更强的特征提取能力。</li>
+</ol>
 <h3 id="mobileone_1">MobileOne 重参数化总结<a class="headerlink" href="#mobileone_1" title="Permanent link">&para;</a></h3>
 <p><strong>(1) 原结构：conv + bn</strong></p>
 <div class="arithmatex">\[\begin{align*} 

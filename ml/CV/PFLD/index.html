@@ -4453,11 +4453,15 @@ is added for precisely localizing landmarks in images</p>
 表1：主干网络配置。每行代表一组<strong>重复<span class="arithmatex">\(n\)</span>次</strong>的相同层结构。同一序列中的<strong>所有层均具有相同数量的输出通道</strong> <span class="arithmatex">\(c\)</span>。每组序列的<strong>首层</strong>步长为<span class="arithmatex">\(s\)</span>。扩展系数<span class="arithmatex">\(t\)</span>始终作用于输入尺寸。</p>
 </blockquote>
 <p><strong>重点：MS-FC (Multi-Scale Fully Connected) Layer</strong></p>
-<p><strong>Why Multi-Scale?</strong><br />
-*   <strong>Single Scale 其实不够用</strong>: 传统 CNN (如 VGG/ResNet) 通常只利用最后一层特征图进行预测。虽然高层特征语义强（包含全局结构信息），但分辨率过低，丢失了关键点定位所需的<strong>空间细节</strong>。<br />
-*   <strong>Multi-Scale 的优势</strong>: 融合不同深度的特征图。<br />
-    *   <strong>浅层/大尺寸</strong>: 保留边缘、纹理等几何细节（利于精确位置回归）。<br />
-    *   <strong>深层/小尺寸</strong>: 包含拓扑结构、姿态等语义信息（利于全局约束）。</p>
+<p><strong>Why Multi-Scale?</strong></p>
+<ul>
+<li><strong>Single Scale 其实不够用</strong>: 传统 CNN (如 VGG/ResNet) 通常只利用最后一层特征图进行预测。虽然高层特征语义强（包含全局结构信息），但分辨率过低，丢失了关键点定位所需的<strong>空间细节</strong>。</li>
+<li><strong>Multi-Scale 的优势</strong>: 融合不同深度的特征图。<ul>
+<li><strong>浅层/大尺寸</strong>: 保留边缘、纹理等几何细节（利于精确位置回归）。</li>
+<li><strong>深层/小尺寸</strong>: 包含拓扑结构、姿态等语义信息（利于全局约束）。</li>
+</ul>
+</li>
+</ul>
 <p><strong>PFLD 的实现策略</strong><br />
 PFLD 在 Backbone 推理过程中，从不同阶段引出分支（Table 1 中的 S1, S2, S3），最后进行拼接融合。</p>
 <ul>

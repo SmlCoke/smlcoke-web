@@ -4493,16 +4493,20 @@
 <p>我们的研究为超越标准ImageNet规模的大规模图像识别探索增添了新证据。额外数据源的使用有助于在标准基准测试(standard benchmarks)中取得突破性成果（Mahajan等人，2018年；Touvron等人，2019年；Xie等人，2020年）。Sun等人（2017年）研究了CNN性能随数据集规模的变化规律，Kolesnikov等人（2020年）和Djolonga等人（2020年）则对ImageNet-21k和JFT-300M等大型数据集的CNN迁移学习进行了实证探索。我们同样聚焦于这两个数据集，但采用Transformer架构替代了先前工作中基于ResNet的模型。</p>
 <h3 id="transfer-learning">Transfer Learning<a class="headerlink" href="#transfer-learning" title="Permanent link">&para;</a></h3>
 <p>把在“旧任务/旧数据”上学到的知识，迁移到“新任务/新数据”上来用。<br />
-在深度学习里：<br />
-- 旧任务：通常是 大数据集 上训练好的模型（比如 ImageNet、大规模语音/文本数据）<br />
-- 新任务：你现在手头的、数据比较少的任务</p>
-<p>迁移方式：<br />
-- 特征提取（Feature Extraction）<br />
-  冻结 backbone（不训练），只训练后面的分类头。<br />
-  适合数据很少，新任务和旧任务差别不大的情况<br />
-- 微调（Fine-tuning）<br />
-  加载预训练模型，然后在新任务上继续训练整个模型（或者部分层）<br />
-  适合数据稍多，想获得更高性能的情况</p>
+在深度学习里：</p>
+<ul>
+<li>旧任务：通常是 大数据集 上训练好的模型（比如 ImageNet、大规模语音/文本数据）</li>
+<li>新任务：你现在手头的、数据比较少的任务</li>
+</ul>
+<p>迁移方式：</p>
+<ul>
+<li>特征提取（Feature Extraction）<br />
+    冻结 backbone（不训练），只训练后面的分类头。<br />
+    适合数据很少，新任务和旧任务差别不大的情况</li>
+<li>微调（Fine-tuning）<br />
+    加载预训练模型，然后在新任务上继续训练整个模型（或者部分层）<br />
+    适合数据稍多，想获得更高性能的情况</li>
+</ul>
 <p>迁移学习的好处：收敛速度快、训练时间大幅减少，不容易出现过拟合，效果往往比从零开始训练好。</p>
 <h3 id="scalability">可扩展性 Scalability<a class="headerlink" href="#scalability" title="Permanent link">&para;</a></h3>
 <p>Transformer 架构的一个重要优点是其良好的可扩展性。</p>
@@ -4513,16 +4517,18 @@
 低可扩展性： 当你把模型做大、数据增多时，准确率很快就“饱和”了（不再提升），甚至因为难以训练而下降。<br />
 高可扩展性（Transformer）： 只要你敢给它喂更多的数据、把模型层数堆得更高，它的效果就能持续增长，几乎看不到天花板。</p>
 <p><strong>为什么 Transformer 架构具有这种可扩展性？</strong><br />
-相比于CNN（卷积神经网络）和RNN（循环神经网络），Transformer（以及ViT）具有先天的架构优势：<br />
-1. 极高的并行计算效率 (Computational Efficiency)<br />
-  对比RNN：RNN必须处理完第1个词才能处理第2个，无法并行。<br />
-  对比CNN：虽然CNN可以并行，但<strong>深度CNN的感受野扩张需要通过多层堆叠</strong>。<br />
-  Transformer： 自注意力机制（Self-Attention）的核心是矩阵乘法。它可以<strong>一次性并行处理所有的Image Patches。这使得它能完美利用现代GPU/TPU的大规模并行计算能力</strong>。在论文中，作者提到ViT训练所需的计算资源实际上比同等性能的ResNet要少（论文Abstract最后一句及Table 2）。<br />
-2. <strong>弱归纳偏置</strong> (Less Inductive Bias) —— 这一点最关键<br />
-  CNN的限制： <strong>CNN被设计成具有“平移不变性”和“局部性”。这是一种人为的“偏见”（Inductive Bias），假设像素只和周围的像素有关</strong>。这在数据少时是好事（帮模型省力），但在数据量极度丰富时，这种人为设计的结构反而限制了模型的上限。<br />
-  Transformer的自由： ViT几乎没有这种假设。它允许图像中的<strong>任意一个Patch直接与另一个Patch建立联系（Global Attention），无论它们相距多远</strong>。<br />
-    - 代价： 在小数据上难以训练，因为模型需要自己从头学习“什么是空间关系”。<br />
-    - 收益： 在大数据上（JFT-300M），因为它不受人为规则的束缚，它能学习到比CNN更复杂、更微妙的全局模式，因此上限更高。</p>
+相比于CNN（卷积神经网络）和RNN（循环神经网络），Transformer（以及ViT）具有先天的架构优势：</p>
+<ol>
+<li>极高的并行计算效率 (Computational Efficiency)<br />
+    对比RNN：RNN必须处理完第1个词才能处理第2个，无法并行。<br />
+    对比CNN：虽然CNN可以并行，但<strong>深度CNN的感受野扩张需要通过多层堆叠</strong>。<br />
+    Transformer： 自注意力机制（Self-Attention）的核心是矩阵乘法。它可以<strong>一次性并行处理所有的Image Patches。这使得它能完美利用现代GPU/TPU的大规模并行计算能力</strong>。在论文中，作者提到ViT训练所需的计算资源实际上比同等性能的ResNet要少（论文Abstract最后一句及Table 2）。</li>
+<li><strong>弱归纳偏置</strong> (Less Inductive Bias) —— 这一点最关键<br />
+    CNN的限制： <strong>CNN被设计成具有“平移不变性”和“局部性”。这是一种人为的“偏见”（Inductive Bias），假设像素只和周围的像素有关</strong>。这在数据少时是好事（帮模型省力），但在数据量极度丰富时，这种人为设计的结构反而限制了模型的上限。<br />
+    Transformer的自由： ViT几乎没有这种假设。它允许图像中的<strong>任意一个Patch直接与另一个Patch建立联系（Global Attention），无论它们相距多远</strong>。<br />
+        - 代价： 在小数据上难以训练，因为模型需要自己从头学习“什么是空间关系”。<br />
+        - 收益： 在大数据上（JFT-300M），因为它不受人为规则的束缚，它能学习到比CNN更复杂、更微妙的全局模式，因此上限更高。</li>
+</ol>
 <h2 id="iii-method">III. Method<a class="headerlink" href="#iii-method" title="Permanent link">&para;</a></h2>
 <p>在模型设计中，我们尽可能<strong>严格遵循原始Transformer架构（Vaswani等人，2017）</strong>。这种刻意保持简洁的设计有个显著优势：可扩展的NLP Transformer架构及其高效实现几乎可以即插即用。</p>
 <h3 id="31-vision-transformer">3.1 Vision Transformer<a class="headerlink" href="#31-vision-transformer" title="Permanent link">&para;</a></h3>

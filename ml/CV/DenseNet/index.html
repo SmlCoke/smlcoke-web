@@ -4715,7 +4715,7 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 <strong>意味着早期层产生的“有价值特征”,经过几十层后，被不断卷积、混合、变换……，这些特征逐渐被淡化、扭曲甚至遗失</strong></li>
 <li><strong>“many layers contribute very little and can in fact be randomly dropped during training.”</strong><br />
   ResNet的结构是：<br />
-  $<span class="arithmatex">\(x_{l+1} = x_{l}+F(x_l)\)</span>$<br />
+<span class="arithmatex">\(x_{l+1} = x_{l}+F(x_l)\)</span><br />
   如果 <span class="arithmatex">\(F(x_l)\)</span> 很小（趋近于 0），那么：<br />
   某些残差块几乎不改变特征 → “不起作用”<br />
   这就是为什么 Stochastic Depth 随机丢掉残差块时，性能还能保持甚至提升。<br />
@@ -4845,16 +4845,20 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 <p>其中<span class="arithmatex">\([x_0,...,x_{\ell-1}]\)</span>表示第0层至第<span class="arithmatex">\(\ell-1\)</span>层生成的特征图 <strong>拼接(concatenation)</strong> 结果。由于这种密集连接特性，我们将该网络架构称为密集卷积网络（DenseNet）。为实现便利，我们将公式<span class="arithmatex">\(H_\ell(\cdot)\)</span>的多个输入拼接为单个张量。</p>
 <h3 id="34-dense-block-and-transition-layer">3.4 Dense Block and Transition layer<a class="headerlink" href="#34-dense-block-and-transition-layer" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Dense Block的构成：</strong></li>
+<li><strong>Dense Block的构成：</strong><ol>
 <li>BN, ReLU, Conv <span class="arithmatex">\(\rightarrow\)</span> BN, ReLU, Conv</li>
 <li>内部的<strong>所有层输出特征图的空间尺寸</strong>相同（H×W 不变）。</li>
 <li>所有downsampling过程交给Transition Layer完成</li>
 <li><strong>不同 Dense Block 之间没有 Dense-style concat</strong>，即第一个dense block内部的所有feature map不会直接concat给第二个dense block</li>
-<li><strong>Transition Layer</strong>：</li>
+</ol>
+</li>
+<li><strong>Transition Layer</strong>：<ol>
 <li>结构：BN <span class="arithmatex">\(\rightarrow\)</span> <span class="arithmatex">\(1\times 1\)</span> Conv <span class="arithmatex">\(\rightarrow\)</span> <span class="arithmatex">\(2\times 2\)</span> AvgPool</li>
 <li>BN稳定训练，防止梯度消失</li>
 <li><span class="arithmatex">\(1\times 1\)</span> Conv：调整Dense Block输出feature map的channels数。</li>
 <li>2×2 AvgPool：完成downsampling</li>
+</ol>
+</li>
 </ol>
 <h3 id="35-growth-rate">3.5 Growth rate<a class="headerlink" href="#35-growth-rate" title="Permanent link">&para;</a></h3>
 <blockquote>
@@ -4880,15 +4884,21 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 <li>
 <p>DenseNet 不需要“重复学习”</p>
 <ol>
-<li>传统 CNN：</li>
+<li>传统 CNN：<ul>
 <li>每层<strong>自己学习边缘 → 重复浪费</strong></li>
 <li>因为它<strong>看不到浅层的原始边缘特征</strong></li>
-<li>ResNet：</li>
+</ul>
+</li>
+<li>ResNet：<ul>
 <li>虽然有 shortcut，但 <strong>add 后特征会被混合</strong> → <strong>不能直接访问浅层特征</strong></li>
-<li>DenseNet：</li>
+</ul>
+</li>
+<li>DenseNet：<ul>
 <li>直接看到浅层原始边缘图 + 中层纹理图 + 深层高级特征</li>
 <li>不需要重复学习中早期特征<br />
 <strong>这就是 collective knowledge 的价值。</strong></li>
+</ul>
+</li>
 </ol>
 </li>
 <li>
@@ -4914,11 +4924,15 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 <p>为什么Transition layer可以改变输出feature maps的个数(这里实际上是输出的feature map的channels个数)？因为Transition layer的第一步就是<span class="arithmatex">\(1\times 1\)</span> Conv </p>
 <h3 id="38important">3.8(Important)<a class="headerlink" href="#38important" title="Permanent link">&para;</a></h3>
 <p>本片论文中，提到的Dense Block中，提到某layer可以看到此前层输出的所有feature maps。这里的feature map，实际上只有一个channel！具体流程可以参照下方理解：<br />
-比如说初始输入有<span class="arithmatex">\(k_0\)</span>个feature map，准确来说是一个具有16channels的feature map<br />
-* <strong>Layer 0 的输入：</strong><br />
-    * 它看到的是 <span class="arithmatex">\(k_0\)</span> 个 channels。<br />
-    * <strong>Input Shape:</strong> <span class="arithmatex">\((16, H, W)\)</span></p>
+比如说初始输入有<span class="arithmatex">\(k_0\)</span>个feature map，准确来说是一个具有16channels的feature map</p>
 <ul>
+<li>
+<p><strong>Layer 0 的输入：</strong></p>
+<ul>
+<li>它看到的是 <span class="arithmatex">\(k_0\)</span> 个 channels。</li>
+<li><strong>Input Shape:</strong> <span class="arithmatex">\((16, H, W)\)</span></li>
+</ul>
+</li>
 <li>
 <p><strong>Layer 0 的输出：</strong></p>
 <ul>
@@ -4950,9 +4964,9 @@ feature map: 卷积层或池化层输出的多通道张量</p>
 </li>
 </ul>
 <p>以此类推，对于第 <span class="arithmatex">\(l\)</span> 层，它的输入 Channel 总数是 <span class="arithmatex">\(k_0 + k \times (l-1)\)</span> </p>
-<p>此外，前置所有Layers的输出feature map的组合方式就是：<strong>concatenation(拼接)</strong>，拼接方式如下：<br />
-$<span class="arithmatex">\([x_0, x_1, x_2, ..., x_{\ell-1}]\)</span>$<br />
-即按照顺序排列，其中<span class="arithmatex">\(x_{k}\)</span>代表第<span class="arithmatex">\(k\)</span>层<strong>输出的所有feature map，其实严格来说是一张具有多channels的feature map, channels个数等于第<span class="arithmatex">\(k\)</span>层filters个数！</strong><br />
+<p>此外，前置所有Layers的输出feature map的组合方式就是：<strong>concatenation(拼接)</strong>，拼接方式如下：</p>
+<div class="arithmatex">\[[x_0, x_1, x_2, ..., x_{\ell-1}]\]</div>
+<p>即按照顺序排列，其中<span class="arithmatex">\(x_{k}\)</span>代表第<span class="arithmatex">\(k\)</span>层<strong>输出的所有feature map，其实严格来说是一张具有多channels的feature map, channels个数等于第<span class="arithmatex">\(k\)</span>层filters个数！</strong><br />
 <strong>也就是说，上面这个公式，其实是single Tensor!</strong> 原文中也直接说过：</p>
 <blockquote>
 <p>"refers to the concatenation of the feature-maps produced in layers <span class="arithmatex">\(0 \dots l-1\)</span>." [cite: 134]<br />
