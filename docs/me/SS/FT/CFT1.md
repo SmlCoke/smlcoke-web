@@ -144,6 +144,7 @@ $\begin{aligned}
 ={} &  \frac{\omega_c}{\pi }\text{Sa}(\omega_c t)  \\
 \end{aligned}$
 因此我们有$\mathcal{F}\{\frac{\omega_c}{\pi}\text{Sa}(\omega_c t)\}=u(\omega+\omega_c)-u(\omega-\omega_c)$，**那么由傅里叶变换的线性性**，可得：
+
 $$\mathcal{F}\{\text{Sa}(\omega_c t)\}=\frac{\omega_c}{\pi}[u(\omega+\omega_c)-u(\omega-\omega_c)]$$
 
 **5. 冲激函数：$\delta(t) \rightarrow \mathcal{F}\{\delta(t)\}=1$**

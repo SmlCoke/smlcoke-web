@@ -10,6 +10,7 @@
 
 ### 1.2 通信系统通用模型
 通信系统是传输信息所需技术设备的总和，核心组成如下：
+
 | 模块 | 核心功能 |
 |------|----------|
 | 信源 | 产生/发出消息的人或机器，是信息的起点 |
@@ -101,17 +102,17 @@
 - **核心价值**：解决基带信号无法在无线信道远距离传输的问题，同时可通过不同调制方式提升频谱利用率与抗干扰能力
 - **典型实例**：PAM（脉冲幅度调制），通过不同幅度电平映射二进制序列，分为基带PAM与带通PAM两类实现
 
-  !!! note "调制的数学说明"
-      二进制数字序列映射到基带数字波形：$s(t) = \sum_{n=-\infty}^{+\infty} a_n \cdot g_T(t-nT_s)$
-      其中：
-      - $a_n$：二进制符号，$a_n=1$（对应数字1），$a_n=0$（对应数字0）；
-      - $g_T(t)$：矩形脉冲波形，$0≤t≤T_s$时$g_T(t)=1$，其余时间$g_T(t)=0$；
+!!! note "调制的数学说明"
+    二进制数字序列映射到基带数字波形：$s(t) = \sum_{n=-\infty}^{+\infty} a_n \cdot g_T(t-nT_s)$
+    其中：
+    
+    - $a_n$：二进制符号，$a_n=1$（对应数字1），$a_n=0$（对应数字0）；
+    - $g_T(t)$：矩形脉冲波形，$0≤t≤T_s$时$g_T(t)=1$，其余时间$g_T(t)=0$；
       
-      高频载波信号：$c(t) = A_c \cos(2\pi f_c t + \varphi_0)$
-      - 载波频率：$f_c >>$ 基带最高频率$f_m$
-      
-      数字调制——2ASK: $\boldsymbol{e_{2ASK}(t) = s(t) \cdot \cos(2\pi f_c t)}$
-      - 傅里叶变换：$E_{2ASK}(\omega) = \frac{1}{2} \left[ S(\omega-\omega_c) + S(\omega+\omega_c) \right]$
+    高频载波信号：$c(t) = A_c \cos(2\pi f_c t + \varphi_0)$
+    - 载波频率：$f_c >>$ 基带最高频率$f_m$  
+    - 数字调制——2ASK: $\boldsymbol{e_{2ASK}(t) = s(t) \cdot \cos(2\pi f_c t)}$
+    - 傅里叶变换：$E_{2ASK}(\omega) = \frac{1}{2} \left[ S(\omega-\omega_c) + S(\omega+\omega_c) \right]$
 
 ![alt text](image-2.webp)
 

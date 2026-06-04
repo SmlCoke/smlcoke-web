@@ -111,6 +111,7 @@ SystemVerilog
 **注意插件开发者是：Eirik Prestegårdshus**
 
 该插件的功能：
+
 - 语法高亮✅️
 - 语法检查❓️
 - 跨文件跳转✅️
@@ -181,6 +182,7 @@ VS Code 插件市场搜索 `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog`，
 相比前面两个工具，TerosHDL 是一款致力于将 VS Code 打造为全功能 FPGA IDE 的开源插件。在我们的这套方案中，我们主要利用它极其出色的**代码分析能力**和**图形化渲染能力**。
 
 它的核心优势是足够轻量化，无需安装庞大的商业 EDA 软件（如 Vivado/Quartus），即可通过轻量级工具链实现 RTL 电路图预览。杀手锏功能：
+
 - `Schematic Viewer`：自动解析代码连线，生成可交互的 RTL 原理图。
 - `State Machine Viewer`：自动提取 always 块中的 case 逻辑，绘制状态转移图（FSM）。
 - `自动例化与文档生成`：提供快速的代码重构支持。
@@ -228,6 +230,7 @@ VS Code中随便打开一个 `.v` 或者 `.sv` 文件，在编辑器右上角会
 ![alt text](image-3.webp)
 
 从左到右分别是：
+
 - `自动例化与文档生成`：自动化生成该 RTL 的端口分析文档。
 - `Schematic Viewer`：自动解析代码连线，生成可交互的 RTL 原理图。
 - `State Machine Viewer`：自动提取 always 块中的 case 逻辑，绘制状态转移图（FSM）。
