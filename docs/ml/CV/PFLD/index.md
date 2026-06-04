@@ -73,6 +73,7 @@ $$\mathcal{L}:=\frac{1}{M} \sum_{m=1}^{M} \sum_{n=1}^{N}\left(\sum_{c=1}^{C} \om
 **重点：MS-FC (Multi-Scale Fully Connected) Layer**
 
 **Why Multi-Scale?**
+
 *   **Single Scale 其实不够用**: 传统 CNN (如 VGG/ResNet) 通常只利用最后一层特征图进行预测。虽然高层特征语义强（包含全局结构信息），但分辨率过低，丢失了关键点定位所需的**空间细节**。
 *   **Multi-Scale 的优势**: 融合不同深度的特征图。
     *   **浅层/大尺寸**: 保留边缘、纹理等几何细节（利于精确位置回归）。

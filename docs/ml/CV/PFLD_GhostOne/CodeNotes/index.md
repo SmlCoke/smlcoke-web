@@ -313,6 +313,7 @@ class GhostBottleneck(Module):
 ## PFLD_GhostNet
 核心变革是将原始 PFLD 中的 InvertedResidual 模块替换为 GhostBottleneck 模块，从而提升了模型的效率和性能。
 **关于从 Inverted Residual 到 GhostBottleneck 的转变，只需要将 Inverted Residual 头尾的 1x1 卷积替换为 GhostModule 即可，而中间的 3x3 深度卷积保持不变。**
+
 | Input | Operator | t | c | n | s | output |  
 | --- | --- | --- | --- | --- | --- | --- |
 | 112x112x3 | Conv1: Conv3×3 | - | 64 | 1 | 2 | |
@@ -506,10 +507,12 @@ class GhostOneBottleneck(Module):
 
 ### PFLD_GhostOne VS PFLD_GhostNet
 这两个类定义了整个 PFLD 模型的架构。
+
 - **PFLD_GhostNet**: 这是基准模型。它使用标准的 `GhostBottleneck` 替换了 PFLD 原始骨干网（类似于 MobileNetV2 的 Inverted Residual Block）。这利用了 GhostNet 的优势：以更少的参数获得相似的特征表达能力。
 - **PFLD_GhostOne**: 这是改进后的模型。它进一步将 `GhostBottleneck` 替换为 `GhostOneBottleneck`，并将标准卷积替换为 `MobileOneBlock`。
 
 核心区别：
+
 1.  **Block 组成**: GhostNet 使用 `GhostModule` (标准 Conv + DW Conv)；GhostOne 使用 `GhostOneModule` (MobileOneBlock + MobileOneBlock)。
 2.  **推理与训练**: `PFLD_GhostOne` 具有 `inference_mode` 开关。在训练时，它是一棵极其复杂的“分形树”（每个卷积层都是多分支的）；在推理时，通过重参数化，它折叠成一个非常简洁的“光杆”（单层卷积）。
 3.  **性能权衡**: `PFLD_GhostOne` 在训练期间需要更多的显存和计算时间，但能在推理时以相同的计算量提供更强的特征提取能力。

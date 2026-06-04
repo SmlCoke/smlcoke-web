@@ -12,47 +12,47 @@
 > Current detection systems repurpose classifiers to perform detection. To detect an object, these systems take a classifier for that object and evaluate it at various locations and scales in a test image. Systems like deformable parts models (DPM) use a sliding window approach where the classifier is run at evenly spaced locations over the entire image [10].
 
 ### 1.1 之前的检测系统是如何进行目标检测的？
+
 - classifier：利用分类网络
 - 核心思想：检测 ≈ “局部分类”
-  - 旧方法的基本假设是：如果一个目标出现在图像中，那么它一定**完整地落在某个“局部区域”里**
-  - 于是检测被转化为：对图像的**很多子区域做分类，看哪些区域“像目标”**
-  - 方法就是：改变尺度+改变位置，笛卡尔积
-  - 但是显而易见，**计算量爆炸**
+    - 旧方法的基本假设是：如果一个目标出现在图像中，那么它一定**完整地落在某个“局部区域”里**
+    - 于是检测被转化为：对图像的**很多子区域做分类，看哪些区域“像目标”**
+    - 方法就是：改变尺度+改变位置，笛卡尔积
+    - 但是显而易见，**计算量爆炸**
 - DP也是，**滑窗+局部分类/打分**
 
 ### 1.2. R-CNN 是怎么做的？
+
 - Step1. Region Proposal（候选区域生成）
-  - R-CNN 不直接滑窗，而是先用：Selective Search 来生成大约 2000 个候选框（region proposals），这一步是传统CV算法
-
+    - R-CNN 不直接滑窗，而是先用：Selective Search 来生成大约 2000 个候选框（region proposals），这一步是传统CV算法
 - Step2. 对每个 proposal 做“分类”
-  - 分类器在局部区域上运行，因此**R-CNN 仍然是 classifier-based detection**
-
+    - 分类器在局部区域上运行，因此**R-CNN 仍然是 classifier-based detection**
 - Step3. Bounding Box Regression（位置微调）
-  1. R-CNN 发现一个问题：proposal 的框：大致对，但不够精确。
-  2. 所以：对每个 proposal再训练一个 **回归器**，去微调 (x, y, w, h)
-  3. 这一步 **是单独训练的线性回归器**
-
+    1. R-CNN 发现一个问题：proposal 的框：大致对，但不够精确。
+    2. 所以：对每个 proposal再训练一个 **回归器**，去微调 (x, y, w, h)
+    3. 这一步 **是单独训练的线性回归器**
 - Step4. Post-processing（后处理）
-  After classification, post-processing is used to refine the bounding boxes, eliminate duplicate detections, and rescore the boxes based on other objects in the scene [13]
-  包括：
-    - **Non-Maximum Suppression (NMS)**：去掉重叠度高的重复检测
-    - 可能还包括：
-      * 分数重标定
-      * 类别间上下文调整
-  
+    After classification, post-processing is used to refine the bounding boxes, eliminate duplicate detections, and rescore the boxes based on other objects in the scene [13]
+    包括：
+        - **Non-Maximum Suppression (NMS)**：去掉重叠度高的重复检测
+        - 可能还包括：
+            * 分数重标定
+            * 类别间上下文调整
 - 问题：
-  1. **多阶段，彼此割裂，每一个都是独立组件**
-     1. Selective Search（不可学习）
-     2. CNN 分类（单独训练）
-     3. SVM（另一个训练过程）
-     4. Bounding box regression（再一个模型）
-     5. NMS（规则）
-  2. **无法端到端训练**
-    无法做到：
-    > “我最后检测效果不好 →
-    > 直接反向传播到最前面去改特征”
-    因为：proposal 不是网络产生的、后处理是手工规则
-  3. **速度慢**
+    1. **多阶段，彼此割裂，每一个都是独立组件**
+        1. Selective Search（不可学习）
+        2. CNN 分类（单独训练）
+        3. SVM（另一个训练过程）
+        4. Bounding box regression（再一个模型）
+        5. NMS（规则）
+    2. **无法端到端训练**
+      无法做到：
+      
+     > “我最后检测效果不好 →
+     > 直接反向传播到最前面去改特征”
+      
+      因为：proposal 不是网络产生的、后处理是手工规则
+    3. **速度慢**
 
 R-CNN 本质上还是 classifier 过程，只是滑窗个数减少了，还是有多次“看”这张图。但是YOLO解决了这个问题，这就是为什么叫做：You Only Look Once.
 
@@ -77,9 +77,9 @@ Our system divides the input image into an S × S grid. If the center of an obje
 1. grid cell 的划分与 GT 框的大小、位置无关，只和输入分辨率有关。例如输入图片是448×448，我们选择S=7（7行7列的网格划分），那么每一个网格的像素尺寸就是64×64
 2. 限定一个 GT 框由一个 grid cell 负责，**一个grid cell最多负责一个 GT 框**
 3. grid cell 与 GT 框的大小没有固定关系
-   1. 对于大 GT 框，可能横跨多个 grid cell，那么就由 GT 框的中心点所在的 grid cell 负责
-   2. 对于小 GT 框，尺寸相近，就由该 grid cell 负责
-   3. 对于极小、密集的 GT 框，**多个 GT 框可能落在同一个grid cell内**，这种情况下无法处理
+    1. 对于大 GT 框，可能横跨多个 grid cell，那么就由 GT 框的中心点所在的 grid cell 负责
+    2. 对于小 GT 框，尺寸相近，就由该 grid cell 负责
+    3. 对于极小、密集的 GT 框，**多个 GT 框可能落在同一个grid cell内**，这种情况下无法处理
 
 
 
@@ -99,9 +99,8 @@ Each grid cell predicts B bounding boxes and confidence scores for those boxes. 
 1️⃣ 情况 A：有物体，但框很烂
 
 * 预测框：
-
-  * 的确覆盖了一个真实物体
-  * 但位置偏移很大、尺寸很不准
+    * 的确覆盖了一个真实物体
+    * 但位置偏移很大、尺寸很不准
 
 这时：
 
@@ -117,9 +116,8 @@ Each grid cell predicts B bounding boxes and confidence scores for those boxes. 
 2️⃣ 情况 B：框很漂亮，但目标根本不存在
 
 * 预测框：
-
-  * 看起来是一个“很合理”的矩形
-  * 但这个区域**压根没有真实物体**
+    * 看起来是一个“很合理”的矩形
+    * 但这个区域**压根没有真实物体**
 
 这时：
 
@@ -152,17 +150,14 @@ Each grid cell predicts B bounding boxes and confidence scores for those boxes. 
 1️⃣ Pr(Object)
 
 * 表示：
-
-  > **当前这个 bounding box 对应的位置，是否存在一个真实目标**
+   > **当前这个 bounding box 对应的位置，是否存在一个真实目标**
 
 在 YOLO v1 中：
 
 * 如果该 grid cell 负责某个 GT box：
-
-  * Pr(Object) = 1
+    * Pr(Object) = 1
 * 否则：
-
-  * Pr(Object) = 0
+    * Pr(Object) = 0
 
 ⚠️ 注意：
 这不是概率意义上的 soft label，而是**训练目标的定义**。
@@ -178,15 +173,16 @@ $$\text{IOU} = \frac{\text{Area of Intersection}}{\text{Area of Union}}$$
 ---
 
 #### 2.2.2 grid cell 与 predictor 与 bounding box
+
 1. 一个grid cell 包含$B$个predictor，或者说预测$B$个bounding box，B 个 bounding box 没有固定形状和位置$(x,y,w,h)$，这些参数完全是由网络通过**回归**学习出来
 2. grid cell 只负责预测，不限制 bounding box 的空间范围。bounding box 可以跨越任意多个 grid cell，但在 YOLO v1 中，一个物体永远只由其中心点所在的那个 grid cell 负责预测。所以这就有个问题：
-  - 小物体：很容易**多个中心点落同一个 cell → 冲突**
-  - 大物体：只由一个 cell 预测 → **定位压力极大**
+    - 小物体：很容易**多个中心点落同一个 cell → 冲突**
+    - 大物体：只由一个 cell 预测 → **定位压力极大**
 3. 每个 predictor 的 confidence 定义中的 Object 指的是“**是否存在一个由当前 grid cell 负责的真实物体**”。并且：
-  - 如果当前 grid cell 没有被分配 GT box，那别玩了，全部 predictor 的 Pr 都是0
-  - 如果当前 grid cell 被分配了 GT box，那么：
-    1. 只有 IOU 最大的那个 box predictor：Pr(Object) = 1
-    2. 其余 B-1 个 box predictor: Pr(Object) = 0
+    - 如果当前 grid cell 没有被分配 GT box，那别玩了，全部 predictor 的 Pr 都是0
+    - 如果当前 grid cell 被分配了 GT box，那么：
+        1. 只有 IOU 最大的那个 box predictor：Pr(Object) = 1
+        2. 其余 B-1 个 box predictor: Pr(Object) = 0
 
 **重要理解：B-1个 Pr=0 的详细解释以及意义**
 > 在“当前这个 cell 被分配到一个 GT 物体”的前提下，
@@ -203,17 +199,16 @@ $$\text{IOU} = \frac{\text{Area of Intersection}}{\text{Area of Union}}$$
 
 #### 2.2.3 $Pr(Class_i|Object) \times Pr(Object) \times IOU^{truth}_{pred} = Pr(Class_i) \times IOU^{truth}_{pred}$
 1. class 是什么？
-   1. 这里的 **class** 指的是：**目标检测数据集中的“语义类别”**
-   2. 如果数据集有 **C 个类别**，那么：
-      **每个 grid cell 会输出**：$Pr(Class_1|Object), \dots, Pr(Class_C|Object)$
-      
-      即：**cell 会计算出 C 中每个类别 class i 的条件概率**
+    1. 这里的 **class** 指的是：**目标检测数据集中的“语义类别”**
+    2. 如果数据集有 **C 个类别**，那么：
+        **每个 grid cell 会输出**：$Pr(Class_1|Object), \dots, Pr(Class_C|Object)$
+        即：**cell 会计算出 C 中每个类别 class i 的条件概率**
 2. 为什么是条件概率？
-   1. 作者明确说的是：**Pr(Class_i | Object)**而不是**Pr(Class_i)**。原因是：**YOLO 把“有没有物体”和“物体是什么类别”这两件事拆开了**。
-   2. 换句话说：这个概率回答的不是：“**这个区域是某一类的概率**”，而是：“**如果这里确实有一个物体，它是 Class_i 的概率**”
+    1. 作者明确说的是：**Pr(Class_i | Object)**而不是**Pr(Class_i)**。原因是：**YOLO 把“有没有物体”和“物体是什么类别”这两件事拆开了**。
+    2. 换句话说：这个概率回答的不是：“**这个区域是某一类的概率**”，而是：“**如果这里确实有一个物体，它是 Class_i 的概率**”
 3. class是grid cell级的，不是box级的
-   1. box predictor 不负责“这是猫还是狗”
-   1. box predictor 只负责：“我是不是一个好框”
+    1. box predictor 不负责“这是猫还是狗”
+    1. box predictor 只负责：“我是不是一个好框”
 4. `Pr(Class_i | Object)` 是指：**在当前 grid cell 确实存在一个由它负责的物体的前提下，该物体属于第 i 类的概率。**
 
 **总结：**
@@ -233,10 +228,11 @@ bounding box负责：$\boxed{\text{Pr(Object)} \times \text{IOU}^{\text{truth}}_
 ### 2.4 $1 \times 1$ reduction layer
 > Our network has 24 convolutional layers followed by 2 fully connected layers. Instead of the inception modules used by GoogLeNet, we **simply use 1 × 1 reduction layers followed by 3 × 3 convolutional layers**, similar to Lin et al [22]. The full network is shown in Figure 3
 ![alt text](../image.webp)
+
 1. 这里的$1 \times 1$ reduction layer也是卷积层，是用来降低维度的，但是不是spatial downsampling（借助stride），而是channel-wise reduction（降通道数）
 2. 为什么不要spatial downsampling？
-   1. YOLO v1 的 backbone 需要：**尽量保持空间分辨率**。因为后面要做 **grid-based detection**
-   2. 如果随便用 stride=2：grid 会变粗，小目标直接没了
+    1. YOLO v1 的 backbone 需要：**尽量保持空间分辨率**。因为后面要做 **grid-based detection**
+    2. 如果随便用 stride=2：grid 会变粗，小目标直接没了
 3. **思考，那为什么Maxpool里面仍然保留了stride=2压缩H×W空间呢？**
 
 ## III. Train
@@ -257,18 +253,17 @@ bounding box负责：$\boxed{\text{Pr(Object)} \times \text{IOU}^{\text{truth}}_
 
 1. $\text{Confidence Loss} = \sum{(c_{\text{pred}}-c_{\text{gt}})^2}$，其中：
 2. $c_{\text{pred}}$：是网络前向传播输出的某一个 bounding box predictor 对“这个 box 的置信度”的预测值。
-   1. 也就是论文中说的：$\boxed{\text{Pr(Object)} \times IOU^{\text{truth}}_{\text{pred}}}$
-   2. 图片中的每一个 grid cell，每个 grid cell 中的每一个 bounding box predictor，都会有一个自己的$c_{\text{pred}}$分数，**但是一张图片中可能只有几个grid cell有GT对应，也就是说可能一张图片中只有几个bounding box predictor的$c_{\text{pred}}$分数不为0，其余都等于0** 
+    1. 也就是论文中说的：$\boxed{\text{Pr(Object)} \times IOU^{\text{truth}}_{\text{pred}}}$
+    2. 图片中的每一个 grid cell，每个 grid cell 中的每一个 bounding box predictor，都会有一个自己的$c_{\text{pred}}$分数，**但是一张图片中可能只有几个grid cell有GT对应，也就是说可能一张图片中只有几个bounding box predictor的$c_{\text{pred}}$分数不为0，其余都等于0** 
 3. $c_{\text{gt}}$：是训练时人为构造的“这个 box predictor 应该预测的正确置信度”。它不是网络算出来的，而是：
-   1. 由 **GT 框 + IOU 规则 + 责任分配规则**决定的
-   2. 当前 grid cell 没有被分配 GT，那玩完了，全体bounding box predictor的$c_{\text{gt}}$都为0
-   3. 当前 grid cell 有一个 GT box：
-      1. 计算出该 cell 内的所有 B 个 bounding box **与 GT 的 IOU**
-      2. 找到$IOU$最大的那个 bounding box
-      3. 设定：
-      * 该 predictor：$c_{\text{gt}} = IOU^{\text{pred box}}_{\text{GT box}}$
-        
-      * 其余 predictor：$c_{\text{gt}} = 0$
+    1. 由 **GT 框 + IOU 规则 + 责任分配规则**决定的
+    2. 当前 grid cell 没有被分配 GT，那玩完了，全体bounding box predictor的$c_{\text{gt}}$都为0
+    3. 当前 grid cell 有一个 GT box：
+        1. 计算出该 cell 内的所有 B 个 bounding box **与 GT 的 IOU**
+        2. 找到$IOU$最大的那个 bounding box
+        3. 设定：
+            * 该 predictor：$c_{\text{gt}} = IOU^{\text{pred box}}_{\text{GT box}}$
+            * 其余 predictor：$c_{\text{gt}} = 0$
         
 因为空白bounding box太多了，所以它们的confidence下降对于Loss值的降低是非常明显的，导致真正的目标 box 在 梯度合成中 发挥的作用不明显，也就是说所即便模型没有很好地提高目标 box 的 confidence，只要它成功地把大量 no-object box 的 confidence 压低，总 loss 仍然可以持续下降。
 > 之前误以为 \(x,y,w,h\) 是直接被优化的自变量，但实际上真正被优化的是共享的卷积核和全连接层参数；\(x,y,w,h,c\) 只是这些参数在不同 grid cell 和 predictor 上的输出。由于 no-object box 数量巨大，它们在 confidence loss 上产生的大量梯度会共同作用于同一套网络参数，从而主导参数更新方向，使得网络更倾向于压低整体 confidence，而不是优先提升 object box 的 confidence。
@@ -305,8 +300,8 @@ $+ \sum_{i=0}^{S^2} \mathbb{1}_{i}^{\text{obj}} \sum_{c \in \text{classes}} \lef
 
 
 1. $\hat{x_i}, \hat{y_i}, \hat{w_i}, \hat{h_i}$: cell i 的 GT Box 的真实位置参数（当然，会经过相对换算）
-   > 例如，输入为$448\times 448$的图片，当$S=7$时，每个grid cell的尺寸都是$64\times64$，如果说有一个 GT box 的目标中心的像素坐标是$(160,200)$，并且$w=80, h=120$
-   > **Step1: 计算 GT box 属于哪一个 grid cell：**$i_x=\lfloor160/64\rfloor=2, i_y = \lfloor200/64\rfloor=3$
+   > 例如，输入为$448\times 448$的图片，当$S=7$时，每个grid cell的尺寸都是$64\times64$，如果说有一个 GT  box 的目标中心的像素坐标是$(160,200)$，并且$w=80, h=120$
+   > **Step1: 计算 GT box 属于哪一个 grid cell：**$i_x=\lfloor160/64\rfloor=2, i_y = \lfloor200/ 64\rfloor=3$
    > **Step2: 计算$x_i, y_i$：**
    > $\hat{x_i}=(160-2\times64)/64=0.5$
    > $\hat{y_i}=(200-3\times64)/64=0.125$
@@ -318,6 +313,7 @@ $+ \sum_{i=0}^{S^2} \mathbb{1}_{i}^{\text{obj}} \sum_{c \in \text{classes}} \lef
 4. $C_i$：负责该 GT 的 bounding box predictor: $C_i = \text{Pr}(\text{object}) \times \text{IOU}^{\text{pred}}_{\text{GT}}$（其余 B-1 个 bounding box predictor 的 $C_i=0$，因为$\text{Pr(object)=0}$?）
 5. $\hat{p_i}$：**独热向量**，表示 cell i 的这个 GT box 的类别，比如：
    > 如果该 cell 中的目标类别是 “dog”：
+   >
    > | class | \(\hat{p}_i(c)\) |
    > | ----- | -------------- |
    > | dog   | 1              |
@@ -329,15 +325,15 @@ $+ \sum_{i=0}^{S^2} \mathbb{1}_{i}^{\text{obj}} \sum_{c \in \text{classes}} \lef
 6. $p_i$：当前 cell 预测出的**类别概率向量**，例如：
    > $p_i=[0.6,0.3,0.002,\cdots, 0.000001]$    
 7. **Loss函数各项解析：**
-   - $\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 \right]$
+    - $\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 \right]$
     图片中的所有**具有obj**的 grid cell 中**负责该 GT box 的位置**损失
-   - $\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2 \right]$
+    - $\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} \left[ (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2 \right]$
     图片中的所有**具有obj**的 grid cell 中**负责该 GT box 的形状**损失
-   - $\sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2$
+    - $\sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2$
     图片中的所有**具有obj**的 grid cell 中**负责该 GT box 的confidence**损失：**我这个框框的准吗**？
-   - $\lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2$
+    - $\lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2$
     这里的$\hat{C_{i}}=0$，**因为这里是背景，根本就没有 GT box，甚至不存在框得准不准的问题，只要你预测了非零 confidence，就要被惩罚**
-   - $\sum_{i=0}^{S^2} \mathbb{1}_{i}^{\text{obj}} \sum_{c \in \text{classes}} \left[p_i(c) - \hat{p}_i(c)\right]^2$
+    - $\sum_{i=0}^{S^2} \mathbb{1}_{i}^{\text{obj}} \sum_{c \in \text{classes}} \left[p_i(c) - \hat{p}_i(c)\right]^2$
     具有 obj 的 grid 的类别预测损失。
 
 ## IV. Inference
@@ -445,6 +441,7 @@ $$\text{score} = \Pr(\text{Class}_i) \times \text{IOU}$$
 
 ### 5.2 VOC 2007 Error Analysis
 Each prediction is either correct or it is classified based on the type of error:
+
 - Correct: correct class and IOU > 0.5
 - Localization: correct class, 0.1 < IOU < 0.5
 - Similar: class is similar, IOU > 0.1
@@ -453,6 +450,7 @@ Each prediction is either correct or it is classified based on the type of error
 
 YOLO vs Fast R-CNN:
 ![alt text](../image-2.webp)
+
 - YOLO struggles to localize objects correctly. 
 - Fast R-CNN makes much fewer localization errors but far more background errors. 
 
@@ -474,6 +472,7 @@ YOLO vs Fast R-CNN:
 
 ## VI. YOLO v1优势与潜在问题
 ### 6.1 优势
+
 1. 端到端、单阶段检测、单网络。（不需要slide windows, 没有多阶段pipeline，不需要对各个模块进行单独训练）
 2. 快，real-time
 3. background错误少
@@ -483,9 +482,10 @@ YOLO vs Fast R-CNN:
 4. 泛化能力强：在测试artwork这种与经典数据集不同的图像时，也能保持很高的accuarcy
 
 ### 6.2 潜在问题
+
 1. 定位精度问题。刚刚提到的，一个object仅仅由一个 grid cell 负责，可能存在问题，尤其是对于 Large object (一个grid cell负责一整个大物体) 和 小而密的物体（多个物体的中心出现在一个grid cell）
 2. downsample 层会不会压缩图像特征，降低预测效果？ 
-    > Our model also uses relatively coarse features for predicting bounding boxes since our architecture has multiple downsampling layers from the input image
+   > Our model also uses relatively coarse features for predicting bounding boxes since our architecture has multiple downsampling layers from the input image
 3. our loss function treats **errors the same in small bounding boxes versus large bounding boxes**
 
 

@@ -25,7 +25,7 @@ feature map: 卷积层或池化层输出的多通道张量
   **意味着早期层产生的“有价值特征”,经过几十层后，被不断卷积、混合、变换……，这些特征逐渐被淡化、扭曲甚至遗失**
 - **“many layers contribute very little and can in fact be randomly dropped during training.”**
   ResNet的结构是：
-  $$x_{l+1} = x_{l}+F(x_l)$$
+  $x_{l+1} = x_{l}+F(x_l)$
   如果 $F(x_l)$ 很小（趋近于 0），那么：
   某些残差块几乎不改变特征 → “不起作用”
   这就是为什么 Stochastic Depth 随机丢掉残差块时，性能还能保持甚至提升。
@@ -154,16 +154,17 @@ $x_\ell = H_\ell([x_0, x_1, ..., x_{\ell-1}])$
 
 
 ### 3.4 Dense Block and Transition layer
+
 1. **Dense Block的构成：**
-   1. BN, ReLU, Conv $\rightarrow$ BN, ReLU, Conv
-   2. 内部的**所有层输出特征图的空间尺寸**相同（H×W 不变）。
-   3. 所有downsampling过程交给Transition Layer完成
-   4. **不同 Dense Block 之间没有 Dense-style concat**，即第一个dense block内部的所有feature map不会直接concat给第二个dense block
+    1. BN, ReLU, Conv $\rightarrow$ BN, ReLU, Conv
+    2. 内部的**所有层输出特征图的空间尺寸**相同（H×W 不变）。
+    3. 所有downsampling过程交给Transition Layer完成
+    4. **不同 Dense Block 之间没有 Dense-style concat**，即第一个dense block内部的所有feature map不会直接concat给第二个dense block
 2. **Transition Layer**：
-   1. 结构：BN $\rightarrow$ $1\times 1$ Conv $\rightarrow$ $2\times 2$ AvgPool
-   2. BN稳定训练，防止梯度消失
-   3. $1\times 1$ Conv：调整Dense Block输出feature map的channels数。
-   4. 2×2 AvgPool：完成downsampling
+    1. 结构：BN $\rightarrow$ $1\times 1$ Conv $\rightarrow$ $2\times 2$ AvgPool
+    2. BN稳定训练，防止梯度消失
+    3. $1\times 1$ Conv：调整Dense Block输出feature map的channels数。
+    4. 2×2 AvgPool：完成downsampling
 
 ### 3.5 Growth rate
 > If each function Hℓ produces k featuremaps, it follows that the ℓth layer has k0 + k × (ℓ − 1) input feature-maps, where k0 is the number of channels in the input layer.
@@ -186,14 +187,14 @@ $x_\ell = H_\ell([x_0, x_1, ..., x_{\ell-1}])$
 
 2. DenseNet 不需要“重复学习”
     1. 传统 CNN：
-    * 每层**自己学习边缘 → 重复浪费**
-    * 因为它**看不到浅层的原始边缘特征**
+        * 每层**自己学习边缘 → 重复浪费**
+        * 因为它**看不到浅层的原始边缘特征**
     2. ResNet：
-    * 虽然有 shortcut，但 **add 后特征会被混合** → **不能直接访问浅层特征**
+        * 虽然有 shortcut，但 **add 后特征会被混合** → **不能直接访问浅层特征**
     3. DenseNet：
-    * 直接看到浅层原始边缘图 + 中层纹理图 + 深层高级特征
-    * 不需要重复学习中早期特征
-    **这就是 collective knowledge 的价值。**
+        * 直接看到浅层原始边缘图 + 中层纹理图 + 深层高级特征
+        * 不需要重复学习中早期特征
+        **这就是 collective knowledge 的价值。**
 
 3. global state 只会“增长”，不会“变形/丢失”
     在 DenseNet：
@@ -217,6 +218,7 @@ $x_\ell = H_\ell([x_0, x_1, ..., x_{\ell-1}])$
 ### 3.8(Important)
 本片论文中，提到的Dense Block中，提到某layer可以看到此前层输出的所有feature maps。这里的feature map，实际上只有一个channel！具体流程可以参照下方理解：
 比如说初始输入有$k_0$个feature map，准确来说是一个具有16channels的feature map
+
 * **Layer 0 的输入：**
     * 它看到的是 $k_0$ 个 channels。
     * **Input Shape:** $(16, H, W)$
@@ -241,7 +243,9 @@ $x_\ell = H_\ell([x_0, x_1, ..., x_{\ell-1}])$
 以此类推，对于第 $l$ 层，它的输入 Channel 总数是 $k_0 + k \times (l-1)$ 
 
 此外，前置所有Layers的输出feature map的组合方式就是：**concatenation(拼接)**，拼接方式如下：
+
 $$[x_0, x_1, x_2, ..., x_{\ell-1}]$$
+
 即按照顺序排列，其中$x_{k}$代表第$k$层**输出的所有feature map，其实严格来说是一张具有多channels的feature map, channels个数等于第$k$层filters个数！**
 **也就是说，上面这个公式，其实是single Tensor!** 原文中也直接说过：
 > "refers to the concatenation of the feature-maps produced in layers $0 \dots l-1$." [cite: 134]
