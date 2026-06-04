@@ -322,7 +322,9 @@ One kernel with 64 regs/thread and 8KB shm/TB, 128 threads/TB
 
 分别看三个主要限制：
 
-1. **Register file 限制**
+**(1) Register file 限制**
+
+<span style="color: #8B0000;">每个 SM 的 RF 数量固定，每个 thread 分配的 RF 数 VS 可驻留的 thread 数</span>
 
 ```text
 65536 regs / 64 regs/thread = 1024 threads
@@ -331,7 +333,9 @@ One kernel with 64 regs/thread and 8KB shm/TB, 128 threads/TB
 
 也就是说，如果每个 thread 要用 64 个 register，那么 register file 最多支持 `1024` 个 thread 同时驻留；每个 TB 有 `128` 个 thread，因此最多驻留 `8` 个 TB。
 
-2. **Shared memory 限制**
+**(2) Shared memory 限制**
+
+<span style="color: #8B0000;">每个 SM 的 shared memory 总量固定，每个 block 分配的 shared memory VS 可驻留的 thread block 数</span>
 
 ```text
 96KB shm / 8KB shm per TB = 12 TBs
@@ -339,7 +343,9 @@ One kernel with 64 regs/thread and 8KB shm/TB, 128 threads/TB
 
 如果每个 TB 需要 8KB shared memory，那么 shared memory 最多支持 `12` 个 TB 同时驻留。
 
-3. **最大线程数限制**
+**(3) 最大线程数限制**
+
+<span style="color: #8B0000;">SM 限定的最大 TB 数 VS SM 限定的最大 thread 数以及每个 TB 的 thread 数</span>
 
 ```text
 2048 threads / 128 threads/TB = 16 TBs
@@ -361,17 +367,20 @@ min(8, 12, 16, 32) = 8 TBs
 
 ### 2.4 Synchronization
 
-并行程序需要同步，是因为多个 thread 之间经常存在数据依赖：一个 thread 先写入 shared memory，另一个 thread 后续要读取这个结果。如果没有同步，后读的 thread 可能在数据还没写完时就开始读取，得到旧值或未定义值。
+并行程序需要同步，是因为多个 thread 之间经常存在数据依赖：**一个 thread 先写入 shared memory，另一个 thread 后续要读取这个结果**。如果没有同步，后读的 thread 可能在数据还没写完时就开始读取，得到旧值或未定义值。
 
-CUDA 中最基础的同步方式是 block scope 内的同步：
+#### 2.4.1 Thread block 内同步
+
+CUDA 中**最基础的同步方式是 block scope 内的同步**：
 
 ```cpp
 __syncthreads();
 ```
 
-`__syncthreads()` 的含义是：同一个 thread block 内的所有 thread 都必须到达这个同步点，之后这些 thread 才能继续向下执行。课件图里画的同步栅栏（barrier）就是这个意思：先到的 warp / thread 会在 barrier 前等待，直到 block 内其他 thread 也到达。
+`__syncthreads()` 的含义是：**同一个 thread block 内的所有 thread** 都必须到达这个同步点，之后这些 thread 才能继续向下执行。下图里画的同步栅栏（barrier）就是这个意思：先到的 warp / thread 会在 barrier 前等待，直到 block 内其他 thread 也到达。
 
 ![CUDA synchronization](./assets/synchronization.webp)
+
 
 需要注意它的作用域：
 
@@ -379,7 +388,7 @@ __syncthreads();
 - 它不能同步不同 thread block，因为不同 block 可能被调度到不同 SM 上，甚至不一定同时驻留
 - 对应到底层实现，可以理解为 CUDA 编译到类似 `bar` 的同步栅栏指令
 
-课件中的矩阵乘法片段展示了为什么 shared memory 常常需要和同步一起使用：
+下面的矩阵乘法片段展示了为什么 shared memory 常常需要和同步一起使用：
 
 ```cpp
 __shared__ float Mds[BLOCK_SIZE][BLOCK_SIZE];
@@ -390,13 +399,13 @@ Nds[tx][ty] = d_B[col + (tx + i * BLOCK_SIZE) * K];
 __syncthreads();
 ```
 
-这里每个 thread 负责把一部分 `A` 和 `B` 从 global memory 搬到 shared memory。只有当 block 内所有 thread 都完成搬运之后，后面的计算：
+这里每个 thread 负责把一部分 `A` 和 `B` 从 global memory 搬到 shared memory。**只有当 block 内所有 thread 都完成搬运之后**，后面的计算：
 
 ```cpp
 P += Mds[tx][j] * Nds[j][ty];
 ```
 
-才可以安全读取完整的 tile。因此第一处 `__syncthreads()` 是为了保证 shared memory 中的 `Mds` 和 `Nds` 已经被整个 block 填好。
+**才可以安全读取完整的 tile**。因此第一处 `__syncthreads()` 是为了保证 shared memory 中的 `Mds` 和 `Nds` 已经被整个 block 填好。
 
 代码中第二处同步：
 
@@ -407,17 +416,13 @@ for (int j = 0; j < BLOCK_SIZE; j++) {
 }
 ```
 
-从课件要表达的角度看，它强调的是：当多个 thread 共享同一块 shared memory，并且后续迭代可能复用或覆盖这些 shared memory 数据时，需要通过同步保证所有 thread 的读取和写入阶段不会交错。更常见的 tiled matrix multiplication 写法通常是在完成整个 `j` 循环之后、进入下一轮 tile 加载之前同步一次，避免下一轮加载覆盖当前轮还没读完的数据。
+它强调的是：当多个 thread 共享同一块 shared memory，并且后续迭代可能复用或覆盖这些 shared memory 数据时，**需要通过同步保证所有 thread 的读取和写入阶段不会交错**。更常见的 tiled matrix multiplication 写法通常是在完成整个 `j` 循环之后、进入下一轮 tile 加载之前同步一次，避免下一轮加载覆盖当前轮还没读完的数据。
+
+#### 2.4.2 其他作用域的同步
 
 除了 block 内同步，CUDA 还提供 host 端看到的更大作用域同步：
 
-- `cudaDeviceSynchronize()`：等待当前 device 上前面提交的工作完成。它是 device 级别的 host-device 同步，常用于 kernel launch 之后检查错误、计时或确保结果已经完成。
-- `cudaStreamSynchronize(stream)`：等待指定 stream 中前面提交的工作完成。它只同步某一个 stream，相比 `cudaDeviceSynchronize()` 作用域更小，更适合保留其他 stream 的并发执行。
+- `cudaDeviceSynchronize()`：等待当前 device 上前面提交的工作完成。它是 **device 级别的 host-device 同步**，常用于 **kernel launch 之后**检查错误、计时或确保结果已经完成。
+- `cudaStreamSynchronize(stream)`：等待指定 stream 中前面提交的工作完成。**它只同步某一个 stream**，相比 `cudaDeviceSynchronize()` 作用域更小，更适合保留其他 stream 的并发执行。
 
-总结一下：
-
-- block 内线程协作使用 shared memory 时，通常需要 `__syncthreads()`
-- host 想等待整个 device 的任务完成，用 `cudaDeviceSynchronize()`
-- host 只想等待某个 stream 的任务完成，用 `cudaStreamSynchronize()`
-
-
+## III. Summary of Thread Model
