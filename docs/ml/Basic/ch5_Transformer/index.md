@@ -55,6 +55,7 @@ $[\mathbf{q^1}, \mathbf{q^2}, \mathbf{q^3}, \mathbf{q^4}]=W^q [\mathbf{a^1}, \ma
 第三个$\mathbf{a^3}$可以看到前三个，因此其计算出来的得分向量是：$\mathbf{\alpha^{3,1}} = \mathbf{q^3}\mathbf{k^1}, \mathbf{\alpha^{3,2}} = \mathbf{q^3}\mathbf{k^2}, \mathbf{\alpha^{3,3}} = \mathbf{q^3}\mathbf{k^3}$
 第四个$\mathbf{a^4}$可以看到前四个，因此其计算出来的得分向量是：$\mathbf{\alpha^{4,1}} = \mathbf{q^4}\mathbf{k^1}, \mathbf{\alpha^{4,2}} = \mathbf{q^4}\mathbf{k^2}, \mathbf{\alpha^{4,3}} = \mathbf{q^4}\mathbf{k^3}, \mathbf{\alpha^{4,4}} = \mathbf{q^4}\mathbf{k^4}$
 因此，attention matrix是一个上三角矩阵：
+
 $$A'=\begin{bmatrix}
  \alpha^{1,1} & \alpha^{2,1} & \alpha^{3,1} & \alpha^{4,1}\\
  -1 & \alpha^{2,2} &  \alpha^{3,2} & \alpha^{4,2} \\

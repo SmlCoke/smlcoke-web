@@ -67,19 +67,13 @@
 
     1. 点积注意力（Dot-product Attention）
     计算逻辑：
-       1. 输入向量分别通过权重矩阵$\mathbf{W}^q$、$\mathbf{W}^k$得到 **查询(query)** 向量 $\mathbf{q}$、**键(key)** 向量$\mathbf{k}$；
-       2. 注意力得分$\alpha$由$\mathbf{q}$和$\mathbf{k}$的点积直接计算：
-    
-       $$\alpha = \mathbf{q} \cdot \mathbf{k}$$
-
-
+        1. 输入向量分别通过权重矩阵$\mathbf{W}^q$、$\mathbf{W}^k$得到 **查询(query)** 向量 $\mathbf{q}$、**键(key)** 向量$\mathbf{k}$；
+        2. 注意力得分$\alpha$由$\mathbf{q}$和$\mathbf{k}$的点积直接计算：$\alpha = \mathbf{q} \cdot \mathbf{k}$
     2. 加性注意力（Additive Attention）
     计算逻辑：
-       1. 输入向量同样通过$\mathbf{W}^q$、$\mathbf{W}^k$得到$\mathbf{q}$、$\mathbf{k}$；
-       2. 先将$\mathbf{q}$和$\mathbf{k}$相加，经过$\text{tanh}$激活函数；
-       3. 再通过 **权重矩阵** $\mathbf{W}$变换得到注意力得分$\alpha$（过程可表示为）：
-        
-        $$\alpha = \mathbf{W} \cdot \text{tanh}(\mathbf{q} + \mathbf{k})$$
+        1. 输入向量同样通过$\mathbf{W}^q$、$\mathbf{W}^k$得到$\mathbf{q}$、$\mathbf{k}$；
+        2. 先将$\mathbf{q}$和$\mathbf{k}$相加，经过$\text{tanh}$激活函数；
+        3. 再通过 **权重矩阵** $\mathbf{W}$变换得到注意力得分$\alpha$（过程可表示为）：$\alpha = \mathbf{W} \cdot \text{tanh}(\mathbf{q} + \mathbf{k})$
 
 
 3. **计算出**$\mathbf{a_1}$跟其他每一个向量$\mathbf{a_i}$的 **相关性分数** $\alpha_{1,i}$(包括自己也要计算)
