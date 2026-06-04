@@ -88,7 +88,15 @@ nav:
   - 博客: blog/index.md
   - 微电子: 
     - me/index.md
-    - Signal and Systems: me/SS/index.md
+    - Signal and Systems: 
+      - me/SS/index.md
+      - Linear Differential Equations: 
+        - Homogeneous: me/SS/Linear_Differential_Equations/Homogeneous.md
+        - Particular: me/SS/Linear_Differential_Equations/Particular.md
+        - Impulse_Balance: me/SS/Linear_Differential_Equations/Impulse_Balance.md
+      - Fourier Transform: 
+        - CFT-1: me/SS/FT/CFT1.md
+        - CFT-2: me/SS/FT/CFT2.md
     - Digital Integrated Circuits: 
       - me/DIC/index.md
       - Glossary: me/DIC/Gloassary/index.md

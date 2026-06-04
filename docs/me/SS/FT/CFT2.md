@@ -15,7 +15,7 @@ $x(t) \xleftrightarrow{\mathcal{F}} X(j\omega),\quad y(t) \xleftrightarrow{\math
 在[连续时间傅里叶变换（1）](CFT1.md)一节我们多次运用到傅里叶变换的线性性质来推导几个常见非周期信号的傅里叶也变换，这里我们正式给出该性质。
 **线性性：**
 
-$$ax(t)+by(t)\xleftrightarrow{\mathcal{F}} aX(j\omega)+bY(j\omega)\tag{2.1}$$
+$$ax(t)+by(t)\xleftrightarrow{\mathcal{F}} aX(j\omega)+bY(j\omega)$$
 
 这个性质的证明很简单，但介于其**重要性**（这也是我们将其放在第一条的原因），我们依旧给出证明过程：
 >证明：
@@ -28,7 +28,7 @@ $$ax(t)+by(t)\xleftrightarrow{\mathcal{F}} aX(j\omega)+bY(j\omega)\tag{2.1}$$
 ### 2.2 时移与频移
 **时移性：**
 
-$$x(t-t_0)\xleftrightarrow{\mathcal{F}} e^{-j\omega t_0}X(j\omega)\tag{2.2}$$
+$$x(t-t_0)\xleftrightarrow{\mathcal{F}} e^{-j\omega t_0}X(j\omega)$$
 
 > 证明：
 > $\begin{aligned}
@@ -40,7 +40,7 @@ $$x(t-t_0)\xleftrightarrow{\mathcal{F}} e^{-j\omega t_0}X(j\omega)\tag{2.2}$$
 
 **频移性：**
 
-$$e^{-j\omega_0 t}x(t)\xleftrightarrow{\mathcal{F}} X(j(\omega-\omega_0))\tag{2.3}$$
+$$e^{-j\omega_0 t}x(t)\xleftrightarrow{\mathcal{F}} X(j(\omega-\omega_0))$$
 
 > 证明：
 > $\begin{aligned}
@@ -53,7 +53,7 @@ $$e^{-j\omega_0 t}x(t)\xleftrightarrow{\mathcal{F}} X(j(\omega-\omega_0))\tag{2.
 
 ### 2.3 共轭与共轭对称性
 
-$$x^{*}(t)\xleftrightarrow{\mathcal{F}} X^{*}(-j\omega)\tag{2.4}$$
+$$x^{*}(t)\xleftrightarrow{\mathcal{F}} X^{*}(-j\omega)$$
 
 >证明：
 >$X(j\omega) = \int_{-\infty}^{+\infty}x(t)e^{-j\omega t}\,dt$
@@ -91,7 +91,7 @@ $$X(-j\omega)=X^{*}(-j\omega)$$
 
 也就是说：
 
-$$X(j\omega)=X^{*}(j\omega)\tag{2.5}$$
+$$X(j\omega)=X^{*}(j\omega)$$
 
 即：**若一个信号为实偶信号，则其傅里叶变换为实偶函数（虚部为0）。**
 
@@ -105,7 +105,7 @@ $$-X(-j\omega)=X^{*}(-j\omega)$$
 
 也就是说：
 
-$$-X(j\omega)=X^{*}(j\omega)\tag{2.6}$$
+$$-X(j\omega)=X^{*}(j\omega)$$
 
 即：**若一个信号为实偶信号，则其傅里叶变换为纯虚奇函数（实部为0）。**
 
@@ -127,7 +127,7 @@ $$\mathcal{F}\{x_e(t)\} = \text{Re}\{X(j\omega)\},\quad \mathcal{F}\{x_o(t)\} = 
 
 ### 2.4 时域微分
 
-$$\frac{\text{d}x(t)}{\text{d}t}\xleftrightarrow{\mathcal{F}}j\omega X(j\omega)\tag{2.7}$$
+$$\frac{\text{d}x(t)}{\text{d}t}\xleftrightarrow{\mathcal{F}}j\omega X(j\omega)$$
 
 > 证明
 > $\begin{aligned}
@@ -137,7 +137,7 @@ x(t)=\int_{-\infty}^{+\infty}X(j\omega)e^{j\omega t}\,dt \rightarrow
 
 ### 2.5 时域积分
 
-$$\int_{-\infty}^{t}x(\tau)d\tau\xleftrightarrow{\mathcal{F}}\frac{1}{j\omega}X(j\omega)+\pi X(0)\delta(\omega)\tag{2.8}$$
+$$\int_{-\infty}^{t}x(\tau)d\tau\xleftrightarrow{\mathcal{F}}\frac{1}{j\omega}X(j\omega)+\pi X(0)\delta(\omega)$$
 
 >证明
 >根据单位阶跃响应的卷积特性：
@@ -153,7 +153,7 @@ $$\int_{-\infty}^{t}x(\tau)d\tau\xleftrightarrow{\mathcal{F}}\frac{1}{j\omega}X(
 
 ### 2.6 时域与频域的尺度变换
 
-$$x(at) \xleftrightarrow{\mathcal{F}} \frac{1}{|a|}X(j\frac{\omega}{a})\tag{2.9}$$
+$$x(at) \xleftrightarrow{\mathcal{F}} \frac{1}{|a|}X(j\frac{\omega}{a})$$
 
 >证明
 >$x(t)=\int_{-\infty}^{+\infty}X(j\omega)e^{j\omega t}\,dt$
@@ -189,7 +189,7 @@ $$x(at) \xleftrightarrow{\mathcal{F}} \frac{1}{|a|}X(j\frac{\omega}{a})\tag{2.9}
 
 可见，如果信号$x(t)$的傅里叶变换是$X(j\omega)$，那么信号$X(t)$的傅里叶变换的**函数结构必然与$x(t)$存在一定相似性**，这就是下面的**对称互易性定理**：
 
-$$x(t)\xleftrightarrow{\mathcal{F}}X(j\omega)\rightarrow X(t)\xleftrightarrow{\mathcal{F}}2\pi x(-\omega)\tag{2.10}$$
+$$x(t)\xleftrightarrow{\mathcal{F}}X(j\omega)\rightarrow X(t)\xleftrightarrow{\mathcal{F}}2\pi x(-\omega)$$
 
 > 证明
 > $x(t)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}X(j\omega)e^{j\omega t}\, d\omega \rightarrow$
@@ -204,7 +204,7 @@ $$x(t)\xleftrightarrow{\mathcal{F}}X(j\omega)\rightarrow X(t)\xleftrightarrow{\m
 那么我们不妨猜测，傅里叶变换$X(j\omega)$的导数$\frac{\text{d}}{\text{d}\omega}X(j\omega)$对应的时域信号，很可能具有这种形式——$jtx(t)$。
 事实上，我们有**傅里叶变换的频域微分性质**：
 
-$$-jtx(t)\xleftrightarrow{\mathcal{F}}\frac{\text{d}}{\text{d}\omega}X(j\omega)\tag{2.11}$$
+$$-jtx(t)\xleftrightarrow{\mathcal{F}}\frac{\text{d}}{\text{d}\omega}X(j\omega)$$
 
 > 证明
 > 由$X(j\omega)=\int_{-\infty}^{+\infty}x(t)e^{-j\omega t}\,dt$两边对$\omega$求导：
@@ -214,7 +214,7 @@ $$-jtx(t)\xleftrightarrow{\mathcal{F}}\frac{\text{d}}{\text{d}\omega}X(j\omega)\
 
 ### 2.9 频域积分
 
-$$-\frac{x(t)}{jt}+\pi x(0)\delta(t) \xleftrightarrow{\mathcal{F}}\int_{-\infty}^{\omega}X(j\omega')\,d\omega'\tag{2.12}$$
+$$-\frac{x(t)}{jt}+\pi x(0)\delta(t) \xleftrightarrow{\mathcal{F}}\int_{-\infty}^{\omega}X(j\omega')\,d\omega'$$
 
 > 证明：
 >  $\int_{-\infty}^{\omega}X(j\omega')\,d\omega'=X(j\omega)*u(j\omega)$
@@ -228,7 +228,7 @@ $$-\frac{x(t)}{jt}+\pi x(0)\delta(t) \xleftrightarrow{\mathcal{F}}\int_{-\infty}
 ### 2.10 Parseval's定理
 Parseval's定理的基本思想是：**一个信号在时域中的总能量等于其频域表示中的总能量**，其基本形式如下：
 
-$$\int_{-\infty}^{+\infty}|x(t)|^2\,dt=\frac{1}{2\pi}\int_{-\infty}^{+\infty}|X(j\omega)|^2\,d\omega\tag{2.13}$$
+$$\int_{-\infty}^{+\infty}|x(t)|^2\,dt=\frac{1}{2\pi}\int_{-\infty}^{+\infty}|X(j\omega)|^2\,d\omega$$
 
 > 证明：
 >$\begin{aligned}
@@ -260,15 +260,15 @@ $$x(t)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}X(j\omega)e^{j\omega t}\,d\omega$$
 
 我们写成求和形式：
 
-$$x(t)=\lim_{\omega_0 \rightarrow 0}\sum_{k=-\infty}^{+\infty}\frac{1}{2\pi}X(jk\omega_0 )e^{jk\omega_0 t}\omega_0\tag{2.14}$$
+$$x(t)=\lim_{\omega_0 \rightarrow 0}\sum_{k=-\infty}^{+\infty}\frac{1}{2\pi}X(jk\omega_0 )e^{jk\omega_0 t}\omega_0$$
 
 可以发现，$x(t)$其实是一系列复指数信号的叠加，只不过这里的一系列是无穷多个。那么根据频率响应的定义以及线性时不变系统的线性性，我们可以直接写出**系统响应**：
 
-$$y(t)=\lim_{\omega_0 \rightarrow 0}\sum_{k=-\infty}^{+\infty}H(jk\omega_0)\frac{1}{2\pi}X(jk\omega_0 )e^{jk\omega_0 t}\omega_0\tag{2.15}$$
+$$y(t)=\lim_{\omega_0 \rightarrow 0}\sum_{k=-\infty}^{+\infty}H(jk\omega_0)\frac{1}{2\pi}X(jk\omega_0 )e^{jk\omega_0 t}\omega_0$$
 
 我们将式(2.15)写回积分形式：
 
-$$y(t)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}H(j\omega)X(j\omega)e^{j\omega t}\,d\omega\tag{2.16}$$
+$$y(t)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}H(j\omega)X(j\omega)e^{j\omega t}\,d\omega$$
 
 对比$y(t)$的傅里叶变换综合公式：
 
@@ -276,7 +276,7 @@ $$y(t)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}Y(j\omega)e^{j\omega t}\,d\omega$$
 
 可以发现：
 
-$$Y(j\omega)=X(j\omega)H(j\omega)\tag{2.17}$$
+$$Y(j\omega)=X(j\omega)H(j\omega)$$
 
 **因此，我们激动的发现，响应信号$y(t)$的傅里叶变换，就是激励信号的傅里叶变换与频率响应的乘积！**，只需要对$Y(j\omega)$做一次傅里叶反变换，即可求出信号$y(t)$的时域表达式，从而避免了解微分方程、冲激函数系数平衡、求时域卷积等一系列复杂的计算。
   
@@ -303,10 +303,15 @@ $$y(t)=x(t)*h(t)\rightarrow Y(j\omega)=X(j\omega)H(j\omega)$$
 > 证毕。
 ### 2.12 频域卷积定理
 在对称互易性的作用下，根据时域卷积定理，很容易联想到频域的卷积必定也会对应着时域的什么东西，这个性质就是——**频域卷积定理**：
-$$x(t)y(t)\xleftrightarrow{\mathcal{F}}\frac{1}{2\pi}X(j\omega)*Y(j\omega) \tag{2.18}$$
+
+$$x(t)y(t)\xleftrightarrow{\mathcal{F}}\frac{1}{2\pi}X(j\omega)*Y(j\omega)$$
+
 证明方法与时域卷积定理类似，留给读者自行思考。
+
 ## 三. LTI的频域分析
+
 ### 3.1 截至目前，我们在做什么？
+
 先来看看一个老生常谈的问题：
 为什么频率响应如此重要？
 在时域分析中，我们知道，对系统输入激励$x(t)$后，得到响应$y(t)$的时域表达式的方法有：
@@ -370,12 +375,13 @@ $$\mathcal{F}\{e^{j\omega_0 t}\}=2\pi \delta(\omega - \omega_0) \tag{*}$$
 因为它直接关联起了激励和输入的关系，这种“关联”，就是一个简单的乘法。
 **到这里，我们终于回答了开头提出的问题：“为什么频率响应如此重要？”**
 现在，我们再来总结总结，截至目前我们对LTI的分析方法有哪些？
+
 1. 时域分析法：
-	- 直接求解系统的线性微分方程
-	- 基于单位冲激响应的卷积方法
+    - 直接求解系统的线性微分方程
+    - 基于单位冲激响应的卷积方法
 2. 频域分析法 
- 	- 傅里叶展开与频率响应(只针对周期信号)
- 	- 傅里叶变换与频率响应(针对所有信号)
+    - 傅里叶展开与频率响应(只针对周期信号)
+    - 傅里叶变换与频率响应(针对所有信号)
 
 ### 3.2  LTI的时域分析与频域分析方法
 **时域分析**
@@ -390,17 +396,17 @@ $$\mathcal{F}\{e^{j\omega_0 t}\}=2\pi \delta(\omega - \omega_0) \tag{*}$$
 现在我们来看看，如何用LTI的微分方程，求解出其频率响应。
 考虑输入输出满足如下形式的常系数线性微分方程的连续时间线性时不变系统：
 
-$$\sum_{k=0}^{N}a_k\frac{\text{d}^k y(t)}{\text{d} t^k}=\sum_{k=0}^{M}b_k\frac{\text{d}^k x(t)}{\text{d} t^k} \tag{5.1}$$
+$$\sum_{k=0}^{N}a_k\frac{\text{d}^k y(t)}{\text{d} t^k}=\sum_{k=0}^{M}b_k\frac{\text{d}^k x(t)}{\text{d} t^k}$$
 
 **结合时域微分性质，方程两边同时进行傅里叶变换**（当然，需要保证能够进行傅里叶变换）：
 
-$$\sum_{k=0}^{N}a_k(j\omega)^kY(j\omega)=\sum_{k=0}^{M}b_k(j\omega)^kX(j\omega)\tag{5.2}$$
+$$\sum_{k=0}^{N}a_k(j\omega)^kY(j\omega)=\sum_{k=0}^{M}b_k(j\omega)^kX(j\omega)$$
 
-$$[\sum_{k=0}^{N}a_k(j\omega)^k]\cdot Y(j\omega)=[\sum_{k=0}^{M}b_k(j\omega)^k]\cdot X(j\omega)\tag{5.3}$$
+$$[\sum_{k=0}^{N}a_k(j\omega)^k]\cdot Y(j\omega)=[\sum_{k=0}^{M}b_k(j\omega)^k]\cdot X(j\omega)$$
 
 进而得到：
 
-$$H(j\omega)=\frac{Y(j\omega)}{X(j\omega)}=\frac{\sum_{k=0}^{M}b_k(j\omega)^k}{\sum_{k=0}^{N}a_k(j\omega)^k}\tag{5.4}$$
+$$H(j\omega)=\frac{Y(j\omega)}{X(j\omega)}=\frac{\sum_{k=0}^{M}b_k(j\omega)^k}{\sum_{k=0}^{N}a_k(j\omega)^k}$$
 
 也就是说，频率响应可以直接由微分方程两端的系数写出。
 
@@ -423,9 +429,13 @@ $$H(j\omega) = |H(j\omega)| e^{j\angle H(j\omega)}$$
 
 频域分析方法的应用有很多，包括在信号抽样、滤波、调制解调中的应用。这里我们单独介绍一下一类比较常见的情况——当**激励为正弦信号**时。
 （1）对于**实系统**（通常是指该系统的冲激响应h(t)是实数函数，即系统的微分方程系数是实数），设其频率响应为$H(j\omega)$，当激励信号为$\sin{(\omega_0 t+\mathcal{\phi})}$时：
+
 $$y(t)=|H(j\omega_0)|\sin{(\omega_0 t+\phi+\angle H(j\omega_0))}$$
+
 激励为余弦信号$\cos{(\omega_0 t+\phi)}$时同理：
+
 $$y(t)=|H(j\omega_0)|\cos{(\omega_0 t+\phi+\angle H(j\omega_0))}$$
+
 （2）对于**一般的线性时不变系统**：
 当激励信号为$\sin{(\omega_0 t+\mathcal{\phi})}$时：
 设：
