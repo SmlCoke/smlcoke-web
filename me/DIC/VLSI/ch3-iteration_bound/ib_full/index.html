@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260604-3">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
@@ -4095,10 +4095,12 @@
 <li><strong>输入</strong>是一串排好队的数字：<span class="arithmatex">\(x[0], x[1], x[2], x[3]...\)</span></li>
 <li><strong>输出</strong>也是一串排好队的数字：<span class="arithmatex">\(y[0], y[1], y[2], y[3]...\)</span></li>
 </ul>
-<p><strong>“一次迭代”，就是指系统吃进去一个 <span class="arithmatex">\(x[n]\)</span>，经过一系列加减乘除，吐出一个 <span class="arithmatex">\(y[n]\)</span> 的全过程。</strong><br />
-*   算 <span class="arithmatex">\(y[0]\)</span>，叫第 0 次迭代；<br />
-*   算 <span class="arithmatex">\(y[1]\)</span>，叫第 1 次迭代；<br />
-*   <strong>迭代周期（Iteration Period）</strong>，就是算出一个 <span class="arithmatex">\(y[n]\)</span> 平均需要花的时间。</p>
+<p><strong>“一次迭代”，就是指系统吃进去一个 <span class="arithmatex">\(x[n]\)</span>，经过一系列加减乘除，吐出一个 <span class="arithmatex">\(y[n]\)</span> 的全过程。</strong></p>
+<ul>
+<li>算 <span class="arithmatex">\(y[0]\)</span>，叫第 0 次迭代；</li>
+<li>算 <span class="arithmatex">\(y[1]\)</span>，叫第 1 次迭代；</li>
+<li><strong>迭代周期（Iteration Period）</strong>，就是算出一个 <span class="arithmatex">\(y[n]\)</span> 平均需要花的时间。</li>
+</ul>
 <hr />
 <h3 id="2">2. 为什么会有“性能上限（迭代边界）”？<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
 <p>我们先不管公式，看两个极端的例子。假设我们有一个加法器，<strong>做一次加法需要 10 纳秒 (10ns)</strong>。</p>
@@ -4144,16 +4146,20 @@
 <p>你看出来区别了吗？<br />
 <strong><span class="arithmatex">\(y[2]\)</span> 和 <span class="arithmatex">\(y[3]\)</span> 之间没有依赖关系了！</strong><br />
 <span class="arithmatex">\(y[2]\)</span> 等的是 <span class="arithmatex">\(y[0]\)</span>；<span class="arithmatex">\(y[3]\)</span> 等的是 <span class="arithmatex">\(y[1]\)</span>。偶数项自己玩，奇数项自己玩。</p>
-<p>这时候，如果你买 <strong>2 个加法器</strong>：<br />
-*   加法器 A 专门负责算偶数项：<span class="arithmatex">\(y[0] \rightarrow y[2] \rightarrow y[4]...\)</span> （每步耗时 10ns）<br />
-*   加法器 B 专门负责算奇数项：<span class="arithmatex">\(y[1] \rightarrow y[3] \rightarrow y[5]...\)</span> （每步耗时 10ns）</p>
+<p>这时候，如果你买 <strong>2 个加法器</strong>：</p>
+<ul>
+<li>加法器 A 专门负责算偶数项：<span class="arithmatex">\(y[0] \rightarrow y[2] \rightarrow y[4]...\)</span> （每步耗时 10ns）</li>
+<li>加法器 B 专门负责算奇数项：<span class="arithmatex">\(y[1] \rightarrow y[3] \rightarrow y[5]...\)</span> （每步耗时 10ns）</li>
+</ul>
 <p>这两个加法器可以<strong>完全同时工作</strong>！<br />
 虽然每个加法器依然是每 10ns 吐出一个结果，但因为有两个系统在并行，从外部看，系统每 10ns 可以吐出 <strong>2 个</strong>结果。<br />
 那么<strong>平均分摊下来，算出一个样点需要的时间就是：10ns / 2 = 5ns。</strong></p>
-<p><strong>现在你再看那个著名的公式：</strong><br />
-$<span class="arithmatex">\(T_{LoopBound} = \frac{T_L}{w_L}\)</span>$<br />
-*   <strong><span class="arithmatex">\(T_L\)</span> (环路的计算总时间)</strong>：限制了这一条链路最快要多久跑完。<br />
-*   <strong><span class="arithmatex">\(w_L\)</span> (环路上的延时个数)</strong>：代表了这个环路里<strong>存在几个“独立互不干扰的线程”</strong>。延时越多，说明辈分跨度越大，能同时并行的人就越多！</p>
+<p><strong>现在你再看那个著名的公式：</strong></p>
+<div class="arithmatex">\[T_{LoopBound} = \frac{T_L}{w_L}\]</div>
+<ul>
+<li><strong><span class="arithmatex">\(T_L\)</span> (环路的计算总时间)</strong>：限制了这一条链路最快要多久跑完。</li>
+<li><strong><span class="arithmatex">\(w_L\)</span> (环路上的延时个数)</strong>：代表了这个环路里<strong>存在几个“独立互不干扰的线程”</strong>。延时越多，说明辈分跨度越大，能同时并行的人就越多！</li>
+</ul>
 <p>所以，一个环路对系统速度的真正卡脖子程度，不是看它总延时多长（<span class="arithmatex">\(T_L\)</span>），而是看它<strong>均摊到每一个可以并行的线程上的时间</strong>（<span class="arithmatex">\(T_L / w_L\)</span>）。</p>
 <p>而一个复杂系统里有很多个环路，木桶效应告诉我们，系统最快能跑多快，取决于<strong>最慢的那个环路</strong>。这就是为什么迭代边界 <span class="arithmatex">\(T_{\infty} = \max (T_L / w_L)\)</span>。</p>
 <hr />

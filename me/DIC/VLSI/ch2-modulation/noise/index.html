@@ -23,7 +23,7 @@
     
     
       
-        <title>Noise - SmlCoke Home</title>
+        <title>噪声 - SmlCoke Home</title>
       
     
     
@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260604-3">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Noise
+              噪声
             
           </span>
         </div>
@@ -4062,7 +4062,6 @@
 
 
 
-<p>[Toc]</p>
 <h1 id="_1">噪声<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <h2 id="_2">一. 噪声基础概念<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <h3 id="11">1.1 什么是噪声？<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
@@ -4074,12 +4073,9 @@
 <h3 id="12">1.2 噪声的核心参数<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
 <h4 id="121-rms">1.2.1 平均功率与均方根电压（RMS）<a class="headerlink" href="#121-rms" title="Permanent link">&para;</a></h4>
 <ul>
-<li>平均功率（<span class="arithmatex">\(P_{av}\)</span>）：描述噪声的总能量，公式为：</li>
+<li>平均功率（<span class="arithmatex">\(P_{av}\)</span>）：描述噪声的总能量，公式为：<span class="arithmatex">\(P_{av}=\lim _{T \to \infty} \frac{1}{T} \int_{-T / 2}^{+T / 2} x^{2}(t) dt\)</span>（<span class="arithmatex">\(x(t)\)</span> 为<strong>噪声信号</strong>，<span class="arithmatex">\(T\)</span> 为观测时间）</li>
+<li>均方根电压（<span class="arithmatex">\(V_{rms}\)</span>）：噪声电压的有效数值，与平均功率的关系：<span class="arithmatex">\(V_{rms}=\sqrt{P_{av}}\)</span></li>
 </ul>
-<p>$<span class="arithmatex">\(P_{av}=\lim _{T \to \infty} \frac{1}{T} \int_{-T / 2}^{+T / 2} x^{2}(t) dt\)</span>$</p>
-<p>（<span class="arithmatex">\(x(t)\)</span> 为<strong>噪声信号</strong>，<span class="arithmatex">\(T\)</span> 为观测时间）<br />
-- 均方根电压（<span class="arithmatex">\(V_{rms}\)</span>）：噪声电压的有效数值，与平均功率的关系：</p>
-<p>$<span class="arithmatex">\(V_{rms}=\sqrt{P_{av}}\)</span>$</p>
 <h4 id="122-psd">1.2.2 功率谱密度（PSD，又称噪声谱）<a class="headerlink" href="#122-psd" title="Permanent link">&para;</a></h4>
 <p><strong>(1) 定义</strong>：<br />
 描述噪声在<strong>不同频率上的功率分布</strong>，单位是 <span class="arithmatex">\(V^2/Hz\)</span> 或 <span class="arithmatex">\(A^2/Hz\)</span>。</p>
@@ -4109,7 +4105,7 @@
 <p>至此，我们严格给出了<strong>噪声的功率谱密度</strong><span class="arithmatex">\(S_X(f)\)</span>的数学定义。从表达式 [E[x^2(t)]=\int_{-\infty}^{+\infty}S_X(f)df]，我们也可以直接理解出：<br />
 <span class="arithmatex">\(S_{X}(f)\)</span> 表示<strong>在频率</strong> <span class="arithmatex">\(f\)</span> <strong>处的噪声功率密度</strong>。</p>
 <p><strong>(4) 重要关系：系统中噪声的传递遵循</strong></p>
-<p>$<span class="arithmatex">\(S_Y(f)=S_X(f)|H(f)|^2\)</span>$</p>
+<div class="arithmatex">\[S_Y(f)=S_X(f)|H(f)|^2\]</div>
 <p>其中 <span class="arithmatex">\(H(f)\)</span> 是系统传递函数，即系统会像“滤波器”一样改变输入噪声的谱形。</p>
 <h4 id="123">1.2.3 相关与不相关噪声<a class="headerlink" href="#123" title="Permanent link">&para;</a></h4>
 <p>(1) 不相关噪声（多数情况）：独立器件产生的噪声，<strong>总平均功率 = 各噪声平均功率之和（直接叠加）</strong>。<br />
@@ -4135,9 +4131,11 @@
 衡量信号与噪声的比例，是电路性能的关键指标，公式分两种形式：<br />
 1. 功率比：$<span class="arithmatex">\(SNR=\frac{P_{signal}}{P_{noise}}=\frac{V_{rms,signal}^2}{V_{rms,noise}^2}\)</span>$<br />
 2. 分贝（dB）表示（工程常用）：$<span class="arithmatex">\(SNR=10\log\left(\frac{P_{signal}}{P_{noise}}\right)=20\log\left(\frac{V_{rms,signal}}{V_{rms,noise}}\right)\)</span>$</p>
-<p>关键结论：<br />
-- 当信号与噪声的均方根电压相等时，<span class="arithmatex">\(SNR=0\)</span>（无法区分信号和噪声）。<br />
-- 放大器<strong>不能提高输入信号的SNR</strong>：<strong>因为放大器会同时放大信号和噪声，还会引入自身噪声，反而可能降低SNR。</strong></p>
+<p>关键结论：</p>
+<ul>
+<li>当信号与噪声的均方根电压相等时，<span class="arithmatex">\(SNR=0\)</span>（无法区分信号和噪声）。</li>
+<li>放大器<strong>不能提高输入信号的SNR</strong>：<strong>因为放大器会同时放大信号和噪声，还会引入自身噪声，反而可能降低SNR。</strong></li>
+</ul>
 <p>补充：dBm单位（功率绝对值参考）：以1mW为参考，1mW=0dBm，1μW=-30dBm（<strong>用于量化噪声功率的绝对大小</strong>）。</p>
 
 

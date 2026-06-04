@@ -53,7 +53,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css?v=20260604-3">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
@@ -4898,9 +4898,11 @@
 <p><strong>方法二：正交接收方式（数学之美）</strong></p>
 <p><img alt="alt text" src="image-11.webp" /></p>
 <p><strong>困境：</strong> 接收信号 <span class="arithmatex">\(r(t) = A\cos(\omega_i t + \phi) + n(t)\)</span> 中，初始相位 <span class="arithmatex">\(\phi\)</span> 是未知的。如果在本地随便找一个 <span class="arithmatex">\(\cos\omega_i t\)</span> 去乘，一旦 <span class="arithmatex">\(\phi = \pi/2\)</span>，积分结果直接为 0，信号就“消失”了！<br />
-<strong>巧妙的解法：</strong> 对每一个可能的频率 <span class="arithmatex">\(\omega_i\)</span>，我们在本地<strong>同时使用</strong>它对应的同相分量 <span class="arithmatex">\(\cos\omega_i t\)</span> 和正交分量 <span class="arithmatex">\(\sin\omega_i t\)</span> 两路去相乘。<br />
-*   同相路积分后得到：<span class="arithmatex">\(X \propto A\cos\phi\)</span><br />
-*   正交路积分后得到：<span class="arithmatex">\(Y \propto -A\sin\phi\)</span></p>
+<strong>巧妙的解法：</strong> 对每一个可能的频率 <span class="arithmatex">\(\omega_i\)</span>，我们在本地<strong>同时使用</strong>它对应的同相分量 <span class="arithmatex">\(\cos\omega_i t\)</span> 和正交分量 <span class="arithmatex">\(\sin\omega_i t\)</span> 两路去相乘。</p>
+<ul>
+<li>同相路积分后得到：<span class="arithmatex">\(X \propto A\cos\phi\)</span></li>
+<li>正交路积分后得到：<span class="arithmatex">\(Y \propto -A\sin\phi\)</span></li>
+</ul>
 <p><strong>消去未知相位：</strong> 将这两路的输出分别<strong>平方再相加</strong>：</p>
 <div class="arithmatex">\[Z^2 = X^2 + Y^2 \propto A^2(\cos^2\phi + \sin^2\phi) = A^2\]</div>
 <p><strong>结论：</strong> 经过平方和运算，<strong>未知的随机相位 <span class="arithmatex">\(\phi\)</span> 被彻底消去了</strong>！最终得到的 <span class="arithmatex">\(Z^2\)</span> 只与该频率支路的信号幅度 <span class="arithmatex">\(A\)</span> 有关。在 <span class="arithmatex">\(M\)</span> 个频率支路中，哪一路的 <span class="arithmatex">\(Z^2\)</span> 值最大，就说明发送了哪种频率。这种方法被广泛应用于现代数字接收机中。</p>

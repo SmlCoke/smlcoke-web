@@ -53,7 +53,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css?v=20260604-3">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
@@ -4474,13 +4474,19 @@
 <li><strong>结果</strong>：展开后的 DFG 包含的节点数量是原始 DFG 的 <span class="arithmatex">\(J\)</span> 倍。</li>
 </ul>
 <h3 id="22">2.2 边与延迟映射<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
-<p>对于原始 DFG 中一条从 <span class="arithmatex">\(U\)</span> 到 <span class="arithmatex">\(V\)</span>、延迟为 <span class="arithmatex">\(w\)</span> 的边，在 <span class="arithmatex">\(J\)</span> 阶展开图中对应生成 <span class="arithmatex">\(J\)</span> 条边：<br />
-*   <strong>连接关系</strong>：<strong>节点 <span class="arithmatex">\(U_i\)</span> 连接到节点 <span class="arithmatex">\(V_{(i+w) \% J}\)</span>。</strong><br />
-*   <strong>延迟计算</strong>：新边上的延迟数为 <span class="arithmatex">\(w_{unf} = \lfloor (i+w) / J \rfloor\)</span>。<br />
-    *   <em>注：<span class="arithmatex">\(\lfloor x \rfloor\)</span> 表示向下取整；<span class="arithmatex">\(\%\)</span> 表示取余数。</em></p>
+<p>对于原始 DFG 中一条从 <span class="arithmatex">\(U\)</span> 到 <span class="arithmatex">\(V\)</span>、延迟为 <span class="arithmatex">\(w\)</span> 的边，在 <span class="arithmatex">\(J\)</span> 阶展开图中对应生成 <span class="arithmatex">\(J\)</span> 条边：</p>
+<ul>
+<li><strong>连接关系</strong>：<strong>节点 <span class="arithmatex">\(U_i\)</span> 连接到节点 <span class="arithmatex">\(V_{(i+w) \% J}\)</span>。</strong></li>
+<li><strong>延迟计算</strong>：新边上的延迟数为 <span class="arithmatex">\(w_{unf} = \lfloor (i+w) / J \rfloor\)</span>。<ul>
+<li><em>注：<span class="arithmatex">\(\lfloor x \rfloor\)</span> 表示向下取整；<span class="arithmatex">\(\%\)</span> 表示取余数。</em></li>
+</ul>
+</li>
+</ul>
 <h3 id="23-w-j">2.3 特殊情况：当 <span class="arithmatex">\(w &lt; J\)</span> 时<a class="headerlink" href="#23-w-j" title="Permanent link">&para;</a></h3>
 <ul>
-<li>若原始边的延迟 <span class="arithmatex">\(w\)</span> 小于展开因子 <span class="arithmatex">\(J\)</span>，展开后会生成：<ul>
+<li>
+<p>若原始边的延迟 <span class="arithmatex">\(w\)</span> 小于展开因子 <span class="arithmatex">\(J\)</span>，展开后会生成：</p>
+<ul>
 <li><span class="arithmatex">\(J - w\)</span> 条<strong>无延迟</strong>的边。</li>
 <li><span class="arithmatex">\(w\)</span> 条延迟为 <strong>1</strong> 的边。</li>
 </ul>
@@ -4503,13 +4509,19 @@
     $$ \lfloor \frac{w}{J} \rfloor + \lfloor \frac{w+1}{J} \rfloor + \dots + \lfloor \frac{w+J-1}{J} \rfloor = w $$</li>
 </ul>
 <h3 id="33-impact-on-critical-path">3.3 对关键路径的影响 (Impact on Critical Path)<a class="headerlink" href="#33-impact-on-critical-path" title="Permanent link">&para;</a></h3>
-<p>展开操作<strong>可能会改变电路的关键路径</strong>（<span class="arithmatex">\(T_{critical}\)</span>），这取决于原边上的延迟 <span class="arithmatex">\(w\)</span> 与展开因子 <span class="arithmatex">\(J\)</span> 的大小关系：<br />
-*   <strong>当 <span class="arithmatex">\(w &lt; J\)</span> 时</strong>：<br />
-    *   会在展开图中生成 <span class="arithmatex">\(J-w\)</span> 条<strong>无延迟的边</strong>（0 delay）和 <span class="arithmatex">\(w\)</span> 条延迟为 1 的边。<br />
-    *   <strong>风险</strong>：无延迟边的增加，意味着节点之间形成了<strong>直接的组合逻辑</strong>连接，<strong>可能导致关键路径变长</strong>。<br />
-*   <strong>当 <span class="arithmatex">\(w \ge J\)</span> 时</strong>：<br />
-    *   生成的 <span class="arithmatex">\(J\)</span> 条边的延迟均 <span class="arithmatex">\(\ge 1\)</span>，<strong>不会生成无延迟边</strong>。<br />
-    *   <strong>结论</strong>：因此，必定<strong>不会</strong>因为这条边而增加系统的关键路径。</p>
+<p>展开操作<strong>可能会改变电路的关键路径</strong>（<span class="arithmatex">\(T_{critical}\)</span>），这取决于原边上的延迟 <span class="arithmatex">\(w\)</span> 与展开因子 <span class="arithmatex">\(J\)</span> 的大小关系：</p>
+<ul>
+<li><strong>当 <span class="arithmatex">\(w &lt; J\)</span> 时</strong>：<ul>
+<li>会在展开图中生成 <span class="arithmatex">\(J-w\)</span> 条<strong>无延迟的边</strong>（0 delay）和 <span class="arithmatex">\(w\)</span> 条延迟为 1 的边。</li>
+<li><strong>风险</strong>：无延迟边的增加，意味着节点之间形成了<strong>直接的组合逻辑</strong>连接，<strong>可能导致关键路径变长</strong>。</li>
+</ul>
+</li>
+<li><strong>当 <span class="arithmatex">\(w \ge J\)</span> 时</strong>：<ul>
+<li>生成的 <span class="arithmatex">\(J\)</span> 条边的延迟均 <span class="arithmatex">\(\ge 1\)</span>，<strong>不会生成无延迟边</strong>。</li>
+<li><strong>结论</strong>：因此，必定<strong>不会</strong>因为这条边而增加系统的关键路径。</li>
+</ul>
+</li>
+</ul>
 <h3 id="34-rules-for-unfolding-loops">3.4 展开环路的规则 (Rules for Unfolding Loops)<a class="headerlink" href="#34-rules-for-unfolding-loops" title="Permanent link">&para;</a></h3>
 <p>若原 DFG 中存在一个延迟数为 <span class="arithmatex">\(w_l\)</span> 的环路 <span class="arithmatex">\(l\)</span>，在进行 <span class="arithmatex">\(J\)</span> 阶展开后（记为 <span class="arithmatex">\(G_J\)</span>），该环路会发生如下形变：<br />
 *   <strong>环路数量</strong>：原先的 1 个环路，<strong>会分裂成 </strong><span class="arithmatex">\(\gcd(w_l, J)\)</span><strong> 个独立的环路</strong>。<br />
@@ -4545,11 +4557,13 @@ $$ J = \lceil T_U / T_\infty \rceil $$</p>
 <h4 id="2-t_infty">情况2：迭代边界 <span class="arithmatex">\(T_\infty\)</span> 不是整数<a class="headerlink" href="#2-t_infty" title="Permanent link">&para;</a></h4>
 <p><strong>痛点</strong>：在数字电路中，<strong>时钟周期必须是基本时间单位（ut）的整数倍</strong>。如果计算出的 <span class="arithmatex">\(T_\infty\)</span> 带有小数（例如 <span class="arithmatex">\(T_\infty = 4/3\)</span> ut），在不改变架构的情况下，实际时钟周期只能<strong>向上取整</strong>（取 2ut），<strong>损失了性能</strong>。</p>
 <p><img alt="alt text" src="image-5.webp" /></p>
-<p>!!! note 原因：因为向上取整中的空闲时间无法被利用。</p>
-<p><strong>解决方案</strong>：通过展开，使展开后的迭代边界 <span class="arithmatex">\(J \cdot T_\infty\)</span> 成为整数。</p>
-<p><strong>参数选择</strong>：若决定迭代边界的环路延迟为 <span class="arithmatex">\(w_l\)</span>，计算时间为 <span class="arithmatex">\(t_l\)</span>，则最小展开因子通常取：<br />
-$$ J = \frac{w_l}{\gcd(t_l, w_l)} $$</p>
+<div class="admonition note">
+<p class="admonition-title">原因：因为向上取整中的空闲时间无法被利用。</p>
+<p><strong>解决方案</strong>：通过展开，使展开后的迭代边界 <span class="arithmatex">\(J \cdot T_\infty\)</span> 成为整数。<br />
+<strong>参数选择</strong>：若决定迭代边界的环路延迟为 <span class="arithmatex">\(w_l\)</span>，计算时间为 <span class="arithmatex">\(t_l\)</span>，则最小展开因子通常取：</p>
+<div class="arithmatex">\[ J = \frac{w_l}{\gcd(t_l, w_l)} \]</div>
 <p><strong>通俗理解：即求出能让 <span class="arithmatex">\(J \cdot T_\infty\)</span> 变成整数的最小整数 <span class="arithmatex">\(J\)</span></strong></p>
+</div>
 <h4 id="312">情况3：情况1与情况2的混合<a class="headerlink" href="#312" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>特征</strong>：最长的节点计算时间大于迭代边界（<span class="arithmatex">\(T_U &gt; T_\infty\)</span>），<strong>且</strong> <span class="arithmatex">\(T_\infty\)</span> 也不是整数。</li>
@@ -4573,11 +4587,15 @@ $$ J = \frac{w_l}{\gcd(t_l, w_l)} $$</p>
 <li>系统在每一个时钟周期内，能够<strong>同时吃进 <span class="arithmatex">\(J\)</span> 个字的数据，并吐出 <span class="arithmatex">\(J\)</span> 个字的计算结果</strong>，极大地提升了系统的数据吞吐率。</li>
 </ul>
 <h4 id="2-bit-level-parallel-processing">2. 位级并行 (Bit-Level Parallel Processing)<a class="headerlink" href="#2-bit-level-parallel-processing" title="Permanent link">&para;</a></h4>
-<p>展开概念同样可以无缝套用到数据字内部的比特位（Bit）处理上：<br />
-*   <strong>位串行 (Bit-Serial)</strong>：每次时钟仅处理 1 个 bit。<br />
-*   <strong>位并行 (Bit-Parallel)</strong>：一次性处理所有的 bit。<br />
-*   <strong>数字串行 (Digit-Serial)</strong>：介于两者之间。如果我们将一个纯“位串行”的架构进行 <strong><span class="arithmatex">\(J\)</span> 阶展开</strong>，就会得到一个<strong>每次处理 <span class="arithmatex">\(J\)</span> 个 bit</strong> （即一个 Digit，Digit-size = <span class="arithmatex">\(J\)</span>）的数字串行架构。<br />
-    *   <em>应用价值</em>：Digit-Serial 允许设计师在 <strong>硬件面积（位串行最小）</strong> 与 <strong>处理速度（位并行最快）</strong> 之间通过调整展开因子 <span class="arithmatex">\(J\)</span> 寻找最优的折中点。</p>
+<p>展开概念同样可以无缝套用到数据字内部的比特位（Bit）处理上：</p>
+<ul>
+<li><strong>位串行 (Bit-Serial)</strong>：每次时钟仅处理 1 个 bit。</li>
+<li><strong>位并行 (Bit-Parallel)</strong>：一次性处理所有的 bit。</li>
+<li><strong>数字串行 (Digit-Serial)</strong>：介于两者之间。如果我们将一个纯“位串行”的架构进行 <strong><span class="arithmatex">\(J\)</span> 阶展开</strong>，就会得到一个<strong>每次处理 <span class="arithmatex">\(J\)</span> 个 bit</strong> （即一个 Digit，Digit-size = <span class="arithmatex">\(J\)</span>）的数字串行架构。<ul>
+<li><em>应用价值</em>：Digit-Serial 允许设计师在 <strong>硬件面积（位串行最小）</strong> 与 <strong>处理速度（位并行最快）</strong> 之间通过调整展开因子 <span class="arithmatex">\(J\)</span> 寻找最优的折中点。</li>
+</ul>
+</li>
+</ul>
 
 
 

@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260604-3">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
@@ -4243,40 +4243,75 @@
 <p>我会完全基于你学过的<strong>概率论与数理统计、信号与系统</strong>知识，从零开始，先讲物理意义，再拆数学公式，全程避开你没学过的随机过程复杂术语，把每个概念和你正在学的通信系统绑定起来。</p>
 <hr />
 <h2 id="_2">前置铺垫：先搞懂「通信里的噪声到底是什么？」<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>我们所有公式描述的，都是通信系统里最基础、最核心的噪声模型——<strong>加性高斯白噪声（AWGN）</strong>，先把这个名字拆成你能懂的概念：<br />
-1.  <strong>噪声</strong>：信道里天然存在的、不是我们发送的、会干扰有用信号的随机电信号。比如收音机的滋滋声、打电话的背景杂音，本质都是噪声。<br />
-    - 核心特点：<strong>完全随机</strong>——你永远无法提前预测下一个时刻噪声的电压是多少，只能用「统计规律」描述它，这就是我们需要概率、功率谱这些工具的原因。<br />
-2.  <strong>加性</strong>：噪声是直接叠加在有用信号上的，接收信号 = 发送的理想信号 + 噪声，这是最简单、最常见的干扰形式。<br />
-3.  <strong>高斯</strong>：噪声的幅度取值，完全服从你概率论里学过的<strong>正态分布（高斯分布）</strong>。<br />
-4.  <strong>白</strong>：噪声的功率在所有频率上均匀分布，就像白光包含所有可见光频率一样，所以叫“白”噪声。</p>
+<p>我们所有公式描述的，都是通信系统里最基础、最核心的噪声模型——<strong>加性高斯白噪声（AWGN）</strong>，先把这个名字拆成你能懂的概念：</p>
+<ol>
+<li><strong>噪声</strong>：信道里天然存在的、不是我们发送的、会干扰有用信号的随机电信号。比如收音机的滋滋声、打电话的背景杂音，本质都是噪声。<ul>
+<li>核心特点：<strong>完全随机</strong>——你永远无法提前预测下一个时刻噪声的电压是多少，只能用「统计规律」描述它，这就是我们需要概率、功率谱这些工具的原因。</li>
+</ul>
+</li>
+<li><strong>加性</strong>：噪声是直接叠加在有用信号上的，接收信号 = 发送的理想信号 + 噪声，这是最简单、最常见的干扰形式。</li>
+<li><strong>高斯</strong>：噪声的幅度取值，完全服从你概率论里学过的<strong>正态分布（高斯分布）</strong>。</li>
+<li><strong>白</strong>：噪声的功率在所有频率上均匀分布，就像白光包含所有可见光频率一样，所以叫“白”噪声。</li>
+</ol>
 <p>下面我们按「从易到难」的顺序讲解（先讲你最熟悉的概率论相关内容，再讲信号与系统的频域/时域内容）：</p>
 <hr />
 <h2 id="_3">一、概率密度函数：描述噪声「幅度取值的规律」<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>这部分完全是你概率论里学过的正态分布，是三个内容里最容易上手的。</p>
 <h3 id="1">1. 先回忆你学过的基础<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
-<p>概率论里，<strong>连续型随机变量的概率密度函数（PDF）</strong>，描述的是「这个随机变量取某个值的可能性大小」：<br />
-- PDF曲线下的面积 = 概率；<br />
-- 正态分布（高斯分布）的PDF是钟形曲线，均值<span class="arithmatex">\(\mu\)</span>是曲线的中心，方差<span class="arithmatex">\(\sigma^2\)</span>是曲线的分散程度。</p>
+<p>概率论里，<strong>连续型随机变量的概率密度函数（PDF）</strong>，描述的是「这个随机变量取某个值的可能性大小」：</p>
+<ul>
+<li>PDF曲线下的面积 = 概率；</li>
+<li>正态分布（高斯分布）的PDF是钟形曲线，均值<span class="arithmatex">\(\mu\)</span>是曲线的中心，方差<span class="arithmatex">\(\sigma^2\)</span>是曲线的分散程度。</li>
+</ul>
 <h3 id="2">2. 噪声的概率密度函数拆解<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
 <p>噪声在某一时刻的取值<span class="arithmatex">\(n_0\)</span>，就是一个<strong>连续型随机变量</strong>，而且服从<strong>均值为0的高斯分布</strong>，公式如下：</p>
 <div class="arithmatex">\[P(n_0)=\frac{1}{\sigma_0 \sqrt{2\pi}} exp\left[-\frac{1}{2}\left(\frac{n_0}{\sigma_0}\right)^2\right]\]</div>
-<p>我们逐个符号拆解，100%对应你学过的知识：<br />
-| 符号 | 物理意义 | 和概率论知识的对应 |<br />
-|------|----------|--------------------|<br />
-| <span class="arithmatex">\(n_0\)</span> | 噪声在某一时刻的抽样值（比如t=T时刻测到的噪声电压，单位V），是随机变量 | 正态分布里的随机变量<span class="arithmatex">\(x\)</span> |<br />
-| <span class="arithmatex">\(P(n_0)\)</span> | 噪声取<span class="arithmatex">\(n_0\)</span>这个值的概率密度，数值越大，出现的可能性越高 | 正态分布的PDF<span class="arithmatex">\(f(x)\)</span> |<br />
-| <span class="arithmatex">\(\sigma_0\)</span> | 噪声的标准差，<span class="arithmatex">\(\sigma_0^2\)</span>就是噪声的方差 | 正态分布的标准差<span class="arithmatex">\(\sigma\)</span> |<br />
-| 均值为0 | 公式里的均值<span class="arithmatex">\(\mu=0\)</span>：噪声的正电压和负电压出现的概率完全相等，长时间平均下来的结果就是0，没有固定的直流分量 | 标准正态分布的均值<span class="arithmatex">\(\mu=0\)</span> |</p>
+<p>我们逐个符号拆解，100%对应你学过的知识：</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>物理意义</th>
+<th>和概率论知识的对应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(n_0\)</span></td>
+<td>噪声在某一时刻的抽样值（比如t=T时刻测到的噪声电压，单位V），是随机变量</td>
+<td>正态分布里的随机变量<span class="arithmatex">\(x\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(P(n_0)\)</span></td>
+<td>噪声取<span class="arithmatex">\(n_0\)</span>这个值的概率密度，数值越大，出现的可能性越高</td>
+<td>正态分布的PDF<span class="arithmatex">\(f(x)\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\sigma_0\)</span></td>
+<td>噪声的标准差，<span class="arithmatex">\(\sigma_0^2\)</span>就是噪声的方差</td>
+<td>正态分布的标准差<span class="arithmatex">\(\sigma\)</span></td>
+</tr>
+<tr>
+<td>均值为0</td>
+<td>公式里的均值<span class="arithmatex">\(\mu=0\)</span>：噪声的正电压和负电压出现的概率完全相等，长时间平均下来的结果就是0，没有固定的直流分量</td>
+<td>标准正态分布的均值<span class="arithmatex">\(\mu=0\)</span></td>
+</tr>
+</tbody>
+</table>
 <p>你会发现：令<span class="arithmatex">\(x=\frac{n_0}{\sigma_0}\)</span>，这个公式就完全变成了你学过的<strong>标准正态分布公式</strong>：</p>
 <div class="arithmatex">\[P(x)=\frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}\]</div>
 <h3 id="3">3. 和通信系统的直接关联<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
 <p>这就是你之前PPT里两条高斯曲线的来源！<br />
-我们的接收信号抽样值是：<span class="arithmatex">\(z(T) = a_i + n_0\)</span><br />
-- <span class="arithmatex">\(a_i\)</span>是发送端发1/0时的理想电压值（比如发1对应<span class="arithmatex">\(a_1=+1V\)</span>，发0对应<span class="arithmatex">\(a_2=-1V\)</span>），是确定值；<br />
-- <strong><span class="arithmatex">\(n_0\)</span>是均值为0的高斯噪声，所以<span class="arithmatex">\(z(T)\)</span>也是一个高斯随机变量，均值就是<span class="arithmatex">\(a_i\)</span>，方差还是<span class="arithmatex">\(\sigma_0^2\)</span>。</strong></p>
-<p>因此：<br />
-- 发1时，<span class="arithmatex">\(z(T)\)</span>的条件概率密度<span class="arithmatex">\(p(z|s_1)\)</span>，就是均值为<span class="arithmatex">\(a_1\)</span>的高斯曲线（PPT里右侧的曲线）；<br />
-- 发0时，<span class="arithmatex">\(z(T)\)</span>的条件概率密度<span class="arithmatex">\(p(z|s_2)\)</span>，就是均值为<span class="arithmatex">\(a_2\)</span>的高斯曲线（PPT里左侧的曲线）。</p>
+我们的接收信号抽样值是：<span class="arithmatex">\(z(T) = a_i + n_0\)</span></p>
+<ul>
+<li><span class="arithmatex">\(a_i\)</span>是发送端发1/0时的理想电压值（比如发1对应<span class="arithmatex">\(a_1=+1V\)</span>，发0对应<span class="arithmatex">\(a_2=-1V\)</span>），是确定值；</li>
+<li><strong><span class="arithmatex">\(n_0\)</span>是均值为0的高斯噪声，所以<span class="arithmatex">\(z(T)\)</span>也是一个高斯随机变量，均值就是<span class="arithmatex">\(a_i\)</span>，方差还是<span class="arithmatex">\(\sigma_0^2\)</span>。</strong></li>
+</ul>
+<p>因此：</p>
+<ul>
+<li>发1时，<span class="arithmatex">\(z(T)\)</span>的条件概率密度<span class="arithmatex">\(p(z|s_1)\)</span>，就是均值为<span class="arithmatex">\(a_1\)</span>的高斯曲线（PPT里右侧的曲线）；</li>
+<li>发0时，<span class="arithmatex">\(z(T)\)</span>的条件概率密度<span class="arithmatex">\(p(z|s_2)\)</span>，就是均值为<span class="arithmatex">\(a_2\)</span>的高斯曲线（PPT里左侧的曲线）。</li>
+</ul>
 <p>这个公式，就是我们计算判决门限、误码率的核心数学基础。</p>
 <hr />
 <h2 id="_4">二、功率谱密度：描述噪声「功率在频率上的分布」<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
@@ -4303,13 +4338,13 @@
 <li>数学定义：频率范围包含<strong>负频率+正频率</strong>（<span class="arithmatex">\(f \in (-\infty, +\infty)\)</span>），这是傅里叶变换的数学定义要求的（负频率是数学工具，没有实际物理意义）；</li>
 <li>白噪声的双边谱：在所有正负频率上都是常数，值为<span class="arithmatex">\(\frac{N_0}{2}\)</span>，也就是：</li>
 </ul>
-<p>$<span class="arithmatex">\(G_n(f)=\frac{N_0}{2} \quad (-\infty &lt; f &lt; +\infty)\)</span>$</p>
+<div class="arithmatex">\[G_n(f)=\frac{N_0}{2} \quad (-\infty &lt; f &lt; +\infty)\]</div>
 <h4 id="2_1">（2）单边功率谱密度<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h4>
 <ul>
 <li>工程定义：只考虑现实中存在的<strong>正频率</strong>（<span class="arithmatex">\(f \in [0, +\infty)\)</span>），把负频率的功率全部合并到正频率上；</li>
 <li>白噪声的单边谱：值是双边谱的2倍，也就是<span class="arithmatex">\(N_0\)</span>，即：</li>
 </ul>
-<p>$<span class="arithmatex">\(G_n(f)=N_0 \quad (f \ge 0)\)</span>$</p>
+<div class="arithmatex">\[G_n(f)=N_0 \quad (f \ge 0)\]</div>
 <h3 id="4">4. 用总功率计算验证，彻底搞懂区别<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
 <p>噪声的总平均功率 = 功率谱密度在整个频率范围的积分（总人口 = 人口密度在城市面积的积分）。</p>
 <p>假设我们的通信系统带宽是<span class="arithmatex">\(B\)</span> Hz（只有<span class="arithmatex">\(-B\)</span>~<span class="arithmatex">\(+B\)</span>的频率能通过）：<br />
@@ -4317,9 +4352,11 @@
 - 用单边谱算总功率：<span class="arithmatex">\(P = \int_{0}^{B} N_0 df = N_0 \times B\)</span></p>
 <p>两种方式算出来的总功率完全一致！工程上我们常用单边谱的<span class="arithmatex">\(N_0\)</span>，因为它直接乘带宽就能得到噪声总功率，不用考虑负频率，更方便。</p>
 <h3 id="5-n_0">5. 核心参数<span class="arithmatex">\(N_0\)</span>的意义<a class="headerlink" href="#5-n_0" title="Permanent link">&para;</a></h3>
-<p><span class="arithmatex">\(N_0\)</span>是噪声的<strong>单边功率谱密度</strong>，是通信系统最核心的噪声参数：<br />
-- 只要知道<span class="arithmatex">\(N_0\)</span>和系统带宽<span class="arithmatex">\(B\)</span>，就能算出噪声总功率<span class="arithmatex">\(N=N_0 B\)</span>；<br />
-- 它是我们计算信噪比SNR、<span class="arithmatex">\(E_b/N_0\)</span>（比特能量噪声比）的基础，直接决定了系统的误码率上限。</p>
+<p><span class="arithmatex">\(N_0\)</span>是噪声的<strong>单边功率谱密度</strong>，是通信系统最核心的噪声参数：</p>
+<ul>
+<li>只要知道<span class="arithmatex">\(N_0\)</span>和系统带宽<span class="arithmatex">\(B\)</span>，就能算出噪声总功率<span class="arithmatex">\(N=N_0 B\)</span>；</li>
+<li>它是我们计算信噪比SNR、<span class="arithmatex">\(E_b/N_0\)</span>（比特能量噪声比）的基础，直接决定了系统的误码率上限。</li>
+</ul>
 <hr />
 <h2 id="_5">三、自相关函数：描述噪声「不同时刻的关联程度」<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <p>这部分我们完全用你学过的「傅里叶变换对」衔接，避开随机过程的复杂推导，先讲物理意义，再讲公式。</p>
@@ -4353,9 +4390,11 @@
 <p>完美对应你笔记里的公式！</p>
 <h3 id="4_1">4. 公式的物理意义（核心中的核心）<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h3>
 <p>冲激函数<span class="arithmatex">\(\delta(\tau)\)</span>的特点是：<strong>只有当<span class="arithmatex">\(\tau=0\)</span>时，取值不为0；只要<span class="arithmatex">\(\tau≠0\)</span>，<span class="arithmatex">\(\delta(\tau)=0\)</span></strong>。</p>
-<p>因此这个公式直接告诉我们白噪声的时域特性：<br />
-1.  当<span class="arithmatex">\(\tau=0\)</span>（同一个时刻）：<span class="arithmatex">\(R_n(0)\)</span>等于噪声的平均功率（自相关函数在<span class="arithmatex">\(\tau=0\)</span>处的取值，就是信号的平均功率）；<br />
-2.  当<span class="arithmatex">\(\tau≠0\)</span>（两个不同的时刻）：<span class="arithmatex">\(R_n(\tau)=0\)</span>，代表<strong>白噪声在任意两个不同时刻的取值，完全不相关！</strong></p>
+<p>因此这个公式直接告诉我们白噪声的时域特性：</p>
+<ol>
+<li>当<span class="arithmatex">\(\tau=0\)</span>（同一个时刻）：<span class="arithmatex">\(R_n(0)\)</span>等于噪声的平均功率（自相关函数在<span class="arithmatex">\(\tau=0\)</span>处的取值，就是信号的平均功率）；</li>
+<li>当<span class="arithmatex">\(\tau≠0\)</span>（两个不同的时刻）：<span class="arithmatex">\(R_n(\tau)=0\)</span>，代表<strong>白噪声在任意两个不同时刻的取值，完全不相关！</strong></li>
+</ol>
 <p>通俗讲：你现在测到的噪声值，和1微秒之后测到的噪声值，没有任何关联，前一个是正的，后一个完全可能是负的，没有任何规律，这就是理想白噪声的本质——完全随机的理想随机过程。</p>
 <h3 id="5">5. 对通信系统的意义<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
 <p>正因为白噪声不同时刻的取值完全不相关，我们只需要考虑<strong>抽样时刻<span class="arithmatex">\(t=T\)</span>的噪声</strong>对判决的影响，不用考虑其他时刻的噪声，大大简化了通信系统的分析，这也是AWGN能成为通信基础噪声模型的核心原因。</p>

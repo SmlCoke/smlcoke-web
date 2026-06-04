@@ -53,7 +53,7 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260604-3">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
@@ -5137,18 +5137,16 @@
 <h2 id="verilog">一、Verilog基础<a class="headerlink" href="#verilog" title="Permanent link">&para;</a></h2>
 <h3 id="11">1.1 标识符<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
 <p>标识符是任意字母、数字、$、_的组合。<br />
-标识符第一个字符必须是==字母==或者_<br />
-<mark>保留字都是小写的</mark></p>
+标识符第一个字符必须是 <mark>字母</mark> 或者_</p>
+<p><mark>保留字都是小写的</mark></p>
 <h3 id="12-reg">1.2 reg相关问题<a class="headerlink" href="#12-reg" title="Permanent link">&para;</a></h3>
-<p><strong>在一个模块中</strong><br><br />
-wire可以被定义为输入和输出，reg只能被定义为输出， 不能被定义为输入<br><br />
-原因：<strong>reg的改变受一定条件控制，例如时钟</strong>，不能直接对reg类型变量赋值<br></p>
-<p><strong>模块实例化时</strong><br><br />
-内部的输入端口只能是wire类型，可以连接外部的wire或者reg ，<strong>因为reg和wire都能驱动wire</strong>，无论外部是wire还是reg，其值一旦改变，wire就会跟着改变。（但是常常用reg类型，因为常常涉及到）<br><br />
+<p><strong>在一个模块中</strong><br />
+wire可以被定义为输入和输出，reg只能被定义为输出， 不能被定义为输入<br />
+原因：<strong>reg的改变受一定条件控制，例如时钟</strong>，不能直接对reg类型变量赋值</p>
+<p><strong>模块实例化时</strong><br />
+内部的输入端口只能是wire类型，可以连接外部的wire或者reg ，<strong>因为reg和wire都能驱动wire</strong>，无论外部是wire还是reg，其值一旦改变，wire就会跟着改变。（但是常常用reg类型，因为常常涉及到）<br />
 内部的输出端口可以是wire或者reg类型，但<strong>外部连接的只能是wire</strong>。因为内部的信号一旦改变，<strong>外部连接的信号必须跟着改变，也就是说这两个信号是同一个信号</strong>，只有wire可以满足这个条件。<br />
 如果外部连接的是reg，那么想要改变这个reg的值还必须要满足一些条件，例如时钟，always @(*)等。这是难以实现的</p>
-<div style="page-break-after: always;"></div>
-
 <h3 id="13-parameter">1.3 parameter<a class="headerlink" href="#13-parameter" title="Permanent link">&para;</a></h3>
 <h5 id="_1">使用示例<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h5>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">module</span><span class="w"> </span><span class="n">fsm</span><span class="w"> </span><span class="p">(</span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">rst_n</span><span class="p">);</span><span class="w">  </span>
@@ -5168,11 +5166,9 @@ wire可以被定义为输入和输出，reg只能被定义为输出， 不能被
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">module_name</span><span class="w"> </span><span class="p">#(...)</span><span class="w"> </span><span class="n">module_a</span><span class="p">(...)</span>
 </span></code></pre></div>
 <p>注意：<strong>#(...)</strong> 位置关联</p>
-<div style="page-break-after: always;"></div>
-
 <h3 id="14-define">1.4 `define<a class="headerlink" href="#14-define" title="Permanent link">&para;</a></h3>
-<p>编译指导`define提供了一种简单的文本替换的功能:<br><br />
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">`define &lt;macro_name&gt; &lt;macro_text&gt;&lt;br&gt;</span>
+<p>编译指导`define提供了一种简单的文本替换的功能:<br />
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">`define &lt;macro_name&gt; &lt;macro_text&gt;</span>
 </span></code></pre></div><br />
 在编译时<macro_text>替换<macro_name>。可提高描述的可读性。</p>
 <h4 id="_2">示例<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
@@ -5207,12 +5203,7 @@ tri本意用于描述多个驱动源同时驱动一根线的线网类型，而wi
 </span></code></pre></div><br />
 when a0 = wand? when a0 = wor?</p>
 <h3 id="17">1.7 寄存器类型<a class="headerlink" href="#17" title="Permanent link">&para;</a></h3>
-<p>寄存器类型(register)分为5种子类型<br />
-reg类型<br />
-integer类型<br />
-real类型<br />
-time类型（testbench中介绍）<br />
-realtime类型（testbench中介绍）</p>
+<p>寄存器类型(register)分为5种子类型：reg类型、integer类型、real类型、time类型（testbench中介绍）、realtime类型（testbench中介绍）</p>
 <p>在硬件描述语言中，有时候数据类型并不一定与硬件电路相关，在组合逻辑的行为描述中，也会定义reg类型。</p>
 <h3 id="18">1.8 位宽<a class="headerlink" href="#18" title="Permanent link">&para;</a></h3>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="mh">256</span><span class="w"> </span><span class="c1">//非定长的十进制数</span>
@@ -5248,8 +5239,8 @@ data_in =4’b1000; <mark>//data_in[0]=1</mark></p>
 <h3 id="112">1.12 运算符<a class="headerlink" href="#112" title="Permanent link">&para;</a></h3>
 <h5 id="1-">① 算数运算符： * ， /， +， - ， %<a class="headerlink" href="#1-" title="Permanent link">&para;</a></h5>
 <p>整数除法截断小数部分<br />
-取模运算的结果符号与第一个操作数相同<br />
-<mark>操作数中有x或者z，结果是x</mark></p>
+取模运算的结果符号与第一个操作数相同</p>
+<p><mark>操作数中有x或者z，结果是x</mark></p>
 <h5 id="2">② 关系操作符 &lt;, &lt;=, &gt;, &gt;=**<a class="headerlink" href="#2" title="Permanent link">&para;</a></h5>
 <p><mark>操作数中有x或者z，结果是x</mark><br />
 避免出现有符号数与无符号数的比较<br />
@@ -5280,60 +5271,290 @@ data_in =4’b1000; <mark>//data_in[0]=1</mark></p>
 !z = x<br />
 !x = x</p>
 <h5 id="4">④ 相等操作符<a class="headerlink" href="#4" title="Permanent link">&para;</a></h5>
-<p>**逻辑相等：<mark>， !=**<br />
-==操作数中只要含有x或者z，结果是x</mark></p>
-<p><strong>case等：===，!==</strong><br />
-===:<br />
-| A  B | 0 | 1 | x | z |<br />
-| ----- | - | - | - | - |<br />
-| <strong>0</strong> | 1 | 0 | 0 | 0 |<br />
-| <strong>1</strong> | 0 | 1 | 0 | 0 |<br />
-| <strong>x</strong> | 0 | 0 | 1 | 0 |<br />
-| <strong>z</strong> | 0 | 0 | 0 | 1 |</p>
-<p>!==:<br />
-| A  B | 0 | 1 | x | z |<br />
-| ----- | - | - | - | - |<br />
-| <strong>0</strong> | 0 | 1 | 1 | 1 |<br />
-| <strong>1</strong> | 1 | 0 | 1 | 1 |<br />
-| <strong>x</strong> | 1 | 1 | 0 | 1 |<br />
-| <strong>z</strong> | 1 | 1 | 1 | 0 |</p>
+<p><strong>逻辑相等：==， !=</strong></p>
+<p><mark>操作数中只要含有x或者z，结果是x</mark></p>
+<p><strong>case等：===，!==</strong></p>
+<p>=== 的结果：</p>
+<table>
+<thead>
+<tr>
+<th>A  B</th>
+<th>0</th>
+<th>1</th>
+<th>x</th>
+<th>z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>z</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>!== 的结果：</p>
+<table>
+<thead>
+<tr>
+<th>A  B</th>
+<th>0</th>
+<th>1</th>
+<th>x</th>
+<th>z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>z</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
 <h5 id="5">⑤ 位运算<a class="headerlink" href="#5" title="Permanent link">&para;</a></h5>
-<p><mark>对于!, ^ 和~^ ，只要操作数出现x/z，结果就是x</mark><br />
-<strong>按位取反：~</strong><br />
-| A | ~A |<br />
-| - | --- |<br />
-| 0 | 1   |<br />
-| 1 | 0   |<br />
-| x | x   |<br />
-| z | x   |</p>
-<p><strong>按位与：&amp;</strong><br />
-| A  B | 0 | 1 | x | z |<br />
-| ----- | - | - | - | - |<br />
-| <strong>0</strong> | 0 | 0 | 0 | 0 |<br />
-| <strong>1</strong> | 0 | 1 | x | x |<br />
-| <strong>x</strong> | 0 | x | x | x |<br />
-| <strong>z</strong> | 0 | x | x | x |</p>
-<p><strong>按位或：|</strong><br />
-| A  B | 0 | 1 | x | z |<br />
-| ----- | - | - | - | - |<br />
-| <strong>0</strong> | 0 | 1 | x | x |<br />
-| <strong>1</strong> | 1 | 1 | 1 | 1 |<br />
-| <strong>x</strong> | x | 1 | x | x |<br />
-| <strong>z</strong> | x | 1 | x | x |</p>
-<p><strong>按位异或：^</strong><br />
-| A  B | 0 | 1 | x | z |<br />
-| ----- | - | - | - | - |<br />
-| <strong>0</strong> | 0 | 1 | x | x |<br />
-| <strong>1</strong> | 1 | 0 | x | x |<br />
-| <strong>x</strong> | x | x | x | x |<br />
-| <strong>z</strong> | x | x | x | x |</p>
-<p><strong>按位同或：~^ 或 ^~</strong><br />
-| A  B | 0 | 1 | x | z |<br />
-| ----- | - | - | - | - |<br />
-| <strong>0</strong> | 1 | 0 | x | x |<br />
-| <strong>1</strong> | 0 | 1 | x | x |<br />
-| <strong>x</strong> | x | x | x | x |<br />
-| <strong>z</strong> | x | x | x | x |</p>
+<p><mark>对于!, ^ 和~^ ，只要操作数出现x/z，结果就是x</mark></p>
+<p><strong>按位取反：~</strong></p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>~A</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>z</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
+<p><strong>按位与：&amp;</strong></p>
+<table>
+<thead>
+<tr>
+<th>A  B</th>
+<th>0</th>
+<th>1</th>
+<th>x</th>
+<th>z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>0</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>0</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>z</strong></td>
+<td>0</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
+<p><strong>按位或：|</strong></p>
+<table>
+<thead>
+<tr>
+<th>A  B</th>
+<th>0</th>
+<th>1</th>
+<th>x</th>
+<th>z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>0</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>x</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>z</strong></td>
+<td>x</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
+<p><strong>按位异或：^</strong></p>
+<table>
+<thead>
+<tr>
+<th>A  B</th>
+<th>0</th>
+<th>1</th>
+<th>x</th>
+<th>z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>0</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>1</td>
+<td>0</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>z</strong></td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
+<p><strong>按位同或：~^ 或 ^~</strong></p>
+<table>
+<thead>
+<tr>
+<th>A  B</th>
+<th>0</th>
+<th>1</th>
+<th>x</th>
+<th>z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>0</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>0</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td><strong>z</strong></td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
 <h5 id="6">⑥ 归约运算符<a class="headerlink" href="#6" title="Permanent link">&para;</a></h5>
 <table>
 <thead>
@@ -5380,9 +5601,9 @@ data_in =4’b1000; <mark>//data_in[0]=1</mark></p>
 或者参见：<br />
 <img alt="" src="Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E5%BD%92%E7%BA%A6%E8%BF%90%E7%AE%97%E7%A4%BA%E6%84%8F%E5%9B%BE.webp" /></p>
 <h5 id="7">⑦ 移位运算符<a class="headerlink" href="#7" title="Permanent link">&para;</a></h5>
-<p>在移位操作中，右边的操作数总是被当成无符号数，因此在需要位扩展时总是填0。<br />
-<mark>移入的位只能是0。</mark><br />
-一般用连接运算符取代<br />
+<p>在移位操作中，右边的操作数总是被当成无符号数，因此在需要位扩展时总是填0。</p>
+<p><mark>移入的位只能是0。</mark></p>
+<p>一般用连接运算符取代<br />
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="n">result</span><span class="p">;</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">assign</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="mh">3</span><span class="p">;</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">assign</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="p">{</span><span class="n">data</span><span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">],</span><span class="mh">3</span><span class="err">’</span><span class="n">b0</span><span class="p">};</span>
@@ -5391,8 +5612,6 @@ data_in =4’b1000; <mark>//data_in[0]=1</mark></p>
 <p><img alt="" src="Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6.webp" /></p>
 <h5 id="9">⑨ 操作符优先级<a class="headerlink" href="#9" title="Permanent link">&para;</a></h5>
 <p><img alt="" src="Study_notes_material/Verilog%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7.webp" /></p>
-<div style="page-break-after: always;"></div>
-
 <h2 id="verilog_1">二、Verilog：组合逻辑与行为建模<a class="headerlink" href="#verilog_1" title="Permanent link">&para;</a></h2>
 <h3 id="21">2.1 数据流模型<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
 <p>数据流模型：主要用于组合逻辑的描述，采用assign语句进行赋值，通过布尔表达式能清楚地反映电路的功能结构与组合逻辑的数据特性。</p>
@@ -5451,15 +5670,11 @@ forever &lt;语句&gt;<br />
 </span></code></pre></div></p>
 <p>for：在执行过程中对变量进行计算和判断，在条件满足时执行<br />
 for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
-<div style="page-break-after: always;"></div>
-
 <h2 id="_3">三、时序逻辑电路设计基础<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p><mark>不要在一个always块中同时使用阻塞和非阻塞</mark>。<br />
 建模==时序逻辑时使用非阻塞赋值==。<br />
 使用always块描述组合逻辑，使用阻塞赋值。<br />
 <mark>不能在不同的always块中多次赋值一个信号</mark>。</p>
-<div style="page-break-after: always;"></div>
-
 <h2 id="testbench">四、模块例化与testbench设计<a class="headerlink" href="#testbench" title="Permanent link">&para;</a></h2>
 <h3 id="41">4.1 模块例化注意事项<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
 <p>尽量使用名字关联<br />
@@ -5613,50 +5828,32 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 3. 时序逻辑使用非阻塞赋值，组合逻辑使用阻塞赋值。<br />
 4. always块中，敏感列表需要包括当前状态和所有输入<br />
 5. <mark>在组合逻辑块的开始，指定next state的缺省值。</mark>  </p>
-<p><br><br />
-<br><br />
-<br><br />
-<br></p>
-<div style="page-break-after: always;"></div>
-
 <h3 id="54-next_state">5.4 next_state的初始值：<a class="headerlink" href="#54-next_state" title="Permanent link">&para;</a></h3>
-<p>一般来说next state有三种初始值:<strong>2’bx、ilde、其他state</strong>。<br />
-- <strong>2'bx</strong>:用于debug，一个完善的状态机必须能够消除x的影响，正确进入状态循环。<br />
-- <strong>ilde</strong>：零状态  </p>
+<p>一般来说next state有三种初始值:<strong>2'bx、2'b0、其他state</strong>。  </p>
+<ul>
+<li><strong>2'bx</strong>: 用于debug，一个完善的状态机必须能够消除x的影响，正确进入状态循环。  </li>
+<li><strong>2'b0</strong>: 零状态，即：IDLE</li>
+</ul>
 <p>当逻辑中没有出现next state分配的时候，<strong>初始值有利于debug</strong>。</p>
 <p>在数字芯片中，一般有一个reset过程，使电路有一个初始值。<br />
 初始值的赋值由<strong>rst</strong>在<strong>testbench</strong>完成，而<strong>非设计模块</strong>中。组合逻辑输入主要来自寄存器，还有一些输入是恒0、恒1输入。一般来说，<strong>组合逻辑的初始化是没有必要的</strong>。  </p>
-<p><br><br />
-<br></p>
 <h3 id="55">5.5 状态的编码方式<a class="headerlink" href="#55" title="Permanent link">&para;</a></h3>
 <h5 id="1">方法1. 普通二进制编码<a class="headerlink" href="#1" title="Permanent link">&para;</a></h5>
-<p>3’b000,3’b001,3’b010,3’b011…<br><br />
+<p>3’b000,3’b001,3’b010,3’b011…<br />
 编码紧凑，节省寄存器资源。状态之间翻转多，影响速度。</p>
 <h5 id="2_1">方法2. 独热码<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h5>
-<p>3’b001,3’b010,3’b100…<br><br />
+<p>3’b001,3’b010,3’b100…<br />
 速度快，设计简单，易于维护，消耗寄存器资源多。</p>
 <h5 id="3_1">方法3. 格雷码<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h5>
-<p>3’b000,3’b001,3’b011,3’b010…<br><br />
+<p>3’b000,3’b001,3’b011,3’b010…<br />
 状态之间翻转少，状态的编码分配较困难。(因为顺序是固定的)</p>
-<p><br><br />
-<br><br />
-<br><br />
-<br></p>
-<div style="page-break-after: always;"></div>
-
 <h3 id="56">5.6 考虑输出的状态设计<a class="headerlink" href="#56" title="Permanent link">&para;</a></h3>
 <h5 id="_5">常见输出方式<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h5>
 <p><img alt="" src="Study_notes_material/%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E8%80%83%E8%99%91%E8%BE%93%E5%87%BA%E7%9A%84%E7%8A%B6%E6%80%81%E8%AE%BE%E8%AE%A1.webp" /></p>
-<p><br><br />
-<br><br />
-<br><br />
-<br></p>
-<div style="page-break-after: always;"></div>
-
 <h3 id="57">5.7 三段式经典状态机设计（有输出）<a class="headerlink" href="#57" title="Permanent link">&para;</a></h3>
-<p>大致模板与二段式相同，只不过由于有输出信号，所以除了==计算新状态的组合逻辑块==和==转移状态的时序逻辑块==之外，还有一个<strong>输出的块</strong><br><br />
-输出块：<br><br />
-<strong>组合逻辑输出(问题：毛刺)：</strong> <br />
+<p>大致模板与二段式相同，只不过由于有输出信号，所以除了==计算新状态的组合逻辑块==和==转移状态的时序逻辑块==之外，还有一个<strong>输出的块</strong></p>
+<p>输出块的设计方式有如下三种：</p>
+<p><strong>组合逻辑输出(问题：毛刺)：</strong> <br />
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">assign</span><span class="w"> </span><span class="n">rd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="o">==</span><span class="n">READ</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">state</span><span class="o">==</span><span class="n">DLY</span><span class="p">);</span>
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">assign</span><span class="w"> </span><span class="n">ds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="o">==</span><span class="n">DONE</span><span class="p">);</span>
 </span></code></pre></div><br />
@@ -5680,13 +5877,11 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 </span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="k">endcase</span>
 </span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="k">end</span>
 </span></code></pre></div><br />
-<strong>状态编码输出：</strong><br><br />
+<strong>状态编码输出：</strong><br />
 还有一种极为特殊的输出方式，而且是性能最好的实现方式，<strong>即将输出信号包含在状态编码中，这样就能直接输出，没有任何外加延时</strong>，然而缺点就是，这给==状态的编码造成了很大困难==<br />
 <img alt="" src="Study_notes_material/%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%8A%B6%E6%80%81%E7%BC%96%E7%A0%81%E8%BE%93%E5%87%BA.webp" /><br />
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">assign</span><span class="w"> </span><span class="p">{</span><span class="n">ds</span><span class="p">,</span><span class="n">rd</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">];</span>
 </span></code></pre></div></p>
-<div style="page-break-after: always;"></div>
-
 <h2 id="_6">六、文件读写<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <h3 id="_7">指定地址的文件读操作<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
 <p><strong>$readmemb</strong><br />
@@ -5697,7 +5892,7 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nb">$readmemh</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;file_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">memory_name</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">start_addr</span><span class="o">&gt;</span><span class="p">);</span>
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nb">$readmemh</span><span class="p">(</span><span class="s">&quot;file_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">memory_name</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">start_addr</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">finish_addr</span><span class="o">&gt;</span><span class="p">);</span>
 </span></code></pre></div></p>
-<p>start和finish决定存储器将被装载的地址。start为开始地址，finish为结束地址。如果不指定开始和结束地址，$readmem开始读入数据，<strong>从存储器的最低地址开始存放</strong>。<br><br />
+<p>start和finish决定存储器将被装载的地址。start为开始地址，finish为结束地址。如果不指定开始和结束地址，$readmem开始读入数据，<strong>从存储器的最低地址开始存放</strong>。<br />
 示例：<br />
 <img alt="" src="Study_notes_material/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E8%AF%BB%E6%93%8D%E4%BD%9C%E7%A4%BA%E4%BE%8B.webp" /></p>
 <h5 id="_8">文件格式说明<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h5>
@@ -5714,19 +5909,17 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 <h3 id="_9">文件输出<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
 <p>$monitor,$display等系统任务可以将结果输出到标准输出设备，相似的系统任务<strong>($fmonitor, $fdisplay)可以将结果输出到文件中</strong>。</p>
 <p>$fopen<br />
-打开一个文件并返回一个多通道描述符（MCD）。<br />
-• MCD是与文件唯一对应的32位无符号整数。<br />
-• 如果文件<strong>不能打开并进行写操作，MCD将等于0</strong>。<br />
-• 如果文件成功打开，MCD中的一位将被置位。</p>
-<p><strong>以$f开始的显示系统任务将输出写入与MCD相对应的文件中。</strong><br />
-<br><br />
-<br><br />
-<strong>文件输出举例</strong><br />
+打开一个文件并返回一个多通道描述符（MCD）。</p>
+<ul>
+<li>MCD是与文件唯一对应的32位无符号整数。</li>
+<li>如果文件<strong>不能打开并进行写操作，MCD将等于0</strong>。</li>
+<li>如果文件成功打开，MCD中的一位将被置位。</li>
+</ul>
+<p><strong>以$f开始的显示系统任务将输出写入与MCD相对应的文件中。</strong></p>
+<p><strong>文件输出举例</strong><br />
 <img alt="" src="Study_notes_material/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA%E4%B8%BE%E4%BE%8B.webp" /><br />
 <strong>读写任务函数</strong><br />
 <img alt="" src="Study_notes_material/%E6%96%87%E4%BB%B6IO/%E8%AF%BB%E5%86%99%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0.webp" /></p>
-<div style="page-break-after: always;"></div>
-
 <h2 id="_10">七、任务<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
 <p>任务: 一般用于编写测试模块，或者行为描述的模块。</p>
 <h3 id="task">Task的定义<a class="headerlink" href="#task" title="Permanent link">&para;</a></h3>
@@ -5744,8 +5937,8 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 </span></code></pre></div><br />
 端口与数据类型的声明语法与module相同，但<strong>不能声明线网类型</strong>，port声明并非必要，task可以不包含任何port声明。</p>
 <h3 id="task_1">Task的调用<a class="headerlink" href="#task_1" title="Permanent link">&para;</a></h3>
-<p>只能在<strong>initial块</strong>和<strong>always块</strong>中调用任务<br><br />
-调用格式:<br><br />
+<p>只能在<strong>initial块</strong>和<strong>always块</strong>中调用任务<br />
+调用格式:<br />
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">task_identifier</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">expression</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">expression</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">)</span><span class="w"> </span>
 </span></code></pre></div></p>
 <h3 id="_11">注意事项<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
@@ -5779,13 +5972,7 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 </span><span id="__span-25-18"><a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a><span class="w">  </span><span class="k">endtask</span>
 </span><span id="__span-25-19"><a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a><span class="k">endmodule</span>
 </span></code></pre></div>
-<p><img alt="" src="Study_notes_material/%E4%BB%BB%E5%8A%A1%E4%B8%8E%E5%87%BD%E6%95%B0/%E4%BB%BB%E5%8A%A1%E4%B8%BE%E4%BE%8B2.webp" /><br />
-<br><br />
-<br><br />
-<br><br />
-<br></p>
-<div style="page-break-after: always;"></div>
-
+<p><img alt="" src="Study_notes_material/%E4%BB%BB%E5%8A%A1%E4%B8%8E%E5%87%BD%E6%95%B0/%E4%BB%BB%E5%8A%A1%E4%B8%BE%E4%BE%8B2.webp" /></p>
 <h2 id="_13">八、函数<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
 <h3 id="function">function的定义<a class="headerlink" href="#function" title="Permanent link">&para;</a></h3>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">function</span><span class="p">[</span><span class="err">宽度与类型</span><span class="p">]</span><span class="w"> </span><span class="n">function_identifier</span><span class="w"> </span><span class="p">;</span>
@@ -5831,25 +6018,12 @@ for(赋初值；条件表达式；计算)&lt;语句&gt;</p>
 </span></code></pre></div>
 <h3 id="_17">函数与任务的特点<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
 <ol>
-<li>
-<p><mark>函数与任务的全部行为都可以用module代替</mark><br />
-<strong>抽象层次</strong>：<br />
-module&gt;过程块&gt;task&gt;function&gt;if, repeat, for...</p>
-</li>
-<li>
-<p><mark>在任务和函数中不能声明线网类型</mark></p>
-</li>
-<li>
-<p>任务和函数必须在module内调用</p>
-</li>
-<li>
-<p>所有输出/输出都是局部寄存器</p>
-</li>
-<li>
-<p>任务/函数执行完成后才返回结果。例如，若任务/函数中有forever语句，则永远不会返回结果</p>
-</li>
-<li>
-<p>系统任务与系统函数<br />
+<li><mark>函数与任务的全部行为都可以用module代替</mark>, <strong>抽象层次</strong>：module&gt;过程块&gt;task&gt;function&gt;if, repeat, for...</li>
+<li><mark>在任务和函数中不能声明线网类型</mark></li>
+<li>任务和函数必须在module内调用</li>
+<li>所有输出/输出都是局部寄存器</li>
+<li>任务/函数执行完成后才返回结果。例如，若任务/函数中有forever语句，则永远不会返回结果</li>
+<li>系统任务与系统函数<br />
 读取当前仿真时间的<strong>系统函数</strong><br />
 $time：返回32位整数时间，对大于<span class="arithmatex">\(2^{32}\)</span>的时间，返回模<span class="arithmatex">\(2^{32}\)</span>的值。使用它可以节省显示及打印空间。<br />
 $stime：返回64位整数时间<br />
@@ -5859,8 +6033,7 @@ Verilog<br />
 $display<br />
 $strobe<br />
 $write<br />
-$monitor</p>
-</li>
+$monitor</li>
 </ol>
 <table>
 <thead>
@@ -5913,8 +6086,6 @@ $monitor</p>
 </tr>
 </tbody>
 </table>
-<div style="page-break-after: always;"></div>
-
 <h2 id="verilog_2">九、Verilog可综合语法<a class="headerlink" href="#verilog_2" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -6017,31 +6188,15 @@ $monitor</p>
 </tr>
 </tbody>
 </table>
-<div style="page-break-after: always;"></div>
-
 <h2 id="verilog_3">十、Verilog代码编写常见问题<a class="headerlink" href="#verilog_3" title="Permanent link">&para;</a></h2>
 <ol>
-<li>
-<p>尽量使用==一个时钟==，或者==同一个时钟源==的时钟。<br />
-<br></p>
-</li>
-<li>
-<p>在设计中，使用==一个时钟沿==工作：<br />
-<img alt="" src="Study_notes_material/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/%E6%97%B6%E9%92%9F%E6%B2%BF.webp" /><br />
-<br></p>
-</li>
-<li>
-<p>在电路设计中要求有一个初始态，在电路工作前初始化所有的寄存器（<mark>组合逻辑的输入可以溯源自寄存器的输出</mark>）。<br />
-推荐异步清零，同步清零清的比较慢<br />
-<br></p>
-</li>
-<li>
-<p>在设计中，尽量将时序逻辑和组合逻辑分在不同的过程块中描述。<br />
-<br></p>
-</li>
-<li>
-<p>Latch的推断:</p>
-</li>
+<li>尽量使用==一个时钟==，或者==同一个时钟源==的时钟。</li>
+<li>在设计中，使用==一个时钟沿==工作：<br />
+<img alt="" src="Study_notes_material/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/%E6%97%B6%E9%92%9F%E6%B2%BF.webp" /></li>
+<li>在电路设计中要求有一个初始态，在电路工作前初始化所有的寄存器（<mark>组合逻辑的输入可以溯源自寄存器的输出</mark>）。<br />
+推荐异步清零，同步清零清的比较慢</li>
+<li>在设计中，尽量将时序逻辑和组合逻辑分在不同的过程块中描述。</li>
+<li>Latch的推断:</li>
 </ol>
 <table>
 <thead>

@@ -49,7 +49,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260604-3">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
@@ -4111,50 +4111,62 @@
 <p>假设我们有一个极其简单的 DSP 算法（比如一个乘加运算）：<br />
 <strong>算法要求</strong>：吃进一个 <span class="arithmatex">\(x[n]\)</span>，先经过<strong>乘法器（耗时 8ns）</strong>，再经过<strong>加法器（耗时 4ns）</strong>，吐出 <span class="arithmatex">\(y[n]\)</span>。</p>
 <h4 id="0base-case">场景 0：最原始的串行结构（Base Case）<a class="headerlink" href="#0base-case" title="Permanent link">&para;</a></h4>
-<p>我们用一个乘法器连着一个加法器，中间没有寄存器。<br />
-*   <strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：关键路径是“乘法+加法” = <span class="arithmatex">\(8ns + 4ns = 12ns\)</span>。所以传送带每 <strong>12ns</strong> 才能打一次节拍。<br />
-*   <strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：每打一次节拍（12ns），就完整处理完一个样点。所以 <span class="arithmatex">\(T_{it} = 1 \times T_{clock} = 12ns\)</span>。<br />
-*   <strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：因为工厂 12ns 出一次货，所以客户下单的速度最快也只能是 <strong>12ns</strong> 进一个数据（对应采样率 83.3 MHz）。<br />
-*   <strong>关系</strong>：<span class="arithmatex">\(T_{clock} = T_{it} = T_s = 12ns\)</span></p>
+<p>我们用一个乘法器连着一个加法器，中间没有寄存器。</p>
+<ul>
+<li><strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：关键路径是“乘法+加法” = <span class="arithmatex">\(8ns + 4ns = 12ns\)</span>。所以传送带每 <strong>12ns</strong> 才能打一次节拍。</li>
+<li><strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：每打一次节拍（12ns），就完整处理完一个样点。所以 <span class="arithmatex">\(T_{it} = 1 \times T_{clock} = 12ns\)</span>。</li>
+<li><strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：因为工厂 12ns 出一次货，所以客户下单的速度最快也只能是 <strong>12ns</strong> 进一个数据（对应采样率 83.3 MHz）。</li>
+<li><strong>关系</strong>：<span class="arithmatex">\(T_{clock} = T_{it} = T_s = 12ns\)</span></li>
+</ul>
 <hr />
 <h4 id="1pipelining">场景 1：流水线处理（Pipelining）—— “切分工序，加快节拍”<a class="headerlink" href="#1pipelining" title="Permanent link">&para;</a></h4>
 <p><strong>做法</strong>：我们在乘法器（8ns）和加法器（4ns）之间，<strong>插入一排寄存器（流水线级）</strong>。<br />
-现在，工厂分成了两个车间，车间 A 只管乘法，车间 B 只管加法。<br />
-*   <strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：现在的关键路径变短了！最慢的车间是乘法车间（8ns），加法车间（4ns）会等它。所以传送带的节拍可以加快到 <strong><span class="arithmatex">\(T_{clock} = 8ns\)</span></strong>。<br />
-*   <strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：虽然一个样点从头走到尾需要两拍（16ns，这叫 Latency 延迟），但在流水线满载的情况下，<strong>每一个时钟节拍（8ns），工厂末端都会掉出一个成品！</strong> 所以处理一个样点的平均时间 <span class="arithmatex">\(T_{it} = 1 \times T_{clock} = 8ns\)</span>。<br />
-*   <strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：现在客户可以每 <strong>8ns</strong> 就扔进来一个数据，工厂完全吃得消。<br />
-*   <strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} = T_{it} = 8ns\)</span>。流水线<strong>缩短了时钟周期 <span class="arithmatex">\(T_{clock}\)</span></strong>，从而成比例地<strong>缩短了迭代周期 <span class="arithmatex">\(T_{it}\)</span></strong>，提升了吞吐率。</p>
+现在，工厂分成了两个车间，车间 A 只管乘法，车间 B 只管加法。</p>
+<ul>
+<li><strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：现在的关键路径变短了！最慢的车间是乘法车间（8ns），加法车间（4ns）会等它。所以传送带的节拍可以加快到 <strong><span class="arithmatex">\(T_{clock} = 8ns\)</span></strong>。</li>
+<li><strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：虽然一个样点从头走到尾需要两拍（16ns，这叫 Latency 延迟），但在流水线满载的情况下，<strong>每一个时钟节拍（8ns），工厂末端都会掉出一个成品！</strong> 所以处理一个样点的平均时间 <span class="arithmatex">\(T_{it} = 1 \times T_{clock} = 8ns\)</span>。</li>
+<li><strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：现在客户可以每 <strong>8ns</strong> 就扔进来一个数据，工厂完全吃得消。</li>
+<li><strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} = T_{it} = 8ns\)</span>。流水线<strong>缩短了时钟周期 <span class="arithmatex">\(T_{clock}\)</span></strong>，从而成比例地<strong>缩短了迭代周期 <span class="arithmatex">\(T_{it}\)</span></strong>，提升了吞吐率。</li>
+</ul>
 <hr />
 <h4 id="2parallel-processing">场景 2：并行处理（Parallel Processing）—— “克隆工厂，以量取胜”<a class="headerlink" href="#2parallel-processing" title="Permanent link">&para;</a></h4>
 <p><strong>做法</strong>：由于某些原因（比如芯片工艺限制，或者由于上一节讲的<strong>迭代边界 <span class="arithmatex">\(T_{\infty}\)</span> 的限制导致流水线插不进去</strong>），我们时钟最快只能跑到 12ns，但客户偏偏要求 4ns 就要一个结果！怎么办？<br />
 <strong>复制 3 套原始电路！</strong> 结构依然是“无流水线的乘加”（单套时钟 12ns）。<br />
-让硬件 A 处理 <span class="arithmatex">\(x[0]\)</span>，硬件 B 处理 <span class="arithmatex">\(x[1]\)</span>，硬件 C 处理 <span class="arithmatex">\(x[2]\)</span>。它们同时开工。<br />
-*   <strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：底层硬件根本没变，关键路径还是 12ns。所以 <strong><span class="arithmatex">\(T_{clock} = 12ns\)</span></strong>。<br />
-*   <strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：这 3 套硬件熬了 12ns 后，<strong>“啪”地一下同时吐出 3 个结果</strong>！<br />
+让硬件 A 处理 <span class="arithmatex">\(x[0]\)</span>，硬件 B 处理 <span class="arithmatex">\(x[1]\)</span>，硬件 C 处理 <span class="arithmatex">\(x[2]\)</span>。它们同时开工。</p>
+<ul>
+<li><strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：底层硬件根本没变，关键路径还是 12ns。所以 <strong><span class="arithmatex">\(T_{clock} = 12ns\)</span></strong>。</li>
+<li><strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：这 3 套硬件熬了 12ns 后，<strong>“啪”地一下同时吐出 3 个结果</strong>！<br />
     平均下来，算出一个结果的时间是：<span class="arithmatex">\(12ns / 3 = 4ns\)</span>。<br />
-    所以，<strong><span class="arithmatex">\(T_{it} = T_{clock} / 3 = 4ns\)</span></strong>。<br />
-*   <strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：系统现在平均每 4ns 就能消化一个样点，所以满足了外部 <strong><span class="arithmatex">\(T_s = 4ns\)</span></strong> 的严苛要求！<br />
-*   <strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} \neq T_{it}\)</span>。并行处理<strong>没有改变时钟周期</strong>，但通过空间换时间，<strong>成倍地缩短了迭代周期 <span class="arithmatex">\(T_{it}\)</span></strong>。</p>
+    所以，<strong><span class="arithmatex">\(T_{it} = T_{clock} / 3 = 4ns\)</span></strong>。</li>
+<li><strong><span class="arithmatex">\(T_s\)</span> (能满足的采样周期)</strong>：系统现在平均每 4ns 就能消化一个样点，所以满足了外部 <strong><span class="arithmatex">\(T_s = 4ns\)</span></strong> 的严苛要求！</li>
+<li><strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} \neq T_{it}\)</span>。并行处理<strong>没有改变时钟周期</strong>，但通过空间换时间，<strong>成倍地缩短了迭代周期 <span class="arithmatex">\(T_{it}\)</span></strong>。</li>
+</ul>
 <hr />
 <h4 id="3folding">场景 3：折叠（Folding / 时分复用）—— “让设备连轴转，省面积”<a class="headerlink" href="#3folding" title="Permanent link">&para;</a></h4>
 <p>（这是笔记里提到的第三种情况，和并行恰好相反）<br />
-<strong>做法</strong>：客户要求不高，每 24ns 才会来一个数据（<span class="arithmatex">\(T_s = 24ns\)</span>）。如果我还用 12ns 处理完，那剩下的 12ns 机器就在睡大觉。为了省钱，我们可以把算法里的两次不同加法，<strong>复用同一个加法器</strong>来算。<br />
-*   <strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：比如时钟跑到 12ns。<br />
-*   <strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：因为你要分两步复用同一个硬件，所以需要 <strong>2 个时钟拍</strong>才能完成一次完整迭代出结果。<br />
-    所以，<strong><span class="arithmatex">\(T_{it} = 2 \times T_{clock} = 24ns\)</span></strong>。<br />
-*   <strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} \neq T_{it}\)</span>。为了节省硬件面积，迭代周期变成了时钟周期的多倍。</p>
+<strong>做法</strong>：客户要求不高，每 24ns 才会来一个数据（<span class="arithmatex">\(T_s = 24ns\)</span>）。如果我还用 12ns 处理完，那剩下的 12ns 机器就在睡大觉。为了省钱，我们可以把算法里的两次不同加法，<strong>复用同一个加法器</strong>来算。</p>
+<ul>
+<li><strong><span class="arithmatex">\(T_{clock}\)</span> (时钟周期)</strong>：比如时钟跑到 12ns。</li>
+<li><strong><span class="arithmatex">\(T_{it}\)</span> (迭代周期)</strong>：因为你要分两步复用同一个硬件，所以需要 <strong>2 个时钟拍</strong>才能完成一次完整迭代出结果。<br />
+    所以，<strong><span class="arithmatex">\(T_{it} = 2 \times T_{clock} = 24ns\)</span></strong>。</li>
+<li><strong>关系总结</strong>：<span class="arithmatex">\(T_{clock} \neq T_{it}\)</span>。为了节省硬件面积，迭代周期变成了时钟周期的多倍。</li>
+</ul>
 <hr />
 <h3 id="_3">三、 把全章知识串起来的“顿悟时刻”<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
 <p>现在，我们将<strong>三大周期</strong>和你刚学会的<strong>迭代边界（<span class="arithmatex">\(T_{\infty}\)</span>）</strong>联动一下：</p>
 <p>假设你算出一个带反馈环路的 DSP 系统的迭代边界 <span class="arithmatex">\(T_{\infty} = 10ns\)</span>。<br />
 外部客户要求的采样周期是 <span class="arithmatex">\(T_s = 8ns\)</span>。</p>
-<p>你面临的残酷现实是：<br />
-1. 为了实时处理，你必须让 <span class="arithmatex">\(T_{it} \le 8ns\)</span>。<br />
-2. 但是老天爷（迭代边界）规定，无论你怎么折腾单套硬件，<span class="arithmatex">\(T_{it} \ge 10ns\)</span>。</p>
-<p><strong>怎么破局？</strong><br />
-*   <strong>能用流水线吗？</strong> 不能！在紧密反馈环路里盲目插入流水线寄存器，会破坏环路原来的延时数（<span class="arithmatex">\(w_L\)</span> 改变），导致算出来的结果不再是原来的算法含义了（相当于“因果关系”被延迟破坏了）。<br />
-*   <strong>能单纯加快时钟 <span class="arithmatex">\(T_{clock}\)</span> 吗？</strong> 没用！即使你用台积电 3nm 工艺把 <span class="arithmatex">\(T_{clock}\)</span> 做到 1ns，但由于反馈环路的等待机制，数据必须在环路里转完，总的 <span class="arithmatex">\(T_{it}\)</span> 依然无法突破 <span class="arithmatex">\(T_{\infty}\)</span> 的理论下限。<br />
-*   <strong>唯一出路（后续章节会讲）</strong>：必须使用<strong>算法变换技术（如 Look-Ahead 展开技术、并行多相结构等）</strong>，从数学层面上改变这个反馈环路的本质，强行打破现有的 <span class="arithmatex">\(T_{\infty}\)</span>，然后结合<strong>并行处理</strong>，让 <span class="arithmatex">\(T_{it} = T_{clock} / N\)</span>，从而达成 <span class="arithmatex">\(T_{it} = 8ns\)</span> 的目标！</p>
+<p>你面临的残酷现实是：</p>
+<ol>
+<li>为了实时处理，你必须让 <span class="arithmatex">\(T_{it} \le 8ns\)</span>。</li>
+<li>但是老天爷（迭代边界）规定，无论你怎么折腾单套硬件，<span class="arithmatex">\(T_{it} \ge 10ns\)</span>。</li>
+</ol>
+<p><strong>怎么破局？</strong></p>
+<ul>
+<li><strong>能用流水线吗？</strong> 不能！在紧密反馈环路里盲目插入流水线寄存器，会破坏环路原来的延时数（<span class="arithmatex">\(w_L\)</span> 改变），导致算出来的结果不再是原来的算法含义了（相当于“因果关系”被延迟破坏了）。</li>
+<li><strong>能单纯加快时钟 <span class="arithmatex">\(T_{clock}\)</span> 吗？</strong> 没用！即使你用台积电 3nm 工艺把 <span class="arithmatex">\(T_{clock}\)</span> 做到 1ns，但由于反馈环路的等待机制，数据必须在环路里转完，总的 <span class="arithmatex">\(T_{it}\)</span> 依然无法突破 <span class="arithmatex">\(T_{\infty}\)</span> 的理论下限。</li>
+<li><strong>唯一出路（后续章节会讲）</strong>：必须使用<strong>算法变换技术（如 Look-Ahead 展开技术、并行多相结构等）</strong>，从数学层面上改变这个反馈环路的本质，强行打破现有的 <span class="arithmatex">\(T_{\infty}\)</span>，然后结合<strong>并行处理</strong>，让 <span class="arithmatex">\(T_{it} = T_{clock} / N\)</span>，从而达成 <span class="arithmatex">\(T_{it} = 8ns\)</span> 的目标！</li>
+</ul>
 <h3 id="_4">总结<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong><span class="arithmatex">\(T_{clock}\)</span></strong> 决定你<strong>单步走多快</strong>（看关键路径）。</li>

@@ -23,6 +23,8 @@
   --site-accent-strong: #0284c7;
   --site-accent-soft: rgba(14, 165, 233, 0.12);
   --site-accent-soft-strong: rgba(14, 165, 233, 0.18);
+  /* --reader-inline-math-bg: color-mix(in srgb, var(--site-accent-soft) 80%, transparent); */
+  --reader-inline-math-bg: transparent;
   --site-shadow-sm: 0 10px 30px rgba(15, 23, 42, 0.06);
   --site-shadow-md: 0 24px 60px rgba(15, 23, 42, 0.12);
   --site-code-bg: #ffffff;
@@ -1007,7 +1009,7 @@ body.reader-sidebar-resizing .reader-sidebar-resizer {
 .md-typeset span.arithmatex {
   padding: 0.06rem 0.32rem;
   border-radius: 8px;
-  background: color-mix(in srgb, var(--site-accent-soft) 80%, transparent);
+  background: var(--reader-inline-math-bg);
 }
 
 .md-typeset .footnote {

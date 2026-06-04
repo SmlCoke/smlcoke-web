@@ -53,7 +53,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=20260604-3">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
@@ -4555,10 +4555,12 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>SystemVerilog
 </span></code></pre></div></p>
 <p><strong>注意插件开发者是：Eirik Prestegårdshus</strong></p>
-<p>该插件的功能：<br />
-- 语法高亮✅️<br />
-- 语法检查❓️<br />
-- 跨文件跳转✅️</p>
+<p>该插件的功能：</p>
+<ul>
+<li>语法高亮✅️</li>
+<li>语法检查❓️</li>
+<li>跨文件跳转✅️</li>
+</ul>
 <p>注意，<strong>跨文件跳转功能需要额外下载一个叫做 <code>ctags</code> 的工具</strong>，安装方法：<br />
 1. 搜索 https://github.com/universal-ctags/ctags-win32<br />
 2. Release 页面下载 Windows 版本的预编<code>.zip</code>包<br />
@@ -4607,10 +4609,12 @@
 <h2 id="iv-teroshdl">IV. TerosHDL<a class="headerlink" href="#iv-teroshdl" title="Permanent link">&para;</a></h2>
 <h3 id="41-teroshdl">4.1 TerosHDL 插件介绍<a class="headerlink" href="#41-teroshdl" title="Permanent link">&para;</a></h3>
 <p>相比前面两个工具，TerosHDL 是一款致力于将 VS Code 打造为全功能 FPGA IDE 的开源插件。在我们的这套方案中，我们主要利用它极其出色的<strong>代码分析能力</strong>和<strong>图形化渲染能力</strong>。</p>
-<p>它的核心优势是足够轻量化，无需安装庞大的商业 EDA 软件（如 Vivado/Quartus），即可通过轻量级工具链实现 RTL 电路图预览。杀手锏功能：<br />
-- <code>Schematic Viewer</code>：自动解析代码连线，生成可交互的 RTL 原理图。<br />
-- <code>State Machine Viewer</code>：自动提取 always 块中的 case 逻辑，绘制状态转移图（FSM）。<br />
-- <code>自动例化与文档生成</code>：提供快速的代码重构支持。</p>
+<p>它的核心优势是足够轻量化，无需安装庞大的商业 EDA 软件（如 Vivado/Quartus），即可通过轻量级工具链实现 RTL 电路图预览。杀手锏功能：</p>
+<ul>
+<li><code>Schematic Viewer</code>：自动解析代码连线，生成可交互的 RTL 原理图。</li>
+<li><code>State Machine Viewer</code>：自动提取 always 块中的 case 逻辑，绘制状态转移图（FSM）。</li>
+<li><code>自动例化与文档生成</code>：提供快速的代码重构支持。</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">安装前请注意</p>
 <p>这些功能仅仅属于锦上添花级别，如果<code>SystemVerilog</code>插件和<code>Verilog-HDL/SystemVerilog/Bluespec SystemVerilog</code>插件已经解决了你的问题，那么你完全可以不安装 TerosHDL 插件，因为该插件相比前两个插件本身比较笨重，安装后会占用较多的系统资源，可能会导致 VS Code 运行变慢。或者可以将其安装在 VS Code Insider 中，专门用于查看 RTL 原理图和状态转移图。</p>
@@ -4646,10 +4650,12 @@
 <h3 id="44">4.4 使用示例<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
 <p>VS Code中随便打开一个 <code>.v</code> 或者 <code>.sv</code> 文件，在编辑器右上角会出现这三个图标：<br />
 <img alt="alt text" src="image-3.webp" /></p>
-<p>从左到右分别是：<br />
-- <code>自动例化与文档生成</code>：自动化生成该 RTL 的端口分析文档。<br />
-- <code>Schematic Viewer</code>：自动解析代码连线，生成可交互的 RTL 原理图。<br />
-- <code>State Machine Viewer</code>：自动提取 always 块中的 case 逻辑，绘制状态转移图（FSM）。</p>
+<p>从左到右分别是：</p>
+<ul>
+<li><code>自动例化与文档生成</code>：自动化生成该 RTL 的端口分析文档。</li>
+<li><code>Schematic Viewer</code>：自动解析代码连线，生成可交互的 RTL 原理图。</li>
+<li><code>State Machine Viewer</code>：自动提取 always 块中的 case 逻辑，绘制状态转移图（FSM）。</li>
+</ul>
 <p><strong>尤其是后面两个效果很不错，写完 RTL 后可以快速帮你排查当前模块的功能实现是不是符合你的预期！</strong></p>
 <h2 id="v">V. 一些调试反馈<a class="headerlink" href="#v" title="Permanent link">&para;</a></h2>
 <h3 id="51-bug">5.1 跨文件跳转的 bug<a class="headerlink" href="#51-bug" title="Permanent link">&para;</a></h3>
