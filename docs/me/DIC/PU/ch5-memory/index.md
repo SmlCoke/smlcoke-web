@@ -316,14 +316,14 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 改变每个 Cache Block 的大小会对性能（Miss rate）产生显著影响，这是一个经典的体系结构 Trade-off：
 
 - **增大 Block Size 的<span style="color: green;">好处</span>**：
-   - **降低 Miss rate**：能够更好地利用**空间局部性（Spatial Locality）**。因为当你访问地址 A 时，地址 A 附近的数据大概率也会被访问到，**较大的块会一次性将它们全部预取进来**。
+    - **降低 Miss rate**：能够更好地利用**空间局部性（Spatial Locality）**。因为当你访问地址 A 时，地址 A 附近的数据大概率也会被访问到，**较大的块会一次性将它们全部预取进来**。
 - **（在 Cache 总容量固定的前提下）增大 Block Size 的<span style="color: red;">代价</span>**：
-   -  **增加竞争（More competition）**：块变大了，Cache 能容纳的**块数（Blocks）就会减少**，导致冲突增加，反而可能**提高 Miss rate**。
-   -  **缓存污染与伪共享（Pollution & False sharing）**：可能会取来大量根本用不到的数据占用宝贵的 Cache 空间；在多核架构中还会引发缓存一致性问题（False sharing）。
-   -  **增加缺失惩罚（Larger miss penalty）**：发生 Miss 时，从主存搬运一整个大块的数据需要花费更长的时间。
+    -  **增加竞争（More competition）**：块变大了，Cache 能容纳的**块数（Blocks）就会减少**，导致冲突增加，反而可能**提高 Miss rate**。
+    -  **缓存污染与伪共享（Pollution & False sharing）**：可能会取来大量根本用不到的数据占用宝贵的 Cache 空间；在多核架构中还会引发缓存一致性问题（False sharing）。
+    -  **增加缺失惩罚（Larger miss penalty）**：发生 Miss 时，从主存搬运一整个大块的数据需要花费更长的时间。
 - **对应的硬件缓解策略**：
-   -  **Early restart**：只要 CPU 需要的那个字（Word）到了，就立马恢复 CPU 执行，不等待整个 Block 搬运完成。
-   -  **Critical-word-first**：要求内存控制器优先回传 CPU 触发 Miss 的那一个字。
+    -  **Early restart**：只要 CPU 需要的那个字（Word）到了，就立马恢复 CPU 执行，不等待整个 Block 搬运完成。
+    -  **Critical-word-first**：要求内存控制器优先回传 CPU 触发 Miss 的那一个字。
 
 
 ### 5.2 Cache 读写机制与一致性策略 (Cache Misses & Write Policies)
@@ -334,9 +334,10 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 **Read Hit（读命中）**：所需数据在 Cache 中，CPU 直接读取数据，全速流水线执行。
 
 **Read Miss（读缺失）**：所需数据不在 Cache 中。
-   1. CPU 流水线必须**暂停（Stall）**。
-   2. 通知下一级存储（下级 Cache 或主存）将包含该地址的**整个数据块（Block）**搬运到当前 Cache 中。
-   3. 数据就位后，CPU 重新启动执行（如果是指令缺失则重启取指，数据缺失则完成数据访问）。
+
+1. CPU 流水线必须**暂停（Stall）**。
+2. 通知下一级存储（下级 Cache 或主存）将包含该地址的**整个数据块（Block）**搬运到当前 Cache 中。
+3. 数据就位后，CPU 重新启动执行（如果是指令缺失则重启取指，数据缺失则完成数据访问）。
 
 #### 5.2.2 缓存写操作 (Cache Write)
 写操作需要分别考虑**写命中（Write Hit）**和**写缺失（Write Miss）**的情况。
@@ -345,13 +346,13 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 当 CPU 要写的数据刚好在 Cache 中时，修改了 Cache 的数据就会导致它与主存的数据不一致。硬件上有两种核心解决流派：
 
 1.  **Write-Through（写通 / 直写）**
-    **机制**：每次写 Cache 的同时，也**同步写回主存**，保证上下层数据绝对一致。
-    **痛点**：主存写入速度极慢，每次写操作都会严重拖慢 CPU。
-    **硬件补救**：引入 **Write Buffer（写缓冲）**。CPU 将数据**同时丢给 Cache 和 Write Buffer** 后即可继续执行下一条指令，Write Buffer 负责在后台将数据慢慢写入主存。（**仅当 Buffer 满时 CPU 才需要 Stall**）。
+    - **机制**：每次写 Cache 的同时，也**同步写回主存**，保证上下层数据绝对一致。
+    - **痛点**：主存写入速度极慢，每次写操作都会严重拖慢 CPU。
+    - **硬件补救**：引入 **Write Buffer（写缓冲）**。CPU 将数据**同时丢给 Cache 和 Write Buffer** 后即可继续执行下一条指令，Write Buffer 负责在后台将数据慢慢写入主存。（**仅当 Buffer 满时 CPU 才需要 Stall**）。
 2.  **Write-Back（写回）**
-    **机制**：CPU **只更新 Cache 中的数据**，不马上同步主存。只有当这个 Cache 块**因为冲突被 “踢出（Evict/Replace）” 时，才将它写回主存**。
-    **硬件实现**：在 Cache 行中增加一个 **Dirty Bit（脏位）**。数据**被修改时设为 1（Dirty）**。发生替换时，如果 **Dirty=1 则写回主存**；如果 Dirty=0 则直接丢弃当前 Cache 块即可。
-    **优点**：极大地节省了内存带宽，适合被频繁修改的局部变量。
+    - **机制**：CPU **只更新 Cache 中的数据**，不马上同步主存。只有当这个 Cache 块**因为冲突被 “踢出（Evict/Replace）” 时，才将它写回主存**。
+    - **硬件实现**：在 Cache 行中增加一个 **Dirty Bit（脏位）**。数据**被修改时设为 1（Dirty）**。发生替换时，如果 **Dirty=1 则写回主存**；如果 Dirty=0 则直接丢弃当前 Cache 块即可。
+    - **优点**：极大地节省了内存带宽，适合被频繁修改的局部变量。
 
 ##### 2.2 写缺失 (Write Miss) 的两种策略
 当 CPU 要写的数据不在 Cache 中时：

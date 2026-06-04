@@ -76,6 +76,7 @@ Streaming Multiprocessor (SM) = Four sub-partition
 ### 3.1 GPU 市场
 
 GPU 市场分为两类：
+
 *   **Desktop (桌面级)：** NVIDIA, AMD, Intel
 *   **Embedded (嵌入式)：** Imagination PowerVR (曾用于 Apple), Qualcomm Adreno (曾用于 Samsung/Xiaomi), ARM Mali
 
