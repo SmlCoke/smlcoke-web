@@ -5011,10 +5011,12 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 &amp;=-1 \\
 \end{aligned}\]</div>
 <p>证毕。<br />
-<strong>(3) 示例：将 +2 变为 -2</strong>：<br />
-*   <span class="arithmatex">\(+2\)</span> = <code>0000...0010₂</code><br />
-*   第一步取反：<code>1111...1101₂</code><br />
-*   第二步加1：<code>1111...1101₂ + 1 = 1111...1110₂</code> （即 -2）。</p>
+<strong>(3) 示例：将 +2 变为 -2</strong>：</p>
+<ul>
+<li><span class="arithmatex">\(+2\)</span> = <code>0000...0010₂</code></li>
+<li>第一步取反：<code>1111...1101₂</code></li>
+<li>第二步加1：<code>1111...1101₂ + 1 = 1111...1110₂</code> （即 -2）。</li>
+</ul>
 <p>进而引申：</p>
 <div class="admonition note">
 <p class="admonition-title">Theorem 1.</p>
@@ -5037,17 +5039,23 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <h3 id="2-dealing-with-overflow">2. 溢出处理 (Dealing with Overflow)<a class="headerlink" href="#2-dealing-with-overflow" title="Permanent link">&para;</a></h3>
 <p>当运算结果超出了当前位数所能表示的范围时，发生溢出。</p>
 <ul>
-<li><strong>加法溢出判定</strong>：</li>
+<li><strong>加法溢出判定</strong>：<ul>
 <li><strong>一正一负相加</strong>：<strong>永远不会溢出</strong>。</li>
 <li>两个正数相加：结果符号位为1（变为负数），则溢出。</li>
 <li>两个负数相加：结果符号位为0（变为正数），则溢出。</li>
-<li><strong>减法溢出判定</strong>：</li>
+</ul>
+</li>
+<li><strong>减法溢出判定</strong>：<ul>
 <li><strong>两个同号数相减</strong>：<strong>永远不会溢出</strong>。</li>
 <li>负数减正数：结果符号位为1，则溢出。</li>
 <li>正数减负数：结果符号位为0，则溢出。</li>
-<li><strong>两种溢出处理方式</strong></li>
+</ul>
+</li>
+<li><strong>两种溢出处理方式</strong><ul>
 <li><strong>Satruating(饱和)</strong>：当发生溢出时，结果被强制设置为<strong>可表示的最大值或最小值</strong>。常见于<strong>Graphics and media processing</strong></li>
 <li><strong>Clipping(截断)</strong>：当发生溢出时，结果被截断为可表示的范围内的值。即取模回绕（Wrap-around）。例如在8bit无符号加法中，<span class="arithmatex">\(255 + 1\)</span> 会回绕到 <span class="arithmatex">\(0\)</span>。</li>
+</ul>
+</li>
 </ul>
 <h2 id="_4">三、乘法运算及其电路实现<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <h3 id="31-long-multiplication-approach">3.1 基础乘法算法 (Long-multiplication Approach)<a class="headerlink" href="#31-long-multiplication-approach" title="Permanent link">&para;</a></h3>
@@ -5092,10 +5100,12 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <p>除法的逻辑过程类似于手工长除法，但硬件实现更为具体：</p>
 <ul>
 <li><strong>基本原则</strong>：<strong>对于 <span class="arithmatex">\(n\)</span> 位操作数，会产生一个 <span class="arithmatex">\(n\)</span> 位的商（Quotient）和一个 <span class="arithmatex">\(n\)</span> 位的余数（Remainder）</strong>。</li>
-<li><strong>算法步骤</strong>：</li>
+<li><strong>算法步骤</strong>：<ul>
 <li>检查除数（Divisor）是否为0。</li>
 <li>比较除数与被除数（Dividend）的当前位，如果<strong>除数 <span class="arithmatex">\(\le\)</span> 当前位</strong>，则<strong>商置1</strong>并进行减法。</li>
 <li>否则，商置0，并将被除数的<strong>下一位降下</strong>继续比较。</li>
+</ul>
+</li>
 <li><strong>恢复余数法 (Restoring Division)</strong>：在硬件执行减法后，如果<strong>余数变为负数（&lt; 0）</strong>，则必须将除数<strong>加回到余数中</strong>以“恢复”原来的值。</li>
 </ul>
 <h3 id="42-division-hardware">4.2 除法器硬件电路实现 (Division Hardware)<a class="headerlink" href="#42-division-hardware" title="Permanent link">&para;</a></h3>
@@ -5103,10 +5113,12 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <ul>
 <li><strong>非优化结构</strong>：使用64位ALU、64位余数寄存器和64位除数寄存器（右移），商寄存器为32位（左移）。<br />
 <img alt="alt text" src="image-3.webp" /></li>
-<li><strong>优化后的除法器 (Optimized Divider)</strong>：</li>
+<li><strong>优化后的除法器 (Optimized Divider)</strong>：<ul>
 <li><strong>硬件高度复用</strong>：优化后的除法器结构与乘法器非常相似，通常可以使用<strong>同一套硬件</strong>来实现乘法和除法。</li>
 <li><strong>寄存器配置</strong>：32位ALU；64位余数寄存器初始化时右半部分放被除数，运算结束后左半部分存放余数，右半部分存放商。<br />
 <img alt="alt text" src="image-4.webp" /></li>
+</ul>
+</li>
 </ul>
 <h3 id="43-faster-division">4.3 除法加速技术 (Faster Division)<a class="headerlink" href="#43-faster-division" title="Permanent link">&para;</a></h3>
 <p>与乘法不同，除法很难使用类似华莱士树的并行硬件来加速。常用的加速手段包括：<br />
@@ -5149,20 +5161,26 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <p>有符号除法的核心原则是“<strong>余数的符号必须与被除数一致</strong>”：</p>
 <ol>
 <li>取被除数和除数的<strong>绝对值</strong>进行<strong>除法</strong>运算。</li>
-<li><strong>调整符号规则</strong>：</li>
+<li><strong>调整符号规则</strong>：<ul>
 <li>如果操作数异号，则商为负。</li>
 <li><strong>余数的符号必须与被除数一致</strong>。</li>
 <li>这意味着商总是<strong>向零舍入（Rounded toward zero）</strong>。</li>
+</ul>
+</li>
 </ol>
 <h3 id="5-risc-v">5. RISC-V 除法指令实现<a class="headerlink" href="#5-risc-v" title="Permanent link">&para;</a></h3>
 <p>RISC-V 将商和余数的获取拆分为不同的指令，且区分有符号与无符号：</p>
 <ul>
-<li><strong>获取商 (Quotient)</strong>：</li>
+<li><strong>获取商 (Quotient)</strong>：<ul>
 <li><code>div rd, rs1, rs2</code>：有符号除法。</li>
 <li><code>divu rd, rs1, rs2</code>：无符号除法。</li>
-<li><strong>获取余数 (Remainder)</strong>：</li>
+</ul>
+</li>
+<li><strong>获取余数 (Remainder)</strong>：<ul>
 <li><code>rem rd, rs1, rs2</code>：有符号取模。</li>
 <li><code>remu rd, rs1, rs2</code>：无符号取模。</li>
+</ul>
+</li>
 </ul>
 <p>这部分笔记将重点整理课件中关于<strong>浮点数（Floating Point）</strong>的表示、IEEE 754 标准以及编码细节。</p>
 <h2 id="floating-point-representation">五、浮点数表示与编码 (Floating-Point Representation)<a class="headerlink" href="#floating-point-representation" title="Permanent link">&para;</a></h2>
@@ -5211,10 +5229,12 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <ul>
 <li><strong>符号位 (S)</strong>：0 表示非负，1 表示负数。</li>
 <li><strong>隐含位 (Hidden Bit)</strong>：为了节省空间，规格化后的尾数总是<strong>以“1.”开头</strong>，因此硬件编码时<strong>只存储点后的部分 (Fraction)</strong>，<strong>计算时自动恢复“1.”</strong>。</li>
-<li><strong>偏置指数 (Biased Exponent)</strong>：</li>
+<li><strong>偏置指数 (Biased Exponent)</strong>：<ul>
 <li>指数部分采用<strong>偏置计数法</strong>，确保指数始终为无符号数，便于硬件比较大小。</li>
 <li><strong>Bias 值</strong>：单精度为 <strong>127</strong>，双精度为 <strong>1023</strong>。</li>
 <li>实际指数 = 寄存器值 (Exponent) - Bias。</li>
+</ul>
+</li>
 </ul>
 <div class="admonition question 为什么需要 bias 以及为什么 bias 是这两个数">
 <p class="admonition-title">Question</p>
@@ -5273,11 +5293,13 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <div class="arithmatex">\[V = (-1)^S \times (0.M) \times 2^{-126}\]</div>
 <p><strong>你可能会问：既然 <span class="arithmatex">\(E=0\)</span>，偏置是 <span class="arithmatex">\(127\)</span>，按照公式 <span class="arithmatex">\(e = E - B = 0 - 127 = -127\)</span>，为什么非规格化数的指数被硬性规定为了 <span class="arithmatex">\(-126\)</span> 呢？</strong></p>
 <p>这是一个<strong>极度聪明的工程妥协</strong>，目的是为了与“最小的规格化数”实现<strong>无缝的平滑衔接</strong>。</p>
-<p>我们来看看这中间的过渡：<br />
-*   <strong>最小的正规格化数</strong>（<span class="arithmatex">\(E=1, M=00...0\)</span>）：<br />
-    数值 <span class="arithmatex">\(= 1.0 \times 2^{1-127} = 1.0 \times 2^{-126}\)</span><br />
-*   <strong>最大的非规格化数</strong>（<span class="arithmatex">\(E=0, M=11...1\)</span>）：<br />
-    数值 <span class="arithmatex">\(= 0.111...1_2 \times 2^{-126}\)</span> （注意这里使用的是 <span class="arithmatex">\(-126\)</span>）</p>
+<p>我们来看看这中间的过渡：</p>
+<ul>
+<li><strong>最小的正规格化数</strong>（<span class="arithmatex">\(E=1, M=00...0\)</span>）：<br />
+    数值 <span class="arithmatex">\(= 1.0 \times 2^{1-127} = 1.0 \times 2^{-126}\)</span></li>
+<li><strong>最大的非规格化数</strong>（<span class="arithmatex">\(E=0, M=11...1\)</span>）：<br />
+    数值 <span class="arithmatex">\(= 0.111...1_2 \times 2^{-126}\)</span> （注意这里使用的是 <span class="arithmatex">\(-126\)</span>）</li>
+</ul>
 <p>如果我们将非规格化数的指数设定为 <span class="arithmatex">\(-126\)</span>，那么从最大的非规格化数加 1 个 ULP（也就是加 <span class="arithmatex">\(0.000...1_2 \times 2^{-126}\)</span>），刚好就等于 <span class="arithmatex">\(1.0 \times 2^{-126}\)</span>，完美过渡到了最小规格化数！<br />
 如果使用 <span class="arithmatex">\(-127\)</span>，这两者之间就会出现断层。因此，<strong>IEEE 754 规定非规格化数的实际指数“冻结”在最小规格化数的指数上（即 <span class="arithmatex">\(-126\)</span>），仅仅将隐含位从 1 变成了 0。</strong></p>
 <h4 id="552">5.5.2 核心使命：拯救“突然下溢”与捍卫数学公理<a class="headerlink" href="#552" title="Permanent link">&para;</a></h4>

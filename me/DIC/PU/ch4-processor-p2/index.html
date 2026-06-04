@@ -4575,9 +4575,11 @@
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>sd    x31, -24(x20)
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>addi  x20, x20, -32
 </span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>blt   x22, x20, Loop
-</span></code></pre></div><br />
-- 优化收益：原本1次循环需要1条<code>addi</code>+1条<code>blt</code>，4次循环展开后，<strong>循环控制指令的开销</strong>降低为原来的1/4。<br />
-- 代价：<strong>需要占用更多的通用寄存器</strong>（x28~x31），同时代码体积增大。</p>
+</span></code></pre></div></p>
+<ul>
+<li>优化收益：原本1次循环需要1条<code>addi</code>+1条<code>blt</code>，4次循环展开后，<strong>循环控制指令的开销</strong>降低为原来的1/4。</li>
+<li>代价：<strong>需要占用更多的通用寄存器</strong>（x28~x31），同时代码体积增大。</li>
+</ul>
 <h4 id="832">8.3.2 循环展开+流水线调度<a class="headerlink" href="#832" title="Permanent link">&para;</a></h4>
 <p>在循环展开的基础上，编译器可<strong>通过指令重排，规避Load-use等数据冒险</strong>，进一步消除流水线气泡。优化后的指令序列如下：<br />
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Loop:
@@ -4667,10 +4669,12 @@
 <hr />
 <h3 id="84-dynamic-multiple-issue">8.4 动态多发射 (Dynamic Multiple Issue)<a class="headerlink" href="#84-dynamic-multiple-issue" title="Permanent link">&para;</a></h3>
 <h4 id="841">8.4.1 超标量处理器基础<a class="headerlink" href="#841" title="Permanent link">&para;</a></h4>
-<p>动态多发射架构也被称为<strong>超标量（Superscalar）处理器</strong>，核心特征是：<br />
-- 由CPU硬件在运行时<strong>动态决定每个周期发射0、1、2条</strong>甚至更多指令，自动规避结构冒险和数据冒险。<br />
-- 无需编译器提前做指令打包和调度，编译器的指令重排仅起辅助优化作用。<br />
-- 由硬件保证代码语义的正确性，支持<strong>按序发射（In-order issue）</strong> 或<strong>乱序发射</strong>。</p>
+<p>动态多发射架构也被称为<strong>超标量（Superscalar）处理器</strong>，核心特征是：</p>
+<ul>
+<li>由CPU硬件在运行时<strong>动态决定每个周期发射0、1、2条</strong>甚至更多指令，自动规避结构冒险和数据冒险。</li>
+<li>无需编译器提前做指令打包和调度，编译器的指令重排仅起辅助优化作用。</li>
+<li>由硬件保证代码语义的正确性，支持<strong>按序发射（In-order issue）</strong> 或<strong>乱序发射</strong>。</li>
+</ul>
 <h4 id="842-out-of-order-ooo">8.4.2 动态流水线调度与乱序执行 (Out-of-Order, OOO)<a class="headerlink" href="#842-out-of-order-ooo" title="Permanent link">&para;</a></h4>
 <p>动态调度的核心能力是<strong>允许CPU乱序执行指令，以规避流水线停顿，但最终按序提交结果到寄存器</strong>，保证程序执行的语义正确性。</p>
 <p><strong>示例</strong>：如下指令序列中，<code>add</code>指令依赖<code>ld</code>的结果，会产生Load-use停顿，但<code>sub</code>和<code>andi</code>指令与前后指令无依赖，可在<code>ld</code>的延迟间隙提前执行：<br />
@@ -4684,51 +4688,59 @@
 <p>动态调度CPU的核心流水线结构分为三大阶段，严格遵循「<strong>按序取指发射、乱序执行、按序提交</strong>」的核心原则：</p>
 <p><img alt="" src="image-45.webp" /></p>
 <ol>
-<li>
-<p><strong>按序取指与译码阶段</strong><br />
-   指令取指单元按程序顺序取指，完成译码后，将指令发送到对应的保留站（Reservation Station），保证指令发射的顺序性。</p>
+<li><strong>按序取指与译码阶段</strong><ul>
+<li>指令取指单元按程序顺序取指，完成译码后，将指令发送到对应的保留站（Reservation Station），保证指令发射的顺序性。</li>
+</ul>
 </li>
 <li>
 <p><strong>乱序执行阶段</strong></p>
-</li>
+<ul>
 <li>保留站：<strong>缓存待执行指令的操作数</strong>，等待操作数准备就绪后，立即将指令发送到对应的功能单元执行，无需等待前序无关指令完成。</li>
 <li>功能单元：包含<strong>多个并行</strong>的整数ALU、浮点单元、Load-Store单元，支持指令并行执行。</li>
-<li>
-<p>执行结果会同时<strong>广播到所有等待该结果的保留站</strong>，以及<strong>重排序缓冲区</strong>（Reorder Buffer, ROB）。</p>
+<li>执行结果会同时<strong>广播到所有等待该结果的保留站</strong>，以及<strong>重排序缓冲区</strong>（Reorder Buffer, ROB）。</li>
+</ul>
 </li>
 <li>
 <p><strong>按序提交阶段</strong></p>
-</li>
+<ul>
 <li>重排序缓冲区ROB：缓存所有已完成执行但尚未提交的指令结果，<strong>严格按照程序原始顺序，将结果提交到寄存器堆/内存</strong>。</li>
 <li>提交单元：保证异常发生时，CPU状态可回滚到异常指令之前的精确状态，实现精确异常。</li>
+</ul>
+</li>
 </ol>
 <h4 id="844">8.4.4 动态调度的核心优势<a class="headerlink" href="#844" title="Permanent link">&para;</a></h4>
-<p>相比于编译器主导的静态调度，硬件动态调度的核心价值在于：<br />
-1. 可<strong>处理运行时才能确定的停顿</strong>，例如 <strong>Cache 缺失带来的访存延迟</strong>，这类停顿编译器无法提前预测。<br />
-2. 可应对分支指令的动态执行结果，无需编译器做保守的调度规划。<br />
-3. <strong>兼容同一ISA的不同硬件实现</strong>，无需针对不同流水线深度、指令延迟重新编译代码，保证了二进制代码的兼容性。</p>
+<p>相比于编译器主导的静态调度，硬件动态调度的核心价值在于：</p>
+<ol>
+<li>可<strong>处理运行时才能确定的停顿</strong>，例如 <strong>Cache 缺失带来的访存延迟</strong>，这类停顿编译器无法提前预测。</li>
+<li>可应对分支指令的动态执行结果，无需编译器做保守的调度规划。</li>
+<li><strong>兼容同一ISA的不同硬件实现</strong>，无需针对不同流水线深度、指令延迟重新编译代码，保证了二进制代码的兼容性。</li>
+</ol>
 <hr />
 <h3 id="85">8.5 指令级并行与功耗效率<a class="headerlink" href="#85" title="Permanent link">&para;</a></h3>
-<p>指令级并行的挖掘会带来显著的硬件复杂度提升，而复杂度的上升直接导致功耗的增长：<br />
-- 动态调度、分支预测、乱序执行等高级ILP技术，需要大量的硬件缓存、比较电路和广播总线，带来了极高的静态和动态功耗。<br />
-- 当硬件复杂度和功耗上升到一定阈值后，「<strong>多个简单的顺序执行核心</strong>」相比「单个复杂的超标量乱序核心」，往往能获得更好的能效比。</p>
+<p>指令级并行的挖掘会带来显著的硬件复杂度提升，而复杂度的上升直接导致功耗的增长：</p>
+<ul>
+<li>动态调度、分支预测、乱序执行等高级ILP技术，需要大量的硬件缓存、比较电路和广播总线，带来了极高的静态和动态功耗。</li>
+<li>当硬件复杂度和功耗上升到一定阈值后，「<strong>多个简单的顺序执行核心</strong>」相比「单个复杂的超标量乱序核心」，往往能获得更好的能效比。</li>
+</ul>
 <hr />
 <h2 id="ix">IX. 流水线设计的谬误与陷阱<a class="headerlink" href="#ix" title="Permanent link">&para;</a></h2>
 <h3 id="91">9.1 常见谬误<a class="headerlink" href="#91" title="Permanent link">&para;</a></h3>
 <ol>
-<li>
-<p><strong>「流水线设计很简单」</strong><br />
-   流水线的基础原理易于理解，但工程实现的难点在于细节：包括<strong>数据冒险的精准检测</strong>、转发逻辑的设计、精确异常的实现、<strong>多发射</strong>下的冒险规避等，都需要极复杂的硬件设计。</p>
+<li><strong>「流水线设计很简单」</strong><ul>
+<li>流水线的基础原理易于理解，但工程实现的难点在于细节：包括<strong>数据冒险的精准检测</strong>、转发逻辑的设计、精确异常的实现、<strong>多发射</strong>下的冒险规避等，都需要极复杂的硬件设计。</li>
+</ul>
 </li>
-<li>
-<p><strong>「流水线设计与底层技术无关」</strong><br />
-   流水线技术的落地高度依赖半导体工艺的发展：更多的晶体管数量，才能支撑更深度的流水线、更多的功能单元、更复杂的动态调度逻辑。ISA的流水线相关设计，必须匹配当前的半导体技术趋势。</p>
+<li><strong>「流水线设计与底层技术无关」</strong><ul>
+<li>流水线技术的落地高度依赖半导体工艺的发展：更多的晶体管数量，才能支撑更深度的流水线、更多的功能单元、更复杂的动态调度逻辑。ISA的流水线相关设计，必须匹配当前的半导体技术趋势。</li>
+</ul>
 </li>
 </ol>
 <h3 id="92">9.2 常见工程陷阱<a class="headerlink" href="#92" title="Permanent link">&para;</a></h3>
-<p>糟糕的ISA设计会大幅增加流水线实现的难度：<br />
-- 复杂指令集（如VAX、IA-32）：变长指令、复杂寻址模式、指令带寄存器更新副作用等特性，会给流水线的译码、发射、冒险检测带来极大的开销，IA-32架构最终采用「宏指令转微操作（micro-op）」的方案来适配流水线设计。<br />
-- 延迟分支：在深度流水线架构中，延迟槽的数量会随流水线深度增加，给编译器和硬件设计都带来额外负担。</p>
+<p>糟糕的ISA设计会大幅增加流水线实现的难度：</p>
+<ul>
+<li>复杂指令集（如VAX、IA-32）：变长指令、复杂寻址模式、指令带寄存器更新副作用等特性，会给流水线的译码、发射、冒险检测带来极大的开销，IA-32架构最终采用「宏指令转微操作（micro-op）」的方案来适配流水线设计。</li>
+<li>延迟分支：在深度流水线架构中，延迟槽的数量会随流水线深度增加，给编译器和硬件设计都带来额外负担。</li>
+</ul>
 <hr />
 <h2 id="x">X. 本章总结<a class="headerlink" href="#x" title="Permanent link">&para;</a></h2>
 <ol>
@@ -4736,9 +4748,11 @@
 <li>流水线技术通过时间并行提升指令吞吐量，让多个指令在同一时钟周期内处于不同的执行阶段，但<strong>单条指令的执行延迟并未降低</strong>。</li>
 <li>流水线的核心瓶颈是三类冒险：结构冒险、数据冒险、控制冒险，需要通过转发、停顿、分支预测、冲刷等技术解决。</li>
 <li>异常与中断的处理，核心是保证精确异常，硬件需自动保存异常现场（SEPC、SCAUSE），并跳转到处理程序，处理完成后可恢复原程序执行。</li>
-<li>指令级并行（ILP）是提升处理器性能的核心手段，分为两大技术路线：</li>
+<li>指令级并行（ILP）是提升处理器性能的核心手段，分为两大技术路线：<ul>
 <li>静态多发射（VLIW）：依赖编译器完成指令打包、调度和循环展开优化，硬件复杂度低。</li>
 <li>动态多发射（超标量）：依赖硬件实现乱序执行、动态调度，可挖掘更多运行时的并行性，但硬件复杂度和功耗更高。</li>
+</ul>
+</li>
 <li>指令级并行的挖掘存在物理上限，硬件复杂度带来的功耗墙，是ILP技术发展的核心制约。</li>
 </ol>
 

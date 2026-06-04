@@ -5460,37 +5460,49 @@
 <h4 id="515-cache-block-size">5.1.5 Cache Block Size（块大小的权衡）<a class="headerlink" href="#515-cache-block-size" title="Permanent link">&para;</a></h4>
 <p>改变每个 Cache Block 的大小会对性能（Miss rate）产生显著影响，这是一个经典的体系结构 Trade-off：</p>
 <ul>
-<li><strong>增大 Block Size 的<span style="color: green;">好处</span></strong>：</li>
+<li><strong>增大 Block Size 的<span style="color: green;">好处</span></strong>：<ul>
 <li><strong>降低 Miss rate</strong>：能够更好地利用<strong>空间局部性（Spatial Locality）</strong>。因为当你访问地址 A 时，地址 A 附近的数据大概率也会被访问到，<strong>较大的块会一次性将它们全部预取进来</strong>。</li>
-<li><strong>（在 Cache 总容量固定的前提下）增大 Block Size 的<span style="color: red;">代价</span></strong>：</li>
+</ul>
+</li>
+<li><strong>（在 Cache 总容量固定的前提下）增大 Block Size 的<span style="color: red;">代价</span></strong>：<ul>
 <li><strong>增加竞争（More competition）</strong>：块变大了，Cache 能容纳的<strong>块数（Blocks）就会减少</strong>，导致冲突增加，反而可能<strong>提高 Miss rate</strong>。</li>
 <li><strong>缓存污染与伪共享（Pollution &amp; False sharing）</strong>：可能会取来大量根本用不到的数据占用宝贵的 Cache 空间；在多核架构中还会引发缓存一致性问题（False sharing）。</li>
 <li><strong>增加缺失惩罚（Larger miss penalty）</strong>：发生 Miss 时，从主存搬运一整个大块的数据需要花费更长的时间。</li>
-<li><strong>对应的硬件缓解策略</strong>：</li>
+</ul>
+</li>
+<li><strong>对应的硬件缓解策略</strong>：<ul>
 <li><strong>Early restart</strong>：只要 CPU 需要的那个字（Word）到了，就立马恢复 CPU 执行，不等待整个 Block 搬运完成。</li>
 <li><strong>Critical-word-first</strong>：要求内存控制器优先回传 CPU 触发 Miss 的那一个字。</li>
+</ul>
+</li>
 </ul>
 <h3 id="52-cache-cache-misses-write-policies">5.2 Cache 读写机制与一致性策略 (Cache Misses &amp; Write Policies)<a class="headerlink" href="#52-cache-cache-misses-write-policies" title="Permanent link">&para;</a></h3>
 <p>在 Cache 的操作中，“读”相对简单，只会改变 CPU 的流水线状态；而“写”操作因为会改变数据，必须妥善处理 Cache 与底层主存（DRAM）之间的数据一致性（Data Consistency）问题。</p>
 <h4 id="521-cache-read">5.2.1 缓存读操作 (Cache Read)<a class="headerlink" href="#521-cache-read" title="Permanent link">&para;</a></h4>
 <p><strong>Read Hit（读命中）</strong>：所需数据在 Cache 中，CPU 直接读取数据，全速流水线执行。</p>
-<p><strong>Read Miss（读缺失）</strong>：所需数据不在 Cache 中。<br />
-   1. CPU 流水线必须<strong>暂停（Stall）</strong>。<br />
-   2. 通知下一级存储（下级 Cache 或主存）将包含该地址的<strong>整个数据块（Block）</strong>搬运到当前 Cache 中。<br />
-   3. 数据就位后，CPU 重新启动执行（如果是指令缺失则重启取指，数据缺失则完成数据访问）。</p>
+<p><strong>Read Miss（读缺失）</strong>：所需数据不在 Cache 中。</p>
+<ol>
+<li>CPU 流水线必须<strong>暂停（Stall）</strong>。</li>
+<li>通知下一级存储（下级 Cache 或主存）将包含该地址的<strong>整个数据块（Block）</strong>搬运到当前 Cache 中。</li>
+<li>数据就位后，CPU 重新启动执行（如果是指令缺失则重启取指，数据缺失则完成数据访问）。</li>
+</ol>
 <h4 id="522-cache-write">5.2.2 缓存写操作 (Cache Write)<a class="headerlink" href="#522-cache-write" title="Permanent link">&para;</a></h4>
 <p>写操作需要分别考虑<strong>写命中（Write Hit）</strong>和<strong>写缺失（Write Miss）</strong>的情况。</p>
 <h5 id="1-write-hit">(1) 写命中 (Write Hit) 的两种策略<a class="headerlink" href="#1-write-hit" title="Permanent link">&para;</a></h5>
 <p>当 CPU 要写的数据刚好在 Cache 中时，修改了 Cache 的数据就会导致它与主存的数据不一致。硬件上有两种核心解决流派：</p>
 <ol>
-<li><strong>Write-Through（写通 / 直写）</strong><br />
-<strong>机制</strong>：每次写 Cache 的同时，也<strong>同步写回主存</strong>，保证上下层数据绝对一致。<br />
-<strong>痛点</strong>：主存写入速度极慢，每次写操作都会严重拖慢 CPU。<br />
-<strong>硬件补救</strong>：引入 <strong>Write Buffer（写缓冲）</strong>。CPU 将数据<strong>同时丢给 Cache 和 Write Buffer</strong> 后即可继续执行下一条指令，Write Buffer 负责在后台将数据慢慢写入主存。（<strong>仅当 Buffer 满时 CPU 才需要 Stall</strong>）。</li>
-<li><strong>Write-Back（写回）</strong><br />
-<strong>机制</strong>：CPU <strong>只更新 Cache 中的数据</strong>，不马上同步主存。只有当这个 Cache 块<strong>因为冲突被 “踢出（Evict/Replace）” 时，才将它写回主存</strong>。<br />
-<strong>硬件实现</strong>：在 Cache 行中增加一个 <strong>Dirty Bit（脏位）</strong>。数据<strong>被修改时设为 1（Dirty）</strong>。发生替换时，如果 <strong>Dirty=1 则写回主存</strong>；如果 Dirty=0 则直接丢弃当前 Cache 块即可。<br />
-<strong>优点</strong>：极大地节省了内存带宽，适合被频繁修改的局部变量。</li>
+<li><strong>Write-Through（写通 / 直写）</strong><ul>
+<li><strong>机制</strong>：每次写 Cache 的同时，也<strong>同步写回主存</strong>，保证上下层数据绝对一致。</li>
+<li><strong>痛点</strong>：主存写入速度极慢，每次写操作都会严重拖慢 CPU。</li>
+<li><strong>硬件补救</strong>：引入 <strong>Write Buffer（写缓冲）</strong>。CPU 将数据<strong>同时丢给 Cache 和 Write Buffer</strong> 后即可继续执行下一条指令，Write Buffer 负责在后台将数据慢慢写入主存。（<strong>仅当 Buffer 满时 CPU 才需要 Stall</strong>）。</li>
+</ul>
+</li>
+<li><strong>Write-Back（写回）</strong><ul>
+<li><strong>机制</strong>：CPU <strong>只更新 Cache 中的数据</strong>，不马上同步主存。只有当这个 Cache 块<strong>因为冲突被 “踢出（Evict/Replace）” 时，才将它写回主存</strong>。</li>
+<li><strong>硬件实现</strong>：在 Cache 行中增加一个 <strong>Dirty Bit（脏位）</strong>。数据<strong>被修改时设为 1（Dirty）</strong>。发生替换时，如果 <strong>Dirty=1 则写回主存</strong>；如果 Dirty=0 则直接丢弃当前 Cache 块即可。</li>
+<li><strong>优点</strong>：极大地节省了内存带宽，适合被频繁修改的局部变量。</li>
+</ul>
+</li>
 </ol>
 <h5 id="22-write-miss">2.2 写缺失 (Write Miss) 的两种策略<a class="headerlink" href="#22-write-miss" title="Permanent link">&para;</a></h5>
 <p>当 CPU 要写的数据不在 Cache 中时：</p>

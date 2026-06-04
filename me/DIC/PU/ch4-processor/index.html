@@ -5204,10 +5204,12 @@
 <h4 id="622-forwarding-r-hazard">6.2.2 Forwarding 结构——解决 R 指令 Hazard<a class="headerlink" href="#622-forwarding-r-hazard" title="Permanent link">&para;</a></h4>
 <p><strong>第一个条件：只有访问同一个寄存器才会触发 forwarding 机制</strong>。更明确地说：<br />
 需要检查 <code>ID/EX</code> 阶段的 <code>rs1</code> 和 <code>rs2</code> 是否与上一条指令的 <code>rd</code> 相同，如果相同，则需要触发 <code>forwarding</code>。</p>
-<p>实现方法，在 <code>EX</code> 阶段增加 两个 MUX 来选择 ALU 的输入来源：<br />
-- <code>00</code>: 正常从寄存器文件读取的值<br />
-- <code>01</code>: 从 <code>MEM/WB</code> 寄存器中转发的值 (上两条)<br />
-- <code>10</code>: 从 <code>EX/MEM</code> 寄存器中转发的值 (上一条)</p>
+<p>实现方法，在 <code>EX</code> 阶段增加 两个 MUX 来选择 ALU 的输入来源：</p>
+<ul>
+<li><code>00</code>: 正常从寄存器文件读取的值</li>
+<li><code>01</code>: 从 <code>MEM/WB</code> 寄存器中转发的值 (上两条)</li>
+<li><code>10</code>: 从 <code>EX/MEM</code> 寄存器中转发的值 (上一条)</li>
+</ul>
 <!-- A10: Green label, Red Rd -->
 <p><strong>A10.</strong> <span class="arithmatex">\(\text{EX/MEM.Register}{\color{red}{Rd}} = \text{ID/EX.RegisterRs1}\)</span><br />
 <strong>B10.</strong> <span class="arithmatex">\(\text{EX/MEM.Register}{\color{red}{Rd}} = \text{ID/EX.RegisterRs2}\)</span><br />
@@ -5245,9 +5247,11 @@
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>I2: add x1,x1,x3 # in EX/MEM
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>I3: add x1,x1,x4 # in ID/EX
 </span></code></pre></div></p>
-<p><code>x1</code> 是 I3 的源寄存器，同时也是 I1 和 I2 的目的寄存器。如果我们使用之前的 forwarding 机制，I3 会同时满足两个条件：<br />
-- I2 的目的寄存器 <code>Rd</code> 与 I3 的源寄存器 <code>Rs1</code> 相同，且 I2 会写回寄存器文件，因此会触发 <span style="color:green">EX hazard</span> 。<br />
-- I1 的目的寄存器 <code>Rd</code> 与 I3 的源寄存器 <code>Rs1</code> 相同，且 I1 会写回寄存器文件，因此会触发 <span style="color:blue">MEM hazard</span> 。</p>
+<p><code>x1</code> 是 I3 的源寄存器，同时也是 I1 和 I2 的目的寄存器。如果我们使用之前的 forwarding 机制，I3 会同时满足两个条件：</p>
+<ul>
+<li>I2 的目的寄存器 <code>Rd</code> 与 I3 的源寄存器 <code>Rs1</code> 相同，且 I2 会写回寄存器文件，因此会触发 <span style="color:green">EX hazard</span> 。</li>
+<li>I1 的目的寄存器 <code>Rd</code> 与 I3 的源寄存器 <code>Rs1</code> 相同，且 I1 会写回寄存器文件，因此会触发 <span style="color:blue">MEM hazard</span> 。</li>
+</ul>
 <p><strong>解决方案核心关键点：优先从最近的指令 <code>fwd</code></strong></p>
 <p>因此，对于 <code>MEM/WB</code> 的 forwarding 机制，我们需要增加一个条件：<strong>如果 <code>EX/MEM</code> 的目的寄存器与 <code>ID/EX</code> 的源寄存器相同</strong>，则不触发 <code>MEM/WB</code> 的 forwarding 机制。<code>not (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRs1))</code></p>
 <p><span style="color:blue">MEM hazard</span></p>
@@ -5363,9 +5367,11 @@
 <li>在流水线的<strong>较后阶段计算分支</strong>结果</li>
 <li>越早越好 → 需要extra hardware → 进行预测</li>
 </ul>
-<p>使用 dynamic prediciton<br />
-- 通常在<strong>第一阶段（取指阶段）进行</strong><br />
-- 在<strong>早期阶段</strong>进行预测，并在<strong>结果计算阶段进行验证</strong>（对应RISC-V架构中的指令译码阶段）</p>
+<p>使用 dynamic prediciton</p>
+<ul>
+<li>通常在<strong>第一阶段（取指阶段）进行</strong></li>
+<li>在<strong>早期阶段</strong>进行预测，并在<strong>结果计算阶段进行验证</strong>（对应RISC-V架构中的指令译码阶段）</li>
+</ul>
 <p><strong>两种分支预测方式</strong>：</p>
 <p><strong>(1) Static Prediction</strong>：通过编译器在 Code 层面解决掉。<br />
 Based on typical branch behavior<br />
