@@ -4414,19 +4414,17 @@
    这张图展示了自注意力（Self-attention）中两种计算注意力得分<span class="arithmatex">\(\alpha\)</span>的方式：<strong>点积（Dot-product）</strong>和<strong>加性（Additive）</strong>。</p>
 <ol>
 <li>点积注意力（Dot-product Attention）<br />
-计算逻辑：</li>
+计算逻辑：<ol>
 <li>输入向量分别通过权重矩阵<span class="arithmatex">\(\mathbf{W}^q\)</span>、<span class="arithmatex">\(\mathbf{W}^k\)</span>得到 <strong>查询(query)</strong> 向量 <span class="arithmatex">\(\mathbf{q}\)</span>、<strong>键(key)</strong> 向量<span class="arithmatex">\(\mathbf{k}\)</span>；</li>
-<li>注意力得分<span class="arithmatex">\(\alpha\)</span>由<span class="arithmatex">\(\mathbf{q}\)</span>和<span class="arithmatex">\(\mathbf{k}\)</span>的点积直接计算：</li>
+<li>注意力得分<span class="arithmatex">\(\alpha\)</span>由<span class="arithmatex">\(\mathbf{q}\)</span>和<span class="arithmatex">\(\mathbf{k}\)</span>的点积直接计算：<span class="arithmatex">\(\alpha = \mathbf{q} \cdot \mathbf{k}\)</span></li>
 </ol>
-<p>$<span class="arithmatex">\(\alpha = \mathbf{q} \cdot \mathbf{k}\)</span>$</p>
-<ol>
+</li>
 <li>加性注意力（Additive Attention）<br />
-计算逻辑：</li>
+计算逻辑：<ol>
 <li>输入向量同样通过<span class="arithmatex">\(\mathbf{W}^q\)</span>、<span class="arithmatex">\(\mathbf{W}^k\)</span>得到<span class="arithmatex">\(\mathbf{q}\)</span>、<span class="arithmatex">\(\mathbf{k}\)</span>；</li>
 <li>先将<span class="arithmatex">\(\mathbf{q}\)</span>和<span class="arithmatex">\(\mathbf{k}\)</span>相加，经过<span class="arithmatex">\(\text{tanh}\)</span>激活函数；</li>
-<li>
-<p>再通过 <strong>权重矩阵</strong> <span class="arithmatex">\(\mathbf{W}\)</span>变换得到注意力得分<span class="arithmatex">\(\alpha\)</span>（过程可表示为）：</p>
-<div class="arithmatex">\[\alpha = \mathbf{W} \cdot \text{tanh}(\mathbf{q} + \mathbf{k})\]</div>
+<li>再通过 <strong>权重矩阵</strong> <span class="arithmatex">\(\mathbf{W}\)</span>变换得到注意力得分<span class="arithmatex">\(\alpha\)</span>（过程可表示为）：<span class="arithmatex">\(\alpha = \mathbf{W} \cdot \text{tanh}(\mathbf{q} + \mathbf{k})\)</span></li>
+</ol>
 </li>
 </ol>
 </li>
