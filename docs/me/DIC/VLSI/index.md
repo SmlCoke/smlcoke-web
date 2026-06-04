@@ -16,49 +16,49 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card blue" href="ch1-introduction/introduction/">
+<a class="note-card blue" href="ch1-introduction/">
 	<span class="card-icon">🧠</span>
 	<div class="card-title">Chapter 1 · 通信系统导论</div>
 	<p class="card-desc">通信系统模型、基带与带通、数字通信链路与核心模块总览</p>
 </a>
 
-<a class="note-card blue" href="ch2-modulation/modulation/">
+<a class="note-card blue" href="ch2-modulation/">
 	<span class="card-icon">📶</span>
 	<div class="card-title">Chapter 2 · 基带调制与解调</div>
 	<p class="card-desc">数字基带传输、码型、判决与码间串扰等关键概念</p>
 </a>
 
-<a class="note-card blue" href="ch3-iteration_bound/iteration_bound/">
+<a class="note-card blue" href="ch3-iteration_bound/">
 	<span class="card-icon">🧿</span>
 	<div class="card-title">Chapter 3 · 迭代边界</div>
 	<p class="card-desc">带反馈环路的 DSP 系统速度极限分析</p>
 </a>
 
-<a class="note-card blue" href="ch4-paralleling_pipeline/parallel_pipeline">
+<a class="note-card blue" href="ch4-paralleling_pipeline/">
 	<span class="card-icon">⚙️</span>
 	<div class="card-title">Chapter 4 · 并行与流水线</div>
 	<p class="card-desc">不同角度提升电路的处理性能</p>
 </a>
 
-<a class="note-card blue" href="ch5-retiming/retiming">
+<a class="note-card blue" href="ch5-retiming/">
 	<span class="card-icon">⏲️</span>
 	<div class="card-title">Chapter 5 · 重定时技术</div>
 	<p class="card-desc">打断关键路径的脊梁骨</p>
 </a>
 
-<a class="note-card blue" href="ch6-unfolding/unfolding">
+<a class="note-card blue" href="ch6-unfolding/">
 	<span class="card-icon">⏲️</span>
 	<div class="card-title">Chapter 6 · 展开技术</div>
 	<p class="card-desc">提高系统性能的另一种思路</p>
 </a>
 
-<a class="note-card blue" href="ch7-folding/folding">
+<a class="note-card blue" href="ch7-folding/">
 	<span class="card-icon">⏲️</span>
 	<div class="card-title">Chapter 7 · 折叠技术</div>
 	<p class="card-desc">完全听不懂啊</p>
 </a>
 
-<a class="note-card blue" href="ch8-systolic_array/systolic_array">
+<a class="note-card blue" href="ch8-systolic_array/">
 	<span class="card-icon">💙</span>
 	<div class="card-title">Chapter 8 · 脉动阵列</div>
 	<p class="card-desc">高度数据并行的计算架构</p>

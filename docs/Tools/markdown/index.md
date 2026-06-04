@@ -5,8 +5,8 @@
 !!! info "配套文档"
     如果你是为了维护这个 MkDocs 站点而来，建议连下面两页一起看：
 
-    - [Markdown 写作规范](writing_style_guide.md)
-    - [MkDocs 站点开发笔记](mkdocs_theme_notes.md)
+    - [Markdown 写作规范](writing_style_guide/index.md)
+    - [MkDocs 站点开发笔记](mkdocs_theme_notes/index.md)
 
 
 ## 1. 提示块（Admonition）

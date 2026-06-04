@@ -106,7 +106,7 @@ cargo build --release
 
 ## 二. 编程概念
 先贴一张图，这是我在学习 `Python` 和 `C++` 中从来没有见到过的，非常清晰的报错信息
-![alt text](image.webp)
+![alt text](../image.webp)
 
 ### 2.1 变量
 变量默认不可变，例如
@@ -238,23 +238,23 @@ let six_point_four = tup.1;
 Rust中的数组**长度是固定**的
 **数组是可以在栈 (stack) 上分配的已知固定大小的单个内存块**
 ```rust
-let a = [1, 2, 3, 4, 5];
+let a = [1, 2, 3, 4, 5(;
 ```
 > 数组并不如 vector 类型灵活。vector 类型是标准库提供的一个 允许 增长和缩小长度的类似数组的集合类型。当不确定是应该使用数组还是 vector 的时候，那么很可能应该使用 vector。
 
 像这样编写数组的类型：在**方括号中包含每个元素的类型**，后跟分号，再后跟数组元素的**数量**。
 ```rust
-let a: [i32; 5] = [1, 2, 3, 4, 5];
+let a: [i32; 5( = [1, 2, 3, 4, 5(;
 ```
 
 可以通过在方括号中**指定初始值加分号再加元素个数**的方式来创建一个每个元素都为相同值的数组
 ```rust
-let a = [3;5]; // 等同于 let a = [3, 3, 3, 3, 3];
+let a = [3;5(; // 等同于 let a = [3, 3, 3, 3, 3(;
 ```
 
 数组元素的访问：
 ```rust
-let b = a[0];
+let b = a[0(;
 ```
 
 ### 2.5 函数
@@ -436,7 +436,7 @@ while number != 0 {
 ##### for
 用的最多的循环形式
 ```rust
-let a = [10, 20, 30, 40, 50];
+let a = [10, 20, 30, 40, 50(;
 for element in a {
     println!("the value is: {element}");
 }
@@ -798,11 +798,11 @@ s = String::from("hello");
 字符串 slice（string slice）是 `String` 中一部分值的引用，它看起来像这样：
 ```rust
 let s = String::from("hello world");
-let hello = &s[0..5];
-let world = &s[6..11];
+let hello = &s[0..5(;
+let world = &s[6..11(;
 ```
-- `s[starting_index..ending_index]` 的类型是 `str`，str 在 Rust 中是一个“动态大小类型”（DST, Dynamically Sized Type）。**它代表的是内存中的一段连续字节，但编译器在编译时不知道它到底有多长**。Rust 不允许直接将 DST 存放在变量中（==因为变量必须在栈上分配已知大小的空间==）。
-- `&s[starting_index..ending_index]` 的类型是 `&str`，它是一个对 `str` 的引用，包含地址和长度，==大小是确定的==
+- `s[starting_index..ending_index(` 的类型是 `str`，str 在 Rust 中是一个“动态大小类型”（DST, Dynamically Sized Type）。**它代表的是内存中的一段连续字节，但编译器在编译时不知道它到底有多长**。Rust 不允许直接将 DST 存放在变量中（==因为变量必须在栈上分配已知大小的空间==）。
+- `&s[starting_index..ending_index(` 的类型是 `&str`，它是一个对 `str` 的引用，包含地址和长度，==大小是确定的==
 - “字符串 slice” 的类型声明写作 `&str`
 
 我们看一个很经典的例子（❌️）：
@@ -822,11 +822,11 @@ fn first_word(s: &String) -> &str {
 
     for (i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
-            return &s[0..i];
+            return &s[0..i(;
         }
     }
 
-    &s[..]
+    &s[..(
 }
 ```
 - `word` 是一个字符串切片 `&str`。它不仅引用了 `s`，还具体引用了 `s` 拥有的堆内存上的部分字节。
@@ -838,13 +838,13 @@ fn first_word(s: &String) -> &str {
 #### 4.5.2 其他Slice
 字符串 slice，正如你想象的那样，是针对字符串的。不过也有更通用的 slice 类型。考虑一下这个数组：
 ```rust
-let a = [1, 2, 3, 4, 5];
+let a = [1, 2, 3, 4, 5(;
 ```
 就跟我们想要获取字符串的一部分那样，我们也会想要引用数组的一部分。我们可以这样做：
 ```rust
-let a = [1, 2, 3, 4, 5];
-let slice = &a[1..3];
-assert_eq!(slice, &[2, 3]);
+let a = [1, 2, 3, 4, 5(;
+let slice = &a[1..3(;
+assert_eq!(slice, &[2, 3();
 ```
 
 #### 4.5.3 Deref Coercion（解引用强制转换）
@@ -852,7 +852,7 @@ assert_eq!(slice, &[2, 3]);
 我们当然可以显示转换：
 ```rust
 let s = String::from("hello");
-let slice = &s[0..2];
+let slice = &s[0..2(;
 ```
 实际上，Rust 编译器会自动帮你做这个转换：
 ```rust
@@ -923,7 +923,7 @@ fn main() {
 trait 是 Rust 中非常重要的一个概念，**它定义了某些类型必须实现的方法集合**。当一个类型实现了某个 trait，就意味着这个类型提供了 trait 中定义的所有方法的具体实现。这个概念非常近似于 Python 中的抽象基类。这里我们用 `Debug` trait 来举例说明：
 
 ```rust
-#[derive(Debug)]
+#[derive(Debug)(
 struct Rectangle {
     width: u32,
     height: u32,
@@ -943,7 +943,7 @@ fn main() {
 ```rust
 $ cargo run
    Compiling rectangles v0.1.0 (file:///projects/rectangles)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.48s
+    Finished `dev` profile [unoptimized + debuginfo( target(s) in 0.48s
      Running `target/debug/rectangles`
 rect1 is Rectangle {
     width: 30,
@@ -954,7 +954,7 @@ rect1 is Rectangle {
 **dbg!**宏
 很强，接收一个表达式的所有权（与 println! 宏相反，后者接收的是引用），打印出代码中调用 `dbg!` 宏时所在的**文件和行号**，以及该表达式的**结果值**，并**返回该值的所有权**。
 ```rust
-#[derive(Debug)]
+#[derive(Debug)(
 struct Rectangle {
     width: u32,
     height: u32,
@@ -973,10 +973,10 @@ fn main() {
 ```bash
 $ cargo run
    Compiling rectangles v0.1.0 (file:///projects/rectangles)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.61s
+    Finished `dev` profile [unoptimized + debuginfo( target(s) in 0.61s
      Running `target/debug/rectangles`
-[src/main.rs:10:16] 30 * scale = 60
-[src/main.rs:14:5] &rect1 = Rectangle {
+[src/main.rs:10:16( 30 * scale = 60
+[src/main.rs:14:5( &rect1 = Rectangle {
     width: 60,
     height: 50,
 }
@@ -986,7 +986,7 @@ $ cargo run
 #### 5.5.1 方法
 定义和使用示例：
 ```rust
-#[derive(Debug)]
+#[derive(Debug)(
 struct Rectangle {
     width: u32,
     height: u32,
@@ -1095,7 +1095,7 @@ fn value_in_cents(coin: Coin) -> u8 {
 
 #### 6.4.1 绑定值的模式
 ```rust
-#[derive(Debug)] // 这样可以立刻看到州的名称
+#[derive(Debug)( // 这样可以立刻看到州的名称
 enum UsState {
     Alabama,
     Alaska,
@@ -1472,7 +1472,7 @@ let v: Vec<i32> = Vec::new();
 
 **vec!** 宏：这个宏会根据我们提供的值来创建一个新的 vector，Rust 会自动推断 vector 的类型。
 ```rust
-let v = vec![1, 2, 3];
+let v = vec![1, 2, 3(;
 ```
 
 #### 8.1.3 插入、访问和删除
@@ -1480,13 +1480,13 @@ let v = vec![1, 2, 3];
 `.push()`
 **访问**
 两种方式：
-1. 通过索引：`v[0]`（如果索引越界会 panic）
+1. 通过索引：`v[0(`（如果索引越界会 panic）
 2. 通过 `get` 方法：`v.get(0)`（返回 `Option<&T>`，越界时返回 `None`）
 
 案例：
 ```rust
-let v = vec![1, 2, 3, 4, 5];
-let third: &i32 = &v[2];
+let v = vec![1, 2, 3, 4, 5(;
+let third: &i32 = &v[2(;
 println!("The third element is {third}");
 let third: Option<&i32> = v.get(2);
 match third {
@@ -1494,8 +1494,8 @@ match third {
     None => println!("There is no third element."),
 }
 ```
-形如：`let a = v[0];` 之类的操作可能会涉及到所有权转让的问题，这行语句是否会会报错取决于所有权的转让。简单来说：
-**是否可以直接通过 `v[0]` 获取值（不加 `&`），取决于 T 是否实现了 `Copy` trait。**
+形如：`let a = v[0(;` 之类的操作可能会涉及到所有权转让的问题，这行语句是否会会报错取决于所有权的转让。简单来说：
+**是否可以直接通过 `v[0(` 获取值（不加 `&`），取决于 T 是否实现了 `Copy` trait。**
 
 **删除**：
 `.pop()`：从 vector 的末尾删除最后一个元素并返回它的值（如果 vector 为空则返回 `None`）。
@@ -1503,7 +1503,7 @@ match third {
 #### 8.1.4 遍历
 使用 `for` 循环来获取 `vector` 中的每一个元素的不可变引用并将其打印：
 ```rust
-let v = vec![100, 32, 57];
+let v = vec![100, 32, 57(;
 for i in &v {
     println!("{i}");
 }
@@ -1511,7 +1511,7 @@ for i in &v {
 
 我们也可以遍历可变 vector 的每一个元素的**可变引用**以便能改变它们。
 ```rust
-let mut v = vec![100, 32, 57];
+let mut v = vec![100, 32, 57(;
 for i in &mut v {
     *i += 50;
     // 为了修改可变引用所指向的值，必须使用解引用运算符
@@ -1532,7 +1532,7 @@ let row = vec![
     SpreadsheetCell::Int(3),
     SpreadsheetCell::Text(String::from("blue")),
     SpreadsheetCell::Float(10.12),
-];
+(;
 ```
 
 ### 8.2 String
@@ -1608,7 +1608,7 @@ let s = format!("{s1}-{s2}-{s3}");
 ```
 
 #### 8.2.4 索引字符串
-不能通过`[]`直接访问字符串，因为`String` 是一个 UTF-8 编码的字符串，直接索引可能会导致访问到一个无效的字符边界。
+不能通过`[(`直接访问字符串，因为`String` 是一个 UTF-8 编码的字符串，直接索引可能会导致访问到一个无效的字符边界。
 
 从 Rust 的角度来讲，事实上有三种相关方式可以查看字符串：**字节（Bytes）、标量值（Scalar Values）和字形簇（Grapheme Clusters）**。
 
@@ -1875,12 +1875,12 @@ fn last_char_of_first_line(text: &str) -> Option<char> {
 #### 10.1.1 在函数定义中使用泛型
 
 ```rust
-fn largest(list: &[i32]) -> i32 {}
-fn largest(list: &[char]) -> char {}
+fn largest(list: &[i32() -> i32 {}
+fn largest(list: &[char() -> char {}
 // ---> ---> ---> ---> 
-fn largest<T>(list: &[T]) -> T {}
+fn largest<T>(list: &[T() -> T {}
 // 为了开启比较功能，标准库中定义的 std::cmp::PartialOrd trait 可以实现类型的比较功能（查看附录 C 获取该 trait 的更多信息）。依照帮助说明中的建议，我们限制 T 只对实现了 PartialOrd 的类型有效后代码就可以编译了
-fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> T {}
+fn largest<T: std::cmp::PartialOrd>(list: &[T() -> T {}
 ```
 
 #### 10.1.2 结构体定义中的泛型
@@ -2257,11 +2257,11 @@ pub fn add(left: u64, right: u64) -> u64 {
     left + right
 }
 
-#[cfg(test)]
+#[cfg(test)(
 mod tests {
     use super::*;
 
-    #[test]
+    #[test(
     fn it_works() {
         let result = add(2, 2);
         assert_eq!(result, 4);
@@ -2278,7 +2278,7 @@ mod tests {
 任何在 `assert!` 的一个必需参数和 `assert_eq!` 和 `assert_ne!` 的两个必需参数之后指定的参数都会传递给 `format!` 宏
 案例：
 ```rust
-    #[test]
+    #[test(
     fn greeting_contains_name() {
         let result = greeting("Carol");
         assert!(
@@ -2288,7 +2288,7 @@ mod tests {
     }
 ```
 
-#### 11.1.3 使用 #[should_panic] 检查 panic 是否正确触发
+#### 11.1.3 使用 #[should_panic( 检查 panic 是否正确触发
 除了检查返回值之外，检查代码是否按照期望处理错误也是很重要的。
 ```rust
 pub struct Guess {
@@ -2305,12 +2305,12 @@ impl Guess {
     }
 }
 
-#[cfg(test)]
+#[cfg(test)(
 mod tests {
     use super::*;
 
-    #[test]
-    #[should_panic]
+    #[test(
+    #[should_panic(
     fn greater_than_100() {
         Guess::new(200);
     }
@@ -2319,7 +2319,7 @@ mod tests {
 
 为了使 should_panic 测试结果更精确，我们可以给 should_panic 属性增加一个可选的 expected 参数：
 ```rust
-#[should_panic(expected = "less than or equal to 100")]
+#[should_panic(expected = "less than or equal to 100")(
 ```
 
 这样会不仅会检测是否触发 `panic!`，还会检查 panic 的错误信息是否包含 "less than or equal to 100" 这个字符串。
@@ -2334,14 +2334,14 @@ Rust 默认使用线程来并行运行。这意味着测试会更快地运行完
 - 运行单个测试：`cargo test <test_name>` 只运行测试名称中包含 `<test_name>` 的测试。
 - 过滤运行多个测试：`cargo test <test_name1> <test_name2>` 只运行测试名称中包含 `<test_name1>` 或 `<test_name2>` 的测试。
 - 运行测试模块：`cargo test <module_name>::` 只运行模块 `<module_name>` 中的测试。
-- 除非特别指定否则忽略某些测试：`#[ignore]`
+- 除非特别指定否则忽略某些测试：`#[ignore(`
   - 当需要运行 ignored 的测试时：`cargo test -- --ignored`
   - 当需要运行全部测试时：`cargo test -- --include-ignored`
 
 ### 11.3 单元测试
 
-#### 11.3.1 测试模块和 `#[cfg(test)]`
-测试模块的 `#[cfg(test)]` 注解告诉 Rust 只在执行 `cargo test` 时才编译和运行测试代码，而在运行 `cargo build` 时不这么做。
+#### 11.3.1 测试模块和 `#[cfg(test)(`
+测试模块的 `#[cfg(test)(` 注解告诉 Rust 只在执行 `cargo test` 时才编译和运行测试代码，而在运行 `cargo build` 时不这么做。
 
 #### 11.3.2 测试私有函数
 测试模块是私有函数的**子模块**，因此测试模块中的代码**可以访问父模块中的私有函数**。
@@ -2354,11 +2354,11 @@ fn internal_adder(left: usize, right: usize) -> usize {
     left + right
 }
 
-#[cfg(test)]
+#[cfg(test)(
 mod tests {
     use super::*;
 
-    #[test]
+    #[test(
     fn internal() {
         let result = internal_adder(2, 2);
         assert_eq!(result, 4);
@@ -2372,7 +2372,7 @@ mod tests {
 #### 11.4.1 tests 目录
 集成测试放在 `tests` 目录(与 `src` 目录同级)中。每个文件都是一个独立的 crate。
 因为每一个 tests 目录中的测试文件都是完全独立的 crate，所以需要将库引入到每个测试 crate 的作用域中。
-并不需要将 `tests/integration_test.rs` 中的任何代码标注为 `#[cfg(test)]`。 tests 文件夹在 Cargo 中是一个特殊的文件夹，Cargo 只会在运行 `cargo test` 时编译这个目录中的文件。
+并不需要将 `tests/integration_test.rs` 中的任何代码标注为 `#[cfg(test)(`。 tests 文件夹在 Cargo 中是一个特殊的文件夹，Cargo 只会在运行 `cargo test` 时编译这个目录中的文件。
 可以使用 cargo test 的 `--test` 后跟文件的名称来运行某个特定集成测试文件中的所有测试：
 ```bash
 cargo test --test integration_test
@@ -2397,7 +2397,7 @@ use adder::add_two;
 
 mod common;
 
-#[test]
+#[test(
 fn it_adds_two() {
     common::setup();
 
@@ -2413,7 +2413,7 @@ fn it_adds_two() {
 这段代码有误❌️
 ```rust
 let args: Vec<String> = env::args().collect();
-let query = &args[1];
+let query = &args[1(;
 ```
 原因：因为这样会在 vector 内部产生一个空洞，Rust 不允许 vector 出现空洞，否则到了 vector 离开作用域时，内存会被二次释放
 
@@ -2456,7 +2456,7 @@ Pick three.";
 // 解惑：“生命周期不应该跟更短的那个参数相同吗？”
 // 你提到的“跟最短的那个一致”通常发生在你同时使用了两个参数作为数据源的情况下。
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    vec![]
+    vec![(
 }
 ```
 在 Rust 中标记生命周期的金律：**看数据的来源**。
@@ -2553,7 +2553,7 @@ fn main() {
 #### 13.2.1 迭代器及其用法
 在 Rust 中，迭代器是惰性的（lazy），这意味着在调用消费迭代器的方法之前不会执行任何操作。例如:
 ```rust
-let v1 = vec![1, 2, 3]
+let v1 = vec![1, 2, 3(
 let v1_iter = v1.iter();
 ```
 
@@ -2598,7 +2598,7 @@ pub trait Iterator {
 
 案例：
 ```rust
-let v1: Vec<i32> = vec![1, 2, 3];
+let v1: Vec<i32> = vec![1, 2, 3(;
 v1.iter().map(|x| x + 1);
 ```
 上述代码实际上并没有做任何事；**所指定的闭包从未被调用过。警告提醒了我们原因所在：迭代器适配器是惰性的，因此我们需要在此处消费迭代器。**
@@ -2608,15 +2608,15 @@ v1.iter().map(|x| x + 1);
 - `collect`：消费迭代器，**将迭代器中的所有元素收集到一个集合中**，例如 `Vec<T>` 或 `HashMap<K, V>`。
 
 ```rust
-let v1: Vec<i32> = vec![1, 2, 3];
+let v1: Vec<i32> = vec![1, 2, 3(;
 let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
-assert_eq!(v2, vec![2, 3, 4]);
+assert_eq!(v2, vec![2, 3, 4();
 ```
 
 
 ### 13.3 使用迭代器改进前面的 I/O 项目
 
-#### 13.3.1 `build` 函数从接受 `&[String]` 改编为接受迭代器
+#### 13.3.1 `build` 函数从接受 `&[String(` 改编为接受迭代器
 ```rust
 impl Config {
     pub fn build(

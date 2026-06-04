@@ -16,15 +16,15 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card blue" href="ch1-the_software_hardware_interface/note/">
+<a class="note-card blue" href="ch1-the_software_hardware_interface/">
 	<span class="card-icon">🧠</span>
 	<div class="card-title">Chapter 1 · 软硬件接口</div>
 	<p class="card-desc">The Software / Hardware Interface</p>
 </a>
 
-<a class="note-card blue" href="ch2-ISA/note/">
+<a class="note-card blue" href="ch2-ISA/">
 	<span class="card-icon">📶</span>
-	<div class="card-title">Chapter 2 · 指令集体系结构</div>
+	<div class="card-title">Chapter 2 · 指令集架构</div>
 	<p class="card-desc">Instruction Set Architecture</p>
 </a>
 
@@ -34,10 +34,10 @@ hide:
 	<p class="card-desc">Arithmetic for Computers</p>
 </a>
 
-<a class="note-card blue" href="ch4-processor/processor/">
+<a class="note-card blue" href="ch4-processor/">
 	<span class="card-icon">⚙️</span>
-	<div class="card-title">Chapter 4 · 处理器</div>
-	<p class="card-desc">The Processor</p>
+	<div class="card-title">Chapter 4 · 处理器 (Part 1)</div>
+	<p class="card-desc">RISC-V CPU Design</p>
 </a>
 
 <a class="note-card blue" href="ch4-processor-p2/">
@@ -48,8 +48,8 @@ hide:
 
 <a class="note-card blue" href="ch5-memory/">
 	<span class="card-icon">💾</span>
-	<div class="card-title">Chapter 5 · Memory</div>
-	<p class="card-desc">Memory Systems</p>
+	<div class="card-title">Chapter 5 · Memory Hierarchy</div>
+	<p class="card-desc">处理器中的存储架构</p>
 </a>
 
 <a class="note-card blue" href="ch6-parallel/">

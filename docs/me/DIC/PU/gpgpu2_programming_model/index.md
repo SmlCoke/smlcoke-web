@@ -237,12 +237,9 @@ matrixAddBiasLargeTile<<<blocksPerGrid, threadsPerBlock>>>(
 
 ### 2.3 Memory Model
 
-Memory model 的基本思想是：
+#### 2.3.1 GPGPU 中的 Memory Hierarchy
 
-- Match data requirement
-- Reduce accesses to global
-
-也就是：根据数据的访问需求选择合适的存储层次，**尽量减少对 global memory 的访问**。
+Memory model 的基本思想是：根据数据的访问需求选择合适的存储层次，**尽量减少对 global memory 的访问**。
 
 ![CUDA memory model](./assets/memory-model.webp)
 
@@ -262,5 +259,165 @@ Memory model 的基本思想是：
 - 它由**程序员显式控制**，而不是像 cache 一样完全交给硬件
 - 它可以服务于同一个 block 内线程之间的数据复用和通信
 - 某些架构中，L1 cache 和 shared memory 会共享片上空间，可以动态调整划分；**如果程序员愿意主动优化，就可以把更多片上资源作为 shared memory 使用，从而写出更高性能的 CUDA 程序**
+
+
+#### 2.3.2 TLP 和资源限制
+
+TLP（Thread-Level Parallelism）可以理解为：一个 SM 上能同时驻留、随时可被调度的 thread / warp / thread block 有多少。TLP 越高，SM 越容易在某些 warp 等待 memory 或长延迟指令时，**切换去执行别的 warp**，从而**隐藏延迟**。
+
+> **注意**：**“驻留” 的含义是一个 thread block / thread 的运行上下文已经被分配到某个 SM 上，占用了这个 SM 的寄存器、shared memory、warp slot 等资源，等待或正在被调度执行。**
+> **关键点是**：驻留并不等于正在执行。
+
+但是，TLP 不是只由 kernel launch 时写了多少 thread 决定。一个 SM 能同时容纳多少工作，还会被以下因素限制：
+
+- `# threads`：一个 SM 最多能驻留多少 thread
+- `# thread blocks`：一个 SM 最多能驻留多少 thread block
+- `Size of register file`：每个 thread 使用越多 register，可同时驻留的 thread 越少
+- `Size of shared memory`：每个 block 使用越多 shared memory，可同时驻留的 block 越少
+
+##### Example 1: V100 的资源限制
+
+以课件中的 V100 / Volta GV100 为例：
+
+- 每个 SM 最多 `2048 threads`
+- 每个 SM 最多 `32 thread blocks`
+- 每个 SM 有 `256KB register file`
+- 每个 SM 有最多 `96KB shared memory`
+
+注意：课件里写的 `256KB RF` 是寄存器文件容量。因为一个 register 通常是 32-bit，也就是 4B，所以：
+
+```text
+256KB RF = 256 * 1024 B / 4 B = 65536 regs
+```
+
+如果希望 SM 同时驻留满 `2048 threads`，平均每个 thread 能分到的 register 数量就是：
+
+```text
+65536 regs / 2048 threads = 32 regs/thread
+```
+
+所以课件标注中的结论是：
+
+- More regs needed, then less threads
+- 如果一个 thread 需要超过 32 个 register，那么 V100 上这个 SM 就很难同时驻留满 2048 个 thread
+
+shared memory 的思路类似。如果一个 SM 最多驻留 `32 blocks`，并且 shared memory 总量是 `96KB`，那么平均每个 block 只能用：
+
+```text
+96KB shm / 32 blocks = 3KB per block
+```
+
+所以另一个结论是：
+
+- More shm needed, then less blocks
+- 如果一个 block 需要超过 3KB shared memory，那么一个 SM 上就不能同时驻留满 32 个 block
+
+##### Example 2
+
+课件中的具体 kernel 例子：
+
+```text
+One kernel with 64 regs/thread and 8KB shm/TB, 128 threads/TB
+```
+
+分别看三个主要限制：
+
+1. **Register file 限制**
+
+```text
+65536 regs / 64 regs/thread = 1024 threads
+1024 threads / 128 threads/TB = 8 TBs
+```
+
+也就是说，如果每个 thread 要用 64 个 register，那么 register file 最多支持 `1024` 个 thread 同时驻留；每个 TB 有 `128` 个 thread，因此最多驻留 `8` 个 TB。
+
+2. **Shared memory 限制**
+
+```text
+96KB shm / 8KB shm per TB = 12 TBs
+```
+
+如果每个 TB 需要 8KB shared memory，那么 shared memory 最多支持 `12` 个 TB 同时驻留。
+
+3. **最大线程数限制**
+
+```text
+2048 threads / 128 threads/TB = 16 TBs
+```
+
+如果只看最大线程数，每个 SM 最多可以驻留 `16` 个这样的 TB。
+
+最终一个 SM 上能驻留多少个 TB，要取所有限制中的最小值：
+
+```text
+min(8, 12, 16, 32) = 8 TBs
+```
+
+因此这个 kernel 在 V100 上的驻留 TB 数量由 register file 卡住，而不是由 shared memory 或最大线程数卡住。这个例子说明：写 CUDA kernel 时，
+
+1. **每个 thread 用太多 register 会降低可驻留 thread 数**；
+2. **每个 block 用太多 shared memory 会降低可驻留 block 数；**
+3. **两者都会降低 TLP**。
+
+### 2.4 Synchronization
+
+并行程序需要同步，是因为多个 thread 之间经常存在数据依赖：一个 thread 先写入 shared memory，另一个 thread 后续要读取这个结果。如果没有同步，后读的 thread 可能在数据还没写完时就开始读取，得到旧值或未定义值。
+
+CUDA 中最基础的同步方式是 block scope 内的同步：
+
+```cpp
+__syncthreads();
+```
+
+`__syncthreads()` 的含义是：同一个 thread block 内的所有 thread 都必须到达这个同步点，之后这些 thread 才能继续向下执行。课件图里画的同步栅栏（barrier）就是这个意思：先到的 warp / thread 会在 barrier 前等待，直到 block 内其他 thread 也到达。
+
+![CUDA synchronization](./assets/synchronization.webp)
+
+需要注意它的作用域：
+
+- `__syncthreads()` 只能同步**同一个 thread block 内部**的 thread
+- 它不能同步不同 thread block，因为不同 block 可能被调度到不同 SM 上，甚至不一定同时驻留
+- 对应到底层实现，可以理解为 CUDA 编译到类似 `bar` 的同步栅栏指令
+
+课件中的矩阵乘法片段展示了为什么 shared memory 常常需要和同步一起使用：
+
+```cpp
+__shared__ float Mds[BLOCK_SIZE][BLOCK_SIZE];
+__shared__ float Nds[BLOCK_SIZE][BLOCK_SIZE];
+
+Mds[tx][ty] = d_A[row * N + ty + i * BLOCK_SIZE];
+Nds[tx][ty] = d_B[col + (tx + i * BLOCK_SIZE) * K];
+__syncthreads();
+```
+
+这里每个 thread 负责把一部分 `A` 和 `B` 从 global memory 搬到 shared memory。只有当 block 内所有 thread 都完成搬运之后，后面的计算：
+
+```cpp
+P += Mds[tx][j] * Nds[j][ty];
+```
+
+才可以安全读取完整的 tile。因此第一处 `__syncthreads()` 是为了保证 shared memory 中的 `Mds` 和 `Nds` 已经被整个 block 填好。
+
+代码中第二处同步：
+
+```cpp
+for (int j = 0; j < BLOCK_SIZE; j++) {
+    P += Mds[tx][j] * Nds[j][ty];
+    __syncthreads();
+}
+```
+
+从课件要表达的角度看，它强调的是：当多个 thread 共享同一块 shared memory，并且后续迭代可能复用或覆盖这些 shared memory 数据时，需要通过同步保证所有 thread 的读取和写入阶段不会交错。更常见的 tiled matrix multiplication 写法通常是在完成整个 `j` 循环之后、进入下一轮 tile 加载之前同步一次，避免下一轮加载覆盖当前轮还没读完的数据。
+
+除了 block 内同步，CUDA 还提供 host 端看到的更大作用域同步：
+
+- `cudaDeviceSynchronize()`：等待当前 device 上前面提交的工作完成。它是 device 级别的 host-device 同步，常用于 kernel launch 之后检查错误、计时或确保结果已经完成。
+- `cudaStreamSynchronize(stream)`：等待指定 stream 中前面提交的工作完成。它只同步某一个 stream，相比 `cudaDeviceSynchronize()` 作用域更小，更适合保留其他 stream 的并发执行。
+
+总结一下：
+
+- block 内线程协作使用 shared memory 时，通常需要 `__syncthreads()`
+- host 想等待整个 device 的任务完成，用 `cudaDeviceSynchronize()`
+- host 只想等待某个 stream 的任务完成，用 `cudaStreamSynchronize()`
 
 

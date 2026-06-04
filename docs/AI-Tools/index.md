@@ -14,31 +14,31 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card green" href="ClaudeCode/Claude-Code/">
+<a class="note-card green" href="ClaudeCode/">
   <span class="card-icon">📠</span>
   <div class="card-title">Claude Code</div>
   <p class="card-desc">CC 的安装与使用方法</p>
 </a>
 
-<a class="note-card purple" href="MCP/mcp_server/">
+<a class="note-card purple" href="MCP/">
   <span class="card-icon">🔌</span>
   <div class="card-title">MCP Server</div>
   <p class="card-desc">AI 时代的 USB 接口</p>
 </a>
 
-<a class="note-card purple" href="OpenRouter/openrouter/">
+<a class="note-card purple" href="OpenRouter/">
   <span class="card-icon">🔑</span>
   <div class="card-title">OpenRouter</div>
   <p class="card-desc">获取大模型的API Key</p>
 </a>
 
-<a class="note-card purple" href="OpenCode/opencode/">
+<a class="note-card purple" href="OpenCode/">
   <span class="card-icon">🔧</span>
   <div class="card-title">OpenCode</div>
   <p class="card-desc">OpenCode CLI 以及 API Key 接入</p>
 </a>
 
-<a class="note-card purple" href="Aider/aider/">
+<a class="note-card purple" href="Aider/">
   <span class="card-icon">🪛</span>
   <div class="card-title">Aider</div>
   <p class="card-desc">Aider CLI 以及 API Key 接入</p>

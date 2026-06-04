@@ -67,8 +67,8 @@
 ## III. ISA
 
 见《通用及图形处理器架构与系统》课程笔记：
-[ISA 笔记](../../PU/ch2-ISA/note.md)
-[Processor 架构设计笔记](../../PU/ch4-processor/processor.md)
+[ISA 笔记](../../PU/ch2-ISA/index.md)
+[Processor 架构设计笔记](../../PU/ch4-processor/index.md)
 
 ## IV. SoC Processor Selection
 

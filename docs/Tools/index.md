@@ -16,19 +16,19 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card cyan" href="docker/docker/">
+<a class="note-card cyan" href="docker/">
   <span class="card-icon">🐳</span>
   <div class="card-title">Docker（Windows 11）</div>
   <p class="card-desc">Docker Desktop 安装、WSL2 关系说明与 D 盘数据迁移实践</p>
 </a>
 
-<a class="note-card cyan" href="git/git/">
+<a class="note-card cyan" href="git/">
   <span class="card-icon" >🐙</span>
   <div class="card-title">Git & GitHub</div>
   <p class="card-desc">Git 基础命令与 GitHub 使用指南</p>
 </a>
 
-<a class="note-card cyan" href="wsl2/WSL2子系统开发笔记/">
+<a class="note-card cyan" href="wsl2/">
   <span class="card-icon">🐧</span>
   <div class="card-title">WSL2 子系统开发笔记</div>
   <p class="card-desc">WSL2 使用与 Linux 工具配置笔记</p>

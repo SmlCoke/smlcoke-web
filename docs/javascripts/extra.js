@@ -99,6 +99,9 @@
   }
 
   function ensureReaderControls() {
+    const header = document.querySelector(".md-header__inner");
+    if (!header) return null;
+
     let controls = document.querySelector(".reader-layout-controls");
     if (!controls) {
       controls = document.createElement("div");
@@ -108,7 +111,17 @@
         createToggleButton("nav", "展开或隐藏左侧导航"),
         createToggleButton("toc", "展开或隐藏右侧目录")
       );
-      document.body.append(controls);
+    }
+
+    const anchor = header.querySelector(".md-header__option, label[for='__search'], .md-search");
+    if (controls.parentElement !== header) {
+      if (anchor) {
+        anchor.before(controls);
+      } else {
+        header.append(controls);
+      }
+    } else if (anchor && controls.nextElementSibling !== anchor) {
+      anchor.before(controls);
     }
 
     const navButton = controls.querySelector(".reader-layout-toggle--nav");

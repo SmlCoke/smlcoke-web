@@ -1,7 +1,7 @@
 
 # Windows 原生环境开源EDA工具链构建
 
-[WSL2子系统开发笔记](../../../Tools/wsl2/WSL2子系统开发笔记.md)中提到了如何在 WSL2 中配置 yosys + symbiyosys 等开源 EDA 工具链的详细步骤。但是这种方法依赖 WSL2，饱受文件跨系统 I/O 极慢、环境配置繁琐之苦、而且开发时还需要远程连接 WSL2，频繁在 Windows 和 Linux 之间切换，极大降低效率。
+[WSL2子系统开发笔记](../../../Tools/wsl2/index.md)中提到了如何在 WSL2 中配置 yosys + symbiyosys 等开源 EDA 工具链的详细步骤。但是这种方法依赖 WSL2，饱受文件跨系统 I/O 极慢、环境配置繁琐之苦、而且开发时还需要远程连接 WSL2，频繁在 Windows 和 Linux 之间切换，极大降低效率。
 
 本指南将搭建一个**纯 Windows 原生、零 DLL 冲突、完美融合 Python 验证生态 (Cocotb/Pyverilog) 与顶级开源 EDA 引擎 (Yosys/SBY/Z3)** 的开发环境。
 
@@ -93,7 +93,7 @@ VS Code中，在 `settings.json` 中找到 `"terminal.integrated.profiles.window
             "-NoExit",
             "-Command",
             "& 'D:\\Anaconda\\shell\\condabin\\conda-hook.ps1'; conda activate rtl; Write-Host '✅ Conda rtl 环境激活成功' -ForegroundColor Green; $env:PATH = 'D:\\EDA\\oss-cad-suite\\bin;D:\\EDA\\oss-cad-suite\\lib;' + $env:PATH; Write-Host '✅ Conda 和 OSS CAD 环境已融合就绪！' -ForegroundColor Green"
-        ]
+        (
     }
 }
 ```
@@ -133,13 +133,13 @@ VS Code中，在 `settings.json` 中找到 `"terminal.integrated.profiles.window
 
 1. 创建 `gold.v` (参考模型)：
 ```verilog
-module gold(input [7:0] a, input [7:0] b, input[7:0] c, output [7:0] out);
+module gold(input [7:0( a, input [7:0( b, input[7:0( c, output [7:0( out);
     assign out = (a + b) + c;
 endmodule
 ```
 2. 创建 `gate.v` (修改后的模型)：
 ```verilog
-module gate(input [7:0] a, input [7:0] b, input [7:0] c, output [7:0] out);
+module gate(input [7:0( a, input [7:0( b, input [7:0( c, output [7:0( out);
     assign out = a + (b + c);
 endmodule
 ```
@@ -166,7 +166,7 @@ equiv_status -assert
 1. 创建 `counter.v`：
 ```verilog
 module counter(input clk);
-    reg[3:0] count = 0;
+    reg[3:0( count = 0;
     always @(posedge clk) begin
         count <= count + 1;
     end
@@ -180,16 +180,16 @@ endmodule
 ```
 2. 创建 `verify.sby`：
 ```ini
-[options]
+[options(
 mode bmc
 depth 20
 
-[engines]
-smtbmc z3[script]
+[engines(
+smtbmc z3[script(
 read -formal counter.v
 prep -top counter
 
-[files]
+[files(
 counter.v
 ```
 3. 运行：`sby -f verify.sby`。

@@ -16,19 +16,19 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card blue" href="ResNet/notes/">
+<a class="note-card blue" href="ResNet/">
   <span class="card-icon">🏔️</span>
   <div class="card-title">ResNet</div>
   <p class="card-desc">残差网络：深层网络的突破性设计</p>
 </a>
 
-<a class="note-card green" href="DenseNet/notes/">
+<a class="note-card green" href="DenseNet/">
   <span class="card-icon">🌿</span>
   <div class="card-title">DenseNet</div>
   <p class="card-desc">密集连接网络：特征复用与高效传播</p>
 </a>
 
-<a class="note-card indigo" href="VIT/ViT/">
+<a class="note-card indigo" href="VIT/">
   <span class="card-icon">🔮</span>
   <div class="card-title">Vision Transformer</div>
   <p class="card-desc">将 Transformer 引入视觉：图像分块与自注意力</p>
@@ -64,7 +64,7 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card cyan" href="PFLD/PFLD/">
+<a class="note-card cyan" href="PFLD/">
   <span class="card-icon">👤</span>
   <div class="card-title">PFLD</div>
   <p class="card-desc">实用人脸关键点检测：轻量级与高精度</p>
@@ -76,7 +76,7 @@ hide:
   <p class="card-desc">轻量级极速检测架构：重参数化与源码深入剖析</p>
 </a>
 
-<a class="note-card cyan" href="mobileone/mobileone/">
+<a class="note-card cyan" href="mobileone/">
   <span class="card-icon">🍎</span>
   <div class="card-title">MobileOne</div>
   <p class="card-desc">轻量级骨干网络：重参数化加持MobileNet</p>

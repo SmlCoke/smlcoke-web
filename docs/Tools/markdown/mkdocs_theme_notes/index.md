@@ -11,7 +11,7 @@
 - `docs/stylesheets/extra.css`
   - 从零整理成一套变量化设计系统
   - 统一了正文、代码块、公式块、卡片、导航、侧栏、搜索框、hero
-- `docs/Tools/markdown/writing_style_guide.md`
+- `docs/Tools/markdown/writing_style_guide/index.md`
   - 给后续写文章留了规范
 
 ## 2. 以后优先改哪里
@@ -116,9 +116,9 @@ mkdocs serve
 
 - 首页 `docs/index.md`
 - 栏目页，例如 `docs/me/DIC/VLSI/index.md`
-- 公式密集页，例如 `docs/me/DIC/PU/ch1-the_software_hardware_interface/note.md`
+- 公式密集页，例如 `docs/me/DIC/PU/ch1-the_software_hardware_interface/index.md`
 - 工具说明页，例如 `docs/Tools/...`
-- 图片密集页，例如 `docs/me/verilog/Study_note.md`
+- 图片密集页，例如 `docs/me/verilog/index.md`
 
 ## 6. 这次我刻意保留的边界
 

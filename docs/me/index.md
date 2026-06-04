@@ -64,7 +64,7 @@ hide:
   <p class="card-desc">VLSI数字通信系统的基本原理与设计方法</p>
 </a>
 
-<a class="note-card lime" href="DIC/CourseDesign/introduction/">
+<a class="note-card lime" href="DIC/CourseDesign/">
   <span class="card-icon">📱</span>
   <div class="card-title">数字集成电路设计课程设计</div>
   <p class="card-desc">基于 Verilog 实现的 CNN 硬件加速器</p>
@@ -83,19 +83,19 @@ hide:
 
 <div class="card-grid">
 
-<a class="note-card gray" href="verilog/Study_note">
+<a class="note-card gray" href="verilog/">
   <span class="card-icon">📄</span>
   <div class="card-title">Verilog 基础语法</div>
   <p class="card-desc">Verilog HDL 语言的基础知识与学习笔记</p>
 </a>
 
-<a class="note-card gray" href="EDA/vscode/vscode">
+<a class="note-card gray" href="EDA/vscode/">
   <span class="card-icon">📝</span>
   <div class="card-title">VS Code</div>
   <p class="card-desc">VS Code 中配置 Verilog 生态</p>
 </a>
 
-<a class="note-card gray" href="EDA/mobaxterm/mobaxterm">
+<a class="note-card gray" href="EDA/mobaxterm/">
   <span class="card-icon">🛜</span>
   <div class="card-title">MobaXterm</div>
   <p class="card-desc">MobaXterm 图形转发</p>
