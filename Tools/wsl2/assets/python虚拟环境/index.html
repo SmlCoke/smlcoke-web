@@ -10,7 +10,7 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/Tools/wsl2/assets/Linux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8D%9B%E6%88%92%E6%8A%A4/">
+        <link rel="canonical" href="https://smlcoke.com/Tools/wsl2/assets/python%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Linux 基础命令 - SmlCoke Home</title>
+        <title>Python 虚拟环境 - SmlCoke Home</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#linux" class="md-skip">
+        <a href="#python" class="md-skip">
           跳转至
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Linux 基础命令
+              Python 虚拟环境
             
           </span>
         </div>
@@ -1038,7 +1038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch3-iteration_bound/index.md" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch3-iteration_bound/" class="md-nav__link">
         
   
   
@@ -3104,7 +3104,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../rust/notes/Rust环境配置方法/index.md" class="md-nav__link">
+      <a href="../../../../rust/notes/Rust%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/" class="md-nav__link">
         
   
   
@@ -3688,22 +3688,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#i" class="md-nav__link">
+  <a href="#i-venv" class="md-nav__link">
     <span class="md-ellipsis">
       
-        I. 目录导航 (定位与切换)
+        I. 使用 venv 隔离环境（基础用法）
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="I. 目录导航 (定位与切换)">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-conda-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. 高级环境管理：conda（适合多版本 Python）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. 高级环境管理：conda（适合多版本 Python）">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11-pwd-print-working-directory" class="md-nav__link">
+  <a href="#21-conda" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.1 pwd (Print Working Directory)
+        2.1 conda 是什么？
       
     </span>
   </a>
@@ -3711,10 +3722,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12-cd-change-directory" class="md-nav__link">
+  <a href="#22-wsl-conda-miniconda" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.2 cd (Change Directory)
+        2.2 WSL 中安装 conda（推荐 Miniconda）
       
     </span>
   </a>
@@ -3722,10 +3733,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#13-ls-list" class="md-nav__link">
+  <a href="#23-conda" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.3 ls (List)
+        2.3 conda 的基本用法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-conda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 conda 环境的位置
       
     </span>
   </a>
@@ -3734,200 +3756,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ii-crud" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        II. 文件的增删改查 (CRUD)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="II. 文件的增删改查 (CRUD)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-mkdir-make-directory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 mkdir (Make Directory)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-touch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 touch
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23-cp-copy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 cp (Copy)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#24-mv-move" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.4 mv (Move)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#25-rm-remove" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.5 rm (Remove)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#26-find" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.6 find
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iii" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        III. 文本查看 (从头看、从尾看、翻页看)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="III. 文本查看 (从头看、从尾看、翻页看)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-cat-concatenate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 cat (Concatenate)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-less" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 less
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-head" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 head
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-tail" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 tail
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iv" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IV. 文本过滤与统计 (找报错、看数量)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="IV. 文本过滤与统计 (找报错、看数量)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-grep-global-regular-expression-print" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 grep (Global Regular Expression Print)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-wc-word-count" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 wc (Word Count)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        补充：黄金搭档 —— “管道符 |”
-      
-    </span>
-  </a>
   
 </li>
       
@@ -3948,158 +3776,76 @@
 
 
 
-<h1 id="linux">Linux 基础命令<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h1>
-<h2 id="i">I. 目录导航 (定位与切换)<a class="headerlink" href="#i" title="Permanent link">&para;</a></h2>
-<h3 id="11-pwd-print-working-directory">1.1 <code>pwd</code> (Print Working Directory)<a class="headerlink" href="#11-pwd-print-working-directory" title="Permanent link">&para;</a></h3>
-<p><em>作用：查看自己当前所在的位置。</em></p>
+<h1 id="python">Python 虚拟环境<a class="headerlink" href="#python" title="Permanent link">&para;</a></h1>
+<h2 id="i-venv">I. 使用 venv 隔离环境（基础用法）<a class="headerlink" href="#i-venv" title="Permanent link">&para;</a></h2>
+<p>Python 的内置 <code>venv</code> 模块可以帮你创建 <strong>项目独立的 Python 环境</strong>。</p>
+<p>假设在 <code>~/projects/demo</code> 里开发：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>~/projects/demo
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>~/projects/demo
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 创建虚拟环境（名字随意，这里叫 venv）</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># 激活虚拟环境</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># 激活后命令行前面会有 (venv) 提示</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>pip<span class="w"> </span>install<span class="w"> </span>requests<span class="w">  </span><span class="c1"># 只安装到这个虚拟环境</span>
+</span></code></pre></div>
+<p>退出虚拟环境：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>deactivate
+</span></code></pre></div>
+<p>查看虚拟环境 Python 路径：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>which<span class="w"> </span>python
+</span></code></pre></div>
+<p>会显示：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/home/你的用户名/projects/demo/venv/bin/python
+</span></code></pre></div>
+<p>这样不会影响系统的 <code>/usr/bin/python3</code>。</p>
+<h2 id="ii-conda-python">II. 高级环境管理：conda（适合多版本 Python）<a class="headerlink" href="#ii-conda-python" title="Permanent link">&para;</a></h2>
+<p><strong>miniconda3 用户级目录安装</strong></p>
+<h3 id="21-conda">2.1 conda 是什么？<a class="headerlink" href="#21-conda" title="Permanent link">&para;</a></h3>
+<p><code>conda</code> 是一个 <strong>跨平台的包管理 + 环境管理工具</strong>，不仅能管理 Python，<strong>还能管理其他语言的工具包</strong>（C/C++、R、Java 等）。<br />
+它最大的特点是：</p>
+<ol>
+<li><strong>自带 Python 解释器</strong>（环境是完全独立的）</li>
+<li><strong>包安装不依赖系统 <code>apt</code>/<code>pip</code></strong>，而是从 <code>conda</code> 仓库下载预编译好的二进制包（安装速度快）。当然，在国内建议用 <code>pip</code> 安装，<code>conda</code> 源速度很慢</li>
+<li><strong>依赖管理更稳定</strong>，适合科学计算、大型项目</li>
+</ol>
+<h3 id="22-wsl-conda-miniconda">2.2 WSL 中安装 conda（推荐 Miniconda）<a class="headerlink" href="#22-wsl-conda-miniconda" title="Permanent link">&para;</a></h3>
+<p>在 WSL 里不建议装 Anaconda（太大），推荐安装 <strong>Miniconda</strong>（精简版，自己装需要的包）。</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 下载 Miniconda 安装脚本（x86_64 版）</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>wget<span class="w"> </span>https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># 运行安装脚本</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>bash<span class="w"> </span>Miniconda3-latest-Linux-x86_64.sh
+</span></code></pre></div>
+<p>安装时：</p>
 <ul>
-<li><code>pwd</code>：直接输出当前所在的完整绝对路径。</li>
+<li>选择安装路径（默认是 <code>~/miniconda3</code>）</li>
+<li>选择是否自动初始化 <code>conda</code>（建议选 <code>yes</code>）</li>
 </ul>
-<h3 id="12-cd-change-directory">1.2 <code>cd</code> (Change Directory)<a class="headerlink" href="#12-cd-change-directory" title="Permanent link">&para;</a></h3>
-<p><em>作用：在不同目录之间跳转。</em></p>
-<ul>
-<li><code>cd /path/to/dir</code>：进入指定的绝对路径或相对路径。</li>
-<li><code>cd ..</code>：返回上一级目录。</li>
-<li><code>cd ~</code>：直接跳转回当前用户的家目录 (Home)。</li>
-<li><code>cd -</code>：在<strong>最近停留过的两个目录</strong>之间来回切换（类似电视遥控器的“返回/交替”键，非常实用）。</li>
-<li><code>cd /</code>：直接跳转到根目录（整个文件系统的顶层）。</li>
-</ul>
-<h3 id="13-ls-list">1.3 <code>ls</code> (List)<a class="headerlink" href="#13-ls-list" title="Permanent link">&para;</a></h3>
-<p><em>作用：查看目录里都有什么。</em></p>
-<ul>
-<li><code>ls</code>：仅列出当前目录下的文件和文件夹名称。</li>
-<li><code>ls -l</code>：长格式显示（包含权限、所有者、文件大小、修改时间等详细信息）。</li>
-<li><code>ls -lh</code>：<strong>最常用</strong>。长格式显示，且大小转换为人易读的格式（如 <code>KB</code>, <code>MB</code>, <code>GB</code>）。</li>
-<li><code>ls -a</code>：显示所有文件，包括以 <code>.</code> 开头的<strong>隐藏文件</strong>。</li>
-<li><code>ls -lha</code>：<strong>王牌组合</strong>。详细显示当前目录下所有文件（含隐藏文件）及其易读的大小。</li>
-<li><code>ls -lt</code>：按修改时间<strong>降序</strong>排列（最近修改的文件排在最上面）。</li>
-<li><code>ls -ltr</code>：按修改时间<strong>升序</strong>排列（最近修改的文件排在最下面，看最新生成的日志时常用）。</li>
-</ul>
-<hr />
-<h2 id="ii-crud">II. 文件的增删改查 (CRUD)<a class="headerlink" href="#ii-crud" title="Permanent link">&para;</a></h2>
-<h3 id="21-mkdir-make-directory">2.1 <code>mkdir</code> (Make Directory)<a class="headerlink" href="#21-mkdir-make-directory" title="Permanent link">&para;</a></h3>
-<p><em>作用：创建新文件夹。</em></p>
-<ul>
-<li><code>mkdir folder_name</code>：在当前目录下创建一个新文件夹。</li>
-<li><code>mkdir -p a/b/c</code>：<strong>最常用组合</strong>。递归创建多级目录。如果父目录 <code>a</code> 或 <code>b</code> 不存在，系统会自动帮你建好，不会报错。</li>
-</ul>
-<h3 id="22-touch">2.2 <code>touch</code><a class="headerlink" href="#22-touch" title="Permanent link">&para;</a></h3>
-<p><em>作用：创建空文件 / 刷新文件时间。</em></p>
-<ul>
-<li><code>touch file.txt</code>：如果文件不存在，创建一个空的 <code>file.txt</code>；如果文件已存在，不改变其内容，仅把它的“修改时间”更新为当前时间。</li>
-</ul>
-<h3 id="23-cp-copy">2.3 <code>cp</code> (Copy)<a class="headerlink" href="#23-cp-copy" title="Permanent link">&para;</a></h3>
-<p><em>作用：复制文件或文件夹。</em></p>
-<ul>
-<li><code>cp file.txt /path/to/dest/</code>：将普通文件复制到目标目录。</li>
-<li><code>cp -r folder/ /path/to/dest/</code>：<strong>最常用组合</strong>。递归复制整个文件夹及其内部所有内容（复制文件夹<strong>必须</strong>加 <code>-r</code>）。</li>
-<li><code>cp -i file.txt dest/</code>：安全模式。如果目标目录已有同名文件，会在覆盖前提示你确认。</li>
-<li><code>cp -p file.txt dest/</code>：完美复制。保留原文件的修改时间、所有者、权限等属性。</li>
-</ul>
-<h3 id="24-mv-move">2.4 <code>mv</code> (Move)<a class="headerlink" href="#24-mv-move" title="Permanent link">&para;</a></h3>
-<p><em>作用：移动文件，或者重命名文件。</em></p>
-<ul>
-<li><code>mv file.txt /path/to/dest/</code>：将文件移动到目标文件夹中。</li>
-<li><code>mv old_name.txt new_name.txt</code>：<strong>重命名</strong>。在同一个目录下移动文件，相当于改名。</li>
-<li><code>mv -i file.txt dest/</code>：安全模式。目标路径有同名文件时，提示是否覆盖。</li>
-</ul>
-<h3 id="25-rm-remove">2.5 <code>rm</code> (Remove)<a class="headerlink" href="#25-rm-remove" title="Permanent link">&para;</a></h3>
-<p><em>作用：删除文件或文件夹。（注意：Linux 没有回收站，删除即永久丢失）</em></p>
-<ul>
-<li><code>rm file.txt</code>：删除一个普通文件。</li>
-<li><code>rm -i file.txt</code>：删除前要求确认（输入 <code>y</code> 或 <code>n</code>）。</li>
-<li><code>rm -r folder/</code>：递归删除一个文件夹及其内部所有内容。</li>
-<li><code>rm -f file.txt</code>：强制删除（Force），即使文件是只读的，也不会有任何报错或提示。</li>
-<li><code>rm -rf folder/</code>：<strong>王牌/高危组合</strong>。强制且无提示地删除整个文件夹及其内部所有内容（操作前务必确认路径是否正确）。</li>
-</ul>
-<h3 id="26-find">2.6 <code>find</code><a class="headerlink" href="#26-find" title="Permanent link">&para;</a></h3>
-<p><em>作用：在茫茫文件海中搜索特定文件。</em></p>
-<ul>
-<li><code>find . -name "*.py"</code>：<strong>最常用组合</strong>。在当前目录<strong>及其所有子目录下</strong>，按名称查找所有以 <code>.py</code> 结尾的文件。</li>
-<li><code>find . -name "*test*" -type f</code>：查找名字包含 <code>test</code> 的<strong>普通文件</strong>（<code>-type d</code> 则是专门找文件夹）。</li>
-<li><code>find . -maxdepth 1 -name "*.log"</code>：仅在当前层级（深度为1）查找，不钻进子目录去找。</li>
-<li><code>find . -size +100M</code>：查找当前目录下所有大于 100MB 的文件（清理磁盘空间时很好用）。</li>
-</ul>
-<hr />
-<h2 id="iii">III. 文本查看 (从头看、从尾看、翻页看)<a class="headerlink" href="#iii" title="Permanent link">&para;</a></h2>
-<h3 id="31-cat-concatenate">3.1 <code>cat</code> (Concatenate)<a class="headerlink" href="#31-cat-concatenate" title="Permanent link">&para;</a></h3>
-<p><em>作用：直接把文件内容全部打印到终端屏幕上。（适合查看几十行以内的</em><em>小文件</em><em>）</em></p>
-<ul>
-<li><code>cat file.txt</code>：直接输出文件的所有内容。</li>
-<li><code>cat -n file.txt</code>：输出内容，并<strong>给每一行加上行号</strong>（找代码报错行数时很有用）。</li>
-<li><code>cat file1.txt file2.txt &gt; merged.txt</code>：将两个文件的内容合并，并写入到 <code>merged.txt</code> 中。</li>
-</ul>
-<h3 id="32-less">3.2 <code>less</code><a class="headerlink" href="#32-less" title="Permanent link">&para;</a></h3>
-<p><em>作用：分页查看</em><em>大文件</em><em>（如几百MB的 EDA 综合日志、DL 训练日志）。它不会一次性把文件全读进内存，所以打开速度极快且不卡顿。</em></p>
-<ul>
-<li><code>less file.log</code>：进入交互式分页查看界面。<ul>
-<li><strong><code>less</code> 界面内的常用快捷键（必记）：</strong><ul>
-<li><code>空格键</code> 或 <code>f</code>：向下翻一页 (forward)。</li>
-<li><code>b</code>：向上翻一页 (backward)。</li>
-<li><code>/关键字</code>：向下搜索关键字（例如输入 <code>/Error</code> 然后回车）。</li>
-<li><code>?关键字</code>：向上搜索关键字。</li>
-<li><code>n</code>：跳到搜索的<strong>下一个</strong>匹配项。</li>
-<li><code>N</code>：跳到搜索的<strong>上一个</strong>匹配项。</li>
-<li><code>q</code>：退出查看 (quit)。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>less -S file.log</code>：不换行显示。如果日志单行极长，用这个参数可以保持界面整洁（用左右方向键横向滚动）。</li>
-</ul>
-<h3 id="33-head">3.3 <code>head</code><a class="headerlink" href="#33-head" title="Permanent link">&para;</a></h3>
-<p><em>作用：只查看文件的开头部分。</em></p>
-<ul>
-<li><code>head file.txt</code>：默认查看文件的前 10 行。</li>
-<li><code>head -n 20 file.txt</code>：查看文件的前 20 行（常用于快速查看数据文件的前几行表头格式）。</li>
-</ul>
-<h3 id="34-tail">3.4 <code>tail</code><a class="headerlink" href="#34-tail" title="Permanent link">&para;</a></h3>
-<p><em>作用：只查看文件的结尾部分，或者</em><em>实时监控文件更新</em><em>。</em></p>
-<ul>
-<li><code>tail file.txt</code>：默认查看文件的最后 10 行。</li>
-<li><code>tail -n 50 file.txt</code>：查看文件的最后 50 行。</li>
-<li><code>tail -f file.log</code>：<strong>王牌组合 (Follow)</strong>。实时滚动显示文件的最新追加内容。你跑在后台的程序只要一打印新日志，屏幕就会立刻刷新。（按 <code>Ctrl + C</code> 退出）。</li>
-</ul>
-<hr />
-<h2 id="iv">IV. 文本过滤与统计 (找报错、看数量)<a class="headerlink" href="#iv" title="Permanent link">&para;</a></h2>
-<h3 id="41-grep-global-regular-expression-print">4.1 <code>grep</code> (Global Regular Expression Print)<a class="headerlink" href="#41-grep-global-regular-expression-print" title="Permanent link">&para;</a></h3>
-<p><em>作用：强大的文本搜索工具，能在文件里精准抓取包含某个关键词的</em><em>一整行内容</em><em>。</em></p>
-<ul>
-<li><code>grep "Error" file.log</code>：在文件中寻找包含 "Error" 的行，并打印出来。</li>
-<li><code>grep -i "error" file.log</code>：忽略大小写搜索（"Error", "ERROR", "error" 都会被匹配）。</li>
-<li><code>grep -n "Error" file.log</code>：显示匹配结果所在的<strong>行号</strong>。</li>
-<li><code>grep -v "Warning" file.log</code>：<strong>反向过滤（极度常用）</strong>。打印出<strong>不包含</strong> "Warning" 的所有行（常用于过滤掉垃圾报警信息，让真正的报错显露出来）。</li>
-<li><code>grep -r "main" .</code>：在当前目录及所有子目录的每一个文件里，搜索包含 "main" 的内容。</li>
-<li><code>grep -C 3 "Error" file.log</code>：<strong>上下文抓取（神器）</strong>。不仅显示包含 "Error" 的那一行，还把报错前后的 <strong>3行</strong> (Context) 一并打印出来，方便看代码执行的回溯上下文（Traceback）。</li>
-</ul>
-<h3 id="42-wc-word-count">4.2 <code>wc</code> (Word Count)<a class="headerlink" href="#42-wc-word-count" title="Permanent link">&para;</a></h3>
-<p><em>作用：统计文本的行数、字数、字节数。</em></p>
-<ul>
-<li><code>wc -l file.txt</code>：<strong>最常用组合</strong>。只统计并输出该文件的<strong>总行数</strong> (lines)。</li>
-<li><code>wc -w file.txt</code>：统计单词数 (words)。</li>
-<li><code>wc -c file.txt</code>：统计字节数 (bytes)。</li>
-</ul>
-<hr />
-<h2 id="_1">补充：黄金搭档 —— “管道符 <code>|</code>”<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p><em>在文本处理时，<code>|</code> (键盘回车键上方的竖线) 是必须理解的概念。它的作用是：</em><em>把左边命令的输出结果，直接当成右边命令的输入</em><em>。</em></p>
-<ul>
-<li><strong><code>cat run.log | grep "Error"</code></strong><ul>
-<li>效果等同于 <code>grep "Error" run.log</code>。先读取日志，然后把内容送给 <code>grep</code> 过滤。</li>
-</ul>
-</li>
-<li><strong><code>ls -l | grep ".py"</code></strong><ul>
-<li>列出当前目录下所有文件详细信息，但只过滤出名字带 <code>.py</code> 的行。</li>
-</ul>
-</li>
-<li><strong><code>ls -l | wc -l</code></strong><ul>
-<li>列出当前目录的文件，并用 <code>wc -l</code> 统计有多少行（也就是<strong>统计当前目录下大概有多少个文件+文件夹</strong>）。</li>
-</ul>
-</li>
-<li><strong><code>find . -type f | wc -l</code></strong><ul>
-<li>在当前目录及子目录下查找所有普通文件，并统计总数（非常实用的命令组合，能<strong>快速告诉你一个项目里到底有多少个文件</strong>）。</li>
-</ul>
-</li>
-</ul>
+<p>如果你选了不自动初始化，可以手动加到 <code>~/.bashrc</code>：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/miniconda3/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+</span></code></pre></div>
+<p>刷新环境变量：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">source</span><span class="w"> </span>~/.bashrc
+</span></code></pre></div>
+<p>验证：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>conda<span class="w"> </span>--version
+</span></code></pre></div>
+<h3 id="23-conda">2.3 conda 的基本用法<a class="headerlink" href="#23-conda" title="Permanent link">&para;</a></h3>
+<p><strong>(1) 激活conda</strong><br />
+每次使用conda前，需要手动执行：<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">source</span><span class="w"> </span>~/miniconda3/etc/profile.d/conda.sh
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>myenv
+</span></code></pre></div></p>
+<p>之后的用法（虚拟环境、安装包等）与 <code>Anaconda</code> 操作完全一致。详见：<a href="../../../conda/conda/">conda 使用方法</a></p>
+<h3 id="24-conda">2.4 conda 环境的位置<a class="headerlink" href="#24-conda" title="Permanent link">&para;</a></h3>
+<p>默认环境存放在：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>~/miniconda3/envs/
+</span></code></pre></div>
+<p>每个环境都是独立的 Python + 包，不会互相污染，也不会影响系统 <code>/usr/bin/python3</code>。</p>
 
 
 

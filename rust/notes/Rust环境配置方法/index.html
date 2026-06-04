@@ -10,27 +10,31 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/Tools/wsl2/assets/%E9%8F%82%E5%9B%A6%E6%AC%A2%E7%BB%AF%E8%8D%A4%E7%B2%BA%E9%90%A9%EE%86%BC%E7%B6%8D/">
+        <link rel="canonical" href="https://smlcoke.com/rust/notes/Rust%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/">
       
       
+        <link rel="prev" href="../Study/">
+      
+      
+        <link rel="next" href="../../crypto/">
       
       
         
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
     
     
       
-        <title>文件系统目录 - SmlCoke Home</title>
+        <title>Rust 环境配置 - SmlCoke Home</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,11 +53,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=20260604-2">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#rust" class="md-skip">
           跳转至
         </a>
       
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              文件系统目录
+              Rust 环境配置
             
           </span>
         </div>
@@ -209,7 +213,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -228,7 +232,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../blog/" class="md-tabs__link">
+      <a href="../../../blog/" class="md-tabs__link">
         
   
   
@@ -249,7 +253,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../me/" class="md-tabs__link">
+        <a href="../../../me/" class="md-tabs__link">
           
   
   
@@ -271,7 +275,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../ml/Basic/" class="md-tabs__link">
+        <a href="../../../ml/Basic/" class="md-tabs__link">
           
   
   
@@ -293,7 +297,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../ml/CV/" class="md-tabs__link">
+        <a href="../../../ml/CV/" class="md-tabs__link">
           
   
   
@@ -311,11 +315,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../../../rust/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
   
@@ -337,7 +343,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../AI-Tools/" class="md-tabs__link">
+        <a href="../../../AI-Tools/" class="md-tabs__link">
           
   
   
@@ -359,7 +365,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../" class="md-tabs__link">
+        <a href="../../../Tools/" class="md-tabs__link">
           
   
   
@@ -379,7 +385,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../comments/" class="md-tabs__link">
+      <a href="../../../comments/" class="md-tabs__link">
         
   
   
@@ -420,7 +426,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -438,7 +444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -467,7 +473,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../blog/" class="md-nav__link">
+      <a href="../../../blog/" class="md-nav__link">
         
   
   
@@ -523,7 +529,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/" class="md-nav__link ">
+            <a href="../../../me/" class="md-nav__link ">
               
   
   
@@ -567,7 +573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/SS/" class="md-nav__link">
+      <a href="../../../me/SS/" class="md-nav__link">
         
   
   
@@ -626,7 +632,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/DIC/" class="md-nav__link ">
+            <a href="../../../me/DIC/" class="md-nav__link ">
               
   
   
@@ -670,7 +676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/Gloassary/" class="md-nav__link">
+      <a href="../../../me/DIC/Gloassary/" class="md-nav__link">
         
   
   
@@ -727,7 +733,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/DIC/CourseDesign/" class="md-nav__link ">
+            <a href="../../../me/DIC/CourseDesign/" class="md-nav__link ">
               
   
   
@@ -771,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/CourseDesign/init/" class="md-nav__link">
+      <a href="../../../me/DIC/CourseDesign/init/" class="md-nav__link">
         
   
   
@@ -799,7 +805,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/CourseDesign/introduction/" class="md-nav__link">
+      <a href="../../../me/DIC/CourseDesign/introduction/" class="md-nav__link">
         
   
   
@@ -827,7 +833,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/CourseDesign/Design_Specifications/" class="md-nav__link">
+      <a href="../../../me/DIC/CourseDesign/Design_Specifications/" class="md-nav__link">
         
   
   
@@ -855,7 +861,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/CourseDesign/Re-quantization/" class="md-nav__link">
+      <a href="../../../me/DIC/CourseDesign/Re-quantization/" class="md-nav__link">
         
   
   
@@ -938,7 +944,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/DIC/VLSI/" class="md-nav__link ">
+            <a href="../../../me/DIC/VLSI/" class="md-nav__link ">
               
   
   
@@ -982,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch1-introduction/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch1-introduction/" class="md-nav__link">
         
   
   
@@ -1010,7 +1016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch2-modulation/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch2-modulation/" class="md-nav__link">
         
   
   
@@ -1038,7 +1044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch3-iteration_bound/index.md" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch3-iteration_bound/" class="md-nav__link">
         
   
   
@@ -1066,7 +1072,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch4-paralleling_pipeline/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch4-paralleling_pipeline/" class="md-nav__link">
         
   
   
@@ -1094,7 +1100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch5-retiming/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch5-retiming/" class="md-nav__link">
         
   
   
@@ -1122,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch6-unfolding/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch6-unfolding/" class="md-nav__link">
         
   
   
@@ -1150,7 +1156,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch7-folding/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch7-folding/" class="md-nav__link">
         
   
   
@@ -1178,7 +1184,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch8-systolic_array/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch8-systolic_array/" class="md-nav__link">
         
   
   
@@ -1206,7 +1212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch9-fading_channel/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch9-fading_channel/" class="md-nav__link">
         
   
   
@@ -1234,7 +1240,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch10-bandpass_modulation/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch10-bandpass_modulation/" class="md-nav__link">
         
   
   
@@ -1262,7 +1268,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch11-mqam/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch11-mqam/" class="md-nav__link">
         
   
   
@@ -1290,7 +1296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch11-ofdm/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch11-ofdm/" class="md-nav__link">
         
   
   
@@ -1318,7 +1324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch12-channel_code/" class="md-nav__link">
+      <a href="../../../me/DIC/VLSI/ch12-channel_code/" class="md-nav__link">
         
   
   
@@ -1393,7 +1399,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/DIC/PU/" class="md-nav__link ">
+            <a href="../../../me/DIC/PU/" class="md-nav__link ">
               
   
   
@@ -1437,7 +1443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch1-the_software_hardware_interface/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/ch1-the_software_hardware_interface/" class="md-nav__link">
         
   
   
@@ -1465,7 +1471,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch2-ISA/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/ch2-ISA/" class="md-nav__link">
         
   
   
@@ -1493,7 +1499,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch3-arithmetic/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/ch3-arithmetic/" class="md-nav__link">
         
   
   
@@ -1521,7 +1527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch4-processor/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/ch4-processor/" class="md-nav__link">
         
   
   
@@ -1549,7 +1555,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch4-processor-p2/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/ch4-processor-p2/" class="md-nav__link">
         
   
   
@@ -1577,7 +1583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch5-memory/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/ch5-memory/" class="md-nav__link">
         
   
   
@@ -1605,7 +1611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/ch6-parallel/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/ch6-parallel/" class="md-nav__link">
         
   
   
@@ -1633,7 +1639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/gpgpu1_overview/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/gpgpu1_overview/" class="md-nav__link">
         
   
   
@@ -1661,7 +1667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/PU/gpgpu2_programming_model/" class="md-nav__link">
+      <a href="../../../me/DIC/PU/gpgpu2_programming_model/" class="md-nav__link">
         
   
   
@@ -1724,7 +1730,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/DIC/soc/" class="md-nav__link ">
+            <a href="../../../me/DIC/soc/" class="md-nav__link ">
               
   
   
@@ -1768,7 +1774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/soc/intro/" class="md-nav__link">
+      <a href="../../../me/DIC/soc/intro/" class="md-nav__link">
         
   
   
@@ -1796,7 +1802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/soc/processor/" class="md-nav__link">
+      <a href="../../../me/DIC/soc/processor/" class="md-nav__link">
         
   
   
@@ -1824,7 +1830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/soc/axi/" class="md-nav__link">
+      <a href="../../../me/DIC/soc/axi/" class="md-nav__link">
         
   
   
@@ -1868,7 +1874,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/verilog/" class="md-nav__link">
+      <a href="../../../me/verilog/" class="md-nav__link">
         
   
   
@@ -1929,7 +1935,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../me/EDA/" class="md-nav__link ">
+            <a href="../../../me/EDA/" class="md-nav__link ">
               
   
   
@@ -1973,7 +1979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/EDA/vscode/" class="md-nav__link">
+      <a href="../../../me/EDA/vscode/" class="md-nav__link">
         
   
   
@@ -2001,7 +2007,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/EDA/mobaxterm/" class="md-nav__link">
+      <a href="../../../me/EDA/mobaxterm/" class="md-nav__link">
         
   
   
@@ -2029,7 +2035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/EDA/OSS/" class="md-nav__link">
+      <a href="../../../me/EDA/OSS/" class="md-nav__link">
         
   
   
@@ -2057,7 +2063,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/EDA/tcl/" class="md-nav__link">
+      <a href="../../../me/EDA/tcl/" class="md-nav__link">
         
   
   
@@ -2085,7 +2091,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/EDA/report/" class="md-nav__link">
+      <a href="../../../me/EDA/report/" class="md-nav__link">
         
   
   
@@ -2113,7 +2119,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/EDA/modelsim/" class="md-nav__link">
+      <a href="../../../me/EDA/modelsim/" class="md-nav__link">
         
   
   
@@ -2187,7 +2193,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ml/Basic/" class="md-nav__link ">
+            <a href="../../../ml/Basic/" class="md-nav__link ">
               
   
   
@@ -2231,7 +2237,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/Basic/ch1_Full_Connected_NN/" class="md-nav__link">
+      <a href="../../../ml/Basic/ch1_Full_Connected_NN/" class="md-nav__link">
         
   
   
@@ -2259,7 +2265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/Basic/ch2_Optimization/" class="md-nav__link">
+      <a href="../../../ml/Basic/ch2_Optimization/" class="md-nav__link">
         
   
   
@@ -2287,7 +2293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/Basic/ch3_CNN/" class="md-nav__link">
+      <a href="../../../ml/Basic/ch3_CNN/" class="md-nav__link">
         
   
   
@@ -2315,7 +2321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/Basic/ch4_Self_Attention/" class="md-nav__link">
+      <a href="../../../ml/Basic/ch4_Self_Attention/" class="md-nav__link">
         
   
   
@@ -2343,7 +2349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/Basic/ch5_Transformer/" class="md-nav__link">
+      <a href="../../../ml/Basic/ch5_Transformer/" class="md-nav__link">
         
   
   
@@ -2425,7 +2431,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ml/CV/" class="md-nav__link ">
+            <a href="../../../ml/CV/" class="md-nav__link ">
               
   
   
@@ -2469,7 +2475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/ResNet/" class="md-nav__link">
+      <a href="../../../ml/CV/ResNet/" class="md-nav__link">
         
   
   
@@ -2497,7 +2503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/DenseNet/" class="md-nav__link">
+      <a href="../../../ml/CV/DenseNet/" class="md-nav__link">
         
   
   
@@ -2525,7 +2531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
+      <a href="../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
         
   
   
@@ -2553,7 +2559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
+      <a href="../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
         
   
   
@@ -2581,7 +2587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
+      <a href="../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
         
   
   
@@ -2609,7 +2615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/VIT/" class="md-nav__link">
+      <a href="../../../ml/CV/VIT/" class="md-nav__link">
         
   
   
@@ -2637,7 +2643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/PFLD/" class="md-nav__link">
+      <a href="../../../ml/CV/PFLD/" class="md-nav__link">
         
   
   
@@ -2665,7 +2671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/mobileone/" class="md-nav__link">
+      <a href="../../../ml/CV/mobileone/" class="md-nav__link">
         
   
   
@@ -2693,7 +2699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/MSKA/" class="md-nav__link">
+      <a href="../../../ml/CV/MSKA/" class="md-nav__link">
         
   
   
@@ -2721,7 +2727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/MSKA-computing/" class="md-nav__link">
+      <a href="../../../ml/CV/MSKA-computing/" class="md-nav__link">
         
   
   
@@ -2749,7 +2755,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/TSCM/" class="md-nav__link">
+      <a href="../../../ml/CV/TSCM/" class="md-nav__link">
         
   
   
@@ -2777,7 +2783,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/TSRNet/" class="md-nav__link">
+      <a href="../../../ml/CV/TSRNet/" class="md-nav__link">
         
   
   
@@ -2834,7 +2840,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ml/CV/PFLD_GhostOne/" class="md-nav__link ">
+            <a href="../../../ml/CV/PFLD_GhostOne/" class="md-nav__link ">
               
   
   
@@ -2878,7 +2884,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/PFLD_GhostOne/CodeNotes/" class="md-nav__link">
+      <a href="../../../ml/CV/PFLD_GhostOne/CodeNotes/" class="md-nav__link">
         
   
   
@@ -2906,7 +2912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/PFLD_GhostOne/Loss/" class="md-nav__link">
+      <a href="../../../ml/CV/PFLD_GhostOne/Loss/" class="md-nav__link">
         
   
   
@@ -2934,7 +2940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/PFLD_GhostOne/PyTorch2onnx/" class="md-nav__link">
+      <a href="../../../ml/CV/PFLD_GhostOne/PyTorch2onnx/" class="md-nav__link">
         
   
   
@@ -2962,7 +2968,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ml/CV/PFLD_GhostOne/DA/" class="md-nav__link">
+      <a href="../../../ml/CV/PFLD_GhostOne/DA/" class="md-nav__link">
         
   
   
@@ -3002,6 +3008,8 @@
       
   
   
+    
+  
   
   
     
@@ -3021,18 +3029,21 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../rust/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -3050,13 +3061,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -3076,7 +3087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../rust/notes/Study/" class="md-nav__link">
+      <a href="../Study/" class="md-nav__link">
         
   
   
@@ -3101,10 +3112,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../../rust/notes/Rust环境配置方法/index.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 环境配置
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -3120,6 +3158,48 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-msys2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. MSYS2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-rust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Rust 环境配置
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -3132,7 +3212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../rust/crypto/" class="md-nav__link">
+      <a href="../../crypto/" class="md-nav__link">
         
   
   
@@ -3198,7 +3278,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../AI-Tools/" class="md-nav__link ">
+            <a href="../../../AI-Tools/" class="md-nav__link ">
               
   
   
@@ -3242,7 +3322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/ClaudeCode/" class="md-nav__link">
+      <a href="../../../AI-Tools/ClaudeCode/" class="md-nav__link">
         
   
   
@@ -3270,7 +3350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/MCP/" class="md-nav__link">
+      <a href="../../../AI-Tools/MCP/" class="md-nav__link">
         
   
   
@@ -3298,7 +3378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/OpenRouter/" class="md-nav__link">
+      <a href="../../../AI-Tools/OpenRouter/" class="md-nav__link">
         
   
   
@@ -3326,7 +3406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/OpenCode/" class="md-nav__link">
+      <a href="../../../AI-Tools/OpenCode/" class="md-nav__link">
         
   
   
@@ -3354,7 +3434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../AI-Tools/Aider/" class="md-nav__link">
+      <a href="../../../AI-Tools/Aider/" class="md-nav__link">
         
   
   
@@ -3422,7 +3502,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../" class="md-nav__link ">
+            <a href="../../../Tools/" class="md-nav__link ">
               
   
   
@@ -3466,7 +3546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docker/" class="md-nav__link">
+      <a href="../../../Tools/docker/" class="md-nav__link">
         
   
   
@@ -3494,7 +3574,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../git/" class="md-nav__link">
+      <a href="../../../Tools/git/" class="md-nav__link">
         
   
   
@@ -3522,7 +3602,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../../../Tools/wsl2/" class="md-nav__link">
         
   
   
@@ -3550,7 +3630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../markdown/" class="md-nav__link">
+      <a href="../../../Tools/markdown/" class="md-nav__link">
         
   
   
@@ -3578,7 +3658,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../markdown/writing_style_guide/" class="md-nav__link">
+      <a href="../../../Tools/markdown/writing_style_guide/" class="md-nav__link">
         
   
   
@@ -3606,7 +3686,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../markdown/mkdocs_theme_notes/" class="md-nav__link">
+      <a href="../../../Tools/markdown/mkdocs_theme_notes/" class="md-nav__link">
         
   
   
@@ -3641,7 +3721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../comments/" class="md-nav__link">
+      <a href="../../../comments/" class="md-nav__link">
         
   
   
@@ -3688,10 +3768,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#i" class="md-nav__link">
+  <a href="#i-msys2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        I. 系统级目录
+        I. MSYS2
       
     </span>
   </a>
@@ -3699,63 +3779,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ii" class="md-nav__link">
+  <a href="#ii-rust" class="md-nav__link">
     <span class="md-ellipsis">
       
-        II. 用户级目录
+        II. Rust 环境配置
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iii-usrlocalbin-usrbin" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        III. usr/local/bin 与 /usr/bin
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="III. usr/local/bin 与 /usr/bin">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-usrloaclbin" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 系统级可执行程序目录usr/loacl/bin
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-usrbin" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 /usr/bin
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-bashrc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 ~/.bashrc与环境变量
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3776,86 +3806,27 @@
 
 
 
-<h1 id="_1">文件系统目录<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="i">I. 系统级目录<a class="headerlink" href="#i" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>g++<span class="w"> </span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>make<span class="w"> </span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>clang<span class="w"> </span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>python3<span class="w"> </span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>pip3
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>graphviz
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>git
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>vim
-</span></code></pre></div>
-<h2 id="ii">II. 用户级目录<a class="headerlink" href="#ii" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>miniconda3<span class="w"> </span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>python3.11.4
-</span></code></pre></div>
-<h2 id="iii-usrlocalbin-usrbin">III. <code>usr/local/bin</code> 与 <code>/usr/bin</code><a class="headerlink" href="#iii-usrlocalbin-usrbin" title="Permanent link">&para;</a></h2>
-<h3 id="31-usrloaclbin">3.1 系统级可执行程序目录<code>usr/loacl/bin</code><a class="headerlink" href="#31-usrloaclbin" title="Permanent link">&para;</a></h3>
-<ul>
-<li>存放 <strong>系统管理员安装的可执行文件或脚本</strong>，不属于系统自带软件包</li>
-<li><strong>所有用户</strong>都可以直接在 shell 中调用这些程序</li>
-</ul>
-<p><strong>常见内容</strong>：<br />
-* 自己编译的工具（如 Yosys 源码安装）<br />
-* 脚本或二进制程序（例如 Python 虚拟环境里的命令可软链接到这里）</p>
-<h3 id="32-usrbin">3.2 <code>/usr/bin</code><a class="headerlink" href="#32-usrbin" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>/usr/bin</code>：系统自带或由包管理器安装的程序</li>
-<li><code>/usr/local/bin</code>：管理员/用户手动安装的软件，优先级高于 <code>/usr/bin</code>（PATH 顺序中靠前）</li>
-</ul>
-<h3 id="33-bashrc">3.3 <code>~/.bashrc</code>与环境变量<a class="headerlink" href="#33-bashrc" title="Permanent link">&para;</a></h3>
-<h4 id="1-bashrc">1️⃣ <code>~/.bashrc</code><a class="headerlink" href="#1-bashrc" title="Permanent link">&para;</a></h4>
-<p><strong>全称</strong>：Bourne Again Shell Resource Configuration<br />
-<strong>位置</strong>：每个用户家目录下都有一个隐藏文件：<code>~/.bashrc</code>，例子：<code>/home/fj/.bashrc</code><br />
-<strong>作用</strong>：</p>
-<ol>
-<li>每次打开一个 <strong>交互式 Bash shell</strong>（也就是终端窗口）时，都会自动执行这个文件里的命令。</li>
-<li>典型内容：</li>
-<li>设置 <strong>环境变量</strong>（比如 <code>PATH</code>、<code>PYTHONPATH</code>）</li>
-<li>配置命令别名（比如 <code>alias ll='ls -al'</code>）</li>
-<li>初始化工具（比如 <code>conda</code>、<code>pyenv</code>）</li>
-</ol>
+<h1 id="rust">Rust 环境配置方法<a class="headerlink" href="#rust" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>每个用户都有自己的 <code>.bashrc</code>，用户之间互相独立。root 用户有自己的 <code>/root/.bashrc</code>。</p>
+<p>针对 Windows 用户，使用 msys2 project 配置 Rust 环境的方法。</p>
 </blockquote>
-<h4 id="2-source">2️⃣ <code>source</code> 命令<a class="headerlink" href="#2-source" title="Permanent link">&para;</a></h4>
-<p><strong>作用</strong>：让当前 shell 执行指定文件里的命令，而不是新开一个子 shell。</p>
-<p>例子：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">source</span><span class="w"> </span>~/.bashrc
-</span></code></pre></div>
-<p><strong>效果就是：</strong><br />
-1. 立刻加载 <code>.bashrc</code> 里的所有配置，比如环境变量、别名等。<br />
-2. 对当前终端有效，不需要重新打开终端。</p>
-<blockquote>
-<p>注意：直接运行 <code>.bashrc</code> 文件 <code>bash ~/.bashrc</code> 会开一个子 shell，环境变量不会影响当前 shell。</p>
-</blockquote>
-<h4 id="3">3️⃣ 环境变量<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
-<p><strong>概念</strong>：存储在内存中的一组键值对，用来影响程序的行为。<br />
-<strong>常见用途</strong>：<br />
-  * <code>PATH</code>：系统查找可执行程序的路径<br />
-  * <code>PYTHONPATH</code>：Python 查找模块的路径<br />
-  * <code>http_proxy</code> / <code>https_proxy</code>：网络代理配置</p>
-<p><strong>查看所有环境变量</strong>：<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>printenv
+<h2 id="i-msys2">I. MSYS2<a class="headerlink" href="#i-msys2" title="Permanent link">&para;</a></h2>
+<p>MSYS2 是一个 Windows 上的类 Unix 环境，提供了一个包管理器 <code>pacman</code>，可以方便地安装各种开发工具和库。<br />
+安装 MSYS2 的方法很简单，直接访问官网 <a href="https://www.msys2.org/">https://www.msys2.org/</a> 下载并安装即可。</p>
+<h2 id="ii-rust">II. Rust 环境配置<a class="headerlink" href="#ii-rust" title="Permanent link">&para;</a></h2>
+<p>以下操作在 <code>MSYS2-Clang64</code> 终端中进行：<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">RUSTUP_HOME</span><span class="o">=</span><span class="s2">&quot;/clang64/.rustup&quot;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CARGO_HOME</span><span class="o">=</span><span class="s2">&quot;/clang64/.cargo&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/clang/.rustup
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/clang/.cargo
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>curl<span class="w"> </span>https://sh.rustup.rs<span class="w"> </span>-sSf<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>-y<span class="w"> </span>--no-modify-path
 </span></code></pre></div></p>
-<p><strong>设置环境变量</strong>：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MYVAR</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span>
-</span></code></pre></div>
-<div class="admonition note 永久生效">
-<p class="admonition-title">Note</p>
-<p>写入 <code>~/.bashrc</code>：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export MYVAR=&quot;hello&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">source</span><span class="w"> </span>~/.bashrc
-</span></code></pre></div>
-</div>
-<p>✅ <strong>应用案例</strong></p>
-<p>安装 <code>conda</code> 后执行：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">source</span><span class="w"> </span>~/miniconda3/etc/profile.d/conda.sh
-</span></code></pre></div>
-<p>就是把 <code>conda</code> 命令加载到当前 shell 的环境变量里。</p>
-<p>想<strong>每次开终端都自动加载</strong> → 把上面这行写入 <code>~/.bashrc</code>。</p>
+<p>然后在~/.bashrc中设置了：<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">RUSTUP_HOME</span><span class="o">=</span><span class="s2">&quot;/clang64/.rustup&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CARGO_HOME</span><span class="o">=</span><span class="s2">&quot;/clang64/.cargo&quot;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/clang64/.cargo/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+</span></code></pre></div></p>
+<p>.bashrc的目录在：<code>msys2/home/21035</code></p>
 
 
 
@@ -3915,20 +3886,20 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../../../javascripts/extra.js?v=20260604-2"></script>
+        <script src="../../../javascripts/extra.js?v=20260604-2"></script>
       
-        <script src="../../../../javascripts/crypto.js"></script>
+        <script src="../../../javascripts/crypto.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
       
-        <script src="../../../../javascripts/katex.js"></script>
+        <script src="../../../javascripts/katex.js"></script>
       
     
   </body>

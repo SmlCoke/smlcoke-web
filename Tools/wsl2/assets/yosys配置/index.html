@@ -10,7 +10,7 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/rust/notes/Rust%E9%90%9C%EE%88%9A%EE%95%A8%E9%96%B0%E5%B6%87%E7%96%86%E9%8F%82%E8%A7%84%E7%A1%B6/">
+        <link rel="canonical" href="https://smlcoke.com/Tools/wsl2/assets/yosys%E9%85%8D%E7%BD%AE/">
       
       
       
@@ -18,19 +18,19 @@
         
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
     
     
       
-        <title>Rust 环境配置方法 - SmlCoke Home</title>
+        <title>Yosys 配置笔记/记录 - SmlCoke Home</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,11 +49,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=20260604-2">
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css?v=20260604-2">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rust" class="md-skip">
+        <a href="#yosys" class="md-skip">
           跳转至
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Rust 环境配置方法
+              Yosys 配置笔记/记录
             
           </span>
         </div>
@@ -209,7 +209,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../../../.." class="md-tabs__link">
         
   
   
@@ -228,7 +228,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../blog/" class="md-tabs__link">
+      <a href="../../../../blog/" class="md-tabs__link">
         
   
   
@@ -249,7 +249,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../me/" class="md-tabs__link">
+        <a href="../../../../me/" class="md-tabs__link">
           
   
   
@@ -271,7 +271,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../ml/Basic/" class="md-tabs__link">
+        <a href="../../../../ml/Basic/" class="md-tabs__link">
           
   
   
@@ -293,7 +293,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../ml/CV/" class="md-tabs__link">
+        <a href="../../../../ml/CV/" class="md-tabs__link">
           
   
   
@@ -315,7 +315,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../" class="md-tabs__link">
+        <a href="../../../../rust/" class="md-tabs__link">
           
   
   
@@ -337,7 +337,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../AI-Tools/" class="md-tabs__link">
+        <a href="../../../../AI-Tools/" class="md-tabs__link">
           
   
   
@@ -359,7 +359,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../Tools/" class="md-tabs__link">
+        <a href="../../../" class="md-tabs__link">
           
   
   
@@ -379,7 +379,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../comments/" class="md-tabs__link">
+      <a href="../../../../comments/" class="md-tabs__link">
         
   
   
@@ -420,7 +420,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -438,7 +438,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -467,7 +467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../blog/" class="md-nav__link">
+      <a href="../../../../blog/" class="md-nav__link">
         
   
   
@@ -523,7 +523,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../me/" class="md-nav__link ">
+            <a href="../../../../me/" class="md-nav__link ">
               
   
   
@@ -567,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/SS/" class="md-nav__link">
+      <a href="../../../../me/SS/" class="md-nav__link">
         
   
   
@@ -626,7 +626,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../me/DIC/" class="md-nav__link ">
+            <a href="../../../../me/DIC/" class="md-nav__link ">
               
   
   
@@ -670,7 +670,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/Gloassary/" class="md-nav__link">
+      <a href="../../../../me/DIC/Gloassary/" class="md-nav__link">
         
   
   
@@ -727,7 +727,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../me/DIC/CourseDesign/" class="md-nav__link ">
+            <a href="../../../../me/DIC/CourseDesign/" class="md-nav__link ">
               
   
   
@@ -771,7 +771,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/CourseDesign/init/" class="md-nav__link">
+      <a href="../../../../me/DIC/CourseDesign/init/" class="md-nav__link">
         
   
   
@@ -799,7 +799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/CourseDesign/introduction/" class="md-nav__link">
+      <a href="../../../../me/DIC/CourseDesign/introduction/" class="md-nav__link">
         
   
   
@@ -827,7 +827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/CourseDesign/Design_Specifications/" class="md-nav__link">
+      <a href="../../../../me/DIC/CourseDesign/Design_Specifications/" class="md-nav__link">
         
   
   
@@ -855,7 +855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/CourseDesign/Re-quantization/" class="md-nav__link">
+      <a href="../../../../me/DIC/CourseDesign/Re-quantization/" class="md-nav__link">
         
   
   
@@ -938,7 +938,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../me/DIC/VLSI/" class="md-nav__link ">
+            <a href="../../../../me/DIC/VLSI/" class="md-nav__link ">
               
   
   
@@ -982,7 +982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch1-introduction/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch1-introduction/" class="md-nav__link">
         
   
   
@@ -1010,7 +1010,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch2-modulation/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch2-modulation/" class="md-nav__link">
         
   
   
@@ -1038,7 +1038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch3-iteration_bound/index.md" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch3-iteration_bound/" class="md-nav__link">
         
   
   
@@ -1066,7 +1066,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch4-paralleling_pipeline/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch4-paralleling_pipeline/" class="md-nav__link">
         
   
   
@@ -1094,7 +1094,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch5-retiming/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch5-retiming/" class="md-nav__link">
         
   
   
@@ -1122,7 +1122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch6-unfolding/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch6-unfolding/" class="md-nav__link">
         
   
   
@@ -1150,7 +1150,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch7-folding/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch7-folding/" class="md-nav__link">
         
   
   
@@ -1178,7 +1178,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch8-systolic_array/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch8-systolic_array/" class="md-nav__link">
         
   
   
@@ -1206,7 +1206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch9-fading_channel/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch9-fading_channel/" class="md-nav__link">
         
   
   
@@ -1234,7 +1234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch10-bandpass_modulation/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch10-bandpass_modulation/" class="md-nav__link">
         
   
   
@@ -1262,7 +1262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch11-mqam/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch11-mqam/" class="md-nav__link">
         
   
   
@@ -1290,7 +1290,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch11-ofdm/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch11-ofdm/" class="md-nav__link">
         
   
   
@@ -1318,7 +1318,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/VLSI/ch12-channel_code/" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch12-channel_code/" class="md-nav__link">
         
   
   
@@ -1393,7 +1393,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../me/DIC/PU/" class="md-nav__link ">
+            <a href="../../../../me/DIC/PU/" class="md-nav__link ">
               
   
   
@@ -1437,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/ch1-the_software_hardware_interface/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/ch1-the_software_hardware_interface/" class="md-nav__link">
         
   
   
@@ -1465,7 +1465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/ch2-ISA/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/ch2-ISA/" class="md-nav__link">
         
   
   
@@ -1493,7 +1493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/ch3-arithmetic/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/ch3-arithmetic/" class="md-nav__link">
         
   
   
@@ -1521,7 +1521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/ch4-processor/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/ch4-processor/" class="md-nav__link">
         
   
   
@@ -1549,7 +1549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/ch4-processor-p2/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/ch4-processor-p2/" class="md-nav__link">
         
   
   
@@ -1577,7 +1577,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/ch5-memory/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/ch5-memory/" class="md-nav__link">
         
   
   
@@ -1605,7 +1605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/ch6-parallel/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/ch6-parallel/" class="md-nav__link">
         
   
   
@@ -1633,7 +1633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/gpgpu1_overview/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/gpgpu1_overview/" class="md-nav__link">
         
   
   
@@ -1661,7 +1661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/PU/gpgpu2_programming_model/" class="md-nav__link">
+      <a href="../../../../me/DIC/PU/gpgpu2_programming_model/" class="md-nav__link">
         
   
   
@@ -1724,7 +1724,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../me/DIC/soc/" class="md-nav__link ">
+            <a href="../../../../me/DIC/soc/" class="md-nav__link ">
               
   
   
@@ -1768,7 +1768,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/soc/intro/" class="md-nav__link">
+      <a href="../../../../me/DIC/soc/intro/" class="md-nav__link">
         
   
   
@@ -1796,7 +1796,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/soc/processor/" class="md-nav__link">
+      <a href="../../../../me/DIC/soc/processor/" class="md-nav__link">
         
   
   
@@ -1824,7 +1824,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/DIC/soc/axi/" class="md-nav__link">
+      <a href="../../../../me/DIC/soc/axi/" class="md-nav__link">
         
   
   
@@ -1868,7 +1868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/verilog/" class="md-nav__link">
+      <a href="../../../../me/verilog/" class="md-nav__link">
         
   
   
@@ -1929,7 +1929,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../me/EDA/" class="md-nav__link ">
+            <a href="../../../../me/EDA/" class="md-nav__link ">
               
   
   
@@ -1973,7 +1973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/EDA/vscode/" class="md-nav__link">
+      <a href="../../../../me/EDA/vscode/" class="md-nav__link">
         
   
   
@@ -2001,7 +2001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/EDA/mobaxterm/" class="md-nav__link">
+      <a href="../../../../me/EDA/mobaxterm/" class="md-nav__link">
         
   
   
@@ -2029,7 +2029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/EDA/OSS/" class="md-nav__link">
+      <a href="../../../../me/EDA/OSS/" class="md-nav__link">
         
   
   
@@ -2057,7 +2057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/EDA/tcl/" class="md-nav__link">
+      <a href="../../../../me/EDA/tcl/" class="md-nav__link">
         
   
   
@@ -2085,7 +2085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/EDA/report/" class="md-nav__link">
+      <a href="../../../../me/EDA/report/" class="md-nav__link">
         
   
   
@@ -2113,7 +2113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../me/EDA/modelsim/" class="md-nav__link">
+      <a href="../../../../me/EDA/modelsim/" class="md-nav__link">
         
   
   
@@ -2187,7 +2187,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ml/Basic/" class="md-nav__link ">
+            <a href="../../../../ml/Basic/" class="md-nav__link ">
               
   
   
@@ -2231,7 +2231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/Basic/ch1_Full_Connected_NN/" class="md-nav__link">
+      <a href="../../../../ml/Basic/ch1_Full_Connected_NN/" class="md-nav__link">
         
   
   
@@ -2259,7 +2259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/Basic/ch2_Optimization/" class="md-nav__link">
+      <a href="../../../../ml/Basic/ch2_Optimization/" class="md-nav__link">
         
   
   
@@ -2287,7 +2287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/Basic/ch3_CNN/" class="md-nav__link">
+      <a href="../../../../ml/Basic/ch3_CNN/" class="md-nav__link">
         
   
   
@@ -2315,7 +2315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/Basic/ch4_Self_Attention/" class="md-nav__link">
+      <a href="../../../../ml/Basic/ch4_Self_Attention/" class="md-nav__link">
         
   
   
@@ -2343,7 +2343,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/Basic/ch5_Transformer/" class="md-nav__link">
+      <a href="../../../../ml/Basic/ch5_Transformer/" class="md-nav__link">
         
   
   
@@ -2425,7 +2425,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ml/CV/" class="md-nav__link ">
+            <a href="../../../../ml/CV/" class="md-nav__link ">
               
   
   
@@ -2469,7 +2469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/ResNet/" class="md-nav__link">
+      <a href="../../../../ml/CV/ResNet/" class="md-nav__link">
         
   
   
@@ -2497,7 +2497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/DenseNet/" class="md-nav__link">
+      <a href="../../../../ml/CV/DenseNet/" class="md-nav__link">
         
   
   
@@ -2525,7 +2525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
+      <a href="../../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
         
   
   
@@ -2553,7 +2553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
+      <a href="../../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
         
   
   
@@ -2581,7 +2581,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
+      <a href="../../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
         
   
   
@@ -2609,7 +2609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/VIT/" class="md-nav__link">
+      <a href="../../../../ml/CV/VIT/" class="md-nav__link">
         
   
   
@@ -2637,7 +2637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/PFLD/" class="md-nav__link">
+      <a href="../../../../ml/CV/PFLD/" class="md-nav__link">
         
   
   
@@ -2665,7 +2665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/mobileone/" class="md-nav__link">
+      <a href="../../../../ml/CV/mobileone/" class="md-nav__link">
         
   
   
@@ -2693,7 +2693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/MSKA/" class="md-nav__link">
+      <a href="../../../../ml/CV/MSKA/" class="md-nav__link">
         
   
   
@@ -2721,7 +2721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/MSKA-computing/" class="md-nav__link">
+      <a href="../../../../ml/CV/MSKA-computing/" class="md-nav__link">
         
   
   
@@ -2749,7 +2749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/TSCM/" class="md-nav__link">
+      <a href="../../../../ml/CV/TSCM/" class="md-nav__link">
         
   
   
@@ -2777,7 +2777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/TSRNet/" class="md-nav__link">
+      <a href="../../../../ml/CV/TSRNet/" class="md-nav__link">
         
   
   
@@ -2834,7 +2834,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ml/CV/PFLD_GhostOne/" class="md-nav__link ">
+            <a href="../../../../ml/CV/PFLD_GhostOne/" class="md-nav__link ">
               
   
   
@@ -2878,7 +2878,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/PFLD_GhostOne/CodeNotes/" class="md-nav__link">
+      <a href="../../../../ml/CV/PFLD_GhostOne/CodeNotes/" class="md-nav__link">
         
   
   
@@ -2906,7 +2906,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/PFLD_GhostOne/Loss/" class="md-nav__link">
+      <a href="../../../../ml/CV/PFLD_GhostOne/Loss/" class="md-nav__link">
         
   
   
@@ -2934,7 +2934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/PFLD_GhostOne/PyTorch2onnx/" class="md-nav__link">
+      <a href="../../../../ml/CV/PFLD_GhostOne/PyTorch2onnx/" class="md-nav__link">
         
   
   
@@ -2962,7 +2962,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ml/CV/PFLD_GhostOne/DA/" class="md-nav__link">
+      <a href="../../../../ml/CV/PFLD_GhostOne/DA/" class="md-nav__link">
         
   
   
@@ -3032,7 +3032,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../../rust/" class="md-nav__link ">
               
   
   
@@ -3076,7 +3076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Study/" class="md-nav__link">
+      <a href="../../../../rust/notes/Study/" class="md-nav__link">
         
   
   
@@ -3104,7 +3104,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Rust环境配置方法/index.md" class="md-nav__link">
+      <a href="../../../../rust/notes/Rust%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/" class="md-nav__link">
         
   
   
@@ -3132,7 +3132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../crypto/" class="md-nav__link">
+      <a href="../../../../rust/crypto/" class="md-nav__link">
         
   
   
@@ -3198,7 +3198,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../AI-Tools/" class="md-nav__link ">
+            <a href="../../../../AI-Tools/" class="md-nav__link ">
               
   
   
@@ -3242,7 +3242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../AI-Tools/ClaudeCode/" class="md-nav__link">
+      <a href="../../../../AI-Tools/ClaudeCode/" class="md-nav__link">
         
   
   
@@ -3270,7 +3270,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../AI-Tools/MCP/" class="md-nav__link">
+      <a href="../../../../AI-Tools/MCP/" class="md-nav__link">
         
   
   
@@ -3298,7 +3298,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../AI-Tools/OpenRouter/" class="md-nav__link">
+      <a href="../../../../AI-Tools/OpenRouter/" class="md-nav__link">
         
   
   
@@ -3326,7 +3326,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../AI-Tools/OpenCode/" class="md-nav__link">
+      <a href="../../../../AI-Tools/OpenCode/" class="md-nav__link">
         
   
   
@@ -3354,7 +3354,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../AI-Tools/Aider/" class="md-nav__link">
+      <a href="../../../../AI-Tools/Aider/" class="md-nav__link">
         
   
   
@@ -3422,7 +3422,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../Tools/" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   
@@ -3466,7 +3466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tools/docker/" class="md-nav__link">
+      <a href="../../../docker/" class="md-nav__link">
         
   
   
@@ -3494,7 +3494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tools/git/" class="md-nav__link">
+      <a href="../../../git/" class="md-nav__link">
         
   
   
@@ -3522,7 +3522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tools/wsl2/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   
@@ -3550,7 +3550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tools/markdown/" class="md-nav__link">
+      <a href="../../../markdown/" class="md-nav__link">
         
   
   
@@ -3578,7 +3578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tools/markdown/writing_style_guide/" class="md-nav__link">
+      <a href="../../../markdown/writing_style_guide/" class="md-nav__link">
         
   
   
@@ -3606,7 +3606,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Tools/markdown/mkdocs_theme_notes/" class="md-nav__link">
+      <a href="../../../markdown/mkdocs_theme_notes/" class="md-nav__link">
         
   
   
@@ -3641,7 +3641,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../comments/" class="md-nav__link">
+      <a href="../../../../comments/" class="md-nav__link">
         
   
   
@@ -3688,10 +3688,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#i-msys2" class="md-nav__link">
+  <a href="#i-clang" class="md-nav__link">
     <span class="md-ellipsis">
       
-        I. MSYS2
+        I. Clang 工具介绍
       
     </span>
   </a>
@@ -3699,13 +3699,85 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ii-rust" class="md-nav__link">
+  <a href="#ii-yosys-usrlocalbin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        II. Rust 环境配置
+        II. 从源码编译安装 Yosys（系统级 /usr/local/bin）
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="II. 从源码编译安装 Yosys（系统级 /usr/local/bin）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 步骤 A：安装编译依赖
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-b-yosys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 步骤 B：克隆 Yosys 源码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 步骤 C：选择编译配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-d-yosys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 步骤 D：编译 Yosys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 步骤 E：系统级安装
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-f" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 步骤 F：验证安装
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3726,27 +3798,82 @@
 
 
 
-<h1 id="rust">Rust 环境配置方法<a class="headerlink" href="#rust" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p>针对 Windows 用户，使用 msys2 project 配置 Rust 环境的方法。</p>
-</blockquote>
-<h2 id="i-msys2">I. MSYS2<a class="headerlink" href="#i-msys2" title="Permanent link">&para;</a></h2>
-<p>MSYS2 是一个 Windows 上的类 Unix 环境，提供了一个包管理器 <code>pacman</code>，可以方便地安装各种开发工具和库。<br />
-安装 MSYS2 的方法很简单，直接访问官网 <a href="https://www.msys2.org/">https://www.msys2.org/</a> 下载并安装即可。</p>
-<h2 id="ii-rust">II. Rust 环境配置<a class="headerlink" href="#ii-rust" title="Permanent link">&para;</a></h2>
-<p>以下操作在 <code>MSYS2-Clang64</code> 终端中进行：<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">RUSTUP_HOME</span><span class="o">=</span><span class="s2">&quot;/clang64/.rustup&quot;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CARGO_HOME</span><span class="o">=</span><span class="s2">&quot;/clang64/.cargo&quot;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/clang/.rustup
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/clang/.cargo
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>curl<span class="w"> </span>https://sh.rustup.rs<span class="w"> </span>-sSf<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>-y<span class="w"> </span>--no-modify-path
-</span></code></pre></div></p>
-<p>然后在~/.bashrc中设置了：<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">RUSTUP_HOME</span><span class="o">=</span><span class="s2">&quot;/clang64/.rustup&quot;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CARGO_HOME</span><span class="o">=</span><span class="s2">&quot;/clang64/.cargo&quot;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/clang64/.cargo/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
-</span></code></pre></div></p>
-<p>.bashrc的目录在：<code>msys2/home/21035</code></p>
+<h1 id="yosys">Yosys 配置笔记/记录<a class="headerlink" href="#yosys" title="Permanent link">&para;</a></h1>
+<p><code>Yosys</code> 是一个开源的数字综合工具，支持 Verilog HDL 的综合和优化。以下是从源码编译安装 Yosys 的详细步骤，以及相关的环境配置说明。</p>
+<h2 id="i-clang">I. Clang 工具介绍<a class="headerlink" href="#i-clang" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Clang</strong> 是 LLVM 项目的一部分，是一个现代 C/C++/Objective-C 编译器。</li>
+<li>
+<p><strong>作用</strong>：</p>
+</li>
+<li>
+<p>替代 GCC 编译 C/C++ 程序</p>
+</li>
+<li>编译速度快，错误信息清晰</li>
+<li>与 Yosys 编译兼容性好，源码推荐使用 Clang</li>
+</ul>
+<h2 id="ii-yosys-usrlocalbin">II. 从源码编译安装 Yosys（系统级 <code>/usr/local/bin</code>）<a class="headerlink" href="#ii-yosys-usrlocalbin" title="Permanent link">&para;</a></h2>
+<h3 id="31-a">3.1 步骤 A：安装编译依赖<a class="headerlink" href="#31-a" title="Permanent link">&para;</a></h3>
+<p>在 WSL Ubuntu 22.04 下执行：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>build-essential<span class="w"> </span>clang<span class="w"> </span>bison<span class="w"> </span>flex<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>libreadline-dev<span class="w"> </span>gawk<span class="w"> </span>tcl-dev<span class="w"> </span>libffi-dev<span class="w"> </span>git<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span>graphviz<span class="w"> </span>xdot<span class="w"> </span>pkg-config<span class="w"> </span>python3<span class="w"> </span>libboost-system-dev<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>libboost-python-dev<span class="w"> </span>libboost-filesystem-dev<span class="w"> </span>zlib1g-dev
+</span></code></pre></div>
+<p>解释：</p>
+<ul>
+<li><code>build-essential</code>：基础编译工具（gcc、make 等）</li>
+<li><code>clang</code>：C/C++ 编译器</li>
+<li><code>bison flex</code>：语法分析器工具，Yosys 源码需要</li>
+<li><code>libreadline-dev gawk tcl-dev libffi-dev</code>：Yosys 依赖库</li>
+<li><code>graphviz xdot</code>：可视化工具</li>
+<li><code>libboost-*</code>：Boost 库</li>
+<li><code>git</code>：克隆源码</li>
+</ul>
+<h3 id="32-b-yosys">3.2 步骤 B：克隆 Yosys 源码<a class="headerlink" href="#32-b-yosys" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>~
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>git<span class="w"> </span>clone<span class="w"> </span>--recurse-submodules<span class="w"> </span>https://github.com/YosysHQ/yosys.git
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">cd</span><span class="w"> </span>yosys
+</span></code></pre></div>
+<h3 id="33-c">3.3 步骤 C：选择编译配置<a class="headerlink" href="#33-c" title="Permanent link">&para;</a></h3>
+<p>推荐使用 Clang 编译：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>config-clang
+</span></code></pre></div>
+<p>如果想用 GCC，可以改为：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>config-gcc
+</span></code></pre></div>
+<h3 id="34-d-yosys">3.4 步骤 D：编译 Yosys<a class="headerlink" href="#34-d-yosys" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+</span></code></pre></div>
+<ul>
+<li><code>-j$(nproc)</code> 会使用 CPU 所有核心并行编译，加快速度</li>
+</ul>
+<h3 id="35-e">3.5 步骤 E：系统级安装<a class="headerlink" href="#35-e" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
+</span></code></pre></div>
+<ul>
+<li>会把 <code>yosys</code> 安装到 <code>/usr/local/bin</code></li>
+<li>系统中所有用户都可以直接使用 <code>yosys</code> 命令</li>
+</ul>
+<h3 id="36-f">3.6 步骤 F：验证安装<a class="headerlink" href="#36-f" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>yosys<span class="w"> </span>-V
+</span></code></pre></div>
+<p>如果看到类似：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Yosys 0.xx (git sha1 ...) ...
+</span></code></pre></div>
+<p>说明安装成功。</p>
+<p>💡 <strong>小贴士</strong></p>
+<ol>
+<li>安装完成后，<code>/usr/local/bin</code> 默认在 PATH 中，直接运行 <code>yosys</code> 即可。</li>
+<li>如果需要更新 Yosys，只需在源码目录执行：</li>
+</ol>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>pull
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init<span class="w"> </span>--recursive
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>make<span class="w"> </span>clean
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>make<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
+</span></code></pre></div>
 
 
 
@@ -3806,20 +3933,20 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../../javascripts/extra.js?v=20260604-2"></script>
+        <script src="../../../../javascripts/extra.js?v=20260604-2"></script>
       
-        <script src="../../../javascripts/crypto.js"></script>
+        <script src="../../../../javascripts/crypto.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
       
-        <script src="../../../javascripts/katex.js"></script>
+        <script src="../../../../javascripts/katex.js"></script>
       
     
   </body>

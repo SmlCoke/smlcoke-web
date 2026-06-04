@@ -1044,7 +1044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../me/DIC/VLSI/ch3-iteration_bound/index.md" class="md-nav__link">
+      <a href="../../me/DIC/VLSI/ch3-iteration_bound/" class="md-nav__link">
         
   
   
@@ -3110,7 +3110,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rust/notes/Rust环境配置方法/index.md" class="md-nav__link">
+      <a href="../../rust/notes/Rust%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/" class="md-nav__link">
         
   
   
@@ -3875,8 +3875,8 @@
 <h1 id="wsl2">WSL2 子系统开发笔记<a class="headerlink" href="#wsl2" title="Permanent link">&para;</a></h1>
 <h2 id="i-linux">I. Linux基础<a class="headerlink" href="#i-linux" title="Permanent link">&para;</a></h2>
 <p>WSL2 环境：Ubuntu 22.04，无图形化界面</p>
-<p><a href="./assets/文件系统目录.md">系统目录结构、环境变量配置说明文档</a><br />
-<a href="./assets/Linux基础命令.md">Linux 基础命令使用文档</a></p>
+<p><a href="assets/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9B%AE%E5%BD%95/">系统目录结构、环境变量配置说明文档</a><br />
+<a href="assets/Linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">Linux 基础命令使用文档</a></p>
 <p>WSL2 启动方式：<code>wsl -d Ubuntu-22.04</code>（或者 VSCode 直接连接）<br />
 WSL2 关断方式：<code>wsl --shutdown</code></p>
 <p><strong>WSL2 使用日志</strong>：</p>
@@ -3889,14 +3889,14 @@ WSL2 关断方式：<code>wsl --shutdown</code></p>
 <p><strong>WSL2 使用日志</strong>：<br />
 <code>miniconda</code> 配置在路径：<code>~/miniconda3/</code> 中，虚拟环境路径：<code>~/miniconda3/envs/</code>。<br />
 <code>conda</code> 启动方法：<code>source ~/miniconda3/etc/profile.d/conda.sh</code><br />
-<strong>配置步骤</strong>：<a href="./assets/python虚拟环境.md">venv 与 conda 配置方法文档</a></p>
+<strong>配置步骤</strong>：<a href="assets/python%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/">venv 与 conda 配置方法文档</a></p>
 <h2 id="iii">III. 代理<a class="headerlink" href="#iii" title="Permanent link">&para;</a></h2>
 <p><strong>WSL2 使用日志</strong>：<br />
-<strong>配置方法步骤</strong>：<a href="./assets/代理配置.md">代理配置方法文档</a></p>
+<strong>配置方法步骤</strong>：<a href="assets/%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/">代理配置方法文档</a></p>
 <h2 id="iv-yosys">IV. Yosys安装笔记<a class="headerlink" href="#iv-yosys" title="Permanent link">&para;</a></h2>
 <p><strong>WSL2 使用日志</strong>：<br />
 从 GitHub 上克隆了 Yosys 源码，配置在 <code>~</code> 目录下，使用 <code>Clang</code> 进行编译，安装在系统级目录 <code>/usr/local/bin</code> 中。因此可以在任何位置直接使用 <code>yosys</code> 调用。<br />
-<strong>配置方法步骤</strong>：<a href="./assets/yosys配置.md">Yosys 配置方法文档</a></p>
+<strong>配置方法步骤</strong>：<a href="assets/yosys%E9%85%8D%E7%BD%AE/">Yosys 配置方法文档</a></p>
 <h2 id="v-symbiyosys-boolector-z3">V. Symbiyosys, boolector, z3 工具链配置笔记<a class="headerlink" href="#v-symbiyosys-boolector-z3" title="Permanent link">&para;</a></h2>
 <p><strong>WSL2 使用日志</strong>：<br />
 <strong>2026-03-20</strong> 配置了 Symbiyosys、boolector 和 z3 工具链。</p>
@@ -3905,7 +3905,7 @@ WSL2 关断方式：<code>wsl --shutdown</code></p>
 <li><code>boolector</code> 源码目录：<code>~</code>，编译安装可执行文件路径<code>~/boolector/build/bin/</code>，软链接到了系统路径<code>/usr/local/bin/</code>中。</li>
 <li><code>z3</code> 源码目录：<code>~</code>，安装到了系统路径<code>/usr/local/bin/</code>中。</li>
 </ul>
-<p><strong>配置方法步骤</strong>：<a href="./assets/symbiyosys配置.md">Symbiyosys, boolector, z3 配置方法文档</a></p>
+<p><strong>配置方法步骤</strong>：<a href="assets/symbiyosys%E9%85%8D%E7%BD%AE/">Symbiyosys, boolector, z3 配置方法文档</a></p>
 <p>注意，编译 <code>z3</code> 工具时，遇到了 <code>g++</code> 版本过低的问题(Ubuntu 22.04 默认 C++ 环境是 11)，解决方法是安装 <code>g++ 12</code> 环境。</p>
 <p>如果后续想要将 <code>g++ 12</code> 设置为默认版本，可以使用 <code>update-alternatives</code> 工具进行管理：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>update-alternatives<span class="w"> </span>--install<span class="w"> </span>/usr/bin/gcc<span class="w"> </span>gcc<span class="w"> </span>/usr/bin/gcc-12<span class="w"> </span><span class="m">120</span>

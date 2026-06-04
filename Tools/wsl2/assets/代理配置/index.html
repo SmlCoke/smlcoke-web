@@ -10,7 +10,7 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/Tools/wsl2/assets/symbiyosys%E9%96%B0%E5%B6%87%E7%96%86/">
+        <link rel="canonical" href="https://smlcoke.com/Tools/wsl2/assets/%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Symbiyosys, boolector, z3 工具链配置笔记 - SmlCoke Home</title>
+        <title>代理 - SmlCoke Home</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#symbiyosys-boolector-z3" class="md-skip">
+        <a href="#_1" class="md-skip">
           跳转至
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Symbiyosys, boolector, z3 工具链配置笔记
+              代理
             
           </span>
         </div>
@@ -1038,7 +1038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../me/DIC/VLSI/ch3-iteration_bound/index.md" class="md-nav__link">
+      <a href="../../../../me/DIC/VLSI/ch3-iteration_bound/" class="md-nav__link">
         
   
   
@@ -3104,7 +3104,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../rust/notes/Rust环境配置方法/index.md" class="md-nav__link">
+      <a href="../../../../rust/notes/Rust%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/" class="md-nav__link">
         
   
   
@@ -3681,208 +3681,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#i-symbiyosys" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        I. 配置 Symbiyosys
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="I. 配置 Symbiyosys">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.1 安装基础依赖
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-symbiyosys" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 克隆 Symbiyosys 仓库并安装
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 检测安装是否成功：
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ii-boolector-smt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        II. 配置 boolector (SMT 求解器)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="II. 配置 boolector (SMT 求解器)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 安装编译依赖
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-boolector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 克隆 boolector 仓库并编译安装
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 准备依赖
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#24-boolector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.4 编译并安装 boolector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#25-boolector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.5 将 boolector 添加到系统路径
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#26" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.6 验证安装
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iii-z3-smt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        III. 配置 z3 (SMT 求解器)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="III. 配置 z3 (SMT 求解器)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 安装编译依赖
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-z3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 克隆 z3 仓库并编译安装
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-makefile" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 用官方推荐脚本生成 Makefile 并编译
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 验证安装
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -3898,100 +3696,35 @@
 
 
 
-<h1 id="symbiyosys-boolector-z3">Symbiyosys, boolector, z3 工具链配置笔记<a class="headerlink" href="#symbiyosys-boolector-z3" title="Permanent link">&para;</a></h1>
-<h2 id="i-symbiyosys">I. 配置 Symbiyosys<a class="headerlink" href="#i-symbiyosys" title="Permanent link">&para;</a></h2>
-<p><code>sby</code> 本质上是 Yosys formal flow 的前端驱动程序；它会调用后端的 SMT 求解器（如 boolector、z3）来执行形式验证任务。</p>
-<p>通过<strong>源码配置方法</strong>：</p>
-<h3 id="11">1.1 安装基础依赖<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>python3-pip<span class="w"> </span>git<span class="w"> </span>make
-</span></code></pre></div>
-<h3 id="12-symbiyosys">1.2 克隆 Symbiyosys 仓库并安装<a class="headerlink" href="#12-symbiyosys" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>~
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/YosysHQ/sby.git
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">cd</span><span class="w"> </span>sby
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
-</span></code></pre></div>
-<p>此后，<code>sby</code> 工具应该会被安装到系统路径<code>usr/local/bin/</code>中，可以直接在终端使用。</p>
-<h3 id="13">1.3 检测安装是否成功：<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>which<span class="w"> </span>sby
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># 应该输出: /usr/local/bin/sby</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>sby<span class="w"> </span>--version
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># 应该输出类似于: sby X.Y.Z ...</span>
-</span></code></pre></div>
-<h2 id="ii-boolector-smt">II. 配置 boolector (SMT 求解器)<a class="headerlink" href="#ii-boolector-smt" title="Permanent link">&para;</a></h2>
-<h3 id="21">2.1 安装编译依赖<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>build-essential<span class="w"> </span>cmake<span class="w"> </span>git<span class="w"> </span>python3<span class="w"> </span>curl
-</span></code></pre></div>
-<h3 id="22-boolector">2.2 克隆 boolector 仓库并编译安装<a class="headerlink" href="#22-boolector" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>~
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Boolector/boolector.git
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">cd</span><span class="w"> </span>boolector
-</span></code></pre></div>
-<h3 id="23">2.3 准备依赖<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
-<p>最常见的是配 <code>btor2tools</code> + <code>CaDiCaL</code>。<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./contrib/setup-btor2tools.sh
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>./contrib/setup-cadical.sh
+<h1 id="_1">代理<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>在<strong>用户根目录</strong>下配置了脚本 <code>Windows_IP_Proxy_Setup.sh</code>，用于在 WSL2 中设置 Windows 主机的 IP 代理，以便在 WSL2 内部访问外部网络资源。<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="ch">#!/bin/bash</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">PROXY_PORT</span><span class="o">=</span><span class="m">7897</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">WIN_IP</span><span class="o">=</span><span class="k">$(</span>grep<span class="w"> </span>nameserver<span class="w"> </span>/etc/resolv.conf<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">case</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="k">in</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>on<span class="o">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="nb">export</span><span class="w"> </span><span class="nv">http_proxy</span><span class="o">=</span><span class="s2">&quot;http://</span><span class="nv">$WIN_IP</span><span class="s2">:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nb">export</span><span class="w"> </span><span class="nv">https_proxy</span><span class="o">=</span><span class="s2">&quot;http://</span><span class="nv">$WIN_IP</span><span class="s2">:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="nb">export</span><span class="w"> </span><span class="nv">all_proxy</span><span class="o">=</span><span class="s2">&quot;socks5://</span><span class="nv">$WIN_IP</span><span class="s2">:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot; Info: Proxy enabled: </span><span class="nv">$WIN_IP</span><span class="s2">:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span>curl<span class="w"> </span>-I<span class="w"> </span>-m<span class="w"> </span><span class="m">5</span><span class="w"> </span>https://www.google.com<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="p">;;</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span>off<span class="o">)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="nb">unset</span><span class="w"> </span>http_proxy<span class="w"> </span>https_proxy<span class="w"> </span>all_proxy
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Warning: Proxy disabled&quot;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">        </span><span class="p">;;</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span>*<span class="o">)</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Usage: </span><span class="nv">$0</span><span class="s2"> {on|off}&quot;</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">        </span><span class="p">;;</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="k">esac</span>
 </span></code></pre></div></p>
-<h3 id="24-boolector">2.4 编译并安装 boolector<a class="headerlink" href="#24-boolector" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>./configure.sh
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">cd</span><span class="w"> </span>build
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>make<span class="w"> </span>-j<span class="s2">&quot;</span><span class="k">$(</span>nproc<span class="k">)</span><span class="s2">&quot;</span>
-</span></code></pre></div>
-<p>编译完成后，可执行文件在：<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>~/boolector/build/bin/boolector
-</span></code></pre></div></p>
-<h3 id="25-boolector">2.5 将 boolector 添加到系统路径<a class="headerlink" href="#25-boolector" title="Permanent link">&para;</a></h3>
-<p>直接软链接到 <code>/usr/local/bin/</code> 后，就可以在任何地方直接使用 <code>boolector</code> 命令了：<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>ln<span class="w"> </span>-sf<span class="w"> </span>~/dev/boolector/build/bin/boolector<span class="w"> </span>/usr/local/bin/boolector
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">hash</span><span class="w"> </span>-r
-</span></code></pre></div></p>
-<h3 id="26">2.6 验证安装<a class="headerlink" href="#26" title="Permanent link">&para;</a></h3>
-<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>which<span class="w"> </span>boolector
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>boolector<span class="w"> </span>--version
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nb">type</span><span class="w"> </span>-a<span class="w"> </span>boolector
+<p>其中 <code>PROXY_PORT</code> 是 Windows 主机上代理服务的端口号，可以在 <code>Clash</code> 设置界面查看与修改。<br />
+<code>https://www.google.com</code> 是一个测试 URL，用于验证代理是否生效。可以根据需要替换为其他 URL。</p>
+<p>脚本 <code>Windows_IP_Proxy_Setup.sh</code> 在任何用户下都能够直接使用：<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Windows_IP_Proxy_Setup.sh<span class="w"> </span>on<span class="w"> </span><span class="c1"># 开启代理</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Windows_IP_Proxy_Setup.sh<span class="w"> </span>off<span class="w"> </span><span class="c1"># 关闭代理</span>
 </span></code></pre></div><br />
-因为 <code>/usr/local/bin</code> 通常比 <code>/usr/bin</code> 优先，所以这能保证系统优先用源码版。</p>
-<h2 id="iii-z3-smt">III. 配置 z3 (SMT 求解器)<a class="headerlink" href="#iii-z3-smt" title="Permanent link">&para;</a></h2>
-<h3 id="31">3.1 安装编译依赖<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>build-essential<span class="w"> </span>python3<span class="w"> </span>git
-</span></code></pre></div>
-<h3 id="32-z3">3.2 克隆 z3 仓库并编译安装<a class="headerlink" href="#32-z3" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">cd</span><span class="w"> </span>~
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Z3Prover/z3.git
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nb">cd</span><span class="w"> </span>z3
-</span></code></pre></div>
-<h3 id="33-makefile">3.3 用官方推荐脚本生成 Makefile 并编译<a class="headerlink" href="#33-makefile" title="Permanent link">&para;</a></h3>
-<h4 id="331">3.3.1 默认编译命令<a class="headerlink" href="#331" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python3<span class="w"> </span>scripts/mk_make.py<span class="w"> </span>--prefix<span class="o">=</span>/usr/local
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nb">cd</span><span class="w"> </span>build
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>make<span class="w"> </span>-j<span class="s2">&quot;</span><span class="k">$(</span>nproc<span class="k">)</span><span class="s2">&quot;</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
-</span></code></pre></div>
-<p>注意：Z3 当前源码用了 C++20 的 <code>&lt;format&gt;</code>，而 Ubuntu 22.04 默认常见的 g++ 11 / libstdc++ 11 对这个头支持不完整，所以如果直接编译，会报 <code>fatal error: format: No such file or directory</code>。</p>
-<h4 id="332">3.3.2 修复办法<a class="headerlink" href="#332" title="Permanent link">&para;</a></h4>
-<p><strong>安装 g++ 12 环境</strong>：<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gcc-12<span class="w"> </span>g++-12<span class="w"> </span>libstdc++-12-dev
-</span></code></pre></div></p>
-<p><strong>重新编译</strong><br />
-注意先得清楚默认安装产生的 build 目录，删除它重新生成 Makefile：<br />
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">cd</span><span class="w"> </span>~/z3
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>rm<span class="w"> </span>-rf<span class="w"> </span>build
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>python3<span class="w"> </span>scripts/mk_make.py<span class="w"> </span>--prefix<span class="o">=</span>/usr/local
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="nb">cd</span><span class="w"> </span>build
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>make<span class="w"> </span><span class="nv">CXX</span><span class="o">=</span>g++-12<span class="w"> </span><span class="nv">CC</span><span class="o">=</span>gcc-12<span class="w"> </span>-j<span class="s2">&quot;</span><span class="k">$(</span>nproc<span class="k">)</span><span class="s2">&quot;</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
-</span></code></pre></div></p>
-<p>这会把可执行文件安装到 <code>/usr/local/bin/z3</code>，库安装到 <code>/usr/local/lib</code>。官方说明里写得很清楚：默认会把 z3 装到 <code>PREFIX/bin</code>，库到 <code>PREFIX/lib</code>，头文件到 <code>PREFIX/include</code>；<code>--prefix=</code> 可以改安装前缀。</p>
-<h3 id="34">3.4 验证安装<a class="headerlink" href="#34" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>which<span class="w"> </span>z3
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>z3<span class="w"> </span>--version
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>readlink<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>which<span class="w"> </span>z3<span class="k">)</span><span class="s2">&quot;</span>
-</span></code></pre></div>
+因为脚本<code>Windows_IP_Proxy_Setup.sh</code>被放到了系统级目录 <code>usr/local/bin</code></p>
 
 
 
