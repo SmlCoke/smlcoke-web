@@ -4727,6 +4727,16 @@ ModelSim 并不是解释型执行的脚本语言，而是<strong>编译型仿真
 </span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">run</span><span class="p">([</span><span class="s2">&quot;vsim&quot;</span><span class="p">,</span> <span class="s2">&quot;-modelsimini&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">modelsim_ini_path</span><span class="p">),</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;work.tb_top&quot;</span><span class="p">,</span> <span class="s2">&quot;-do&quot;</span><span class="p">,</span> <span class="s2">&quot;run -all; quit -f&quot;</span><span class="p">])</span>
 </span></code></pre></div>
 <p>在利用 Python 集成自动化仿真时，它<strong>最显式、最不容易受用户环境变量污染</strong>，是最推荐的方式。</p>
+<p>工程目录格式推荐：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>project/
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>├─ rtl/
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>├─ tb/
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>├─ sim/
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>│  ├─ modelsim.ini
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>│  └─ work/
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>└─ scripts/
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>   └─ run_modelsim.py
+</span></code></pre></div>
 
 
 
