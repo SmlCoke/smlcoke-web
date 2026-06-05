@@ -439,4 +439,19 @@ run(["vsim", "-modelsimini", str(modelsim_ini_path), "-c", "work.tb_top", "-do",
 
 在利用 Python 集成自动化仿真时，它**最显式、最不容易受用户环境变量污染**，是最推荐的方式。
 
+工程目录格式推荐：
+
+```text
+project/
+├─ rtl/
+├─ tb/
+├─ sim/
+│  ├─ modelsim.ini
+│  └─ work/
+└─ scripts/
+   └─ run_modelsim.py
+```
+
+
 [1]: https://ww1.microchip.com/downloads/aemDocuments/documents/FPGA/swdocs/modelsim/modelsim_user_2024_2.pdf "ModelSim® User's Manual"
+
