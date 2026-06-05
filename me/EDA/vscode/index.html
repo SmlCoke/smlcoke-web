@@ -4500,9 +4500,9 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>iverilog-v12-20220611-x64_setup [18.2MB]
 </span></code></pre></div>
 <p>下载后双击运行即可，注意<strong>可以自定义安装目录</strong><br />
-例如：<br />
+例如：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>D:\EDA\iverilog
-</span></code></pre></div></p>
+</span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">GTKWave</p>
 <p>GTKWave 是一个波形查看工具，Icarus Verilog 的 Windows 预编译版本中已经包含了 GTKWave 的安装包，<strong>安装 Icarus Verilog 时会提示是否安装 GTKWave，建议安装</strong>。</p>
@@ -4520,11 +4520,11 @@
 </span></code></pre></div>
 <h3 id="12">1.2 配置环境变量<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
 <p>安装完成后，将 <code>bin\</code> 目录添加到系统环境变量 <code>Path</code> 中。</p>
-<p>之后依次在 Powershell 中输入：<br />
+<p>之后依次在 Powershell 中输入：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>iverilog<span class="w"> </span>-V
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>vvp<span class="w"> </span>-V
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>gtkwave<span class="w"> </span>--version
-</span></code></pre></div></p>
+</span></code></pre></div>
 <blockquote>
 <p>如果勾选了安装 GTKWave，则也需要将 <code>gtkwave\bin\</code> 目录添加到系统环境变量 <code>Path</code> 中。</p>
 </blockquote>
@@ -4542,18 +4542,18 @@
 <h4 id="133">1.3.3 查看波形<a class="headerlink" href="#133" title="Permanent link">&para;</a></h4>
 <p>如果想要查看波形，首先你得有波形文件才行！<br />
 在 <code>testbench</code> 脚本中用 <code>\$dumpfile</code> 和 <code>\$dumpvars</code> 语句生成波形文件</p>
-<p>然后：<br />
+<p>然后：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>gtkwave<span class="w"> </span>&lt;你的波形文件名字&gt;.vcd
-</span></code></pre></div><br />
-之后 powershell 调用 GTKWave 工具就会弹出一个图形界面，选择你生成的波形文件，就可以查看波形了。</p>
+</span></code></pre></div>
+<p>之后 powershell 调用 GTKWave 工具就会弹出一个图形界面，选择你生成的波形文件，就可以查看波形了。</p>
 <p><img alt="alt text" src="image.webp" /></p>
 <h2 id="ii-systemverilog">II. SystemVerilog 插件：跨文件跳转<a class="headerlink" href="#ii-systemverilog" title="Permanent link">&para;</a></h2>
 <p>我们在写 <code>Python</code>, <code>Rust</code>, <code>C++</code> 等高级语言时，IDE 都会提供跨<strong>文件跳转</strong>功能，例如在 <code>Python</code> 中按住 <code>Ctrl</code> 键点击一个<strong>函数调用</strong>，就可以跳转到该函数的定义处，这极大地提升了开发效率。这些文件跳转功能并非编程语言本省的特性，也并非 VS Code 本身功能，而是由<strong>第三方插件</strong>提供的功能支持；如果使用的是 <code>Pycharm</code>, <code>CLion</code>, <code>Rust Analyzer</code> 等 专业级IDE，跨文件跳转功能也是由这些 IDE 自带的，不需要额外安装。</p>
 <p>但是在数字电路领域， <code>Verilog</code> 语言并没有一个<strong>像样</strong>的文本编辑工具能够完成诸如跨文件跳转、语法检查等功能，虽然 <code>Vivado</code> 和 <code>Quartus</code> 等综合工具提供了一个文本编辑器，但它们的编辑器功能非常有限，无法满足日常开发需求。</p>
 <p>如果想要扩展编辑 <code>Verilog</code> 的体验，最好借助于 VS Code 的插件生态（虽然目前支持 <code>Verilog</code> 的插件并不多）。</p>
-<p>VS Code 搜索插件：<br />
+<p>VS Code 搜索插件：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>SystemVerilog
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><strong>注意插件开发者是：Eirik Prestegårdshus</strong></p>
 <p>该插件的功能：</p>
 <ul>
@@ -4561,15 +4561,17 @@
 <li>语法检查❓️</li>
 <li>跨文件跳转✅️</li>
 </ul>
-<p>注意，<strong>跨文件跳转功能需要额外下载一个叫做 <code>ctags</code> 的工具</strong>，安装方法：<br />
-1. 搜索 https://github.com/universal-ctags/ctags-win32<br />
-2. Release 页面下载 Windows 版本的预编<code>.zip</code>包<br />
-3. 解压到任意目录，例如 <code>D:\EDA\ctags</code><br />
-4. 将 <code>ctags.exe</code> <strong>所在文件夹的路径添加到系统环境变量</strong> <code>Path</code> 中，或者记住该绝对路径，后续在 VS Code 插件设置中需要用到。</p>
-<p>之后，在 VS Code 按 <code>Crtl + Shift + P</code>，输入 <code>setting.json</code>用户设置，添加如下键值对：<br />
+<p>注意，<strong>跨文件跳转功能需要额外下载一个叫做 <code>ctags</code> 的工具</strong>，安装方法：</p>
+<ol>
+<li>搜索 https://github.com/universal-ctags/ctags-win32</li>
+<li>Release 页面下载 Windows 版本的预编<code>.zip</code>包</li>
+<li>解压到任意目录，例如 <code>D:\EDA\ctags</code></li>
+<li>将 <code>ctags.exe</code> <strong>所在文件夹的路径添加到系统环境变量</strong> <code>Path</code> 中，或者记住该绝对路径，后续在 VS Code 插件设置中需要用到。</li>
+</ol>
+<p>之后，在 VS Code 按 <code>Crtl + Shift + P</code>，输入 <code>setting.json</code>用户设置，添加如下键值对：</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">&quot;systemverilog.ctags&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;你的c</span><span class="kc">ta</span><span class="err">gs.exe的绝对路径，注意反斜杠转义&gt;</span><span class="p">,</span><span class="w"> </span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">&quot;systemverilog.disableLinting&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>之后重启 VS Code，<strong>就可以点击子模块实现跨文件跳转了</strong>。</p>
 <p><code>SystemVerilog</code> 插件还附加了非常漂亮的<strong>语法高亮</strong>，能够让代码更清晰易读。例如：<br />
 <img alt="alt text" src="image-1.webp" /></p>
@@ -4587,25 +4589,25 @@
 <h3 id="31">3.1 语法检查<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
 <p>如果你还没有安装 <code>Icarus Verilog</code>，请立即回到第一步先安装 <code>Icarus Verilog</code>，因为该插件的语法检查功能依赖于 <code>Icarus Verilog</code> 的编译器来实现。</p>
 <p>VS Code 插件市场搜索 <code>Verilog-HDL/SystemVerilog/Bluespec SystemVerilog</code>，安装由 <code>Mshr-H</code> 开发的插件。</p>
-<p>然后按 <code>Crtl + Shift + P</code>，输入 <code>setting.json</code>用户设置，添加如下键值对：<br />
+<p>然后按 <code>Crtl + Shift + P</code>，输入 <code>setting.json</code>用户设置，添加如下键值对：</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// --- mshr-h 插件配置：只做查错 ---</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">&quot;verilog.linting.linter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;iverilog&quot;</span><span class="p">,</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">&quot;verilog.linting.iverilog.runAtFileLocation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="c1">// 【关键1】让 iverilog 在当前文件所在目录运行</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nt">&quot;verilog.linting.iverilog.arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-y .&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// 【关键2】告诉 iverilog 去当前目录(&#39;.&#39;)寻找未知的子模块！解决误报！</span>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nt">&quot;verilog.ctags.path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;改成你的ctags.exe的绝对路径&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// 防止控制台吭哧吭哧刷报错</span>
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nt">&quot;verilog.hover.enable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="c1">// 开启悬停提示</span>
-</span></code></pre></div><br />
-之后，就可以同时完成<strong>语法检查</strong>了，但是 <code>SystemVerilog</code> 插件的<strong>语法高亮效果会损失一部分（如下图，可以与之前的高亮效果对比以下）</strong>，<strong>但跨文件跳转功能正常</strong>。<br />
+</span></code></pre></div>
+<p>之后，就可以同时完成<strong>语法检查</strong>了，但是 <code>SystemVerilog</code> 插件的<strong>语法高亮效果会损失一部分（如下图，可以与之前的高亮效果对比以下）</strong>，<strong>但跨文件跳转功能正常</strong>。<br />
 <img alt="alt text" src="image-2.webp" /></p>
 <h3 id="32">3.2 黑魔法<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
 <p>如果你硬要想同时启用 <code>SystemVerilog</code> 插件的语法高亮、跨文件跳转功能和 <code>Verilog-HDL/SystemVerilog/Bluespec SystemVerilog</code> 插件的语法检查功能，有一个<strong>黑魔法：</strong></p>
 <p><strong>我们强制让插件把 .v 文件识别为 SystemVerilog 文件</strong>！</p>
-<p>只需要在 <code>setting.json</code> 用户设置中添加如下键值对：<br />
+<p>只需要在 <code>setting.json</code> 用户设置中添加如下键值对：</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">&quot;files.associations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="nt">&quot;*.v&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;systemverilog&quot;</span><span class="p">,</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">&quot;*.vh&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;systemverilog&quot;</span>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">},</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h2 id="iv-teroshdl">IV. TerosHDL<a class="headerlink" href="#iv-teroshdl" title="Permanent link">&para;</a></h2>
 <h3 id="41-teroshdl">4.1 TerosHDL 插件介绍<a class="headerlink" href="#41-teroshdl" title="Permanent link">&para;</a></h3>
 <p>相比前面两个工具，TerosHDL 是一款致力于将 VS Code 打造为全功能 FPGA IDE 的开源插件。在我们的这套方案中，我们主要利用它极其出色的<strong>代码分析能力</strong>和<strong>图形化渲染能力</strong>。</p>
@@ -4621,31 +4623,37 @@
 </div>
 <h3 id="42">4.2 环境配置<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
 <p>TerosHDL 的原理图功能依赖于 <code>Yosys</code>（开源逻辑综合工具）。在 Windows 下，最稳妥、最现代的安装方式是使用 Yowasp（Python 移植版），它不需要复杂的环境变量配置。</p>
-<p>安装方法：<br />
+<p>安装方法：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>pip<span class="w"> </span>install<span class="w"> </span>yowasp-yosys
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>如果你不想污染你的全局python环境，当然可以使用 venv, uv, conda等方法虚拟环境，这里不再介绍。</p>
-<p>安装完毕后，必须确保命令行能够找到 <code>yowasp-yosys</code>，可以在 PowerShell 中输入：<br />
+<p>安装完毕后，必须确保命令行能够找到 <code>yowasp-yosys</code>，可以在 PowerShell 中输入：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>yowasp-yosys<span class="w"> </span>-V
-</span></code></pre></div><br />
-如果能够返回版本信息，则说明安装成功。</p>
+</span></code></pre></div>
+<p>如果能够返回版本信息，则说明安装成功。</p>
 <h3 id="43-teroshdl">4.3 TerosHDL 配置步骤<a class="headerlink" href="#43-teroshdl" title="Permanent link">&para;</a></h3>
 <p>在 VS Code 插件市场中搜索 <code>TerosHDL</code>，安装。</p>
 <ol>
-<li>第一步：进入配置界面<br />
-    点击 VS Code 左侧活动栏的 <code>TerosHDL</code> 图标，在弹出面板中点击 <code>Open Global SettingS Menu</code>。</li>
-<li>第二步：配置原理图引擎 (Schematic Viewer)<br />
+<li>
+<p>第一步：进入配置界面<br />
+    点击 VS Code 左侧活动栏的 <code>TerosHDL</code> 图标，在弹出面板中点击 <code>Open Global SettingS Menu</code>。</p>
+</li>
+<li>
+<p>第二步：配置原理图引擎 (Schematic Viewer)<br />
     在配置页面的左侧导航栏找到 Schematic Viewer，进行以下设置：<br />
     Select the backend: 选择 YOWASP(Only Verilog/SV)。<br />
-    然后点击 <code>Apply</code>。</li>
-<li>第三步：规避插件冲突 (Linter)<br />
+    然后点击 <code>Apply</code>。</p>
+</li>
+<li>
+<p>第三步：规避插件冲突 (Linter)<br />
     由于我们已经有 mshr-h 插件负责语法检查，需要关闭 TerosHDL 的相关功能以节省性能并防止重复报错：<br />
     回到配置页面，左侧导航栏找到 Linter settings，点击，进去将所有项设置为 <code>Disabled</code> 即可。<br />
     然后点击 <code>Apply</code>。<br />
-    然后打开 <code>setting.json</code> 用户设置，添加如下键值对：<br />
-    <div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&quot;teroshdl.linter.verilog.linter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;None&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">// 封杀 TerosHDL 的查错</span>
+    然后打开 <code>setting.json</code> 用户设置，添加如下键值对：</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&quot;teroshdl.linter.verilog.linter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;None&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">// 封杀 TerosHDL 的查错</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">&quot;teroshdl.formatter.verilog.formatter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;None&quot;</span><span class="w">      </span><span class="c1">// 封杀 TerosHDL 的格式化</span>
-</span></code></pre></div></li>
+</span></code></pre></div>
+</li>
 </ol>
 <h3 id="44">4.4 使用示例<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
 <p>VS Code中随便打开一个 <code>.v</code> 或者 <code>.sv</code> 文件，在编辑器右上角会出现这三个图标：<br />

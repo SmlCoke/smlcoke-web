@@ -4273,10 +4273,12 @@
 
 <h1 id="mobaxterm-linux">MobaXterm 连接 Linux 虚拟机/服务器<a class="headerlink" href="#mobaxterm-linux" title="Permanent link">&para;</a></h1>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<p>如果一切配置没问题，只需要打开虚拟机/服务器后，获取：<br />
-1. IP 地址（如果是虚拟机，一般固定，如果是服务器，一般需要位于同一局域网）<br />
-2. 用户名和密码<br />
-3. 端口号</p>
+<p>如果一切配置没问题，只需要打开虚拟机/服务器后，获取：</p>
+<ol>
+<li>IP 地址（如果是虚拟机，一般固定，如果是服务器，一般需要位于同一局域网）</li>
+<li>用户名和密码</li>
+<li>端口号</li>
+</ol>
 <p>就可以很简单地通过 SSH 连接本地计算机和远程 Linux 了。SSH 是一种安全的远程登录协议，其载体有操作系统原生终端、VS Code 以及非常强大并且免费的 MobaXterm。</p>
 <div class="admonition notes">
 <p class="admonition-title">关于 MobaXterm</p>
@@ -4288,15 +4290,15 @@
 </blockquote>
 <h2 id="i-mobaxterm-ssh">I. 使用 MobaXterm 和 SSH 远程连接虚拟机<a class="headerlink" href="#i-mobaxterm-ssh" title="Permanent link">&para;</a></h2>
 <h3 id="11-terminal">1.1 第一阶段：暴力获取临时网络（在 虚拟机 Terminal 中操作）<a class="headerlink" href="#11-terminal" title="Permanent link">&para;</a></h3>
-<p>打开 VMware 虚拟机，进入桌面后右键打开终端，输入：<br />
+<p>打开 VMware 虚拟机，进入桌面后右键打开终端，输入：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>dhclient<span class="w"> </span>eth0
-</span></code></pre></div><br />
-<em>(输入密码时屏幕不会显示，输完回车即可。这步是强制向系统要一个 IP)</em><br />
-紧接着输入：<br />
+</span></code></pre></div>
+<p><em>(输入密码时屏幕不会显示，输完回车即可。这步是强制向系统要一个 IP)</em><br />
+紧接着输入：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ip<span class="w"> </span>addr
-</span></code></pre></div><br />
-找到 <code>eth0</code> 那一栏里 <code>inet</code> 后面的 IP 地址（例如 <code>192.168.127.130</code>），记下它。</p>
-<p>如下示例：<br />
+</span></code></pre></div>
+<p>找到 <code>eth0</code> 那一栏里 <code>inet</code> 后面的 IP 地址（例如 <code>192.168.127.130</code>），记下它。</p>
+<p>如下示例：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">[</span>rfic@rfic<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>ip<span class="w"> </span>addr
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="m">1</span>:<span class="w"> </span>lo:<span class="w"> </span>&lt;LOOPBACK,UP,LOWER_UP&gt;<span class="w"> </span>mtu<span class="w"> </span><span class="m">65536</span><span class="w"> </span>qdisc<span class="w"> </span>noqueue<span class="w"> </span>state<span class="w"> </span>UNKNOWN<span class="w"> </span>group<span class="w"> </span>default<span class="w"> </span>qlen<span class="w"> </span><span class="m">1000</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span>link/loopback<span class="w"> </span><span class="m">00</span>:00:00:00:00:00<span class="w"> </span>brd<span class="w"> </span><span class="m">00</span>:00:00:00:00:00
@@ -4317,7 +4319,7 @@
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="m">4</span>:<span class="w"> </span>virbr0-nic:<span class="w"> </span>&lt;BROADCAST,MULTICAST&gt;<span class="w"> </span>mtu<span class="w"> </span><span class="m">1500</span><span class="w"> </span>qdisc<span class="w"> </span>fq_codel<span class="w"> </span>master<span class="w"> </span>virbr0<span class="w"> </span>state<span class="w"> </span>DOWN<span class="w"> </span>group<span class="w"> </span>default<span class="w"> </span>qlen<span class="w"> </span><span class="m">1000</span>
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span>link/ether<span class="w"> </span><span class="m">52</span>:54:00:d7:84:7b<span class="w"> </span>brd<span class="w"> </span>ff:ff:ff:ff:ff:ff
 </span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="o">[</span>rfic@rfic<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h3 id="12-mobaxterm">1.2 第二阶段：使用 MobaXterm 远程连接<a class="headerlink" href="#12-mobaxterm" title="Permanent link">&para;</a></h3>
 <ol>
 <li>回到 Windows，打开 MobaXterm，点击左上角 <strong>Session -&gt; SSH</strong>。</li>
@@ -4327,32 +4329,34 @@
 </ol>
 <h3 id="13-mobaxterm">1.3 第三阶段：一键根治脚本（在 MobaXterm 里复制粘贴运行）<a class="headerlink" href="#13-mobaxterm" title="Permanent link">&para;</a></h3>
 <p>连上 MobaXterm 后，直接依次复制并运行以下 6 行命令，彻底解决克隆虚拟机的“网卡失忆症”：</p>
-<p><strong>1. 停用并禁用固执的 NetworkManager</strong><br />
+<p><strong>1. 停用并禁用固执的 NetworkManager</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>NetworkManager
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>disable<span class="w"> </span>NetworkManager
-</span></code></pre></div><br />
-<strong>2. 杀掉刚才第一步临时开启的 dhclient 进程，释放网卡</strong><br />
+</span></code></pre></div>
+<p><strong>2. 杀掉刚才第一步临时开启的 dhclient 进程，释放网卡</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>killall<span class="w"> </span>dhclient
-</span></code></pre></div><br />
-<strong>3. 删掉底层记录旧硬件的幽灵文件（如果有的话）</strong><br />
+</span></code></pre></div>
+<p><strong>3. 删掉底层记录旧硬件的幽灵文件（如果有的话）</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/etc/udev/rules.d/70-persistent-net.rules
-</span></code></pre></div><br />
-<strong>4. 修正网卡配置文件（删除旧硬件绑定，并开启开机自启）</strong><br />
+</span></code></pre></div>
+<p><strong>4. 修正网卡配置文件（删除旧硬件绑定，并开启开机自启）</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;/HWADDR\|UUID/d; s/ONBOOT=no/ONBOOT=yes/g&#39;</span><span class="w"> </span>/etc/sysconfig/network-scripts/ifcfg-eth0
-</span></code></pre></div><br />
-<strong>5. 启用最稳定、最经典的老牌 network 服务</strong><br />
+</span></code></pre></div>
+<p><strong>5. 启用最稳定、最经典的老牌 network 服务</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>network
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>network
-</span></code></pre></div><br />
-<em>(注：如果看到 redirecting to /sbin/chkconfig 的提示，属于正常成功提示，无视即可)</em></p>
+</span></code></pre></div>
+<p><em>(注：如果看到 redirecting to /sbin/chkconfig 的提示，属于正常成功提示，无视即可)</em></p>
 <h3 id="14">1.4 第四阶段：重启并见证奇迹<a class="headerlink" href="#14" title="Permanent link">&para;</a></h3>
-<p>在 MobaXterm 里输入：<br />
+<p>在 MobaXterm 里输入：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>reboot
-</span></code></pre></div><br />
-<strong>注意：</strong> 重启后，由于我们重置了网络，<strong>你的 IP 可能会发生最后一次变化</strong>（比如从 <code>.129</code> 变成 <code>.130</code>）。<br />
-1. 回到 VMware 窗口，登录后输入 <code>ip addr</code> 看一眼最新的 IP 是多少。<br />
-2. 在 MobaXterm 里右键你刚才的 Session，修改成这个最新的 IP。<br />
-3. 以后每次开机，这个网络都会自动连上，<strong>再也不需要敲任何命令了！</strong></p>
+</span></code></pre></div>
+<p><strong>注意：</strong> 重启后，由于我们重置了网络，<strong>你的 IP 可能会发生最后一次变化</strong>（比如从 <code>.129</code> 变成 <code>.130</code>）。</p>
+<ol>
+<li>回到 VMware 窗口，登录后输入 <code>ip addr</code> 看一眼最新的 IP 是多少。</li>
+<li>在 MobaXterm 里右键你刚才的 Session，修改成这个最新的 IP。</li>
+<li>以后每次开机，这个网络都会自动连上，<strong>再也不需要敲任何命令了！</strong></li>
+</ol>
 <h3 id="15-x11">1.5 测试：X11 神技（图形界面转发）<a class="headerlink" href="#15-x11" title="Permanent link">&para;</a></h3>
 <p>连接成功后，在 MobaXterm 里直接敲 <code>design_vision</code>。你会发现 Design Compiler 的图形界面直接像 Windows 软件一样弹出来了，极其丝滑！<br />
 如图：</p>

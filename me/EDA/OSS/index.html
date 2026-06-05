@@ -4420,10 +4420,12 @@
 <h1 id="windows-eda">Windows 原生环境开源EDA工具链构建<a class="headerlink" href="#windows-eda" title="Permanent link">&para;</a></h1>
 <p><a href="../../../Tools/wsl2/">WSL2子系统开发笔记</a>中提到了如何在 WSL2 中配置 yosys + symbiyosys 等开源 EDA 工具链的详细步骤。但是这种方法依赖 WSL2，饱受文件跨系统 I/O 极慢、环境配置繁琐之苦、而且开发时还需要远程连接 WSL2，频繁在 Windows 和 Linux 之间切换，极大降低效率。</p>
 <p>本指南将搭建一个<strong>纯 Windows 原生、零 DLL 冲突、完美融合 Python 验证生态 (Cocotb/Pyverilog) 与顶级开源 EDA 引擎 (Yosys/SBY/Z3)</strong> 的开发环境。</p>
-<p><strong>🛠️ 包含的工具链</strong><br />
-*   <strong>综合与形式验证引擎</strong>：Yosys, SymbiYosys (SBY), Z3, Boolector<br />
-*   <strong>仿真与波形查看</strong>：Icarus Verilog (iverilog), vvp, GTKWave<br />
-*   <strong>Python 高级验证生态</strong>：Anaconda, Cocotb, Pyverilog</p>
+<p><strong>🛠️ 包含的工具链</strong></p>
+<ul>
+<li><strong>综合与形式验证引擎</strong>：Yosys, SymbiYosys (SBY), Z3, Boolector</li>
+<li><strong>仿真与波形查看</strong>：Icarus Verilog (iverilog), vvp, GTKWave</li>
+<li><strong>Python 高级验证生态</strong>：Anaconda, Cocotb, Pyverilog</li>
+</ul>
 <h2 id="i-oss-cad-suite">I. 部署 OSS CAD Suite<a class="headerlink" href="#i-oss-cad-suite" title="Permanent link">&para;</a></h2>
 <p>OSS CAD Suite 包含了所有我们需要的底层 EDA 引擎的 Windows 预编译版。</p>
 <h3 id="11">1.1 下载与解压<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
@@ -4431,18 +4433,22 @@
 <p>下载好之后，将其解压到一个<strong>完全没有中文字符和空格</strong>的路径下（例如 <code>D:\EDA\oss-cad-suite</code>）。</p>
 <h3 id="12">1.2 环境变量配置<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
 <h4 id="121">1.2.1 全局配置法<a class="headerlink" href="#121" title="Permanent link">&para;</a></h4>
-<p>打开 OSS CAD Suite 安装解压后的文件夹，找到其中的<br />
-- <code>bin</code><br />
-- <code>lin</code><br />
-目录，比如：<br />
-- <code>D:\EDA\oss-cad-suite\bin</code><br />
-- <code>D:\EDA\oss-cad-suite\lib</code></p>
+<p>打开 OSS CAD Suite 安装解压后的文件夹，找到其中的</p>
+<ul>
+<li><code>bin</code></li>
+<li><code>lin</code></li>
+</ul>
+<p>目录，比如：</p>
+<ul>
+<li><code>D:\EDA\oss-cad-suite\bin</code></li>
+<li><code>D:\EDA\oss-cad-suite\lib</code></li>
+</ul>
 <p>复制路径，添加进入系统环境变量的 <code>Path</code> 中。</p>
-<p>之后，新开一个 <code>powershell</code> 或者 <code>cmd</code> 窗口，输入：<br />
+<p>之后，新开一个 <code>powershell</code> 或者 <code>cmd</code> 窗口，输入：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>yosys<span class="w"> </span>-V
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>iverilog<span class="w"> </span>-V
-</span></code></pre></div><br />
-如果能够正确显示版本号，则代表环境配置成功了。</p>
+</span></code></pre></div>
+<p>如果能够正确显示版本号，则代表环境配置成功了。</p>
 <p><strong>⚠️注意：</strong><br />
 有可能输入<code>yosys -V</code> 后，系统弹出一个弹窗：<br />
 <img alt="alt text" src="image.webp" /></p>
@@ -4457,14 +4463,14 @@
 <p>✅ <strong>安全做法</strong>：全局环境变量中<strong>什么都不加</strong>，我们利用 <strong>VS Code 的集成终端配置功能</strong>隔离这些环境。详见第III节</p>
 <h2 id="ii-eda-python">II. 安装专用于 EDA 生态的 Python 环境<a class="headerlink" href="#ii-eda-python" title="Permanent link">&para;</a></h2>
 <p>Python 生态如今在芯片设计与验证领域非常火热，虽然底层往往还是调用 C/C++ 编写的求解器（如 Z3），但 Python 提供了极佳的 API 和易用性。</p>
-<p>首先利用 Anaconda 或者 Miniconda 创建一个新的 Python 虚拟环境（例如命名为 <code>rtl</code>），Python 版本推荐3.10或者3.11：<br />
+<p>首先利用 Anaconda 或者 Miniconda 创建一个新的 Python 虚拟环境（例如命名为 <code>rtl</code>），Python 版本推荐3.10或者3.11：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>rtl<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11<span class="w"> </span>-y
-</span></code></pre></div></p>
-<p>然后<strong>进入该环境</strong>，安装如下 Python 包：<br />
+</span></code></pre></div>
+<p>然后<strong>进入该环境</strong>，安装如下 Python 包：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>conda<span class="w"> </span>activate<span class="w"> </span>rtl
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>pip<span class="w"> </span>install<span class="w"> </span>z3-solver<span class="w"> </span>pyverilog<span class="w"> </span>cocotb<span class="w"> </span>pytest
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>该 Python 环境专用于芯片设计验证，虽然安装了这些包，但是它们底层还是调用的 OSS CAD Suite 里的求解器和仿真器。</p>
 <p>至此，如果在第 I. 步中，我们选择了<strong>全局配置法</strong>，接下来可以<strong>直接跳过第 III 节</strong>，去第 IV. 节测试环境了；如果我们选择了<strong>推荐的“环境融合”配置法</strong>，请继续往下看第 III 节，<strong>完成 VS Code 终端的环境融合配置</strong>。</p>
 <h2 id="iii-vs-code">III. 在 VS Code 中配置“环境融合”终端<a class="headerlink" href="#iii-vs-code" title="Permanent link">&para;</a></h2>
@@ -4483,41 +4489,52 @@
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><strong>参数修改提示</strong>：<br />
-- 请将 <code>D:\\Anaconda\\shell\\condabin\\conda-hook.ps1</code> 替换为电脑上实际的 Anaconda 路径。<br />
-- <code>conda activate rtl</code> 中的 <code>rtl</code> 是我们第 II. 节创建的 Conda 虚拟环境名。<br />
-- 请将 <code>D:\\EDA\\oss-cad-suite...</code> 替换为你实际解压的路径。</p>
+<p><strong>参数修改提示</strong>：</p>
+<ul>
+<li>请将 <code>D:\\Anaconda\\shell\\condabin\\conda-hook.ps1</code> 替换为电脑上实际的 Anaconda 路径。</li>
+<li><code>conda activate rtl</code> 中的 <code>rtl</code> 是我们第 II. 节创建的 Conda 虚拟环境名。</li>
+<li>请将 <code>D:\\EDA\\oss-cad-suite...</code> 替换为你实际解压的路径。</li>
+</ul>
 <h3 id="32">3.2 验证配置<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
-<p><strong>使用方法</strong>：在 VS Code 终端面板点击右上角 <code>+</code> 号旁边的下拉箭头，选择 <strong>"EDA"</strong>。你将看到两条绿色的成功提示。<br />
+<p><strong>使用方法</strong>：在 VS Code 终端面板点击右上角 <code>+</code> 号旁边的下拉箭头，选择 <strong>"EDA"</strong>。你将看到两条绿色的成功提示。</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>✅<span class="w"> </span>Conda<span class="w"> </span>rtl<span class="w"> </span>环境激活成功
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>✅<span class="w"> </span>Conda<span class="w"> </span>和<span class="w"> </span>OSS<span class="w"> </span>CAD<span class="w"> </span>环境已融合就绪！
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">(</span>rtl<span class="o">)</span><span class="w"> </span>PS<span class="w"> </span>D:......&gt;
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><strong>验证环境是否就绪：</strong><br />
-在此终端中输入以下命令：<br />
-* <code>yosys -V</code> (输出版本号，且无弹窗报错)<br />
-* <code>iverilog -V</code> (输出详细版本信息)<br />
-* <code>python -V</code> (输出 Anaconda 的 Python 版本)</p>
-<p>至此，我们就完成了EDA环境的融合以及与全局环境的完美隔离！在上述几条简单的配置命令中，我们实现了的包括：<br />
-1. <strong>conda 环境与全局环境的隔离</strong><br />
-2. <strong>OSS 生态工具与全局环境的隔离</strong>：也就是说，如果之前还安装了原生的<code>iverilog, vvp, gtkwave</code>工具，并且添加进入了环境变量，它们是不会受到任何影响的，依旧可以像之前一样使用，绝对干净！）<br />
-3. <strong><code>rtl</code> 环境与 OSS 生态工具的融合</strong>：在这个专用终端里，既可以使用 conda 环境的 <code>python</code> 调用 <code>cocotb</code> 和 <code>pyverilog</code>，又可以直接调用 <code>yosys</code>, <code>sby</code>, <code>z3</code> 等工具</p>
+在此终端中输入以下命令：</p>
+<ul>
+<li><code>yosys -V</code> (输出版本号，且无弹窗报错)</li>
+<li><code>iverilog -V</code> (输出详细版本信息)</li>
+<li><code>python -V</code> (输出 Anaconda 的 Python 版本)</li>
+</ul>
+<p>至此，我们就完成了EDA环境的融合以及与全局环境的完美隔离！在上述几条简单的配置命令中，我们实现了的包括：</p>
+<ol>
+<li><strong>conda 环境与全局环境的隔离</strong></li>
+<li><strong>OSS 生态工具与全局环境的隔离</strong>：也就是说，如果之前还安装了原生的<code>iverilog, vvp, gtkwave</code>工具，并且添加进入了环境变量，它们是不会受到任何影响的，依旧可以像之前一样使用，绝对干净！）</li>
+<li><strong><code>rtl</code> 环境与 OSS 生态工具的融合</strong>：在这个专用终端里，既可以使用 conda 环境的 <code>python</code> 调用 <code>cocotb</code> 和 <code>pyverilog</code>，又可以直接调用 <code>yosys</code>, <code>sby</code>, <code>z3</code> 等工具</li>
+</ol>
 <h2 id="iv">IV. 环境功能测试与实战例程<a class="headerlink" href="#iv" title="Permanent link">&para;</a></h2>
 <p>为了确保我们的环境完美工作，我们可以跑两个经典的验证实验。以下操作均在 <code>rtl</code> 环境中进行。</p>
 <h3 id="41-a-lec-yosys-sat">4.1 实验 A：等价性检查 (LEC) - 测试 Yosys 内置 SAT 引擎<a class="headerlink" href="#41-a-lec-yosys-sat" title="Permanent link">&para;</a></h3>
 <p>证明“直接相加”和“使用结合律相加”的两个模块在所有输入组合下绝对等价。</p>
 <ol>
-<li>创建 <code>gold.v</code> (参考模型)：<br />
+<li>
+<p>创建 <code>gold.v</code> (参考模型)：</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">module</span><span class="w"> </span><span class="n">gold</span><span class="p">(</span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="k">input</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">assign</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">endmodule</span>
-</span></code></pre></div></li>
-<li>创建 <code>gate.v</code> (修改后的模型)：<br />
+</span></code></pre></div>
+</li>
+<li>
+<p>创建 <code>gate.v</code> (修改后的模型)：</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">module</span><span class="w"> </span><span class="n">gate</span><span class="p">(</span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">assign</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">endmodule</span>
-</span></code></pre></div></li>
-<li>创建 <code>lec.ys</code> (Yosys 脚本)：<br />
+</span></code></pre></div>
+</li>
+<li>
+<p>创建 <code>lec.ys</code> (Yosys 脚本)：</p>
 <div class="language-tcl highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">read_verilog</span><span class="w"> </span>gold.v
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nv">read_verilog</span><span class="w"> </span>gate.v
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">proc</span>
@@ -4528,29 +4545,35 @@
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="nv">opt_clean</span><span class="w"> </span><span class="o">-</span>purge
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nv">equiv_simple</span>
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="nv">equiv_status</span><span class="w"> </span><span class="o">-</span>assert
-</span></code></pre></div></li>
-<li>运行：<code>yosys -s lec.ys</code>。<br />
-<strong>预期结果</strong>：输出 <code>Successfully proved 8 equivalences...</code>（证明成功）。<br />
-<img alt="alt text" src="image-2.webp" /></li>
+</span></code></pre></div>
+</li>
+<li>
+<p>运行：<code>yosys -s lec.ys</code>。</p>
+</li>
 </ol>
+<p><strong>预期结果</strong>：输出 <code>Successfully proved 8 equivalences...</code>（证明成功）。<br />
+<img alt="alt text" src="image-2.webp" /></p>
 <h3 id="42-b-bmc-sby-z3">4.2 实验 B：有界模型检查 (BMC) - 测试 SBY 与 Z3 求解器<a class="headerlink" href="#42-b-bmc-sby-z3" title="Permanent link">&para;</a></h3>
 <p>用形式验证去寻找计数器代码里的“漏洞”。</p>
 <ol>
-<li>创建 <code>counter.v</code>：<br />
+<li>
+<p>创建 <code>counter.v</code>：</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">module</span><span class="w"> </span><span class="n">counter</span><span class="p">(</span><span class="k">input</span><span class="w"> </span><span class="n">clk</span><span class="p">);</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="kt">reg</span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kt">reg</span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">(</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">end</span>
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
 </span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="no">`ifdef</span><span class="w"> </span><span class="n">FORMAL</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">        </span><span class="n">assert</span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">15</span><span class="p">);</span><span class="w"> </span><span class="c1">// 我们断言 count 永远到不了 15</span>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">15</span><span class="p">);</span><span class="w"> </span><span class="c1">// 我们断言 count 永远到不了 15</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">end</span>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="no">`endif</span>
 </span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="k">endmodule</span>
-</span></code></pre></div></li>
-<li>创建 <code>verify.sby</code>：<br />
+</span></code></pre></div>
+</li>
+<li>
+<p>创建 <code>verify.sby</code>：</p>
 <div class="language-ini highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="na">[options(</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="na">mode bmc</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="na">depth 20</span>
@@ -4562,11 +4585,14 @@
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="na">[files(</span>
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="na">counter.v</span>
-</span></code></pre></div></li>
-<li>运行：<code>sby -f verify.sby</code>。<br />
-<strong>预期结果</strong>：输出红色的 <code>DONE (FAIL, rc=2)</code>。<br />
-<img alt="alt text" src="image-1.webp" /></li>
+</span></code></pre></div>
+</li>
+<li>
+<p>运行：<code>sby -f verify.sby</code>。</p>
+</li>
 </ol>
+<p><strong>预期结果</strong>：输出红色的 <code>DONE (FAIL, rc=2)</code>。<br />
+<img alt="alt text" src="image-1.webp" /></p>
 <h2 id="v-appendix-faq">V. Appendix: 常见避坑指南 (FAQ)<a class="headerlink" href="#v-appendix-faq" title="Permanent link">&para;</a></h2>
 <h3 id="51-sby-unicodedecodeerror-gbk-codec-cant-decode">5.1 运行 SBY 时报错 <code>UnicodeDecodeError: 'gbk' codec can't decode...</code>？<a class="headerlink" href="#51-sby-unicodedecodeerror-gbk-codec-cant-decode" title="Permanent link">&para;</a></h3>
 <p><strong>A1</strong>：Windows 的 Python 默认用 GBK 读取文件，而 VS Code 默认生成 UTF-8。请<strong>绝对不要</strong>在任何输入给 SBY 的文件（如 <code>.v</code>, <code>.sby</code>）中写<strong>中文字符或中文注释</strong>。删掉中文即可秒解。</p>
