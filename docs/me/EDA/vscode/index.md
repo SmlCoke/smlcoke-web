@@ -23,6 +23,7 @@ iverilog-v12-20220611-x64_setup [18.2MB]
 
 下载后双击运行即可，注意**可以自定义安装目录**
 例如：
+
 ```
 D:\EDA\iverilog
 ```
@@ -51,6 +52,7 @@ D:\EDA\iverilog\iverilog
 安装完成后，将 `bin\` 目录添加到系统环境变量 `Path` 中。
 
 之后依次在 Powershell 中输入：
+
 ```bash
 iverilog -V
 vvp -V
@@ -86,9 +88,11 @@ vvp simv
 在 `testbench` 脚本中用 `\$dumpfile` 和 `\$dumpvars` 语句生成波形文件
 
 然后：
+
 ```bash
 gtkwave <你的波形文件名字>.vcd
 ```
+
 之后 powershell 调用 GTKWave 工具就会弹出一个图形界面，选择你生成的波形文件，就可以查看波形了。
 
 ![alt text](image.webp)
@@ -104,6 +108,7 @@ gtkwave <你的波形文件名字>.vcd
 如果想要扩展编辑 `Verilog` 的体验，最好借助于 VS Code 的插件生态（虽然目前支持 `Verilog` 的插件并不多）。
 
 VS Code 搜索插件：
+
 ```
 SystemVerilog
 ```
@@ -117,12 +122,14 @@ SystemVerilog
 - 跨文件跳转✅️
 
 注意，**跨文件跳转功能需要额外下载一个叫做 `ctags` 的工具**，安装方法：
+
 1. 搜索 https://github.com/universal-ctags/ctags-win32
 2. Release 页面下载 Windows 版本的预编`.zip`包
 3. 解压到任意目录，例如 `D:\EDA\ctags`
 4. 将 `ctags.exe` **所在文件夹的路径添加到系统环境变量** `Path` 中，或者记住该绝对路径，后续在 VS Code 插件设置中需要用到。
 
 之后，在 VS Code 按 `Crtl + Shift + P`，输入 `setting.json`用户设置，添加如下键值对：
+
 ```json
 "systemverilog.ctags": <你的ctags.exe的绝对路径，注意反斜杠转义>, 
 "systemverilog.disableLinting": true, 
@@ -151,6 +158,7 @@ SystemVerilog
 VS Code 插件市场搜索 `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog`，安装由 `Mshr-H` 开发的插件。
 
 然后按 `Crtl + Shift + P`，输入 `setting.json`用户设置，添加如下键值对：
+
 ```json
 // --- mshr-h 插件配置：只做查错 ---
 "verilog.linting.linter": "iverilog",
@@ -159,6 +167,7 @@ VS Code 插件市场搜索 `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog`，
 "verilog.ctags.path": "<改成你的ctags.exe的绝对路径>", // 防止控制台吭哧吭哧刷报错
 "verilog.hover.enable": true, // 开启悬停提示
 ```
+
 之后，就可以同时完成**语法检查**了，但是 `SystemVerilog` 插件的**语法高亮效果会损失一部分（如下图，可以与之前的高亮效果对比以下）**，**但跨文件跳转功能正常**。
 ![alt text](image-2.webp)
 
@@ -169,6 +178,7 @@ VS Code 插件市场搜索 `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog`，
 **我们强制让插件把 .v 文件识别为 SystemVerilog 文件**！
 
 只需要在 `setting.json` 用户设置中添加如下键值对：
+
 ```json
 "files.associations": {
     "*.v": "systemverilog",
@@ -194,6 +204,7 @@ VS Code 插件市场搜索 `Verilog-HDL/SystemVerilog/Bluespec SystemVerilog`，
 TerosHDL 的原理图功能依赖于 `Yosys`（开源逻辑综合工具）。在 Windows 下，最稳妥、最现代的安装方式是使用 Yowasp（Python 移植版），它不需要复杂的环境变量配置。
 
 安装方法：
+
 ```bash
 pip install yowasp-yosys
 ```
@@ -201,9 +212,11 @@ pip install yowasp-yosys
 如果你不想污染你的全局python环境，当然可以使用 venv, uv, conda等方法虚拟环境，这里不再介绍。
 
 安装完毕后，必须确保命令行能够找到 `yowasp-yosys`，可以在 PowerShell 中输入：
+
 ```bash
 yowasp-yosys -V
 ```
+
 如果能够返回版本信息，则说明安装成功。
 
 ###  4.3 TerosHDL 配置步骤
@@ -211,15 +224,18 @@ yowasp-yosys -V
 
 1. 第一步：进入配置界面
     点击 VS Code 左侧活动栏的 `TerosHDL` 图标，在弹出面板中点击 `Open Global SettingS Menu`。
+
 2. 第二步：配置原理图引擎 (Schematic Viewer)
     在配置页面的左侧导航栏找到 Schematic Viewer，进行以下设置：
     Select the backend: 选择 YOWASP(Only Verilog/SV)。
     然后点击 `Apply`。
+
 3. 第三步：规避插件冲突 (Linter)
     由于我们已经有 mshr-h 插件负责语法检查，需要关闭 TerosHDL 的相关功能以节省性能并防止重复报错：
     回到配置页面，左侧导航栏找到 Linter settings，点击，进去将所有项设置为 `Disabled` 即可。
     然后点击 `Apply`。
     然后打开 `setting.json` 用户设置，添加如下键值对：
+
     ```json
     "teroshdl.linter.verilog.linter": "None",           // 封杀 TerosHDL 的查错
     "teroshdl.formatter.verilog.formatter": "None"      // 封杀 TerosHDL 的格式化

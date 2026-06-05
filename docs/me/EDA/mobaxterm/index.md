@@ -3,6 +3,7 @@
 ## Quick Start
 
 如果一切配置没问题，只需要打开虚拟机/服务器后，获取：
+
 1. IP 地址（如果是虚拟机，一般固定，如果是服务器，一般需要位于同一局域网）
 2. 用户名和密码
 3. 端口号
@@ -21,17 +22,22 @@
 
 ### 1.1 第一阶段：暴力获取临时网络（在 虚拟机 Terminal 中操作）
 打开 VMware 虚拟机，进入桌面后右键打开终端，输入：
+
 ```bash
 sudo dhclient eth0
 ```
+
 *(输入密码时屏幕不会显示，输完回车即可。这步是强制向系统要一个 IP)*
 紧接着输入：
+
 ```bash
 ip addr
 ```
+
 找到 `eth0` 那一栏里 `inet` 后面的 IP 地址（例如 `192.168.127.130`），记下它。
 
 如下示例：
+
 ```bash
 [rfic@rfic ~]$ ip addr
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
@@ -66,35 +72,48 @@ ip addr
 连上 MobaXterm 后，直接依次复制并运行以下 6 行命令，彻底解决克隆虚拟机的“网卡失忆症”：
 
 **1. 停用并禁用固执的 NetworkManager**
+
 ```bash
 sudo systemctl stop NetworkManager
 sudo systemctl disable NetworkManager
 ```
+
 **2. 杀掉刚才第一步临时开启的 dhclient 进程，释放网卡**
+
 ```bash
 sudo killall dhclient
 ```
+
 **3. 删掉底层记录旧硬件的幽灵文件（如果有的话）**
+
 ```bash
 sudo rm -f /etc/udev/rules.d/70-persistent-net.rules
 ```
+
 **4. 修正网卡配置文件（删除旧硬件绑定，并开启开机自启）**
+
 ```bash
 sudo sed -i '/HWADDR\|UUID/d; s/ONBOOT=no/ONBOOT=yes/g' /etc/sysconfig/network-scripts/ifcfg-eth0
 ```
+
 **5. 启用最稳定、最经典的老牌 network 服务**
+
 ```bash
 sudo systemctl start network
 sudo systemctl enable network
 ```
+
 *(注：如果看到 redirecting to /sbin/chkconfig 的提示，属于正常成功提示，无视即可)*
 
 ### 1.4 第四阶段：重启并见证奇迹
 在 MobaXterm 里输入：
+
 ```bash
 sudo reboot
 ```
+
 **注意：** 重启后，由于我们重置了网络，**你的 IP 可能会发生最后一次变化**（比如从 `.129` 变成 `.130`）。
+
 1. 回到 VMware 窗口，登录后输入 `ip addr` 看一眼最新的 IP 是多少。
 2. 在 MobaXterm 里右键你刚才的 Session，修改成这个最新的 IP。
 3. 以后每次开机，这个网络都会自动连上，**再也不需要敲任何命令了！**
