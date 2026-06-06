@@ -2163,6 +2163,84 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="III. Summary of Thread Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-simd-vs-simt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 SIMD vs. SIMT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-hierarchical-thread-model-thread-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Hierarchical Thread Model: Thread Block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-performance-tuning-with-programming-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. Performance Tuning with Programming Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IV. Performance Tuning with Programming Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-example-1-matrix-transpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Example 1: Matrix Transpose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-example-2-matrix-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Example 2: Matrix Multiplication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -4288,6 +4366,84 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="III. Summary of Thread Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-simd-vs-simt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 SIMD vs. SIMT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-hierarchical-thread-model-thread-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Hierarchical Thread Model: Thread Block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-performance-tuning-with-programming-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. Performance Tuning with Programming Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IV. Performance Tuning with Programming Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-example-1-matrix-transpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Example 1: Matrix Transpose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-example-2-matrix-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Example 2: Matrix Multiplication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -4627,6 +4783,292 @@
 <li><code>cudaStreamSynchronize(stream)</code>：等待指定 stream 中前面提交的工作完成。<strong>它只同步某一个 stream</strong>，相比 <code>cudaDeviceSynchronize()</code> 作用域更小，更适合保留其他 stream 的并发执行。</li>
 </ul>
 <h2 id="iii-summary-of-thread-model">III. Summary of Thread Model<a class="headerlink" href="#iii-summary-of-thread-model" title="Permanent link">&para;</a></h2>
+<h3 id="31-simd-vs-simt">3.1 SIMD vs. SIMT<a class="headerlink" href="#31-simd-vs-simt" title="Permanent link">&para;</a></h3>
+<p>总结 GPGPU thread model 和传统 SIMD 编程模型的差异：</p>
+<ul>
+<li>SIMD：one thread + parallel OPs</li>
+<li>SIMT：many threads + scalar OPs</li>
+</ul>
+<h4 id="simd">SIMD：一个线程，一条向量指令处理多个元素<a class="headerlink" href="#simd" title="Permanent link">&para;</a></h4>
+<p>以 ARM NEON 的向量乘法为例：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span><span class="n">uint32x4_t</span><span class="w"> </span><span class="n">a4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vld1q_u32</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span><span class="n">uint32x4_t</span><span class="w"> </span><span class="n">b4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vld1q_u32</span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="n">uint32x4_t</span><span class="w"> </span><span class="n">c4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vmulq_u32</span><span class="p">(</span><span class="n">a4</span><span class="p">,</span><span class="w"> </span><span class="n">b4</span><span class="p">);</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="n">vst1q_u32</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">c4</span><span class="p">);</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>从程序控制流上看，这仍然是<strong>一个 thread</strong> 在执行循环；只是每次循环使用 <code>uint32x4_t</code> 这样的向量类型，一次处理 4 个元素。因此 SIMD 的思路是：让一个线程发出一条“向量操作”，硬件的多个 lane 同时完成多个元素的计算。</p>
+<p>手写标注里的“一次操作 4 个元素；从程序上还是一个 thread，但是一次处理多个元素”就是这个意思。</p>
+<h4 id="simt">SIMT：多个线程，每个线程写标量代码<a class="headerlink" href="#simt" title="Permanent link">&para;</a></h4>
+<p>CUDA 的写法是：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1">// host code</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">nblocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">511</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">512</span><span class="p">;</span><span class="w"> </span><span class="c1">// 512 threads per Thread Block</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="n">vect_mult</span><span class="o">&lt;&lt;&lt;</span><span class="n">nblocks</span><span class="p">,</span><span class="w"> </span><span class="mi">512</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="c1">// device code</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">vect_mult</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="p">{</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">        </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>在 SIMT 中，程序员写的是每个 thread 要做的<strong>标量操作</strong>：每个 thread 根据自己的 <code>blockIdx.x</code> 和 <code>threadIdx.x</code> 算出一个 <code>i</code>，然后只负责 <code>a[i] = b[i] * c[i]</code> 这一份工作。硬件再把多个 thread 组成 warp，让它们以类似 SIMD 的方式一起发射执行。</p>
+<p>所以可以这样对比：</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>程序员看到的执行主体</th>
+<th>一次操作覆盖多少数据</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIMD</td>
+<td>一个 thread / 一个控制流</td>
+<td>一条向量指令处理多个元素</td>
+<td><code>uint32x4_t</code> 一次处理 4 个元素</td>
+</tr>
+<tr>
+<td>SIMT</td>
+<td>很多 thread</td>
+<td>每个 thread 写标量操作，硬件把多个 thread 组成 warp 执行</td>
+<td>CUDA 中一个 thread 处理一个 <code>a[i]</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="simt_1">SIMT 的几个重要特点<a class="headerlink" href="#simt_1" title="Permanent link">&para;</a></h4>
+<p><strong>(1) Address scattering</strong></p>
+<p>SIMT 中每个 thread 都有自己的 <code>threadIdx</code> / <code>blockIdx</code>，因此可以算出不同地址。它们不一定非要访问连续地址，可以比较自然地支持分散地址访问。</p>
+<p>这就是 <code>Address scattering</code>：<strong>不同线程可以负责不同数据位置</strong>，甚至负责不同任务。相比要求固定向量宽度和规则连续访问的 SIMD，SIMT 在表达不规则并行任务时更灵活。</p>
+<p><strong>(2) Thread divergence</strong></p>
+<p>SIMT 中每个 thread 逻辑上是独立线程，因此可以写：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>这类条件分支。比如最后一个 thread block 里，可能有的 thread 满足 <code>i &lt; n</code>，有的 thread 不满足，这就是一种线程发散。</p>
+<p>但是要注意：线程发散是“表达能力”的好处，也是“性能”上的潜在代价。同一个 warp 内的 thread 如果走不同分支，硬件通常需要用掩码<strong>分别执行不同路径，最后再汇合</strong>；因此<strong>发散越严重，warp 的有效并行度越低</strong>。</p>
+<p><strong>(3) Number of instructions in ISA</strong></p>
+<p>SIMD 往往需要暴露不同宽度、不同类型的向量指令或向量类型，例如 <code>.4s</code>、<code>.4d</code> 这类扩展含义。<strong>SIMT 则可以让程序员写标量指令，硬件用 thread / warp 机制来组织并行</strong>。</p>
+<p>因此，SIMT 的一个好处是：ISA 不一定需要为每种向量宽度设计很多显式向量指令，程序员也不用在代码里直接操心“一条指令一次算几个元素”。并行度主要通过 thread 数量、thread block 数量和硬件调度来体现。</p>
+<h3 id="32-hierarchical-thread-model-thread-block">3.2 Hierarchical Thread Model: Thread Block<a class="headerlink" href="#32-hierarchical-thread-model-thread-block" title="Permanent link">&para;</a></h3>
+<p>为什么 CUDA thread model 中需要 <code>thread block</code> 这一层？</p>
+<p>它不是随便多加的抽象，而是在 programmability、hardware complexity、scalability 之间做平衡。</p>
+<p>CUDA 的层级可以简化为：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Grid -&gt; Thread block -&gt; Thread
+</span></code></pre></div>
+<p>后来的 Hopper 架构又引入了更高一级：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>Grid -&gt; Cluster -&gt; Thread block -&gt; Thread
+</span></code></pre></div>
+<h4 id="thread-block">为什么需要 Thread Block？<a class="headerlink" href="#thread-block" title="Permanent link">&para;</a></h4>
+<p><strong>(1) 为了提供 shared memory 和 block 内协作</strong></p>
+<p>Thread block 是 shared memory 的作用域：<strong>同一个 thread block 内的 thread 可以通过 shared memory 交换数据，并通过 <code>__syncthreads()</code> 做 block 内同步</strong>。</p>
+<p>如果缺少 thread block 这一层，模型只有：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Grid -&gt; Thread
+</span></code></pre></div>
+<p>那么线程之间交换数据就很难有一个“中间层”的片上共享空间，只能更多借助 global memory。global memory 延迟高、带宽代价大，通信成本会明显上升。</p>
+<p><strong>(2) 降低通信成本：以 reduction 为例</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>Cooperation between threads,
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>e.g. reduction mapped on large-scaled hardware,
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>reduce the communication cost
+</span></code></pre></div>
+<p>以 reduction 为例，假设要对很多元素求和。比较好的方式不是让所有 thread 都直接去 global memory 里频繁写同一个结果，而是：</p>
+<ul>
+<li><strong>每个 thread block 先负责一段数据</strong></li>
+<li>block 内 thread 把数据加载到 shared memory</li>
+<li><strong>在 shared memory 中做局部 reduction</strong></li>
+<li>每个 block 最后只把一个 partial sum 写回 global memory</li>
+<li>再用后续 kernel 或更高层级继续合并 partial sums</li>
+</ul>
+<p>这样<strong>大量 thread 间通信发生在 shared memory 内</strong>，而不是都通过 global memory 完成，所以通信成本更低。</p>
+<p><strong>(3) 让线程数量更灵活，提高 TLP</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Flexible number of threads for higher TLP
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a># thread blocks &gt; # SMs
+</span></code></pre></div>
+<p>程序员通常会启动比 SM 数量更多的 thread blocks。硬件把这些 thread blocks 动态分配到 SM 上执行：</p>
+<ul>
+<li>如果 GPU 的 SM 少，就<strong>分批执行这些</strong> thread blocks</li>
+<li>如果 GPU 的 SM 多，就<strong>可以同时执行更多</strong> thread blocks</li>
+<li>同一个程序不需要强依赖具体 GPU 有多少个 SM</li>
+</ul>
+<p>即 “<strong>无需感知不同 GPU 中 SM 数量的灵活调度</strong>”：顶层按 thread block 为单位分配任务，程序员不用为不同 GPU 的 SM 数量重写任务划分。</p>
+<p>以 <strong>block 为单位调度，更适合大规模硬件</strong>。thread block 是调度到 SM 的基本单位。相比直接按单个 thread 调度，按 block 调度有两个好处：</p>
+<ul>
+<li>任务粒度更合适，<strong>不需要硬件管理海量单个 thread 的全局调度</strong></li>
+<li>一个 SM 可以驻留多个 block，当一个 block / warp 因长时间访存无法继续时，SM 可以切换去执行另一个 resident block / warp，从而隐藏延迟</li>
+</ul>
+<p>如果顶层<strong>直接按 thread 分配任务，硬件调度压力会很大</strong>；如果只按整个 grid 分配任务，又缺少可拆分、可迁移、可复用的中间任务粒度。thread block 正好承担了这个中间层。</p>
+<h4 id="thread-block-cluster">Thread Block Cluster<a class="headerlink" href="#thread-block-cluster" title="Permanent link">&para;</a></h4>
+<p>当硬件规模继续增长，只靠单个 SM 内部的 thread block 协作可能不够。一些程序需要在更大的范围内交换数据，这个范围可能超过单个 SM 的物理范围。</p>
+<p>因此 Hopper 引入了 thread block cluster：</p>
+<ul>
+<li>cluster 位于 grid 和 thread block 之间</li>
+<li>cluster 中包含多个 thread blocks</li>
+<li>cluster 内不同 SM 之间可以有更快的通信通道</li>
+<li>它扩展了“可协作线程集合”的范围，同时仍然保持层级化编程模型</li>
+</ul>
+<p>可以把它理解为：thread block 解决的是<strong>一个 SM 附近</strong>的线程协作；thread block cluster 进一步解决的是<strong>多个 SM 之间</strong>的协作。</p>
+<h3 id="33-summary">3.3 Summary<a class="headerlink" href="#33-summary" title="Permanent link">&para;</a></h3>
+<p>GPGPU thread model 的核心价值可以总结为：</p>
+<ul>
+<li>用 SIMT 让程序员写“每个线程做什么”的标量代码，而不是手动写很多向量宽度相关的 SIMD 指令</li>
+<li>用 <code>grid -&gt; thread block -&gt; thread</code> 的层级，把<strong>庞大的并行任务拆成硬件容易调度的单位</strong></li>
+<li>用 thread block 提供 shared memory 和 block 内同步，<strong>降低线程协作的通信成本</strong></li>
+<li>用大量 thread blocks 适配不同规模的 GPU，提高 TLP 并<strong>隐藏访存延迟</strong></li>
+<li>在硬件继续扩大时，用 cluster 扩展跨 SM 协作能力</li>
+</ul>
+<h2 id="iv-performance-tuning-with-programming-model">IV. Performance Tuning with Programming Model<a class="headerlink" href="#iv-performance-tuning-with-programming-model" title="Permanent link">&para;</a></h2>
+<h3 id="41-example-1-matrix-transpose">4.1 Example 1: Matrix Transpose<a class="headerlink" href="#41-example-1-matrix-transpose" title="Permanent link">&para;</a></h3>
+<p>矩阵转置是一个非常常见、看起来也很简单的操作：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>A&#39;[i, j] = A[j, i]
+</span></code></pre></div>
+<p>如果矩阵按 row-major 存储，输入矩阵中 <code>(row, col)</code> 的下标是：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">index_input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colID_input</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rowID_input</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+</span></code></pre></div>
+<p>转置后的输出下标是：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">index_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rowID_input</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">colID_input</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+</span></code></pre></div>
+<p>也就是说，一个 thread 读入 <code>input[row][col]</code>，再写到 <code>output[col][row]</code>。</p>
+<p><strong>Naive implementation 的问题</strong></p>
+<p>naive 版本看起来很直接：每个 thread 负责一个元素，计算输入和输出下标，然后完成一次读和一次写。理论上，如果矩阵大小是 <code>m = 8192, n = 4096</code>，元素是 <code>float</code>：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>total bytes read  = 8192 * 4096 * 4 = 128 MB
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>total bytes write = 8192 * 4096 * 4 = 128 MB
+</span></code></pre></div>
+<p>总 IO 大约是 <code>256 MB</code>。如果显存带宽约为 <code>600 GB/s</code>，理想时间大约是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>0.256 GB / 600 GB/s = 409.6 us
+</span></code></pre></div>
+<p>但课件中的 naive 版本实际跑到了约 <code>1890 us</code>，明显慢于理想值。</p>
+<p><img alt="Naive matrix transpose problem" src="assets/example1-transpose-problem.webp" /></p>
+<p>原因不在计算本身，而在访存模式：</p>
+<ul>
+<li>读 input 时，warp 中相邻 thread 通常读相邻地址，global load 比较连续</li>
+<li>写 output 时，由于是转置写入，相邻 thread 可能写到相隔很远的地址，global store 变成 stride / scattered access</li>
+<li>这种行、列访问方向不一致，会在 cache / memory transaction 上产生冲突和低利用率</li>
+</ul>
+<p>课件里的指标显示：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>global store requests = 33,554,432
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>ideal transactions    = 4,194,304
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>33,554,432 / 4,194,304 = 8
+</span></code></pre></div>
+<p>也就是说，store 侧请求数量膨胀到理想情况的 8 倍，有效利用率只有 <code>12.5%</code>。这个例子想说明：<strong>矩阵转置不是算得慢，而是访存模式拖慢了性能</strong>。</p>
+<h4 id="shared-memory-tile">优化思路：用 shared memory 做 tile<a class="headerlink" href="#shared-memory-tile" title="Permanent link">&para;</a></h4>
+<p>Programming Model 给我们的优化工具是 thread block 和 shared memory。可以让一个 thread block 负责一个小 tile：</p>
+<ol>
+<li>先让 thread block 中的 thread 从 global memory 连续读取一个 tile</li>
+<li>把 tile 放到 shared memory 中</li>
+<li>在 shared memory 中完成转置</li>
+<li>再把转置后的 tile 连续写回 global memory</li>
+</ol>
+<p>这样做的核心思想是：把“全局内存中的不规则转置访问”拆成“global memory 连续读写 + shared memory 内部重排”。global memory 访问更规整，性能就会好很多。</p>
+<h4 id="dummy-padding">Dummy padding<a class="headerlink" href="#dummy-padding" title="Permanent link">&para;</a></h4>
+<p>但是 shared memory 自己也有 bank。若直接使用 <code>32 x 32</code> 的 shared memory tile，<strong>转置访问时可能让多个 thread 落到同一个 bank，形成 bank conflict</strong>。</p>
+<p>课件给出的解决方式是 dummy padding：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">__shared__</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">sdata</span><span class="p">[</span><span class="mi">32</span><span class="p">][</span><span class="mi">33</span><span class="p">];</span>
+</span></code></pre></div>
+<p>这里不是因为需要真正存 <code>33</code> 列有效数据，而是故意多加一列 padding，使<strong>每一行的起始地址错开</strong>。这样在按列方向读取 shared memory 时，thread 访问会分散到不同 bank，减少冲突，实现 <strong>Bank Parallelism</strong>。</p>
+<p><img alt="Matrix transpose with padding" src="assets/example1-transpose-padding.webp" /></p>
+<p>优化后，课件里的 <code>global store</code> 请求从 <code>33,554,432</code> 降到 <code>4,194,394</code>，时间从：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>1890 us -&gt; 525 us
+</span></code></pre></div>
+<p>这已经比较接近前面估算的理想访存时间 <code>409.6 us</code>。</p>
+<h3 id="42-example-2-matrix-multiplication">4.2 Example 2: Matrix Multiplication<a class="headerlink" href="#42-example-2-matrix-multiplication" title="Permanent link">&para;</a></h3>
+<p>第二个例子是 GEMM（General Matrix Multiplication），也就是矩阵乘法：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>A = [M, K], B = [K, N], C = A * B = [M, N]
+</span></code></pre></div>
+<p>其中 <code>K</code> 是 reduction axis。对每个输出元素：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>C[i, j] = sum(A[i, k] * B[k, j])
+</span></code></pre></div>
+<p>GEMM 在深度学习和 LLM 里非常常见。</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>Batch = 10, Seq = 2048, Hidden size = 4096
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>SGEMM with M, N, K = [20480, 4096, 4096]
+</span></code></pre></div>
+<p>这一节不是要深究每一版 kernel 的代码，而是看一个核心问题：<strong>怎样根据 GPGPU programming model，把同一个 GEMM 映射到不同层级的硬件资源上，从而逐步提升性能</strong>。</p>
+<h4 id="naive-gpu-kernel">从 naive 到 GPU kernel<a class="headerlink" href="#naive-gpu-kernel" title="Permanent link">&para;</a></h4>
+<p>最朴素的 CPU 版本就是三层循环：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">            </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="w">        </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>它直接表达了数学定义，但没有充分利用并行硬件。GPU naive 版本通常让一个 thread 负责一个 <code>C[row, col]</code>，thread 内沿 <code>K</code> 方向做 reduction。这样已经能把大量输出元素并行起来，但性能仍然离 A100 的峰值很远，因为每个 thread 都反复从 global memory 读 <code>A</code> 和 <code>B</code>，数据复用没有做好。</p>
+<h4 id="shared-memory-optimization-ddrhbm">Shared memory optimization：减少重复访问 DDR/HBM<a class="headerlink" href="#shared-memory-optimization-ddrhbm" title="Permanent link">&para;</a></h4>
+<p>矩阵乘法的关键在于复用：</p>
+<ul>
+<li>同一块 <code>A</code> tile 会被多个 <code>C</code> 元素使用</li>
+<li>同一块 <code>B</code> tile 也会被多个 <code>C</code> 元素使用</li>
+</ul>
+<p>如果每个 thread 都直接从 DDR/HBM 读自己需要的数据，就会产生大量重复访问。shared memory 优化的基本思想是：</p>
+<ol>
+<li>一个 thread block 负责一个 <code>C</code> 的 tile</li>
+<li>先把对应的 <code>A</code> tile 和 <code>B</code> tile 从 global memory 搬到 shared memory</li>
+<li>block 内多个 thread 反复使用 shared memory 中的数据</li>
+<li>算完当前 tile 后，再进入下一段 <code>K</code> tile</li>
+</ol>
+<p>没有 shared memory 优化时，<code>A</code> 和 <code>B</code> 会从 DDR 中被重复读多次；使用 shared memory 后，global memory 只负责把 tile 搬进来一次，后续复用发生在 shared memory 中。</p>
+<p>这对应我们前面学过的 memory model：<strong>让高复用数据尽量停留在更靠近计算单元的存储层级里</strong>。</p>
+<h4 id="dataflow-optimization-stationary">Dataflow optimization：让谁 stationary<a class="headerlink" href="#dataflow-optimization-stationary" title="Permanent link">&para;</a></h4>
+<p>dataflow optimization 关注的是：在计算 <code>C += A * B</code> 的过程中，应该让哪一类数据尽量停留在片上，减少搬运。</p>
+<p>课件列了几种思想：</p>
+<ul>
+<li>Output Stationary：让部分和 <code>C</code> 尽量留在寄存器 / 片上，累加完成后再写回</li>
+<li>Input Stationary：让输入 <code>A</code> 尽量停留，被多个计算复用</li>
+<li>Weight Stationary：让权重 <code>B</code> 尽量停留，被多个计算复用</li>
+</ul>
+<p><img alt="Dataflow optimization" src="assets/example2-gemm-dataflow.webp" /></p>
+<p>GEMM 中常见且自然的方式是 <strong>output stationary</strong>：每个 thread / warp 维护一小块 <code>C</code> 的 partial sum，把累加值留在 register file 中，直到 <code>K</code> 方向累加完成后再写回 global memory。这样可以减少对 <code>C</code> 的反复读写。</p>
+<p>这个思想和神经网络加速器里常讲的 dataflow 是同一类问题：<strong>不是只关心算多少次乘加，还要关心数据在哪一级存储里停留、什么时候移动、被复用多少次</strong>。</p>
+<h4 id="tiling-gemm-memory-hierarchy">Tiling：把 GEMM 映射到 memory hierarchy<a class="headerlink" href="#tiling-gemm-memory-hierarchy" title="Permanent link">&para;</a></h4>
+<p>GEMM 调优的核心形态是多级 tiling：</p>
+<p><img alt="GEMM tiling hierarchy" src="assets/example2-gemm-tiling.webp" /></p>
+<p>可以按硬件层级来理解：</p>
+<ul>
+<li>整个 GEMM 数据放在 DDR/HBM，也就是 global memory</li>
+<li><strong>Thread block 负责较大的 tile，并把对应数据搬到 shared memory</strong></li>
+<li><strong>Warp 负责更小的 warp tile</strong>，数据进入 register file</li>
+<li>Thread / MMA instruction 负责更小的 thread tile，最终送到 CUDA cores / Tensor Cores 执行</li>
+</ul>
+<p>这张图的重点是：<strong>每一级 memory hierarchy 都承担一个 tile，每一级都尽量做数据复用</strong>。</p>
+<p>所以 GEMM 的调优不是简单地“开更多 thread”，而是要设计：</p>
+<ul>
+<li>一个 block 算多大的 <code>C</code> tile</li>
+<li>每次搬多大的 <code>A/B</code> tile 到 shared memory</li>
+<li>一个 warp 负责 tile 中的哪一块</li>
+<li>每个 thread 在 register 中维护多少个 partial sums</li>
+<li>数据搬运和计算能不能重叠</li>
+</ul>
+<h4 id="tensor-core-software-pipeline">Tensor Core 和 software pipeline<a class="headerlink" href="#tensor-core-software-pipeline" title="Permanent link">&para;</a></h4>
+<p>当使用 Tensor Core 时，单次矩阵乘加的算力会大幅提高。课件中 half-float 的 Tensor Core 版本性能远高于普通 CUDA Core 版本。</p>
+<p>但是算得越快，越容易暴露 memory access time：<strong>如果数据搬运跟不上，Tensor Core 就会等待数据，产生 stall</strong>。因此后面需要 software pipeline 这类技术，<strong>让不同阶段重叠</strong>：</p>
+<ul>
+<li><strong>当前 tile 正在计算</strong></li>
+<li>下一批数据<strong>同时从 global memory 搬到 shared memory</strong></li>
+<li>shared memory 中的数据<strong>再继续搬到 register</strong></li>
+</ul>
+<p>这和前面 memory hierarchy 的思想是一致的：<strong>让数据提前到位，让计算单元尽量不断粮</strong>。</p>
+<h4 id="performance-progression">Performance progression<a class="headerlink" href="#performance-progression" title="Permanent link">&para;</a></h4>
+<p><img alt="GEMM performance progression" src="assets/example2-gemm-performance.webp" /></p>
+<ul>
+<li>naive CPU 很慢</li>
+<li>OpenBLAS CPU 通过 SIMD 等优化大幅提升</li>
+<li>naive GPU 已经快很多，但离峰值还有距离</li>
+<li>加入 shared memory、dataflow、tiling 后，CUDA Core 版本逐步接近 CUDA Core 峰值</li>
+<li>换用 Tensor Core 后，性能跨到更高量级</li>
+<li>再加入 software pipeline 后，性能进一步接近 cuBLAS</li>
+</ul>
+<p>这个例子的重点可以压缩成一句话：</p>
+<blockquote>
+<p>GEMM 性能调优的本质，是把数据复用按 <code>global memory -&gt; shared memory -&gt; register file -&gt; compute cores</code> 逐层安排好，并让计算和搬运尽量重叠。</p>
+</blockquote>
 
 
 
