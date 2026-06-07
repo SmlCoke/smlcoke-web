@@ -426,3 +426,397 @@ for (int j = 0; j < BLOCK_SIZE; j++) {
 - `cudaStreamSynchronize(stream)`：等待指定 stream 中前面提交的工作完成。**它只同步某一个 stream**，相比 `cudaDeviceSynchronize()` 作用域更小，更适合保留其他 stream 的并发执行。
 
 ## III. Summary of Thread Model
+
+### 3.1 SIMD vs. SIMT
+
+总结 GPGPU thread model 和传统 SIMD 编程模型的差异：
+
+- SIMD：one thread + parallel OPs
+- SIMT：many threads + scalar OPs
+
+#### SIMD：一个线程，一条向量指令处理多个元素
+
+以 ARM NEON 的向量乘法为例：
+
+```cpp
+for (i = 0; i < n; i += 4) {
+    uint32x4_t a4 = vld1q_u32(a + i);
+    uint32x4_t b4 = vld1q_u32(b + i);
+    uint32x4_t c4 = vmulq_u32(a4, b4);
+    vst1q_u32(c + i, c4);
+}
+```
+
+从程序控制流上看，这仍然是**一个 thread** 在执行循环；只是每次循环使用 `uint32x4_t` 这样的向量类型，一次处理 4 个元素。因此 SIMD 的思路是：让一个线程发出一条“向量操作”，硬件的多个 lane 同时完成多个元素的计算。
+
+手写标注里的“一次操作 4 个元素；从程序上还是一个 thread，但是一次处理多个元素”就是这个意思。
+
+#### SIMT：多个线程，每个线程写标量代码
+
+CUDA 的写法是：
+
+```cpp
+// host code
+int nblocks = (n + 511) / 512; // 512 threads per Thread Block
+vect_mult<<<nblocks, 512>>>(n, a, b, c);
+
+// device code
+__global__ void vect_mult(int n, double *a, double *b, double *c)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i < n) {
+        a[i] = b[i] * c[i];
+    }
+}
+```
+
+
+在 SIMT 中，程序员写的是每个 thread 要做的**标量操作**：每个 thread 根据自己的 `blockIdx.x` 和 `threadIdx.x` 算出一个 `i`，然后只负责 `a[i] = b[i] * c[i]` 这一份工作。硬件再把多个 thread 组成 warp，让它们以类似 SIMD 的方式一起发射执行。
+
+所以可以这样对比：
+
+| 模型 | 程序员看到的执行主体 | 一次操作覆盖多少数据 | 例子 |
+| --- | --- | --- | --- |
+| SIMD | 一个 thread / 一个控制流 | 一条向量指令处理多个元素 | `uint32x4_t` 一次处理 4 个元素 |
+| SIMT | 很多 thread | 每个 thread 写标量操作，硬件把多个 thread 组成 warp 执行 | CUDA 中一个 thread 处理一个 `a[i]` |
+
+#### SIMT 的几个重要特点
+
+**(1) Address scattering**
+
+SIMT 中每个 thread 都有自己的 `threadIdx` / `blockIdx`，因此可以算出不同地址。它们不一定非要访问连续地址，可以比较自然地支持分散地址访问。
+
+这就是 `Address scattering`：**不同线程可以负责不同数据位置**，甚至负责不同任务。相比要求固定向量宽度和规则连续访问的 SIMD，SIMT 在表达不规则并行任务时更灵活。
+
+**(2) Thread divergence**
+
+SIMT 中每个 thread 逻辑上是独立线程，因此可以写：
+
+```cpp
+if (i < n) {
+    a[i] = b[i] * c[i];
+}
+```
+
+这类条件分支。比如最后一个 thread block 里，可能有的 thread 满足 `i < n`，有的 thread 不满足，这就是一种线程发散。
+
+但是要注意：线程发散是“表达能力”的好处，也是“性能”上的潜在代价。同一个 warp 内的 thread 如果走不同分支，硬件通常需要用掩码**分别执行不同路径，最后再汇合**；因此**发散越严重，warp 的有效并行度越低**。
+
+**(3) Number of instructions in ISA**
+
+SIMD 往往需要暴露不同宽度、不同类型的向量指令或向量类型，例如 `.4s`、`.4d` 这类扩展含义。**SIMT 则可以让程序员写标量指令，硬件用 thread / warp 机制来组织并行**。
+
+因此，SIMT 的一个好处是：ISA 不一定需要为每种向量宽度设计很多显式向量指令，程序员也不用在代码里直接操心“一条指令一次算几个元素”。并行度主要通过 thread 数量、thread block 数量和硬件调度来体现。
+
+### 3.2 Hierarchical Thread Model: Thread Block
+
+为什么 CUDA thread model 中需要 `thread block` 这一层？
+
+它不是随便多加的抽象，而是在 programmability、hardware complexity、scalability 之间做平衡。
+
+CUDA 的层级可以简化为：
+
+```text
+Grid -> Thread block -> Thread
+```
+
+后来的 Hopper 架构又引入了更高一级：
+
+```text
+Grid -> Cluster -> Thread block -> Thread
+```
+
+#### 为什么需要 Thread Block？
+
+**(1) 为了提供 shared memory 和 block 内协作**
+
+Thread block 是 shared memory 的作用域：**同一个 thread block 内的 thread 可以通过 shared memory 交换数据，并通过 `__syncthreads()` 做 block 内同步**。
+
+如果缺少 thread block 这一层，模型只有：
+
+```text
+Grid -> Thread
+```
+
+那么线程之间交换数据就很难有一个“中间层”的片上共享空间，只能更多借助 global memory。global memory 延迟高、带宽代价大，通信成本会明显上升。
+
+**(2) 降低通信成本：以 reduction 为例**
+
+```text
+Cooperation between threads,
+e.g. reduction mapped on large-scaled hardware,
+reduce the communication cost
+```
+
+以 reduction 为例，假设要对很多元素求和。比较好的方式不是让所有 thread 都直接去 global memory 里频繁写同一个结果，而是：
+
+- **每个 thread block 先负责一段数据**
+- block 内 thread 把数据加载到 shared memory
+- **在 shared memory 中做局部 reduction**
+- 每个 block 最后只把一个 partial sum 写回 global memory
+- 再用后续 kernel 或更高层级继续合并 partial sums
+
+这样**大量 thread 间通信发生在 shared memory 内**，而不是都通过 global memory 完成，所以通信成本更低。
+
+**(3) 让线程数量更灵活，提高 TLP**
+
+```text
+Flexible number of threads for higher TLP
+# thread blocks > # SMs
+```
+
+程序员通常会启动比 SM 数量更多的 thread blocks。硬件把这些 thread blocks 动态分配到 SM 上执行：
+
+- 如果 GPU 的 SM 少，就**分批执行这些** thread blocks
+- 如果 GPU 的 SM 多，就**可以同时执行更多** thread blocks
+- 同一个程序不需要强依赖具体 GPU 有多少个 SM
+
+即 “**无需感知不同 GPU 中 SM 数量的灵活调度**”：顶层按 thread block 为单位分配任务，程序员不用为不同 GPU 的 SM 数量重写任务划分。
+
+以 **block 为单位调度，更适合大规模硬件**。thread block 是调度到 SM 的基本单位。相比直接按单个 thread 调度，按 block 调度有两个好处：
+
+- 任务粒度更合适，**不需要硬件管理海量单个 thread 的全局调度**
+- 一个 SM 可以驻留多个 block，当一个 block / warp 因长时间访存无法继续时，SM 可以切换去执行另一个 resident block / warp，从而隐藏延迟
+
+如果顶层**直接按 thread 分配任务，硬件调度压力会很大**；如果只按整个 grid 分配任务，又缺少可拆分、可迁移、可复用的中间任务粒度。thread block 正好承担了这个中间层。
+
+#### Thread Block Cluster
+
+当硬件规模继续增长，只靠单个 SM 内部的 thread block 协作可能不够。一些程序需要在更大的范围内交换数据，这个范围可能超过单个 SM 的物理范围。
+
+因此 Hopper 引入了 thread block cluster：
+
+- cluster 位于 grid 和 thread block 之间
+- cluster 中包含多个 thread blocks
+- cluster 内不同 SM 之间可以有更快的通信通道
+- 它扩展了“可协作线程集合”的范围，同时仍然保持层级化编程模型
+
+可以把它理解为：thread block 解决的是**一个 SM 附近**的线程协作；thread block cluster 进一步解决的是**多个 SM 之间**的协作。
+
+### 3.3 Summary
+
+GPGPU thread model 的核心价值可以总结为：
+
+- 用 SIMT 让程序员写“每个线程做什么”的标量代码，而不是手动写很多向量宽度相关的 SIMD 指令
+- 用 `grid -> thread block -> thread` 的层级，把**庞大的并行任务拆成硬件容易调度的单位**
+- 用 thread block 提供 shared memory 和 block 内同步，**降低线程协作的通信成本**
+- 用大量 thread blocks 适配不同规模的 GPU，提高 TLP 并**隐藏访存延迟**
+- 在硬件继续扩大时，用 cluster 扩展跨 SM 协作能力
+
+## IV. Performance Tuning with Programming Model
+
+### 4.1 Example 1: Matrix Transpose
+
+矩阵转置是一个非常常见、看起来也很简单的操作：
+
+```text
+A'[i, j] = A[j, i]
+```
+
+如果矩阵按 row-major 存储，输入矩阵中 `(row, col)` 的下标是：
+
+```cpp
+int index_input = colID_input + rowID_input * n;
+```
+
+转置后的输出下标是：
+
+```cpp
+int index_output = rowID_input + colID_input * m;
+```
+
+也就是说，一个 thread 读入 `input[row][col]`，再写到 `output[col][row]`。
+
+**Naive implementation 的问题**
+
+naive 版本看起来很直接：每个 thread 负责一个元素，计算输入和输出下标，然后完成一次读和一次写。理论上，如果矩阵大小是 `m = 8192, n = 4096`，元素是 `float`：
+
+```text
+total bytes read  = 8192 * 4096 * 4 = 128 MB
+total bytes write = 8192 * 4096 * 4 = 128 MB
+```
+
+总 IO 大约是 `256 MB`。如果显存带宽约为 `600 GB/s`，理想时间大约是：
+
+```text
+0.256 GB / 600 GB/s = 409.6 us
+```
+
+但课件中的 naive 版本实际跑到了约 `1890 us`，明显慢于理想值。
+
+![Naive matrix transpose problem](./assets/example1-transpose-problem.webp)
+
+原因不在计算本身，而在访存模式：
+
+- 读 input 时，warp 中相邻 thread 通常读相邻地址，global load 比较连续
+- 写 output 时，由于是转置写入，相邻 thread 可能写到相隔很远的地址，global store 变成 stride / scattered access
+- 这种行、列访问方向不一致，会在 cache / memory transaction 上产生冲突和低利用率
+
+课件里的指标显示：
+
+```text
+global store requests = 33,554,432
+ideal transactions    = 4,194,304
+33,554,432 / 4,194,304 = 8
+```
+
+也就是说，store 侧请求数量膨胀到理想情况的 8 倍，有效利用率只有 `12.5%`。这个例子想说明：**矩阵转置不是算得慢，而是访存模式拖慢了性能**。
+
+#### 优化思路：用 shared memory 做 tile
+
+Programming Model 给我们的优化工具是 thread block 和 shared memory。可以让一个 thread block 负责一个小 tile：
+
+1. 先让 thread block 中的 thread 从 global memory 连续读取一个 tile
+2. 把 tile 放到 shared memory 中
+3. 在 shared memory 中完成转置
+4. 再把转置后的 tile 连续写回 global memory
+
+这样做的核心思想是：把“全局内存中的不规则转置访问”拆成“global memory 连续读写 + shared memory 内部重排”。global memory 访问更规整，性能就会好很多。
+
+#### Dummy padding
+
+但是 shared memory 自己也有 bank。若直接使用 `32 x 32` 的 shared memory tile，**转置访问时可能让多个 thread 落到同一个 bank，形成 bank conflict**。
+
+课件给出的解决方式是 dummy padding：
+
+```cpp
+__shared__ float sdata[32][33];
+```
+
+这里不是因为需要真正存 `33` 列有效数据，而是故意多加一列 padding，使**每一行的起始地址错开**。这样在按列方向读取 shared memory 时，thread 访问会分散到不同 bank，减少冲突，实现 **Bank Parallelism**。
+
+![Matrix transpose with padding](./assets/example1-transpose-padding.webp)
+
+优化后，课件里的 `global store` 请求从 `33,554,432` 降到 `4,194,394`，时间从：
+
+```text
+1890 us -> 525 us
+```
+
+这已经比较接近前面估算的理想访存时间 `409.6 us`。
+
+
+### 4.2 Example 2: Matrix Multiplication
+
+第二个例子是 GEMM（General Matrix Multiplication），也就是矩阵乘法：
+
+```text
+A = [M, K], B = [K, N], C = A * B = [M, N]
+```
+
+其中 `K` 是 reduction axis。对每个输出元素：
+
+```text
+C[i, j] = sum(A[i, k] * B[k, j])
+```
+
+GEMM 在深度学习和 LLM 里非常常见。
+
+```text
+Batch = 10, Seq = 2048, Hidden size = 4096
+SGEMM with M, N, K = [20480, 4096, 4096]
+```
+
+这一节不是要深究每一版 kernel 的代码，而是看一个核心问题：**怎样根据 GPGPU programming model，把同一个 GEMM 映射到不同层级的硬件资源上，从而逐步提升性能**。
+
+#### 从 naive 到 GPU kernel
+
+最朴素的 CPU 版本就是三层循环：
+
+```cpp
+for (int i = 0; i < M; ++i) {
+    for (int j = 0; j < N; ++j) {
+        float sum = 0.0f;
+        for (int k = 0; k < K; ++k) {
+            sum += A[i * K + k] * B[k * N + j];
+        }
+        C[i * N + j] = sum;
+    }
+}
+```
+
+它直接表达了数学定义，但没有充分利用并行硬件。GPU naive 版本通常让一个 thread 负责一个 `C[row, col]`，thread 内沿 `K` 方向做 reduction。这样已经能把大量输出元素并行起来，但性能仍然离 A100 的峰值很远，因为每个 thread 都反复从 global memory 读 `A` 和 `B`，数据复用没有做好。
+
+#### Shared memory optimization：减少重复访问 DDR/HBM
+
+矩阵乘法的关键在于复用：
+
+- 同一块 `A` tile 会被多个 `C` 元素使用
+- 同一块 `B` tile 也会被多个 `C` 元素使用
+
+如果每个 thread 都直接从 DDR/HBM 读自己需要的数据，就会产生大量重复访问。shared memory 优化的基本思想是：
+
+1. 一个 thread block 负责一个 `C` 的 tile
+2. 先把对应的 `A` tile 和 `B` tile 从 global memory 搬到 shared memory
+3. block 内多个 thread 反复使用 shared memory 中的数据
+4. 算完当前 tile 后，再进入下一段 `K` tile
+
+没有 shared memory 优化时，`A` 和 `B` 会从 DDR 中被重复读多次；使用 shared memory 后，global memory 只负责把 tile 搬进来一次，后续复用发生在 shared memory 中。
+
+这对应我们前面学过的 memory model：**让高复用数据尽量停留在更靠近计算单元的存储层级里**。
+
+#### Dataflow optimization：让谁 stationary
+
+dataflow optimization 关注的是：在计算 `C += A * B` 的过程中，应该让哪一类数据尽量停留在片上，减少搬运。
+
+课件列了几种思想：
+
+- Output Stationary：让部分和 `C` 尽量留在寄存器 / 片上，累加完成后再写回
+- Input Stationary：让输入 `A` 尽量停留，被多个计算复用
+- Weight Stationary：让权重 `B` 尽量停留，被多个计算复用
+
+![Dataflow optimization](./assets/example2-gemm-dataflow.webp)
+
+GEMM 中常见且自然的方式是 **output stationary**：每个 thread / warp 维护一小块 `C` 的 partial sum，把累加值留在 register file 中，直到 `K` 方向累加完成后再写回 global memory。这样可以减少对 `C` 的反复读写。
+
+这个思想和神经网络加速器里常讲的 dataflow 是同一类问题：**不是只关心算多少次乘加，还要关心数据在哪一级存储里停留、什么时候移动、被复用多少次**。
+
+#### Tiling：把 GEMM 映射到 memory hierarchy
+
+GEMM 调优的核心形态是多级 tiling：
+
+![GEMM tiling hierarchy](./assets/example2-gemm-tiling.webp)
+
+可以按硬件层级来理解：
+
+- 整个 GEMM 数据放在 DDR/HBM，也就是 global memory
+- **Thread block 负责较大的 tile，并把对应数据搬到 shared memory**
+- **Warp 负责更小的 warp tile**，数据进入 register file
+- Thread / MMA instruction 负责更小的 thread tile，最终送到 CUDA cores / Tensor Cores 执行
+
+这张图的重点是：**每一级 memory hierarchy 都承担一个 tile，每一级都尽量做数据复用**。
+
+所以 GEMM 的调优不是简单地“开更多 thread”，而是要设计：
+
+- 一个 block 算多大的 `C` tile
+- 每次搬多大的 `A/B` tile 到 shared memory
+- 一个 warp 负责 tile 中的哪一块
+- 每个 thread 在 register 中维护多少个 partial sums
+- 数据搬运和计算能不能重叠
+
+#### Tensor Core 和 software pipeline
+
+当使用 Tensor Core 时，单次矩阵乘加的算力会大幅提高。课件中 half-float 的 Tensor Core 版本性能远高于普通 CUDA Core 版本。
+
+但是算得越快，越容易暴露 memory access time：**如果数据搬运跟不上，Tensor Core 就会等待数据，产生 stall**。因此后面需要 software pipeline 这类技术，**让不同阶段重叠**：
+
+- **当前 tile 正在计算**
+- 下一批数据**同时从 global memory 搬到 shared memory**
+- shared memory 中的数据**再继续搬到 register**
+
+这和前面 memory hierarchy 的思想是一致的：**让数据提前到位，让计算单元尽量不断粮**。
+
+#### Performance progression
+
+![GEMM performance progression](./assets/example2-gemm-performance.webp)
+
+- naive CPU 很慢
+- OpenBLAS CPU 通过 SIMD 等优化大幅提升
+- naive GPU 已经快很多，但离峰值还有距离
+- 加入 shared memory、dataflow、tiling 后，CUDA Core 版本逐步接近 CUDA Core 峰值
+- 换用 Tensor Core 后，性能跨到更高量级
+- 再加入 software pipeline 后，性能进一步接近 cuBLAS
+
+这个例子的重点可以压缩成一句话：
+
+> GEMM 性能调优的本质，是把数据复用按 `global memory -> shared memory -> register file -> compute cores` 逐层安排好，并让计算和搬运尽量重叠。

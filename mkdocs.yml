@@ -131,7 +131,7 @@ nav:
           - Ch5. Memory: me/DIC/PU/ch5-memory/index.md
           - Ch6. Parallel Processing: me/DIC/PU/ch6-parallel/index.md
           - GPGPU Architecture Overview: me/DIC/PU/gpgpu1_overview/index.md
-          - CPCPU Programming Model: me/DIC/PU/gpgpu2_programming_model/index.md
+          - GPGPU Programming Model: me/DIC/PU/gpgpu2_programming_model/index.md
       - SoC:
           - me/DIC/soc/index.md
           - Introduction: me/DIC/soc/intro/index.md
