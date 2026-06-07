@@ -427,6 +427,10 @@ vmap -c
 
 #### 3.1.4 更推荐的 Python 自动化集成
 
+如果希望直接复用本文配套的 ModelSim 自动化脚本，可以点击下面的按钮下载：
+
+[下载 run_modelsim.py](run_modelsim.py){: .md-button .resource-download-button download="run_modelsim.py" }
+
 Python 自动化时，最关键的是：每一次调用 `vmap`/`vlog`/`vsim` 都应该明确使用同一份 `modelsim.ini`。最推荐的方式是：**每一行命令都通过命令行参数显示指明该写/用哪个 `modelsim.ini`**、
 
 即：
@@ -454,4 +458,3 @@ project/
 
 
 [1]: https://ww1.microchip.com/downloads/aemDocuments/documents/FPGA/swdocs/modelsim/modelsim_user_2024_2.pdf "ModelSim® User's Manual"
-
