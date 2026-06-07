@@ -4720,6 +4720,8 @@ ModelSim 并不是解释型执行的脚本语言，而是<strong>编译型仿真
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>vmap<span class="w"> </span>-c
 </span></code></pre></div>
 <h4 id="314-python">3.1.4 更推荐的 Python 自动化集成<a class="headerlink" href="#314-python" title="Permanent link">&para;</a></h4>
+<p>如果希望直接复用本文配套的 ModelSim 自动化脚本，可以点击下面的按钮下载：</p>
+<p><a class="md-button md-button--primary" download="run_modelsim.py" href="run_modelsim.py">下载 run_modelsim.py</a></p>
 <p>Python 自动化时，最关键的是：每一次调用 <code>vmap</code>/<code>vlog</code>/<code>vsim</code> 都应该明确使用同一份 <code>modelsim.ini</code>。最推荐的方式是：<strong>每一行命令都通过命令行参数显示指明该写/用哪个 <code>modelsim.ini</code></strong>、</p>
 <p>即：</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">run</span><span class="p">([</span><span class="s2">&quot;vmap&quot;</span><span class="p">,</span> <span class="s2">&quot;-modelsimini&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">modelsim_ini_path</span><span class="p">),</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span> <span class="s2">&quot;work&quot;</span><span class="p">])</span>
