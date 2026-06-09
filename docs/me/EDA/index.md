@@ -20,6 +20,12 @@ hide:
   <p class="card-desc">VS Code 中配置 Verilog 开发生态</p>
 </a>
 
+<a class="note-card gray" href="testbench/">
+  <span class="card-icon">📝</span>
+  <div class="card-title">Testbench</div>
+  <p class="card-desc">基于 SystemVerilog 的测试平台学习笔记</p>
+</a>
+
 <a class="note-card gray" href="mobaxterm/">
   <span class="card-icon">🛜</span>
   <div class="card-title">MobaXterm + Linux</div>
@@ -35,19 +41,25 @@ hide:
 <a class="note-card gray" href="tcl/">
   <span class="card-icon">📜</span>
   <div class="card-title">Tcl</div>
-  <p class="card-desc">EDA 工具中的 Tcl 脚本使用指南</p>
+  <p class="card-desc">EDA 工具中的 Tcl 脚本使用学习笔记</p>
 </a>
 
 <a class="note-card gray" href="report/">
   <span class="card-icon">🧾</span>
   <div class="card-title">Report</div>
-  <p class="card-desc">EDA 工具报告阅读指南</p>
+  <p class="card-desc">EDA 工具报告阅读学习笔记</p>
 </a>
 
 <a class="note-card gray" href="modelsim/">
   <span class="card-icon">📶</span>
   <div class="card-title">ModelSim</div>
-  <p class="card-desc">ModelSim 使用基础</p>
+  <p class="card-desc">ModelSim 使用学习笔记</p>
+</a>
+
+<a class="note-card gray" href="vivado/">
+  <span class="card-icon">⚙️</span>
+  <div class="card-title">Vivado</div>
+  <p class="card-desc">Vivado 使用学习笔记</p>
 </a>
 
 </div>
