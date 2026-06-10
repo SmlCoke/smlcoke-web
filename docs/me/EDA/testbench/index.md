@@ -148,35 +148,200 @@ endtask
 1. 引入了 `return` 语句（就像 C 语言一样）。
 2. 引入了 `void` 返回类型（如果你只想封装几句打印，不需要返回值，可以声明为 `void function`）。
 
-```systemverilog
-// [示例 1]：带返回值的 function (计算预期结果)
-// 根据 RV32I 汇编指令的操作码，计算下一个 PC 应该是多少
-function automatic logic [31:0] calc_next_pc(
+    ```systemverilog
+    // [示例 1]：带返回值的 function (计算预期结果)
+    // 根据 RV32I 汇编指令的操作码，计算下一个 PC 应该是多少
+    function automatic logic [31:0] calc_next_pc(
     input logic [31:0] current_pc,
     input logic        is_branch_taken,
     input logic [31:0] branch_offset
-);
+    );
     if (is_branch_taken) begin
         return current_pc + branch_offset; // 直接使用 return
     end else begin
         return current_pc + 32'd4;
     end
-endfunction
+    endfunction
 
-// [示例 2]：不带返回值的 void function (用于零时刻的比对打印)
-function automatic void check_result(
+    // [示例 2]：不带返回值的 void function (用于零时刻的比对打印)
+    function automatic void check_result(
     input logic [31:0] expected, 
     input logic [31:0] actual
-);
+    );
     if (expected !== actual) begin
         $display("[ERROR] 结果不匹配！预期: %h, 实际: %h", expected, actual);
         error_count++; // error_count 必须是外部定义的全局变量
     end else begin
         $display("[PASS] 结果正确: %h", actual);
     end
-endfunction
-```
+    endfunction
+    ```
 
 > 按照我现在的理解：`task` 和 `function` 最大的作用就是封装子过程，简化 `initial` 块测试主流程的复杂程度，便于单独调试和复用。
 
 ### 1.5 命令行参数
+
+**Compile Once, Run Multiple（编译一次，运行多次）。**
+把芯片硬件代码和测试平台编译成一个仿真可执行文件后，我们通过在运行命令后面加上不同的参数，来动态改变 Testbench 的行为。
+SystemVerilog 原生提供了两个系统函数来实现这一点：`$test$plusargs` 和 `$value$plusargs`。
+
+#### 1.5.1 `$test$plusargs` —— 布尔型开关 (是否存在某个参数)
+
+这个函数主要用来做**开关控制**。它会去检查你在运行命令中是否敲了某个特定的参数。
+
+* **返回类型**：如果找到了这个参数，返回非 0 值（真）；没找到，返回 0（假）。
+* **常见用途**：控制**是否打印详细调试信息**、**是否开启波形输出**。因为打印和写波形会拖慢仿真速度，通常跑大批量回归测试时是关掉的，只有出错 debug 时才打开。
+
+#### 1.5.2 `$value$plusargs` —— 键值对传参 (提取参数的具体值)
+
+这是我们**最常用、最核心**的函数！它可以从命令行不仅识别参数名，还能提取等号后面的具体数值或字符串。
+
+* **语法格式**：`$value$plusargs("变量名=%格式", 接收变量)`
+    * 这里的格式和 C 语言一样：`%s` 代表字符串，`%d` 代表十进制整数，`%h` 代表十六进制。
+* **返回类型**：如果成功找到了这个参数并提取了值，返回 `1`；如果没有传入这个参数，返回 `0`。
+
+#### 1.5.3 命令行参数传递
+
+在主流仿真器的命令行模式中，只需要在仿真命令（`vsim, vcs, xsim`）后面加上参数即可，例如：
+
+```systemverilog
+vsim -c tb_cmd_args -do "run -all; quit" +TESTNAME=test.txt +DUMP_WAVES
+```
+
+**对于 Vivado XSim (GUI操作)**
+如果习惯图形界面，可以在 Vivado 中：
+
+1. 点击左侧 `Simulation` -> `Simulation Settings`。
+2. 在弹出的窗口中切换到 `Simulation` 标签页。
+3. 找到 **`xsim.simulate.xsim.more_options`** 这一栏。
+4. 在里面填入：`+TESTNAME=add_test.txt +DUMP_WAVES`。
+5. 然后点击 Run Simulation 即可生效。
+
+### 1.6 并发线程——`fork...join`
+
+在写 RTL 时，我们知道所有的 `always`/`assign` 块都是天生并行的（或者说，它们本身是无时无刻不在工作的电路）。但是在写Testbench 的 `initial` 或 `task` 时，代码默认是**串行（顺序）执行**的。
+
+那么会出现一个问题：如果我们在 `initial` 块里写了一个 `wait` 语句，等待 DUT 输出 valid 信号，但 DUT 永远不输出 valid 了，这时仿真就会**卡死（Hang）**，无法继续往下执行。这个时候，我们就可以通过一个叫做“**超时看门狗**”的技术，来控制最长仿真时间，一旦超出这个时间立刻终止程序，避免卡死。
+
+这也就是说，我们需要在 `initial` 块里同时**并行**做两件事:
+
+* 正常仿真任务
+* 超市看门狗，检测是否超时
+
+这两个任务就是两个**线程**(thread)，在本案例中，只要有一个线程先完成了，我们就可以**跳出这个块**。
+
+在 SystemVerilog 中，以上设想可以通过 `fork...join` 相关语法来实现。
+
+#### 1.6.1 基础心法
+
+在 `fork` 和 `join` 之间，**每一个独立的语句，或者每一个 `begin ... end` 块，都会变成一个独立的并行线程。**
+
+**【非常重要的防坑指南】**
+初学者常犯的错是没加 `begin...end`：
+
+```systemverilog
+// 错误示范：这会产生 2 个并行的线程，#10 和 a=1 是同时发生的！
+fork
+    #10;
+    a = 1;
+join
+```
+
+**工程规范**：在 `fork` 里面，一定要用 `begin : 线程名字` 和 `end` 把逻辑包起来。这样一个 `begin...end` 块才算作一个完整的线程。
+
+#### 1.6.2 SytemVerilog 中的三大并行模式
+
+Verilog 只有一种 `fork...join`，而 SystemVerilog 扩展为了三种。
+
+1. `fork ... join` (**全员到齐才放行**)
+    * **规则**：主程序走到这里，会分裂出多个子线程。必须**等待里面所有的子线程都执行完毕**，主程序才会继续往下走。
+    * **场景**：你要同时初始化多路总线，必须等所有总线都初始化完了才进行下一步。
+2. `fork ... join_any` (**只要有一个完成就放行**) —— **最常用！**
+    * **规则**：多个子线程同时起跑，**只要有任何一个线程率先执行完毕**，主程序立刻继续往下走。
+    * **场景**：**超时看门狗（Watchdog）**。线程 A 负责死等 DUT 的返回，线程 B 负责倒计时（比如 1000 个时钟周期）。如果 A 先等到了，说明 DUT 正常；如果 B 先倒数完了，说明 DUT 死机了，直接报错！
+3. `fork ... join_none` (**只管点火，不管发射**)
+    * **规则**：派生出子线程后，主程序**一瞬间都不等**，直接往下走。子线程会在后台默默运行。
+    * **场景**：开启一个后台时钟监控器（Monitor），它在整个仿真期间一直盯着总线，而不阻塞主测试流程。
+
+!!! attention "disable fork"
+    当使用 `join_any` 时，假设线程 A（正常收到数据）率先完成了，主程序往下走了。**但是，线程 B（倒计时报错）仍然在后台偷偷运行！** 如果不把它杀掉，等仿真再往前走 1000 个周期，线程 B 突然倒数结束了，报了个错，这会让你在查 Bug 时完全摸不着头脑。
+    **所以，在 `join_any` 后面，一定要紧跟一句 `disable fork;`，它的作用是无情地把当前 `fork` 里还在后台苟延残喘的其他线程全部强制杀掉。**
+
+#### 1.6.3 Example
+
+如下是一个 `fork...join` 语法、超时看门狗、以及 `disable fork` 用法的示例：
+
+```systemverilog
+`timescale 1ns/1ps
+
+module tb_fork_watchdog;
+
+    logic clk;
+    logic dut_out_valid;
+
+    // 产生时钟
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    // 用 task 封装等待逻辑
+    task automatic wait_cpu_response(int timeout_cycles);
+        $display("[%0t] [INFO] 开始等待 CPU 返回 valid 信号...", $time);
+        
+        fork
+            // ------------------------------------
+            // 线程 1：正常业务逻辑 (死等 valid)
+            // ------------------------------------
+            begin : thread_wait_dut
+                wait(dut_out_valid == 1'b1);
+                $display("[%0t] [SUCCESS] 成功等到了 CPU 返回信号！", $time);
+            end
+
+            // ------------------------------------
+            // 线程 2：看门狗逻辑 (倒计时)
+            // ------------------------------------
+            begin : thread_watchdog
+                // 倒数 timeout_cycles 个时钟周期
+                repeat(timeout_cycles) @(posedge clk); 
+                $display("[%0t] [FATAL] 等待超时！CPU 死锁了，仿真强行终止！", $time);
+                $fatal(1); // 直接结束仿真报错
+            end
+        join_any // 只要有 1 个线程先完成，就跳出 fork
+
+        // 必须立刻杀死剩下的线程！
+        disable fork; 
+    endtask
+
+    // 主测试流程
+    initial begin
+        dut_out_valid = 0;
+
+        // 模拟场景 A：CPU 正常工作，过了 50 个周期给出了 valid
+        fork // 这个 fork...join 只是为了造一个模拟 DUT 的后台任务
+            begin
+                #500; // 等待500ns (50个周期)
+                dut_out_valid = 1;
+            end
+        join_none // 挂在后台造信号，主线不等待
+
+        // 调用任务，限制最大等待 100 个周期
+        // 结果：正常逻辑会先赢（50周期 < 100周期），看门狗会被 disable 掉
+        wait_cpu_response(100);
+
+        // -------------------------------------------
+        
+        $display("\n===============================");
+
+        // 模拟场景 B：CPU 死锁了，一直没有给出 valid
+        dut_out_valid = 0;
+
+        // 这次限制等待 100 个周期，但 DUT 永远不会给 valid 了
+        // 结果：看门狗会赢，触发 $fatal 结束仿真
+        wait_cpu_response(100);
+
+    end
+endmodule
+```
+
+在工业界，`fork...join` 里面的块**强制要求命名**。因为如果在复杂的并发中出了问题，仿真工具打出来的 Debug Log 会明确告诉你：“哪个名字的线程挂了”，如果不命名，你看到的将是天书。
