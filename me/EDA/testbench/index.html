@@ -2463,6 +2463,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#16-forkjoin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 并发线程——fork...join
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4265,6 +4276,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#16-forkjoin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 并发线程——fork...join
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4414,39 +4436,191 @@
 <strong>SystemVerilog 做了两点极大的优化：</strong></p>
 <ol>
 <li>引入了 <code>return</code> 语句（就像 C 语言一样）。</li>
-<li>引入了 <code>void</code> 返回类型（如果你只想封装几句打印，不需要返回值，可以声明为 <code>void function</code>）。</li>
-</ol>
+<li>
+<p>引入了 <code>void</code> 返回类型（如果你只想封装几句打印，不需要返回值，可以声明为 <code>void function</code>）。</p>
 <div class="language-systemverilog highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// [示例 1]：带返回值的 function (计算预期结果)</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1">// 根据 RV32I 汇编指令的操作码，计算下一个 PC 应该是多少</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">function</span><span class="w"> </span><span class="k">automatic</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">calc_next_pc</span><span class="p">(</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">current_pc</span><span class="p">,</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w">        </span><span class="n">is_branch_taken</span><span class="p">,</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">branch_offset</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">current_pc</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w">        </span><span class="n">is_branch_taken</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">branch_offset</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">);</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_branch_taken</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">current_pc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">branch_offset</span><span class="p">;</span><span class="w"> </span><span class="c1">// 直接使用 return</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">current_pc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">32&#39;d4</span><span class="p">;</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_branch_taken</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">current_pc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">branch_offset</span><span class="p">;</span><span class="w"> </span><span class="c1">// 直接使用 return</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">current_pc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">32&#39;d4</span><span class="p">;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="k">end</span>
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="k">endfunction</span>
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
 </span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1">// [示例 2]：不带返回值的 void function (用于零时刻的比对打印)</span>
 </span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="k">function</span><span class="w"> </span><span class="k">automatic</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">check_result</span><span class="p">(</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">expected</span><span class="p">,</span><span class="w"> </span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">actual</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">expected</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="k">input</span><span class="w"> </span><span class="kt">logic</span><span class="w"> </span><span class="p">[</span><span class="mi">31</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">actual</span>
 </span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="p">);</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">expected</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="n">actual</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">        </span><span class="p">$</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;[ERROR] 结果不匹配！预期: %h, 实际: %h&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">);</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">        </span><span class="n">error_count</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="c1">// error_count 必须是外部定义的全局变量</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">        </span><span class="p">$</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;[PASS] 结果正确: %h&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">);</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">expected</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="n">actual</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">    </span><span class="p">$</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;[ERROR] 结果不匹配！预期: %h, 实际: %h&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">);</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="n">error_count</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="c1">// error_count 必须是外部定义的全局变量</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">    </span><span class="p">$</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;[PASS] 结果正确: %h&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">);</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="k">end</span>
 </span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="k">endfunction</span>
 </span></code></pre></div>
+</li>
+</ol>
 <blockquote>
 <p>按照我现在的理解：<code>task</code> 和 <code>function</code> 最大的作用就是封装子过程，简化 <code>initial</code> 块测试主流程的复杂程度，便于单独调试和复用。</p>
 </blockquote>
 <h3 id="15">1.5 命令行参数<a class="headerlink" href="#15" title="Permanent link">&para;</a></h3>
+<p><strong>Compile Once, Run Multiple（编译一次，运行多次）。</strong><br />
+把芯片硬件代码和测试平台编译成一个仿真可执行文件后，我们通过在运行命令后面加上不同的参数，来动态改变 Testbench 的行为。<br />
+SystemVerilog 原生提供了两个系统函数来实现这一点：<code>$test$plusargs</code> 和 <code>$value$plusargs</code>。</p>
+<h4 id="151-testplusargs">1.5.1 <code>$test$plusargs</code> —— 布尔型开关 (是否存在某个参数)<a class="headerlink" href="#151-testplusargs" title="Permanent link">&para;</a></h4>
+<p>这个函数主要用来做<strong>开关控制</strong>。它会去检查你在运行命令中是否敲了某个特定的参数。</p>
+<ul>
+<li><strong>返回类型</strong>：如果找到了这个参数，返回非 0 值（真）；没找到，返回 0（假）。</li>
+<li><strong>常见用途</strong>：控制<strong>是否打印详细调试信息</strong>、<strong>是否开启波形输出</strong>。因为打印和写波形会拖慢仿真速度，通常跑大批量回归测试时是关掉的，只有出错 debug 时才打开。</li>
+</ul>
+<h4 id="152-valueplusargs">1.5.2 <code>$value$plusargs</code> —— 键值对传参 (提取参数的具体值)<a class="headerlink" href="#152-valueplusargs" title="Permanent link">&para;</a></h4>
+<p>这是我们<strong>最常用、最核心</strong>的函数！它可以从命令行不仅识别参数名，还能提取等号后面的具体数值或字符串。</p>
+<ul>
+<li><strong>语法格式</strong>：<code>$value$plusargs("变量名=%格式", 接收变量)</code><ul>
+<li>这里的格式和 C 语言一样：<code>%s</code> 代表字符串，<code>%d</code> 代表十进制整数，<code>%h</code> 代表十六进制。</li>
+</ul>
+</li>
+<li><strong>返回类型</strong>：如果成功找到了这个参数并提取了值，返回 <code>1</code>；如果没有传入这个参数，返回 <code>0</code>。</li>
+</ul>
+<h4 id="153">1.5.3 命令行参数传递<a class="headerlink" href="#153" title="Permanent link">&para;</a></h4>
+<p>在主流仿真器的命令行模式中，只需要在仿真命令（<code>vsim, vcs, xsim</code>）后面加上参数即可，例如：</p>
+<div class="language-systemverilog highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">vsim</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">tb_cmd_args</span><span class="w"> </span><span class="o">-</span><span class="k">do</span><span class="w"> </span><span class="s">&quot;run -all; quit&quot;</span><span class="w"> </span><span class="o">+</span><span class="n">TESTNAME</span><span class="o">=</span><span class="n">test</span><span class="p">.</span><span class="n">txt</span><span class="w"> </span><span class="o">+</span><span class="n">DUMP_WAVES</span>
+</span></code></pre></div>
+<p><strong>对于 Vivado XSim (GUI操作)</strong><br />
+如果习惯图形界面，可以在 Vivado 中：</p>
+<ol>
+<li>点击左侧 <code>Simulation</code> -&gt; <code>Simulation Settings</code>。</li>
+<li>在弹出的窗口中切换到 <code>Simulation</code> 标签页。</li>
+<li>找到 <strong><code>xsim.simulate.xsim.more_options</code></strong> 这一栏。</li>
+<li>在里面填入：<code>+TESTNAME=add_test.txt +DUMP_WAVES</code>。</li>
+<li>然后点击 Run Simulation 即可生效。</li>
+</ol>
+<h3 id="16-forkjoin">1.6 并发线程——<code>fork...join</code><a class="headerlink" href="#16-forkjoin" title="Permanent link">&para;</a></h3>
+<p>在写 RTL 时，我们知道所有的 <code>always</code>/<code>assign</code> 块都是天生并行的（或者说，它们本身是无时无刻不在工作的电路）。但是在写Testbench 的 <code>initial</code> 或 <code>task</code> 时，代码默认是<strong>串行（顺序）执行</strong>的。</p>
+<p>那么会出现一个问题：如果我们在 <code>initial</code> 块里写了一个 <code>wait</code> 语句，等待 DUT 输出 valid 信号，但 DUT 永远不输出 valid 了，这时仿真就会<strong>卡死（Hang）</strong>，无法继续往下执行。这个时候，我们就可以通过一个叫做“<strong>超时看门狗</strong>”的技术，来控制最长仿真时间，一旦超出这个时间立刻终止程序，避免卡死。</p>
+<p>这也就是说，我们需要在 <code>initial</code> 块里同时<strong>并行</strong>做两件事:</p>
+<ul>
+<li>正常仿真任务</li>
+<li>超市看门狗，检测是否超时</li>
+</ul>
+<p>这两个任务就是两个<strong>线程</strong>(thread)，在本案例中，只要有一个线程先完成了，我们就可以<strong>跳出这个块</strong>。</p>
+<p>在 SystemVerilog 中，以上设想可以通过 <code>fork...join</code> 相关语法来实现。</p>
+<h4 id="161">1.6.1 基础心法<a class="headerlink" href="#161" title="Permanent link">&para;</a></h4>
+<p>在 <code>fork</code> 和 <code>join</code> 之间，<strong>每一个独立的语句，或者每一个 <code>begin ... end</code> 块，都会变成一个独立的并行线程。</strong></p>
+<p><strong>【非常重要的防坑指南】</strong><br />
+初学者常犯的错是没加 <code>begin...end</code>：</p>
+<div class="language-systemverilog highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// 错误示范：这会产生 2 个并行的线程，#10 和 a=1 是同时发生的！</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">fork</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="p">#</span><span class="mi">10</span><span class="p">;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">join</span>
+</span></code></pre></div>
+<p><strong>工程规范</strong>：在 <code>fork</code> 里面，一定要用 <code>begin : 线程名字</code> 和 <code>end</code> 把逻辑包起来。这样一个 <code>begin...end</code> 块才算作一个完整的线程。</p>
+<h4 id="162-sytemverilog">1.6.2 SytemVerilog 中的三大并行模式<a class="headerlink" href="#162-sytemverilog" title="Permanent link">&para;</a></h4>
+<p>Verilog 只有一种 <code>fork...join</code>，而 SystemVerilog 扩展为了三种。</p>
+<ol>
+<li><code>fork ... join</code> (<strong>全员到齐才放行</strong>)<ul>
+<li><strong>规则</strong>：主程序走到这里，会分裂出多个子线程。必须<strong>等待里面所有的子线程都执行完毕</strong>，主程序才会继续往下走。</li>
+<li><strong>场景</strong>：你要同时初始化多路总线，必须等所有总线都初始化完了才进行下一步。</li>
+</ul>
+</li>
+<li><code>fork ... join_any</code> (<strong>只要有一个完成就放行</strong>) —— <strong>最常用！</strong><ul>
+<li><strong>规则</strong>：多个子线程同时起跑，<strong>只要有任何一个线程率先执行完毕</strong>，主程序立刻继续往下走。</li>
+<li><strong>场景</strong>：<strong>超时看门狗（Watchdog）</strong>。线程 A 负责死等 DUT 的返回，线程 B 负责倒计时（比如 1000 个时钟周期）。如果 A 先等到了，说明 DUT 正常；如果 B 先倒数完了，说明 DUT 死机了，直接报错！</li>
+</ul>
+</li>
+<li><code>fork ... join_none</code> (<strong>只管点火，不管发射</strong>)<ul>
+<li><strong>规则</strong>：派生出子线程后，主程序<strong>一瞬间都不等</strong>，直接往下走。子线程会在后台默默运行。</li>
+<li><strong>场景</strong>：开启一个后台时钟监控器（Monitor），它在整个仿真期间一直盯着总线，而不阻塞主测试流程。</li>
+</ul>
+</li>
+</ol>
+<div class="admonition attention">
+<p class="admonition-title">disable fork</p>
+<p>当使用 <code>join_any</code> 时，假设线程 A（正常收到数据）率先完成了，主程序往下走了。<strong>但是，线程 B（倒计时报错）仍然在后台偷偷运行！</strong> 如果不把它杀掉，等仿真再往前走 1000 个周期，线程 B 突然倒数结束了，报了个错，这会让你在查 Bug 时完全摸不着头脑。<br />
+<strong>所以，在 <code>join_any</code> 后面，一定要紧跟一句 <code>disable fork;</code>，它的作用是无情地把当前 <code>fork</code> 里还在后台苟延残喘的其他线程全部强制杀掉。</strong></p>
+</div>
+<h4 id="163-example">1.6.3 Example<a class="headerlink" href="#163-example" title="Permanent link">&para;</a></h4>
+<p>如下是一个 <code>fork...join</code> 语法、超时看门狗、以及 <code>disable fork</code> 用法的示例：</p>
+<div class="language-systemverilog highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="no">`timescale</span><span class="w"> </span><span class="mi">1</span><span class="n">ns</span><span class="o">/</span><span class="mi">1</span><span class="n">ps</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">module</span><span class="w"> </span><span class="n">tb_fork_watchdog</span><span class="p">;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="kt">logic</span><span class="w"> </span><span class="n">clk</span><span class="p">;</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="kt">logic</span><span class="w"> </span><span class="n">dut_out_valid</span><span class="p">;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="c1">// 产生时钟</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="k">forever</span><span class="w"> </span><span class="p">#</span><span class="mi">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="c1">// 用 task 封装等待逻辑</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span><span class="k">task</span><span class="w"> </span><span class="k">automatic</span><span class="w"> </span><span class="n">wait_cpu_response</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">timeout_cycles</span><span class="p">);</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">        </span><span class="p">$</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;[%0t] [INFO] 开始等待 CPU 返回 valid 信号...&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="kt">time</span><span class="p">);</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="k">fork</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">            </span><span class="c1">// ------------------------------------</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">            </span><span class="c1">// 线程 1：正常业务逻辑 (死等 valid)</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">            </span><span class="c1">// ------------------------------------</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">            </span><span class="k">begin</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">thread_wait_dut</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">                </span><span class="k">wait</span><span class="p">(</span><span class="n">dut_out_valid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mb">1&#39;b1</span><span class="p">);</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">                </span><span class="p">$</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;[%0t] [SUCCESS] 成功等到了 CPU 返回信号！&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="kt">time</span><span class="p">);</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">            </span><span class="k">end</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">            </span><span class="c1">// ------------------------------------</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">            </span><span class="c1">// 线程 2：看门狗逻辑 (倒计时)</span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">            </span><span class="c1">// ------------------------------------</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">            </span><span class="k">begin</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">thread_watchdog</span>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">                </span><span class="c1">// 倒数 timeout_cycles 个时钟周期</span>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="w">                </span><span class="k">repeat</span><span class="p">(</span><span class="n">timeout_cycles</span><span class="p">)</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="w">                </span><span class="p">$</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;[%0t] [FATAL] 等待超时！CPU 死锁了，仿真强行终止！&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="kt">time</span><span class="p">);</span>
+</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">                </span><span class="p">$</span><span class="n">fatal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// 直接结束仿真报错</span>
+</span><span id="__span-6-35"><a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="w">            </span><span class="k">end</span>
+</span><span id="__span-6-36"><a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="w">        </span><span class="k">join_any</span><span class="w"> </span><span class="c1">// 只要有 1 个线程先完成，就跳出 fork</span>
+</span><span id="__span-6-37"><a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a>
+</span><span id="__span-6-38"><a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a><span class="w">        </span><span class="c1">// 必须立刻杀死剩下的线程！</span>
+</span><span id="__span-6-39"><a id="__codelineno-6-39" name="__codelineno-6-39" href="#__codelineno-6-39"></a><span class="w">        </span><span class="k">disable</span><span class="w"> </span><span class="k">fork</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-6-40"><a id="__codelineno-6-40" name="__codelineno-6-40" href="#__codelineno-6-40"></a><span class="w">    </span><span class="k">endtask</span>
+</span><span id="__span-6-41"><a id="__codelineno-6-41" name="__codelineno-6-41" href="#__codelineno-6-41"></a>
+</span><span id="__span-6-42"><a id="__codelineno-6-42" name="__codelineno-6-42" href="#__codelineno-6-42"></a><span class="w">    </span><span class="c1">// 主测试流程</span>
+</span><span id="__span-6-43"><a id="__codelineno-6-43" name="__codelineno-6-43" href="#__codelineno-6-43"></a><span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-6-44"><a id="__codelineno-6-44" name="__codelineno-6-44" href="#__codelineno-6-44"></a><span class="w">        </span><span class="n">dut_out_valid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-45"><a id="__codelineno-6-45" name="__codelineno-6-45" href="#__codelineno-6-45"></a>
+</span><span id="__span-6-46"><a id="__codelineno-6-46" name="__codelineno-6-46" href="#__codelineno-6-46"></a><span class="w">        </span><span class="c1">// 模拟场景 A：CPU 正常工作，过了 50 个周期给出了 valid</span>
+</span><span id="__span-6-47"><a id="__codelineno-6-47" name="__codelineno-6-47" href="#__codelineno-6-47"></a><span class="w">        </span><span class="k">fork</span><span class="w"> </span><span class="c1">// 这个 fork...join 只是为了造一个模拟 DUT 的后台任务</span>
+</span><span id="__span-6-48"><a id="__codelineno-6-48" name="__codelineno-6-48" href="#__codelineno-6-48"></a><span class="w">            </span><span class="k">begin</span>
+</span><span id="__span-6-49"><a id="__codelineno-6-49" name="__codelineno-6-49" href="#__codelineno-6-49"></a><span class="w">                </span><span class="p">#</span><span class="mi">500</span><span class="p">;</span><span class="w"> </span><span class="c1">// 等待500ns (50个周期)</span>
+</span><span id="__span-6-50"><a id="__codelineno-6-50" name="__codelineno-6-50" href="#__codelineno-6-50"></a><span class="w">                </span><span class="n">dut_out_valid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-6-51"><a id="__codelineno-6-51" name="__codelineno-6-51" href="#__codelineno-6-51"></a><span class="w">            </span><span class="k">end</span>
+</span><span id="__span-6-52"><a id="__codelineno-6-52" name="__codelineno-6-52" href="#__codelineno-6-52"></a><span class="w">        </span><span class="k">join_none</span><span class="w"> </span><span class="c1">// 挂在后台造信号，主线不等待</span>
+</span><span id="__span-6-53"><a id="__codelineno-6-53" name="__codelineno-6-53" href="#__codelineno-6-53"></a>
+</span><span id="__span-6-54"><a id="__codelineno-6-54" name="__codelineno-6-54" href="#__codelineno-6-54"></a><span class="w">        </span><span class="c1">// 调用任务，限制最大等待 100 个周期</span>
+</span><span id="__span-6-55"><a id="__codelineno-6-55" name="__codelineno-6-55" href="#__codelineno-6-55"></a><span class="w">        </span><span class="c1">// 结果：正常逻辑会先赢（50周期 &lt; 100周期），看门狗会被 disable 掉</span>
+</span><span id="__span-6-56"><a id="__codelineno-6-56" name="__codelineno-6-56" href="#__codelineno-6-56"></a><span class="w">        </span><span class="n">wait_cpu_response</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span><span id="__span-6-57"><a id="__codelineno-6-57" name="__codelineno-6-57" href="#__codelineno-6-57"></a>
+</span><span id="__span-6-58"><a id="__codelineno-6-58" name="__codelineno-6-58" href="#__codelineno-6-58"></a><span class="w">        </span><span class="c1">// -------------------------------------------</span>
+</span><span id="__span-6-59"><a id="__codelineno-6-59" name="__codelineno-6-59" href="#__codelineno-6-59"></a>
+</span><span id="__span-6-60"><a id="__codelineno-6-60" name="__codelineno-6-60" href="#__codelineno-6-60"></a><span class="w">        </span><span class="p">$</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">===============================&quot;</span><span class="p">);</span>
+</span><span id="__span-6-61"><a id="__codelineno-6-61" name="__codelineno-6-61" href="#__codelineno-6-61"></a>
+</span><span id="__span-6-62"><a id="__codelineno-6-62" name="__codelineno-6-62" href="#__codelineno-6-62"></a><span class="w">        </span><span class="c1">// 模拟场景 B：CPU 死锁了，一直没有给出 valid</span>
+</span><span id="__span-6-63"><a id="__codelineno-6-63" name="__codelineno-6-63" href="#__codelineno-6-63"></a><span class="w">        </span><span class="n">dut_out_valid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-64"><a id="__codelineno-6-64" name="__codelineno-6-64" href="#__codelineno-6-64"></a>
+</span><span id="__span-6-65"><a id="__codelineno-6-65" name="__codelineno-6-65" href="#__codelineno-6-65"></a><span class="w">        </span><span class="c1">// 这次限制等待 100 个周期，但 DUT 永远不会给 valid 了</span>
+</span><span id="__span-6-66"><a id="__codelineno-6-66" name="__codelineno-6-66" href="#__codelineno-6-66"></a><span class="w">        </span><span class="c1">// 结果：看门狗会赢，触发 $fatal 结束仿真</span>
+</span><span id="__span-6-67"><a id="__codelineno-6-67" name="__codelineno-6-67" href="#__codelineno-6-67"></a><span class="w">        </span><span class="n">wait_cpu_response</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span><span id="__span-6-68"><a id="__codelineno-6-68" name="__codelineno-6-68" href="#__codelineno-6-68"></a>
+</span><span id="__span-6-69"><a id="__codelineno-6-69" name="__codelineno-6-69" href="#__codelineno-6-69"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-6-70"><a id="__codelineno-6-70" name="__codelineno-6-70" href="#__codelineno-6-70"></a><span class="k">endmodule</span>
+</span></code></pre></div>
+<p>在工业界，<code>fork...join</code> 里面的块<strong>强制要求命名</strong>。因为如果在复杂的并发中出了问题，仿真工具打出来的 Debug Log 会明确告诉你：“哪个名字的线程挂了”，如果不命名，你看到的将是天书。</p>
 
 
 
