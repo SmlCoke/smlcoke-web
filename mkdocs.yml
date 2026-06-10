@@ -141,11 +141,13 @@ nav:
     - EDA Tools:
       - me/EDA/index.md
       - VS Code + Verilog : me/EDA/vscode/index.md
+      - Testbench: me/EDA/testbench/index.md
       - MobaXterm + Linux : me/EDA/mobaxterm/index.md 
       - OSS CAD Suite: me/EDA/OSS/index.md
       - Tcl: me/EDA/tcl/index.md
       - Report: me/EDA/report/index.md
       - ModelSim: me/EDA/modelsim/index.md
+      - Vivado: me/EDA/vivado/index.md
   - 机器学习:
     - ml/Basic/index.md
     - 全连接神经网络: ml/Basic/ch1_Full_Connected_NN/index.md

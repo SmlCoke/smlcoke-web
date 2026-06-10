@@ -140,3 +140,43 @@ endtask
 
 
 #### 1.4.2 `function` 的标准写法
+
+`function` 的核心作用就是 **“瞬时计算”或“瞬时操作”**。
+在传统的 Verilog 中，`function` 必须有一个返回值（且名字和 function 名字一样，很反人类）。
+**SystemVerilog 做了两点极大的优化：**
+
+1. 引入了 `return` 语句（就像 C 语言一样）。
+2. 引入了 `void` 返回类型（如果你只想封装几句打印，不需要返回值，可以声明为 `void function`）。
+
+```systemverilog
+// [示例 1]：带返回值的 function (计算预期结果)
+// 根据 RV32I 汇编指令的操作码，计算下一个 PC 应该是多少
+function automatic logic [31:0] calc_next_pc(
+    input logic [31:0] current_pc,
+    input logic        is_branch_taken,
+    input logic [31:0] branch_offset
+);
+    if (is_branch_taken) begin
+        return current_pc + branch_offset; // 直接使用 return
+    end else begin
+        return current_pc + 32'd4;
+    end
+endfunction
+
+// [示例 2]：不带返回值的 void function (用于零时刻的比对打印)
+function automatic void check_result(
+    input logic [31:0] expected, 
+    input logic [31:0] actual
+);
+    if (expected !== actual) begin
+        $display("[ERROR] 结果不匹配！预期: %h, 实际: %h", expected, actual);
+        error_count++; // error_count 必须是外部定义的全局变量
+    end else begin
+        $display("[PASS] 结果正确: %h", actual);
+    end
+endfunction
+```
+
+> 按照我现在的理解：`task` 和 `function` 最大的作用就是封装子过程，简化 `initial` 块测试主流程的复杂程度，便于单独调试和复用。
+
+### 1.5 命令行参数
