@@ -345,3 +345,10 @@ endmodule
 ```
 
 在工业界，`fork...join` 里面的块**强制要求命名**。因为如果在复杂的并发中出了问题，仿真工具打出来的 Debug Log 会明确告诉你：“哪个名字的线程挂了”，如果不命名，你看到的将是天书。
+
+
+## II. Advance Usage
+
+## III. Some random notes
+
+1. `$fatal(<message>)` 用于弹出标准错误并且终止仿真。`$error(<message>)` 则是弹出标准错误但继续仿真。

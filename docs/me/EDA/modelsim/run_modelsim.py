@@ -9,9 +9,10 @@ ModelSim/QuestaSim Python Simulation Driver Template
 2. 使用 subprocess 调度 vmap / vlib / vdel / vlog / vsim；
 3. 使用 vmap -c 显式创建工程本地 modelsim.ini；
 4. 所有关键命令显式指定 -modelsimini；
-5. 使用 files.f 进行编译；
-6. 收集 ModelSim 控制台输出，避免直接污染 Python 仿真输出；
-7. 提供可重写函数，便于后续工程化扩展。
+5. 使用 vlog 结合 files.f 进行编译；
+6. 使用 vsim 仿真
+7. 收集 ModelSim 控制台输出，避免直接污染 Python 仿真输出；
+8. 提供可重写函数，便于后续工程化扩展。
 
 推荐工作区目录格式:
 project/
@@ -31,6 +32,7 @@ from __future__ import annotations
 import subprocess
 import shutil
 import argparse
+import re
 from pathlib import Path
 from dataclasses import dataclass
 from typing import List, Optional
@@ -61,12 +63,13 @@ VLIB: str = "vlib"
 VLOG: str = "vlog"
 VSIM: str = "vsim"
 VDEL: str = "vdel"
+TOOLS: List[str] = [VMAP, VLIB, VLOG, VSIM, VDEL]
 
 # 详细日志控制开关
 VERBOSE: bool = False
 
 # TOP 模块名字
-TOP_MODULE: str = "tb_top"
+TOP_MODULE: str = "conv_encoder_tb"
 
 # =======================================
 # 通用类/工具函数
@@ -202,7 +205,6 @@ def run_cmd(
     verbose: 是否详细打印命令输出
     stage_name: 可选的阶段名称，用于日志输出
     """
-
     # 运行具体命令并且捕获输出，输出不会直接打印到控制台
     result = subprocess.run(
         args = cmd,
@@ -214,18 +216,15 @@ def run_cmd(
         check = False,  # 不抛出异常，手动检查 returncode
         timeout = timeout
     )
-
-
-    # 错误信息强制打印，不管 returncode 是否非零
-    # 但是依旧用 verbose 参数控制是否详细输出
-    print_error_info(result.stderr, verbose=verbose, stage_name=stage_name)
     
     # 将执行的命令追加写入命令日志
     append_command_log(cmd, COMMAND_LOG)
 
-    # 根据 verbose 参数决定是否打印标准输出信息
+    # 根据 verbose 参数决定是否打印标准输出和标准错误信息
+    # 终端输出根据 verbose 开关控制，日志文件始终写入
     print_detail_info(result.stdout, verbose=verbose, stage_name=stage_name)
-
+    print_error_info(result.stderr, verbose=verbose, stage_name=stage_name)
+    
     # 手动检查 returncode，打印错误信息
     if result.returncode != 0:
         raise subprocess.CalledProcessError(
@@ -240,6 +239,11 @@ def run_cmd(
     return result.stdout
 
 
+def print_stage_head(stage_name: str, verbose: bool) -> None:
+    """打印阶段头信息，便于区分不同阶段的日志输出。"""
+    if verbose:
+        print(f"\n{'='*30} {stage_name.upper()} {'='*30}\n")
+
 
 # =======================================
 # 任务流程
@@ -253,6 +257,7 @@ def env_setup(verbose: bool = False) -> None:
     3. 调用 vmap -c 将 modelsim.ini 拷贝到 sim/ 目录（如果日志已存在，则跳过 vmap -c）
     4. 写入日志到 LOGS/setup_stdout.log 和 LOGS/setup_stderr.log
     """
+    print_stage_head("setup", verbose=verbose)
 
     # 检测 SIM_DIR 是否存在，如果不存在则抛出异常提示用户创建
     if not SIM_DIR.exists() :
@@ -275,7 +280,7 @@ def env_setup(verbose: bool = False) -> None:
         )
 
     # 检测后端工具是否可用
-    check_tool([VMAP, VLIB, VLOG, VSIM, VDEL], stage_name="setup")
+    check_tool(TOOLS, stage_name="setup")
 
     # 检测 modelsim.ini 是否已经存在，如果存在则跳过 vmap -c，否则执行 vmap -c 创建 modelsim.ini
     modelsim_ini_path = SIM_DIR / MODELSIM_INI_NAME
@@ -298,6 +303,8 @@ def logic_lib_setup(verbose: bool = False) -> None:
     3. 调用 vmap -modelsimini modelsim.ini work work 映射逻辑库到物理库
     4. 写入日志到 LOGS/lib_stdout.log 和 LOGS/lib_stderr.log
     """
+    print_stage_head("lib", verbose=verbose)
+
     # 检查并删除现有的物理库
     if (SIM_DIR / "work").exists():
         run_cmd(cmd=[VDEL, "-lib", "work", "-all"], cwd=SIM_DIR, verbose=verbose, stage_name="lib")
@@ -309,16 +316,29 @@ def logic_lib_setup(verbose: bool = False) -> None:
 def compile_sources(verbose: bool = False) -> None:
     """
     1. 调用 vlog -sv -work work -f files.f -modelsimini modelsim.ini 编译源文件
+       - 默认使用 `-sv`，即启用 SystemVerilog 支持以适配 .sv 格式的 testbench
     2. 写入日志到 LOGS/compile_stdout.log 和 LOGS/compile_stderr.log
     """
+    print_stage_head("compile", verbose=verbose)
+
+    # 执行编译命令，默认采用 SystemVerilog 适配支持，采用 files.f 传入路径，显示指定 modelsim.ini
     run_cmd(cmd=[VLOG, "-sv", "-work", "work", "-f", FILES_F_NAME, "-modelsimini", MODELSIM_INI_NAME], cwd=SIM_DIR, verbose=verbose, stage_name="compile")
 
 def simulation_run(verbose: bool = False) -> str:
     """
     1. 调用 vsim -c -modelsimini modelsim.ini work.<TOP_MODULE> -do "run -all; quit" 运行仿真
     2. 写入日志到 LOGS/sim_stdout.log 和 LOGS/sim_stderr.log
+    3. 该模块也可配置，主要体现于 vsim 命令行参数的定制化，例如添加覆盖率收集、指定仿真时间限制、或者使用不同的仿真脚本等。
     """
-    result = run_cmd(cmd=[VSIM, "-c", "-voptargs=+acc", "-modelsimini", MODELSIM_INI_NAME, f"work.{TOP_MODULE}", "-do", "run -all; quit -f"], cwd=SIM_DIR, verbose=verbose, stage_name="sim")
+    print_stage_head("sim", verbose=verbose)
+
+    # 可配置区域：命令行参数，根据具体需求定制
+    args = [
+        # f"+arg1=...",
+    ]
+
+    # 默认关闭 GUI 界面，显示指定 modelsim.ini
+    result = run_cmd(cmd=[VSIM, "-c", "-voptargs=+acc", "-modelsimini", MODELSIM_INI_NAME, f"work.{TOP_MODULE}", *args, "-do", "run -all; quit -f"], cwd=SIM_DIR, verbose=verbose, stage_name="sim")
     return result
 
 def process(sim_result: str, verbose: bool = False) -> None:
@@ -326,7 +346,17 @@ def process(sim_result: str, verbose: bool = False) -> None:
     可配置模块，应根据不同工程需求进行定制化
     例如正则表达式提取仿真结果中的关键信息，或者将仿真输出转换成特定格式的报告等。
     """
-    print_detail_info(sim_result, verbose=verbose, stage_name="process")
+    # print_stage_head("process", verbose=verbose)
+    # codeword_cycles_pattern = re.compile(r"codeword_cycles=\s*(\d+)\s*")
+    # result_status_pattern = re.compile(r"\^_\^ All tests passed!")
+
+    # # 匹配测试结果状态
+    # if result_status_pattern.search(sim_result):
+    #     print("^_^ All tests passed!")
+    
+    # # 匹配 codeword_cycles 并打印
+    # cycles_matches = codeword_cycles_pattern.findall(sim_result)
+    # print(f"codeword_cycles = {cycles_matches[0]}")
 
 
 def run_flow(verbose: bool = False) -> None:
