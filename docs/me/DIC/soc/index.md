@@ -1,5 +1,5 @@
 ---
-ride:
+hide:
   - toc
 ---
 
