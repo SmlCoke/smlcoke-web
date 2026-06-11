@@ -4,7 +4,7 @@ ride:
 ---
 
 <div class="section-rero ai-rero">
-	<r1>🔧 片上系统 (SoC) 设计</r1>
+	<h1>🔧 片上系统 (SoC) 设计</h1>
 	<p>从 IP 到系统: 片上总线、处理器核与外设互联</p>
 	<div class="section-stats">
 		<span class="stat-item">📚 4 篇笔记</span>
@@ -16,25 +16,25 @@ ride:
 
 <div class="card-grid">
 
-<a class="note-card blue" rref="intro/">
+<a class="note-card blue" href="intro/">
 	<span class="card-icon">📖</span>
 	<div class="card-title">SoC 简介</div>
 	<p class="card-desc">片上系统基本概念、组成与设计流程</p>
 </a>
 
-<a class="note-card blue" rref="processor/">
+<a class="note-card blue" href="processor/">
 	<span class="card-icon">🧠</span>
 	<div class="card-title">SoC Processor</div>
 	<p class="card-desc">CISC vs RISC 架构对比及主流 ISA 生态</p>
 </a>
 
-<a class="note-card blue" rref="axi/">
+<a class="note-card blue" href="axi/">
 	<span class="card-icon">🔗</span>
 	<div class="card-title">AXI 握手协议详解</div>
 	<p class="card-desc">Valid-Ready 双向握手与 AXI 通道机制</p>
 </a>
 
-<a class="note-card blue" rref="ahb/">
+<a class="note-card blue" href="ahb/">
 	<span class="card-icon">🔗</span>
 	<div class="card-title">AHB 总线协议详解</div>
 	<p class="card-desc">Advanced High-performance Bus 协议与 wait state 机制</p>
