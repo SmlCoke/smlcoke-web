@@ -2479,6 +2479,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ii-advance-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Advance Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-some-random-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Some random notes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4292,6 +4314,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ii-advance-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Advance Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-some-random-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Some random notes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4621,6 +4665,11 @@ SystemVerilog 原生提供了两个系统函数来实现这一点：<code>$test$
 </span><span id="__span-6-70"><a id="__codelineno-6-70" name="__codelineno-6-70" href="#__codelineno-6-70"></a><span class="k">endmodule</span>
 </span></code></pre></div>
 <p>在工业界，<code>fork...join</code> 里面的块<strong>强制要求命名</strong>。因为如果在复杂的并发中出了问题，仿真工具打出来的 Debug Log 会明确告诉你：“哪个名字的线程挂了”，如果不命名，你看到的将是天书。</p>
+<h2 id="ii-advance-usage">II. Advance Usage<a class="headerlink" href="#ii-advance-usage" title="Permanent link">&para;</a></h2>
+<h2 id="iii-some-random-notes">III. Some random notes<a class="headerlink" href="#iii-some-random-notes" title="Permanent link">&para;</a></h2>
+<ol>
+<li><code>$fatal(&lt;message&gt;)</code> 用于弹出标准错误并且终止仿真。<code>$error(&lt;message&gt;)</code> 则是弹出标准错误但继续仿真。</li>
+</ol>
 
 
 
