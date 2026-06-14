@@ -785,7 +785,7 @@ HRESP  = OKAY
 
 见图：
 
-![alt text](./assets/ahb_single_write.webp)
+![alt text](./assets/ahb_single_write.webp){ width="1000" }
 
 ---
 
@@ -828,7 +828,7 @@ slave 返回 HRDATA = 0x1234_5678
 
 master 在 Cycle 2 结束时采样读数据。
 
-![alt text](./assets/ahb_single_read.webp)
+![alt text](./assets/ahb_single_read.webp){ width="1000" }
 
 ---
 
@@ -899,7 +899,7 @@ Cycle 3 的地址 0x1008，对应 Cycle 4 的 D2
 
 > 从第二拍开始，每个周期都可以完成一笔数据传输。
 
-![alt text](./assets/ahb_burst_write.webp)
+![alt text](./assets/ahb_burst_write.webp){ width="1000" }
 ---
 
 ## 22. 例子四：连续读传输，无 wait state
@@ -931,7 +931,7 @@ Cycle 2 发 0x2004，Cycle 3 返回 R1
 Cycle 3 发 0x2008，Cycle 4 返回 R2
 ```
 
-![alt text](./assets/ahb_burst_read.webp)
+![alt text](./assets/ahb_burst_read.webp){ width="1000" }
 
 ---
 
@@ -1440,7 +1440,7 @@ R2：Cycle 5 结束时完成
 R3：Cycle 6 结束时完成
 ```
 
-![alt text](./assets/ahb_burst_read_wait.webp)
+![alt text](./assets/ahb_burst_read_wait.webp){ width="1000" }
 
 ---
 
@@ -1491,7 +1491,7 @@ A1 是当前地址阶段；
 D0 是上一笔 A0 的数据阶段。
 ```
 
-![alt text](./assets/ahb_burst_write_wait.webp)
+![alt text](./assets/ahb_burst_write_wait.webp){ width="1000" }
 
 ---
 
