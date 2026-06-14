@@ -6855,7 +6855,7 @@ AHB 没有每个通道的 valid-ready 握手，而是主要靠：</p>
 </span></code></pre></div>
 <p>所以写传输在 Cycle 2 完成。</p>
 <p>见图：</p>
-<p><img alt="alt text" src="assets/ahb_single_write.webp" /></p>
+<p><img alt="alt text" src="assets/ahb_single_write.webp" width="1000" /></p>
 <hr />
 <h2 id="19-ahb-wait-state">19. 例子二：单次 AHB 读传输，无 wait state<a class="headerlink" href="#19-ahb-wait-state" title="Permanent link">&para;</a></h2>
 <p>假设：</p>
@@ -6881,7 +6881,7 @@ AHB 没有每个通道的 valid-ready 握手，而是主要靠：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>slave 返回 HRDATA = 0x1234_5678
 </span></code></pre></div>
 <p>master 在 Cycle 2 结束时采样读数据。</p>
-<p><img alt="alt text" src="assets/ahb_single_read.webp" /></p>
+<p><img alt="alt text" src="assets/ahb_single_read.webp" width="1000" /></p>
 <hr />
 <h2 id="20-haddr">20. 单次读写中，HADDR 和数据的对应关系<a class="headerlink" href="#20-haddr" title="Permanent link">&para;</a></h2>
 <p>写：</p>
@@ -6926,7 +6926,7 @@ AHB 没有每个通道的 valid-ready 握手，而是主要靠：</p>
 <blockquote>
 <p>从第二拍开始，每个周期都可以完成一笔数据传输。</p>
 </blockquote>
-<h2 id="_1"><img alt="alt text" src="assets/ahb_burst_write.webp" /><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h2 id="_1"><img alt="alt text" src="assets/ahb_burst_write.webp" width="1000" /><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h2 id="22-wait-state">22. 例子四：连续读传输，无 wait state<a class="headerlink" href="#22-wait-state" title="Permanent link">&para;</a></h2>
 <p>假设连续读：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a>读 0x2000 -&gt; R0
@@ -6946,7 +6946,7 @@ AHB 没有每个通道的 valid-ready 握手，而是主要靠：</p>
 </span><span id="__span-74-2"><a id="__codelineno-74-2" name="__codelineno-74-2" href="#__codelineno-74-2"></a>Cycle 2 发 0x2004，Cycle 3 返回 R1
 </span><span id="__span-74-3"><a id="__codelineno-74-3" name="__codelineno-74-3" href="#__codelineno-74-3"></a>Cycle 3 发 0x2008，Cycle 4 返回 R2
 </span></code></pre></div>
-<p><img alt="alt text" src="assets/ahb_burst_read.webp" /></p>
+<p><img alt="alt text" src="assets/ahb_burst_read.webp" width="1000" /></p>
 <hr />
 <h2 id="23-wait-stateslave">23. Wait state：slave 没准备好怎么办？<a class="headerlink" href="#23-wait-stateslave" title="Permanent link">&para;</a></h2>
 <p>AHB 通过 <code>HREADY = 0</code> 插入 wait state。</p>
@@ -7254,7 +7254,7 @@ AHB 没有每个通道的 valid-ready 握手，而是主要靠：</p>
 </span><span id="__span-127-3"><a id="__codelineno-127-3" name="__codelineno-127-3" href="#__codelineno-127-3"></a>R2：Cycle 5 结束时完成
 </span><span id="__span-127-4"><a id="__codelineno-127-4" name="__codelineno-127-4" href="#__codelineno-127-4"></a>R3：Cycle 6 结束时完成
 </span></code></pre></div>
-<p><img alt="alt text" src="assets/ahb_burst_read_wait.webp" /></p>
+<p><img alt="alt text" src="assets/ahb_burst_read_wait.webp" width="1000" /></p>
 <hr />
 <h2 id="32-burst-wait-state">32. 写 burst + wait state 完整例子<a class="headerlink" href="#32-burst-wait-state" title="Permanent link">&para;</a></h2>
 <p>假设一次 <code>INCR4</code> 写 burst：</p>
@@ -7287,7 +7287,7 @@ AHB 没有每个通道的 valid-ready 握手，而是主要靠：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-132-1"><a id="__codelineno-132-1" name="__codelineno-132-1" href="#__codelineno-132-1"></a>A1 是当前地址阶段；
 </span><span id="__span-132-2"><a id="__codelineno-132-2" name="__codelineno-132-2" href="#__codelineno-132-2"></a>D0 是上一笔 A0 的数据阶段。
 </span></code></pre></div>
-<p><img alt="alt text" src="assets/ahb_burst_write_wait.webp" /></p>
+<p><img alt="alt text" src="assets/ahb_burst_write_wait.webp" width="1000" /></p>
 <hr />
 <h2 id="33-burst-single-transfer">33. 如果不是 burst，而是连续 single transfer 怎么办？<a class="headerlink" href="#33-burst-single-transfer" title="Permanent link">&para;</a></h2>
 <p>如果不是 burst，而是多个独立的 single transfer，那么 <code>HTRANS</code> 通常可以是：</p>

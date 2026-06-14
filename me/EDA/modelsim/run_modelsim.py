@@ -67,6 +67,7 @@ TOOLS: List[str] = [VMAP, VLIB, VLOG, VSIM, VDEL]
 
 # 详细日志控制开关
 VERBOSE: bool = False
+WAVE: bool = False
 
 # TOP 模块名字
 TOP_MODULE: str = "conv_encoder_tb"
@@ -86,6 +87,10 @@ def args_parser() -> None:
         "--top_module", '-tm', action="store", dest="top_module",
         help="Specify the top module name.",
     )
+    parser.add_argument(
+        "--wave", '-w', action="store_true", default=None, dest="wave",
+        help="Enable waveform dumping (default: False).",
+    )
 
     args = parser.parse_args()
     # 更新全局配置: verbose
@@ -97,6 +102,11 @@ def args_parser() -> None:
     if args.top_module is not None:
         global TOP_MODULE
         TOP_MODULE = args.top_module
+
+    # 更新全局配置: wave
+    if args.wave is not None:
+        global WAVE
+        WAVE = args.wave
 
 def check_dir(path: Path) -> None:
     """确保目录存在，不存在则创建。"""
@@ -337,8 +347,13 @@ def simulation_run(verbose: bool = False) -> str:
         # f"+arg1=...",
     ]
 
+    if WAVE:
+        vsim_cmd = ["-do", "log -r /*; run -all; quit -f"]
+    else:
+        vsim_cmd = ["-do", "run -all; quit -f"]
+
     # 默认关闭 GUI 界面，显示指定 modelsim.ini
-    result = run_cmd(cmd=[VSIM, "-c", "-voptargs=+acc", "-modelsimini", MODELSIM_INI_NAME, f"work.{TOP_MODULE}", *args, "-do", "run -all; quit -f"], cwd=SIM_DIR, verbose=verbose, stage_name="sim")
+    result = run_cmd(cmd=[VSIM, "-c", "-voptargs=+acc", "-modelsimini", MODELSIM_INI_NAME, f"work.{TOP_MODULE}", *args, *vsim_cmd], cwd=SIM_DIR, verbose=verbose, stage_name="sim")
     return result
 
 def process(sim_result: str, verbose: bool = False) -> None:
