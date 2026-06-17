@@ -1,6 +1,6 @@
 # 9 bit Multiplier Partial Product Reduction Basics
 
-本文面向 LAB2 的 9 bit signed multiplier 设计，目标是从 0 开始理解下面四个概念：
+本文用 9 bit signed multiplier 设计为例，目标是从 0 开始理解下面四个概念：
 
 - CPA / RCA: carry-propagate adder / ripple-carry adder
 - CSA: carry-save adder
@@ -636,7 +636,7 @@ if height is only target + 1:
 
 ### 6.4 9 bit multiplier 的 Dadda 压缩计划
 
-对 LAB2 的 9 bit Modified Baugh-Wooley multiplier，可以从下面的初始高度出发：
+对于 9 bit Modified Baugh-Wooley multiplier，可以从下面的初始高度出发：
 
 ```text
 column: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
@@ -776,22 +776,6 @@ Dadda: delayed reduction, fewer adders, similar number of levels.
 | 速度 | 通常很快 | 接近 Wallace |
 | 面积 | 可能较大 | 通常较小 |
 
-### 7.2 对 LAB2 的建议
-
-对于 9 bit multiplier：
-
-- 如果你想先写通，Dadda Tree 更适合，因为 target height 清楚。
-- 如果你想追求最短逻辑级数，可以尝试 Wallace Tree。
-- 如果课设报告要解释优化思路，Dadda Tree 更容易写成表格。
-
-你当前方案是：
-
-```text
-Modified Baugh-Wooley + Dadda tree + final 18 bit CPA
-```
-
-这是一个很适合课程实验和报告表达的选择。
-
 ## VIII. Connecting This To Modified Baugh-Wooley
 
 ### 8.1 signed multiplication 的问题
@@ -843,7 +827,13 @@ $$
 2^{2n-1} + 2^n
 $$
 
-对本实验 n=9：
+> 证明：$- \sum_{i=0}^{n-2} a_i b_{n-1}2^{i+n-1}$ 和 $- \sum_{j=0}^{n-2} a_{n-1} b_j2^{j+n-1}$ 转化为 $\sum_{i=0}^{n-2}\overline{a_i b_{n-1}}2^{i+n-1}$ 以及 $\sum_{j=0}^{n-2}\overline{a_{n-1} b_j}2^{j+n-1}$ 后，需要额外**减去**：
+> $2(2^{n-1}+2^{n}+...+2^{2n-3})$，这里的$2n-3$是因为一共有 $n-1$ 列需要修正。
+> 因此 $2(2^{n-1}+2^{n}+...+2^{2n-3}) = -(2^{2n-1}-2^n)$
+> 最终结果是 $2n$ 比特数，在 $2n$ 比特数范围内，加上 $2^{2n}$ 与原始值相等，因此修正常数可以化简为：
+> $2^{2n}-(2^{2n-1}-2^n)=2^{2n-1}+2^n$
+
+对本案例 n=9：
 
 $$
 2^{17} + 2^9
