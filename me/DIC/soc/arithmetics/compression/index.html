@@ -1,0 +1,6601 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SmlCoke">
+      
+      
+        <link rel="canonical" href="https://smlcoke.com/me/DIC/soc/arithmetics/compression/">
+      
+      
+        <link rel="prev" href="../../ahb/">
+      
+      
+        <link rel="next" href="../../../../verilog/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>Compression - SmlCoke Home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260607-1">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#9-bit-multiplier-partial-product-reduction-basics" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SmlCoke Home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Compression
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="cyan"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../blog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  微电子
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../ml/Basic/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  机器学习
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../ml/CV/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  计算机视觉
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../rust/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Rust
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../AI-Tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  人工智能
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../Tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工具
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../comments/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  留言板
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SmlCoke Home
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微电子
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    微电子
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../SS/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Signal and Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Signal and Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2_2" id="__nav_3_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linear Differential Equations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linear Differential Equations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../SS/Linear_Differential_Equations/Homogeneous/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Homogeneous
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../SS/Linear_Differential_Equations/Particular/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Particular
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../SS/Linear_Differential_Equations/Impulse_Balance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Impulse_Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2_3" id="__nav_3_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fourier Transform
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fourier Transform
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../SS/FT/CFT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CFT-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../SS/FT/CFT2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CFT-2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Integrated Circuits
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Digital Integrated Circuits
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Gloassary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../CourseDesign/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Design
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_3" id="__nav_3_3_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Course Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/init/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Init
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/Design_Specifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CourseDesign/Re-quantization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-quantization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../VLSI/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VLSI
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_4" id="__nav_3_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    VLSI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch1-introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch1. Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch2-modulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch2. Modulation and Demodulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch3-iteration_bound/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch3. Iteration Bound
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch4-paralleling_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch4. Parallel and Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch5-retiming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch5. Retiming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch6-unfolding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch6. Unfolding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch7-folding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch7. Folding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch8-systolic_array/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch8. Systolic Array
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch9-fading_channel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch9. Fading Channel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch10-bandpass_modulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch10. Bandpass Modulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch11-mqam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch11. MQAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch11-ofdm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch11. OFDM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../VLSI/ch12-channel_code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch12. Channel code and decode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../PU/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processors
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_5" id="__nav_3_3_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Processors
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/ch1-the_software_hardware_interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/ch2-ISA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch2. ISA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/ch3-arithmetic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch3. Arithmetic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/ch4-processor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch4. Processor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/ch4-processor-p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch4. Processor (Part 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/ch5-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch5. Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/ch6-parallel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch6. Parallel Processing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/gpgpu1_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPGPU Architecture Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PU/gpgpu2_programming_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPGPU Programming Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_6" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SoC
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_6" id="__nav_3_3_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SoC
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SoC Processor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../axi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AXI Handshake
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ahb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AHB Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compression
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-from-multiplication-to-dot-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. From Multiplication To Dot Matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I. From Multiplication To Dot Matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 为什么乘法器不是一个简单的加法器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-dot-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 dot matrix 的含义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 乘法器压缩的目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-9-bit-modified-baugh-wooley" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 9 bit Modified Baugh-Wooley 的初始列高度
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-cpa-and-ripple-carry-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. CPA And Ripple-Carry Adder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. CPA And Ripple-Carry Adder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-cpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 CPA 的准确含义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-half-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Half Adder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-full-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Full Adder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-ripple-carry-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Ripple-Carry Adder 的递推公式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-rca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 RCA 例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-cpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 CPA 在乘法器里的位置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-csa-carry-save-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. CSA: Carry-Save Adder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. CSA: Carry-Save Adder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-csa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 CSA 解决什么问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-csa-fa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 CSA 的基本单元就是 FA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-csa-cpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 CSA 和 CPA 的根本区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-csa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 CSA 数值例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-csa-dot-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 CSA 在 dot matrix 中的解释
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-partial-product-compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. Partial Product Compression
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IV. Partial Product Compression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-column-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 column height
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-fa-column-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 FA 如何改变 column height
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-ha-column-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 HA 如何改变 column height
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 为什么最终要压到 2 行
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V. Wallace Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="V. Wallace Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Wallace Tree 的核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Wallace Tree 的算法描述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Wallace Tree 的直觉例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Wallace Tree 的优缺点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vi-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VI. Dadda Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VI. Dadda Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Dadda Tree 的核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-dadda-target-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Dadda target height 序列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Dadda Tree 的压缩规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-9-bit-multiplier-dadda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 9 bit multiplier 的 Dadda 压缩计划
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Dadda Tree 的优缺点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vii-wallace-tree-vs-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VII. Wallace Tree vs Dadda Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VII. Wallace Tree vs Dadda Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 核心差异
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-lab2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 对 LAB2 的建议
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viii-connecting-this-to-modified-baugh-wooley" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIII. Connecting This To Modified Baugh-Wooley
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VIII. Connecting This To Modified Baugh-Wooley">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-signed-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 signed multiplication 的问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-baugh-wooley" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Baugh-Wooley 的基本做法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-multiplierv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 对你的 multiplier.v 的实现提醒
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ix-how-to-write-the-rtl-compression-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IX. How To Write The RTL Compression Network
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IX. How To Write The RTL Compression Network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 推荐的结构化写法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-faha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 每个 FA/HA 都要检查权重
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 最终两行的构造
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 推荐实现顺序
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.5 常见错误
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x-exam-oriented-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X. Exam-Oriented Summary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X. Exam-Oriented Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 一句话总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 关键公式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 面试和考试常见问法
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xi-suggested-report-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XI. Suggested Report Description
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../verilog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verilog HDL Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../EDA/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    EDA Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VS Code + Verilog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/testbench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testbench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/mobaxterm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MobaXterm + Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/OSS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSS CAD Suite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/tcl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tcl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/modelsim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ModelSim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../EDA/vivado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vivado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../ml/Basic/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch1_Full_Connected_NN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全连接神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch2_Optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    优化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch3_CNN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch4_Self_Attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/Basic/ch5_Transformer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../ml/CV/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/ResNet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/DenseNet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLOv2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/YOLO/YOLOv3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/VIT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/PFLD/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/mobileone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MobileOne
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/MSKA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSKA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/MSKA-computing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSKA Computing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/TSCM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSCM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/TSRNet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSRNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../ml/CV/PFLD_GhostOne/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD-GhostOne
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_14" id="__nav_5_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PFLD-GhostOne
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/PFLD_GhostOne/CodeNotes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/PFLD_GhostOne/Loss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Loss
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/PFLD_GhostOne/PyTorch2onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PyTorch2onnx
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ml/CV/PFLD_GhostOne/DA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../rust/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rust
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../rust/notes/Study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 学习笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../rust/notes/Rust%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 环境配置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../rust/crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 加密/解密在线工具
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../AI-Tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    人工智能
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    人工智能
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/ClaudeCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/OpenRouter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenRouter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/OpenCode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../AI-Tools/Aider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../Tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    工具
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../Tools/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../Tools/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git & GitHub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../Tools/wsl2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WSL2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../Tools/markdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Markdown 速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../Tools/markdown/writing_style_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Markdown 写作规范
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../Tools/markdown/mkdocs_theme_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    站点开发笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    留言板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-from-multiplication-to-dot-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. From Multiplication To Dot Matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I. From Multiplication To Dot Matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 为什么乘法器不是一个简单的加法器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-dot-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 dot matrix 的含义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 乘法器压缩的目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-9-bit-modified-baugh-wooley" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 9 bit Modified Baugh-Wooley 的初始列高度
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-cpa-and-ripple-carry-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. CPA And Ripple-Carry Adder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. CPA And Ripple-Carry Adder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-cpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 CPA 的准确含义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-half-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Half Adder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-full-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Full Adder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-ripple-carry-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Ripple-Carry Adder 的递推公式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-rca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 RCA 例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-cpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 CPA 在乘法器里的位置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-csa-carry-save-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. CSA: Carry-Save Adder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. CSA: Carry-Save Adder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-csa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 CSA 解决什么问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-csa-fa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 CSA 的基本单元就是 FA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-csa-cpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 CSA 和 CPA 的根本区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-csa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 CSA 数值例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-csa-dot-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 CSA 在 dot matrix 中的解释
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-partial-product-compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. Partial Product Compression
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IV. Partial Product Compression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-column-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 column height
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-fa-column-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 FA 如何改变 column height
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-ha-column-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 HA 如何改变 column height
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 为什么最终要压到 2 行
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V. Wallace Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="V. Wallace Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Wallace Tree 的核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Wallace Tree 的算法描述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Wallace Tree 的直觉例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-wallace-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Wallace Tree 的优缺点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vi-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VI. Dadda Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VI. Dadda Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Dadda Tree 的核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-dadda-target-height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Dadda target height 序列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Dadda Tree 的压缩规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-9-bit-multiplier-dadda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 9 bit multiplier 的 Dadda 压缩计划
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Dadda Tree 的优缺点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vii-wallace-tree-vs-dadda-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VII. Wallace Tree vs Dadda Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VII. Wallace Tree vs Dadda Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 核心差异
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-lab2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 对 LAB2 的建议
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viii-connecting-this-to-modified-baugh-wooley" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIII. Connecting This To Modified Baugh-Wooley
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VIII. Connecting This To Modified Baugh-Wooley">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-signed-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 signed multiplication 的问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-baugh-wooley" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Baugh-Wooley 的基本做法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-multiplierv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 对你的 multiplier.v 的实现提醒
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ix-how-to-write-the-rtl-compression-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IX. How To Write The RTL Compression Network
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IX. How To Write The RTL Compression Network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 推荐的结构化写法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-faha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 每个 FA/HA 都要检查权重
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 最终两行的构造
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 推荐实现顺序
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.5 常见错误
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x-exam-oriented-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X. Exam-Oriented Summary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X. Exam-Oriented Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 一句话总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 关键公式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 面试和考试常见问法
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xi-suggested-report-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XI. Suggested Report Description
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="9-bit-multiplier-partial-product-reduction-basics">9 bit Multiplier Partial Product Reduction Basics<a class="headerlink" href="#9-bit-multiplier-partial-product-reduction-basics" title="Permanent link">&para;</a></h1>
+<p>本文面向 LAB2 的 9 bit signed multiplier 设计，目标是从 0 开始理解下面四个概念：</p>
+<ul>
+<li>CPA / RCA: carry-propagate adder / ripple-carry adder</li>
+<li>CSA: carry-save adder</li>
+<li>Wallace Tree</li>
+<li>Dadda Tree</li>
+</ul>
+<p>这些概念在乘法器中的关系可以先用一句话抓住：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>partial products -&gt; CSA compression tree -&gt; two rows -&gt; final CPA -&gt; product
+</span></code></pre></div>
+<p>其中 Wallace Tree 和 Dadda Tree 都不是新的加法器单元，而是组织很多 HA/FA 的不同调度策略。</p>
+<h2 id="i-from-multiplication-to-dot-matrix">I. From Multiplication To Dot Matrix<a class="headerlink" href="#i-from-multiplication-to-dot-matrix" title="Permanent link">&para;</a></h2>
+<h3 id="11">1.1 为什么乘法器不是一个简单的加法器<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<p>以无符号乘法为例，两个 n bit 数</p>
+<div class="arithmatex">\[
+A = \sum_{i=0}^{n-1} a_i 2^i,\quad
+B = \sum_{j=0}^{n-1} b_j 2^j
+\]</div>
+<p>则乘积为</p>
+<div class="arithmatex">\[
+P = A \times B
+  = \sum_{i=0}^{n-1}\sum_{j=0}^{n-1} a_i b_j 2^{i+j}
+\]</div>
+<p>其中每一项</p>
+<div class="arithmatex">\[
+p_{i,j} = a_i b_j
+\]</div>
+<p>就是一个 partial product bit。它的权重是</p>
+<div class="arithmatex">\[
+2^{i+j}
+\]</div>
+<p>所以乘法器的本质是：先生成很多带权重的 bit，再把相同权重的 bit 加起来。</p>
+<h3 id="12-dot-matrix">1.2 dot matrix 的含义<a class="headerlink" href="#12-dot-matrix" title="Permanent link">&para;</a></h3>
+<p>在乘法器课件里经常会看到点图。每一个点代表一个 bit，所在的列代表这个 bit 的权重。</p>
+<p>例如 4 bit unsigned multiplier 的 column height 是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>column: 0 1 2 3 4 5 6
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>height: 1 2 3 4 3 2 1
+</span></code></pre></div>
+<p>解释如下：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>column 0: a0b0
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>column 1: a1b0, a0b1
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>column 2: a2b0, a1b1, a0b2
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>column 3: a3b0, a2b1, a1b2, a0b3
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>...
+</span></code></pre></div>
+<p>每一列的所有 dots 都拥有相同权重。例如 column 3 中的每个 dot 都乘以 <span class="arithmatex">\(2^3\)</span>。</p>
+<h3 id="13">1.3 乘法器压缩的目标<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
+<p>假设某一列有 9 个 dots。如果直接用普通加法器逐行相加，会产生很长的 carry propagation path。乘法器的高速设计通常分两步：</p>
+<ol>
+<li>使用 CSA tree 把每一列的 dot height 压到不超过 2。</li>
+<li>最后只剩两行数时，再用一次 CPA 得到标准二进制乘积。</li>
+</ol>
+<p>也就是：</p>
+<div class="arithmatex">\[
+\sum \text{all dots}
+\quad\Rightarrow\quad
+R_0 + R_1
+\quad\Rightarrow\quad
+P
+\]</div>
+<p>第一步不传播长进位，第二步才传播进位。</p>
+<h3 id="14-9-bit-modified-baugh-wooley">1.4 9 bit Modified Baugh-Wooley 的初始列高度<a class="headerlink" href="#14-9-bit-modified-baugh-wooley" title="Permanent link">&para;</a></h3>
+<p>对 9 bit signed multiplier，使用 Modified Baugh-Wooley 后，初始 dot matrix 仍然可以被看成 18 个权重列：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>column: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>height: 1 2 3 4 5 6 7 8 9 9  7  6  5  4  3  2  1  1
+</span></code></pre></div>
+<p>这里 column 17 的那个 dot 来自 Baugh-Wooley 的 correction bit。对 9 bit 二补码乘法，常用修正常数为：</p>
+<div class="arithmatex">\[
+2^{17} + 2^9
+\]</div>
+<p>也就是在 column 17 和 column 9 各加入一个常数 dot。</p>
+<h2 id="ii-cpa-and-ripple-carry-adder">II. CPA And Ripple-Carry Adder<a class="headerlink" href="#ii-cpa-and-ripple-carry-adder" title="Permanent link">&para;</a></h2>
+<h3 id="21-cpa">2.1 CPA 的准确含义<a class="headerlink" href="#21-cpa" title="Permanent link">&para;</a></h3>
+<p>CPA 是 carry-propagate adder，即进位传播加法器。它的特点是输出是标准二进制结果，必须把 carry 从低位传播到高位。</p>
+<p>Ripple-carry adder, 简称 RCA，是最基本的 CPA。很多同学会把 CPA 和 RCA 混着说，但严格讲：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>CPA: 一类会传播进位的最终加法器
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>RCA: 最简单的一种 CPA
+</span></code></pre></div>
+<p>其他 CPA 还包括 CLA, carry-skip adder, carry-select adder 等。</p>
+<h3 id="22-half-adder">2.2 Half Adder<a class="headerlink" href="#22-half-adder" title="Permanent link">&para;</a></h3>
+<p>Half adder, 简称 HA，用来加两个 1 bit 输入：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>x + y -&gt; sum, carry
+</span></code></pre></div>
+<p>公式为：</p>
+<div class="arithmatex">\[
+s = x \oplus y
+\]</div>
+<div class="arithmatex">\[
+c = x y
+\]</div>
+<p>数值上有：</p>
+<div class="arithmatex">\[
+x + y = s + 2c
+\]</div>
+<p>如果这个 HA 位于 column k，则：</p>
+<div class="arithmatex">\[
+(x+y)2^k = s2^k + c2^{k+1}
+\]</div>
+<p>所以 HA 的 sum 留在本列，carry 进入高一列。</p>
+<h3 id="23-full-adder">2.3 Full Adder<a class="headerlink" href="#23-full-adder" title="Permanent link">&para;</a></h3>
+<p>Full adder, 简称 FA，用来加三个 1 bit 输入：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>x + y + z -&gt; sum, carry
+</span></code></pre></div>
+<p>公式为：</p>
+<div class="arithmatex">\[
+s = x \oplus y \oplus z
+\]</div>
+<div class="arithmatex">\[
+c = xy + yz + xz
+\]</div>
+<p>数值上有：</p>
+<div class="arithmatex">\[
+x + y + z = s + 2c
+\]</div>
+<p>如果 FA 位于 column k，则：</p>
+<div class="arithmatex">\[
+(x+y+z)2^k = s2^k + c2^{k+1}
+\]</div>
+<p>因此 FA 也可以被称为 3:2 compressor：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>3 input dots -&gt; 1 sum dot in same column + 1 carry dot in next column
+</span></code></pre></div>
+<h3 id="24-ripple-carry-adder">2.4 Ripple-Carry Adder 的递推公式<a class="headerlink" href="#24-ripple-carry-adder" title="Permanent link">&para;</a></h3>
+<p>对两个 n bit 输入 <span class="arithmatex">\(A\)</span> 和 <span class="arithmatex">\(B\)</span>，RCA 从最低位开始逐位相加：</p>
+<div class="arithmatex">\[
+c_0 = 0
+\]</div>
+<div class="arithmatex">\[
+s_i = a_i \oplus b_i \oplus c_i
+\]</div>
+<div class="arithmatex">\[
+c_{i+1} = a_i b_i + a_i c_i + b_i c_i
+\]</div>
+<p>最终结果为：</p>
+<div class="arithmatex">\[
+S = \sum_{i=0}^{n-1}s_i2^i + c_n2^n
+\]</div>
+<p>关键点是：第 i 位的计算依赖 <span class="arithmatex">\(c_i\)</span>，而 <span class="arithmatex">\(c_i\)</span> 又来自第 i-1 位。所以 RCA 的延迟随位宽线性增长：</p>
+<div class="arithmatex">\[
+T_{RCA} \approx n \cdot T_{FA}
+\]</div>
+<p>这就是 ripple 的含义：carry 像水波一样从低位一级一级传到高位。</p>
+<h3 id="25-rca">2.5 RCA 例子<a class="headerlink" href="#25-rca" title="Permanent link">&para;</a></h3>
+<p>计算：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>  1011  = 11
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>+ 0110  =  6
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>------
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a> 10001  = 17
+</span></code></pre></div>
+<p>逐位过程：</p>
+<table>
+<thead>
+<tr>
+<th>bit</th>
+<th>a_i</th>
+<th>b_i</th>
+<th>c_i</th>
+<th>s_i</th>
+<th>c_{i+1}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>所以：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>s[3:0] = 0001
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>c4     = 1
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>result = 10001
+</span></code></pre></div>
+<h3 id="26-cpa">2.6 CPA 在乘法器里的位置<a class="headerlink" href="#26-cpa" title="Permanent link">&para;</a></h3>
+<p>在高速乘法器中，CPA 通常只放在最后一步：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>many partial product rows
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>        |
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        v
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>CSA / Wallace / Dadda compression
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        |
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        v
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>two rows
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>        |
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>        v
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>final CPA
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>        |
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        v
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>product
+</span></code></pre></div>
+<p>原因是 CPA 会传播进位。如果在压缩树中间就频繁使用 CPA，会把 critical path 拉长。</p>
+<p>考试里常见判断：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>CSA tree reduces the number of operands.
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>CPA produces the final binary result.
+</span></code></pre></div>
+<h2 id="iii-csa-carry-save-adder">III. CSA: Carry-Save Adder<a class="headerlink" href="#iii-csa-carry-save-adder" title="Permanent link">&para;</a></h2>
+<h3 id="31-csa">3.1 CSA 解决什么问题<a class="headerlink" href="#31-csa" title="Permanent link">&para;</a></h3>
+<p>如果要加很多个数，例如：</p>
+<div class="arithmatex">\[
+X_0 + X_1 + X_2 + \cdots + X_{m-1}
+\]</div>
+<p>使用 RCA tree 的问题是每一级 RCA 都要传播 carry，延迟很长。</p>
+<p>CSA 的思想是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>不要立刻传播进位。
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>把 carry 保存到下一列，留给后面的压缩级继续处理。
+</span></code></pre></div>
+<p>所以 CSA 的输出不是一个最终二进制数，而是两个向量：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sum row
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>carry row
+</span></code></pre></div>
+<p>这两个向量还需要继续相加，最终才得到标准二进制数。</p>
+<h3 id="32-csa-fa">3.2 CSA 的基本单元就是 FA<a class="headerlink" href="#32-csa-fa" title="Permanent link">&para;</a></h3>
+<p>一个 n bit CSA 可以看成 n 个互不串联的 FA。第 i 位独立计算：</p>
+<div class="arithmatex">\[
+s_i = x_i \oplus y_i \oplus z_i
+\]</div>
+<div class="arithmatex">\[
+c_{i+1} = x_i y_i + y_i z_i + x_i z_i
+\]</div>
+<p>注意这里不是 <span class="arithmatex">\(c_i\)</span>，而是 <span class="arithmatex">\(c_{i+1}\)</span>。这是因为该 carry 的权重比当前列高一位。</p>
+<p>向量形式为：</p>
+<div class="arithmatex">\[
+X + Y + Z = S + (C \ll 1)
+\]</div>
+<p>其中：</p>
+<ul>
+<li><span class="arithmatex">\(S\)</span> 是 sum row</li>
+<li><span class="arithmatex">\(C\)</span> 是 carry row</li>
+<li><span class="arithmatex">\(C \ll 1\)</span> 表示 carry row 左移一位后再参与数值求和</li>
+</ul>
+<h3 id="33-csa-cpa">3.3 CSA 和 CPA 的根本区别<a class="headerlink" href="#33-csa-cpa" title="Permanent link">&para;</a></h3>
+<p>CPA 的第 i 位需要等待低位 carry：</p>
+<div class="arithmatex">\[
+s_i = f(a_i,b_i,c_i)
+\]</div>
+<p>CSA 的第 i 位只看本列输入：</p>
+<div class="arithmatex">\[
+s_i,c_{i+1} = f(x_i,y_i,z_i)
+\]</div>
+<p>所以 CSA 不会产生横跨很多 bit 的 carry chain。它的单级延迟近似是一个 FA 的延迟：</p>
+<div class="arithmatex">\[
+T_{CSA} \approx T_{FA}
+\]</div>
+<h3 id="34-csa">3.4 CSA 数值例子<a class="headerlink" href="#34-csa" title="Permanent link">&para;</a></h3>
+<p>计算三个 4 bit 数：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>X = 1011 = 11
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Y = 0110 =  6
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Z = 0101 =  5
+</span></code></pre></div>
+<p>真实结果是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>11 + 6 + 5 = 22 = 10110
+</span></code></pre></div>
+<p>逐列使用 FA：</p>
+<table>
+<thead>
+<tr>
+<th>bit</th>
+<th>x_i</th>
+<th>y_i</th>
+<th>z_i</th>
+<th>s_i</th>
+<th>carry to bit i+1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>得到：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>S      = 1000
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>C &lt;&lt; 1 = 01110
+</span></code></pre></div>
+<p>相加：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>  01000
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>+ 01110
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>-------
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  10110 = 22
+</span></code></pre></div>
+<p>注意 CSA 本身没有直接输出 10110。它只是把三个操作数变成了两个操作数。</p>
+<h3 id="35-csa-dot-matrix">3.5 CSA 在 dot matrix 中的解释<a class="headerlink" href="#35-csa-dot-matrix" title="Permanent link">&para;</a></h3>
+<p>如果某个 column k 中有 3 个 dots：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>column k: x, y, z
+</span></code></pre></div>
+<p>用一个 FA 后变成：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>column k:   sum
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>column k+1: carry
+</span></code></pre></div>
+<p>数值不变：</p>
+<div class="arithmatex">\[
+(x+y+z)2^k = s2^k + c2^{k+1}
+\]</div>
+<p>这就是部分积压缩树的全部基础。</p>
+<h2 id="iv-partial-product-compression">IV. Partial Product Compression<a class="headerlink" href="#iv-partial-product-compression" title="Permanent link">&para;</a></h2>
+<h3 id="41-column-height">4.1 column height<a class="headerlink" href="#41-column-height" title="Permanent link">&para;</a></h3>
+<p>column height 指某个权重列里有多少个 dots。</p>
+<p>例如：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>column 8 has height 9
+</span></code></pre></div>
+<p>表示 column 8 中有 9 个权重为 <span class="arithmatex">\(2^8\)</span> 的 bit 需要相加。</p>
+<h3 id="42-fa-column-height">4.2 FA 如何改变 column height<a class="headerlink" href="#42-fa-column-height" title="Permanent link">&para;</a></h3>
+<p>在 column k 放一个 FA：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>consume: 3 dots from column k
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>produce: 1 sum dot to column k
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>         1 carry dot to column k+1
+</span></code></pre></div>
+<p>因此本列高度减少 2：</p>
+<div class="arithmatex">\[
+h_k' = h_k - 2
+\]</div>
+<p>下一列高度增加 1：</p>
+<div class="arithmatex">\[
+h_{k+1}' = h_{k+1} + 1
+\]</div>
+<h3 id="43-ha-column-height">4.3 HA 如何改变 column height<a class="headerlink" href="#43-ha-column-height" title="Permanent link">&para;</a></h3>
+<p>在 column k 放一个 HA：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>consume: 2 dots from column k
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>produce: 1 sum dot to column k
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>         1 carry dot to column k+1
+</span></code></pre></div>
+<p>因此本列高度减少 1：</p>
+<div class="arithmatex">\[
+h_k' = h_k - 1
+\]</div>
+<p>下一列高度增加 1：</p>
+<div class="arithmatex">\[
+h_{k+1}' = h_{k+1} + 1
+\]</div>
+<p>HA 的总 dot 数没有减少，但它可以降低当前列高度，把压力推给高一列。</p>
+<h3 id="44-2">4.4 为什么最终要压到 2 行<a class="headerlink" href="#44-2" title="Permanent link">&para;</a></h3>
+<p>当所有 column height 都不超过 2 时，可以把每列最多两个 dots 分别放入两行：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>row0[k] = first dot in column k, or 0
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>row1[k] = second dot in column k, or 0
+</span></code></pre></div>
+<p>于是整个 dot matrix 等价于：</p>
+<div class="arithmatex">\[
+P = Row0 + Row1
+\]</div>
+<p>这时只需要一个 18 bit CPA。</p>
+<h2 id="v-wallace-tree">V. Wallace Tree<a class="headerlink" href="#v-wallace-tree" title="Permanent link">&para;</a></h2>
+<h3 id="51-wallace-tree">5.1 Wallace Tree 的核心思想<a class="headerlink" href="#51-wallace-tree" title="Permanent link">&para;</a></h3>
+<p>Wallace Tree 的原则可以概括为：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>每一级尽可能多地压缩。
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>只要某列有 3 个或更多 dots，就尽量放 FA。
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>必要时用 HA 处理剩下的 2 个 dots。
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>重复直到所有列高度不超过 2。
+</span></code></pre></div>
+<p>它的目标是减少压缩级数，也就是缩短 critical path。</p>
+<h3 id="52-wallace-tree">5.2 Wallace Tree 的算法描述<a class="headerlink" href="#52-wallace-tree" title="Permanent link">&para;</a></h3>
+<p>给定初始 dot matrix：</p>
+<ol>
+<li>对每一列，将 dots 尽量按 3 个一组。</li>
+<li>每组 3 个 dots 用一个 FA。</li>
+<li>FA 的 sum 输出进入下一 stage 的同一列。</li>
+<li>FA 的 carry 输出进入下一 stage 的高一列。</li>
+<li>对每一 stage 重复上述过程。</li>
+<li>直到所有列的 height 都不超过 2。</li>
+</ol>
+<p>注意：一个 stage 内的 FA/HA 是并行的。某列 FA 产生的 carry 应该作为下一 stage 的输入，而不是同一 stage 内继续串到另一个 FA。否则就会把两个 FA 串联起来，破坏 tree 的并行性。</p>
+<h3 id="53-wallace-tree">5.3 Wallace Tree 的直觉例子<a class="headerlink" href="#53-wallace-tree" title="Permanent link">&para;</a></h3>
+<p>以 4x4 unsigned multiplier 为例，初始高度为：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>column: 0 1 2 3 4 5 6
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>height: 1 2 3 4 3 2 1
+</span></code></pre></div>
+<p>Wallace Tree 会在 column 2, 3, 4 等较高的列尽快放 FA/HA，使下一 stage 的高度迅速下降。</p>
+<p>例如 column 3 初始有 4 个 dots，可以先用一个 FA 消耗 3 个：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>column 3: 4 dots
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>   use 1 FA
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>column 3 next stage: 2 dots
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>column 4 next stage: receives 1 carry dot
+</span></code></pre></div>
+<p>这一步局部上把 column 3 的压力降下来了，但 column 4 会变高。这就是为什么压缩树需要逐级规划，而不能只盯着单列看。</p>
+<h3 id="54-wallace-tree">5.4 Wallace Tree 的优缺点<a class="headerlink" href="#54-wallace-tree" title="Permanent link">&para;</a></h3>
+<p>优点：</p>
+<ul>
+<li>通常压缩级数少。</li>
+<li>延迟较低，适合追求速度。</li>
+<li>概念简单：能压就压。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>结构不规则。</li>
+<li>wire routing 复杂。</li>
+<li>可能使用比 Dadda Tree 更多的 HA/FA。</li>
+<li>手写 RTL 时容易乱，尤其是 9x9 以上。</li>
+</ul>
+<p>考试里可以这样记：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Wallace: greedy reduction, faster but less regular.
+</span></code></pre></div>
+<h2 id="vi-dadda-tree">VI. Dadda Tree<a class="headerlink" href="#vi-dadda-tree" title="Permanent link">&para;</a></h2>
+<h3 id="61-dadda-tree">6.1 Dadda Tree 的核心思想<a class="headerlink" href="#61-dadda-tree" title="Permanent link">&para;</a></h3>
+<p>Dadda Tree 和 Wallace Tree 一样使用 FA/HA 压缩 dot matrix，但 Dadda Tree 不急着在早期压到很低。</p>
+<p>它的原则是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>每一级只压到刚好满足目标高度。
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>不要过早使用不必要的 HA/FA。
+</span></code></pre></div>
+<p>这样通常可以用更少的加法器，同时保持接近 Wallace Tree 的压缩级数。</p>
+<h3 id="62-dadda-target-height">6.2 Dadda target height 序列<a class="headerlink" href="#62-dadda-target-height" title="Permanent link">&para;</a></h3>
+<p>Dadda Tree 先生成一组目标高度：</p>
+<div class="arithmatex">\[
+d_1 = 2
+\]</div>
+<div class="arithmatex">\[
+d_{k+1} = \left\lfloor \frac{3}{2} d_k \right\rfloor
+\]</div>
+<p>所以序列为：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>2, 3, 4, 6, 9, 13, ...
+</span></code></pre></div>
+<p>如果初始最大 column height 是 9，则压缩目标倒着使用：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>9 -&gt; 6 -&gt; 4 -&gt; 3 -&gt; 2
+</span></code></pre></div>
+<p>真正需要执行的 reduction stage 是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>target 6
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>target 4
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>target 3
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>target 2
+</span></code></pre></div>
+<h3 id="63-dadda-tree">6.3 Dadda Tree 的压缩规则<a class="headerlink" href="#63-dadda-tree" title="Permanent link">&para;</a></h3>
+<p>对某一级 target height <span class="arithmatex">\(d\)</span>，目标是让该级输出的每一列高度不超过 <span class="arithmatex">\(d\)</span>。</p>
+<p>对 column k：</p>
+<ul>
+<li>如果本列输出高度会超过 <span class="arithmatex">\(d\)</span>，就放 FA 或 HA。</li>
+<li>FA 让本列输出高度减少 2，并向 column k+1 输出一个 carry。</li>
+<li>HA 让本列输出高度减少 1，并向 column k+1 输出一个 carry。</li>
+<li>Dadda Tree 倾向于使用刚好够用的 FA/HA，而不是像 Wallace Tree 那样尽量压。</li>
+</ul>
+<p>常用直觉规则：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>if height is much higher than target:
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>    use FA
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>if height is only target + 1:
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>    use HA
+</span></code></pre></div>
+<p>更严格地说，设计时要从低列到高列考虑，因为低列产生的 carry 会增加高列在下一 stage 的高度。</p>
+<h3 id="64-9-bit-multiplier-dadda">6.4 9 bit multiplier 的 Dadda 压缩计划<a class="headerlink" href="#64-9-bit-multiplier-dadda" title="Permanent link">&para;</a></h3>
+<p>对 LAB2 的 9 bit Modified Baugh-Wooley multiplier，可以从下面的初始高度出发：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>column: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>height: 1 2 3 4 5 6 7 8 9 9  7  6  5  4  3  2  1  1
+</span></code></pre></div>
+<p>一个可行的 Dadda target 计划是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Stage 1: reduce to height &lt;= 6
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>Stage 2: reduce to height &lt;= 4
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>Stage 3: reduce to height &lt;= 3
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>Stage 4: reduce to height &lt;= 2
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>Final : 18 bit CPA
+</span></code></pre></div>
+<p>下表给出一种可行的压缩数量安排。这里的 <code>FA=2, HA=1</code> 表示在该列放 2 个 FA 和 1 个 HA。具体 wire 名称可以由你在 RTL 中自行编号。</p>
+<h4 id="stage-1-target-height-6">Stage 1: target height 6<a class="headerlink" href="#stage-1-target-height-6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>column</th>
+<th>FA count</th>
+<th>HA count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>该 stage 后的高度可以达到：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>1 2 3 4 5 6 6 6 6 6 6 6 6 4 3 2 1 1
+</span></code></pre></div>
+<h4 id="stage-2-target-height-4">Stage 2: target height 4<a class="headerlink" href="#stage-2-target-height-4" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>column</th>
+<th>FA count</th>
+<th>HA count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>8</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>9</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>12</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>13</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>该 stage 后的高度可以达到：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>1 2 3 4 4 4 4 4 4 4 4 4 4 4 4 2 1 1
+</span></code></pre></div>
+<h4 id="stage-3-target-height-3">Stage 3: target height 3<a class="headerlink" href="#stage-3-target-height-3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>column</th>
+<th>FA count</th>
+<th>HA count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>9</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>12</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>13</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>14</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>该 stage 后的高度可以达到：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>1 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 1
+</span></code></pre></div>
+<h4 id="stage-4-target-height-2">Stage 4: target height 2<a class="headerlink" href="#stage-4-target-height-2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>column</th>
+<th>FA count</th>
+<th>HA count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>9</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>12</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>13</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>14</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>15</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>该 stage 后的高度为：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1
+</span></code></pre></div>
+<p>这时所有列的高度都不超过 2，可以进入最终 CPA。</p>
+<h3 id="65-dadda-tree">6.5 Dadda Tree 的优缺点<a class="headerlink" href="#65-dadda-tree" title="Permanent link">&para;</a></h3>
+<p>优点：</p>
+<ul>
+<li>通常比 Wallace Tree 使用更少 HA/FA。</li>
+<li>延迟仍然接近 Wallace Tree。</li>
+<li>适合手工规划，因为每级 target 很清楚。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>比 Wallace Tree 稍微难理解。</li>
+<li>每一级要小心统计 carry 对高列的影响。</li>
+<li>RTL wire 命名和表格管理比较繁琐。</li>
+</ul>
+<p>考试里可以这样记：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>Dadda: delayed reduction, fewer adders, similar number of levels.
+</span></code></pre></div>
+<h2 id="vii-wallace-tree-vs-dadda-tree">VII. Wallace Tree vs Dadda Tree<a class="headerlink" href="#vii-wallace-tree-vs-dadda-tree" title="Permanent link">&para;</a></h2>
+<h3 id="71">7.1 核心差异<a class="headerlink" href="#71" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Wallace Tree</th>
+<th>Dadda Tree</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本单元</td>
+<td>HA/FA</td>
+<td>HA/FA</td>
+</tr>
+<tr>
+<td>策略</td>
+<td>每级尽量多压</td>
+<td>每级只压到目标高度</td>
+</tr>
+<tr>
+<td>目标</td>
+<td>尽快减少高度</td>
+<td>减少硬件数量</td>
+</tr>
+<tr>
+<td>结构</td>
+<td>更不规则</td>
+<td>规划更清晰</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>通常很快</td>
+<td>接近 Wallace</td>
+</tr>
+<tr>
+<td>面积</td>
+<td>可能较大</td>
+<td>通常较小</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-lab2">7.2 对 LAB2 的建议<a class="headerlink" href="#72-lab2" title="Permanent link">&para;</a></h3>
+<p>对于 9 bit multiplier：</p>
+<ul>
+<li>如果你想先写通，Dadda Tree 更适合，因为 target height 清楚。</li>
+<li>如果你想追求最短逻辑级数，可以尝试 Wallace Tree。</li>
+<li>如果课设报告要解释优化思路，Dadda Tree 更容易写成表格。</li>
+</ul>
+<p>你当前方案是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>Modified Baugh-Wooley + Dadda tree + final 18 bit CPA
+</span></code></pre></div>
+<p>这是一个很适合课程实验和报告表达的选择。</p>
+<h2 id="viii-connecting-this-to-modified-baugh-wooley">VIII. Connecting This To Modified Baugh-Wooley<a class="headerlink" href="#viii-connecting-this-to-modified-baugh-wooley" title="Permanent link">&para;</a></h2>
+<h3 id="81-signed-multiplication">8.1 signed multiplication 的问题<a class="headerlink" href="#81-signed-multiplication" title="Permanent link">&para;</a></h3>
+<p>二补码 signed number 可以写成：</p>
+<div class="arithmatex">\[
+A = -a_{n-1}2^{n-1} + \sum_{i=0}^{n-2} a_i2^i
+\]</div>
+<div class="arithmatex">\[
+B = -b_{n-1}2^{n-1} + \sum_{j=0}^{n-2} b_j2^j
+\]</div>
+<p>展开：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+P
+&amp;= A B \\
+&amp;= \sum_{i=0}^{n-2}\sum_{j=0}^{n-2} a_i b_j 2^{i+j} \\
+&amp;\quad - \sum_{i=0}^{n-2} a_i b_{n-1}2^{i+n-1} \\
+&amp;\quad - \sum_{j=0}^{n-2} a_{n-1} b_j2^{j+n-1} \\
+&amp;\quad + a_{n-1}b_{n-1}2^{2n-2}
+\end{aligned}
+\]</div>
+<p>中间两项是负的，这就是 signed multiplier 比 unsigned multiplier 麻烦的地方。</p>
+<h3 id="82-baugh-wooley">8.2 Baugh-Wooley 的基本做法<a class="headerlink" href="#82-baugh-wooley" title="Permanent link">&para;</a></h3>
+<p>Baugh-Wooley 的目标是把负的 partial product 转换成正的 bit matrix 加常数补偿。</p>
+<p>对 sign-related partial products 做取反：</p>
+<div class="arithmatex">\[
+a_i b_{n-1} \rightarrow \overline{a_i b_{n-1}}
+\]</div>
+<div class="arithmatex">\[
+a_{n-1} b_j \rightarrow \overline{a_{n-1} b_j}
+\]</div>
+<p>然后加入 correction bits，使整体数值保持不变。</p>
+<p>对 n bit multiplier，Modified Baugh-Wooley 常见修正为：</p>
+<div class="arithmatex">\[
+2^{2n-1} + 2^n
+\]</div>
+<p>对本实验 n=9：</p>
+<div class="arithmatex">\[
+2^{17} + 2^9
+\]</div>
+<p>也就是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>add constant 1 at column 17
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>add constant 1 at column 9
+</span></code></pre></div>
+<h3 id="83-multiplierv">8.3 对你的 multiplier.v 的实现提醒<a class="headerlink" href="#83-multiplierv" title="Permanent link">&para;</a></h3>
+<p>如果采用 Modified Baugh-Wooley，sign-related partial products 通常应该是 complemented dots：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>pp[i][8] = ~(a[i] &amp; b[8]) for i = 0..7
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>pp[8][j] = ~(a[8] &amp; b[j]) for j = 0..7
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>pp[8][8] =  (a[8] &amp; b[8])
+</span></code></pre></div>
+<p>并且需要把 correction bits 放入 column 9 和 column 17。</p>
+<p>之后的 Dadda/Wallace tree 不需要知道这些 dots 的语义。它只负责保持数值等价地压缩 dots：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>same column dot -&gt; same weight
+</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>FA sum -&gt; same column
+</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>FA carry -&gt; next column
+</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>HA sum -&gt; same column
+</span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>HA carry -&gt; next column
+</span></code></pre></div>
+<h2 id="ix-how-to-write-the-rtl-compression-network">IX. How To Write The RTL Compression Network<a class="headerlink" href="#ix-how-to-write-the-rtl-compression-network" title="Permanent link">&para;</a></h2>
+<h3 id="91">9.1 推荐的结构化写法<a class="headerlink" href="#91" title="Permanent link">&para;</a></h3>
+<p>手写压缩树时，建议按 stage 和 column 命名：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>s1_c8_0   stage 1, column 8, sum dot 0
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>c1_c9_0   stage 1, generated carry into column 9, carry dot 0
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>s2_c8_0   stage 2, column 8, sum dot 0
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>...
+</span></code></pre></div>
+<p>不要只用 <code>wire tmp1, tmp2, tmp3</code>，后面一定会迷路。</p>
+<h3 id="92-faha">9.2 每个 FA/HA 都要检查权重<a class="headerlink" href="#92-faha" title="Permanent link">&para;</a></h3>
+<p>如果在 column k 放 FA：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>fa_sum(x, y, z)   -&gt; column k
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>fa_carry(x, y, z) -&gt; column k+1
+</span></code></pre></div>
+<p>如果在 column k 放 HA：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>ha_sum(x, y)      -&gt; column k
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>ha_carry(x, y)    -&gt; column k+1
+</span></code></pre></div>
+<p>这是压缩树最重要的 invariant。只要这个 invariant 不破，整个树的数值就是对的。</p>
+<h3 id="93">9.3 最终两行的构造<a class="headerlink" href="#93" title="Permanent link">&para;</a></h3>
+<p>当压缩到 height &lt;= 2 后，把每一列的 dots 填入两行：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>row0[k] = column k first remaining dot
+</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>row1[k] = column k second remaining dot, or 0
+</span></code></pre></div>
+<p>然后使用 18 bit RCA：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>{carry_out, out[17:0]} = row0 + row1
+</span></code></pre></div>
+<p>在手写门级时，应该用 FA 串出最终 RCA，而不是直接写 <code>+</code>。最终超出 bit 17 的 carry 可以丢弃，因为 9 bit signed product 正好用 18 bit 二补码表示。</p>
+<h3 id="94">9.4 推荐实现顺序<a class="headerlink" href="#94" title="Permanent link">&para;</a></h3>
+<p>建议按下面顺序做，不要一次写完全部：</p>
+<ol>
+<li>先确认 Baugh-Wooley partial product 和 correction bits。</li>
+<li>写 HA/FA function 或 module。</li>
+<li>按 Dadda Stage 1 写 wire，并用小 testbench 验证 stage 后 column height。</li>
+<li>写 Stage 2, Stage 3, Stage 4。</li>
+<li>构造 <code>row0</code> 和 <code>row1</code>。</li>
+<li>写最终 18 bit RCA。</li>
+<li>穷举 512 x 512 个输入，和 <code>a * b</code> golden 比较。</li>
+<li>替换进 image processor，跑 <code>make debug</code>。</li>
+</ol>
+<h3 id="95">9.5 常见错误<a class="headerlink" href="#95" title="Permanent link">&para;</a></h3>
+<h4 id="1-carry">错误 1: carry 放错列<a class="headerlink" href="#1-carry" title="Permanent link">&para;</a></h4>
+<p>FA/HA 的 carry 必须进入高一列：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>column k carry -&gt; column k+1
+</span></code></pre></div>
+<p>如果留在原列，数值会变成错的。</p>
+<h4 id="2-csa">错误 2: 把 CSA 当成最终结果<a class="headerlink" href="#2-csa" title="Permanent link">&para;</a></h4>
+<p>CSA 输出的 <code>sum</code> 和 <code>carry</code> 不是最终结果。必须做：</p>
+<div class="arithmatex">\[
+Result = Sum + (Carry \ll 1)
+\]</div>
+<p>在 dot matrix 表达里，carry 已经被放到高一列，所以最后是：</p>
+<div class="arithmatex">\[
+Result = Row0 + Row1
+\]</div>
+<h4 id="3-baugh-wooley-sign-dots">错误 3: Baugh-Wooley sign dots 没取反<a class="headerlink" href="#3-baugh-wooley-sign-dots" title="Permanent link">&para;</a></h4>
+<p>signed multiplier 的 sign-related partial products 不能直接照 unsigned multiplier 写。Modified Baugh-Wooley 的核心就是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>invert sign-related dots
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>add correction constants
+</span></code></pre></div>
+<h4 id="4-cpa">错误 4: 在压缩树中间使用长 CPA<a class="headerlink" href="#4-cpa" title="Permanent link">&para;</a></h4>
+<p>压缩树中间应该用 HA/FA 的 CSA-style reduction。中间使用完整 CPA 会传播 carry，导致 critical path 增长。</p>
+<h4 id="5-stage-fa">错误 5: 同一 stage 中串联多个 FA<a class="headerlink" href="#5-stage-fa" title="Permanent link">&para;</a></h4>
+<p>压缩树的一个 stage 应该是一层并行 compressor。某个 FA 产生的 carry 通常作为下一 stage 的输入。如果你把这个 carry 立刻送入同一 stage 的另一个 FA，就会形成串联路径，使延迟变长。</p>
+<h2 id="x-exam-oriented-summary">X. Exam-Oriented Summary<a class="headerlink" href="#x-exam-oriented-summary" title="Permanent link">&para;</a></h2>
+<h3 id="101">10.1 一句话总结<a class="headerlink" href="#101" title="Permanent link">&para;</a></h3>
+<p>CPA:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>Propagates carry and produces the final binary sum.
+</span></code></pre></div>
+<p>RCA:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>The simplest CPA. Delay grows linearly with bit width.
+</span></code></pre></div>
+<p>CSA:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>Saves carry instead of propagating it. Converts 3 operands into 2 operands.
+</span></code></pre></div>
+<p>Wallace Tree:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>Greedily compresses partial products as early as possible.
+</span></code></pre></div>
+<p>Dadda Tree:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>Compresses only to scheduled target heights, usually using fewer adders.
+</span></code></pre></div>
+<h3 id="102">10.2 关键公式<a class="headerlink" href="#102" title="Permanent link">&para;</a></h3>
+<p>HA:</p>
+<div class="arithmatex">\[
+s = x \oplus y,\quad c = xy
+\]</div>
+<p>FA:</p>
+<div class="arithmatex">\[
+s = x \oplus y \oplus z
+\]</div>
+<div class="arithmatex">\[
+c = xy + yz + xz
+\]</div>
+<p>CSA:</p>
+<div class="arithmatex">\[
+X + Y + Z = S + (C \ll 1)
+\]</div>
+<p>Dadda target:</p>
+<div class="arithmatex">\[
+d_1 = 2,\quad d_{k+1} = \left\lfloor \frac{3}{2}d_k \right\rfloor
+\]</div>
+<p>9 bit Baugh-Wooley correction:</p>
+<div class="arithmatex">\[
+2^{17} + 2^9
+\]</div>
+<h3 id="103">10.3 面试和考试常见问法<a class="headerlink" href="#103" title="Permanent link">&para;</a></h3>
+<p>Question:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>Why not use ripple-carry adders to add all partial products directly?
+</span></code></pre></div>
+<p>Answer:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>Because each RCA propagates carry across many bits, creating a long critical path.
+</span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>CSA compression avoids long carry propagation until the final CPA.
+</span></code></pre></div>
+<p>Question:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>What is the difference between Wallace and Dadda?
+</span></code></pre></div>
+<p>Answer:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>Wallace compresses aggressively at each level.
+</span><span id="__span-59-2"><a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>Dadda delays compression according to target heights and usually uses fewer adders.
+</span></code></pre></div>
+<p>Question:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>Why does a CSA output two rows instead of one result?
+</span></code></pre></div>
+<p>Answer:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>Because CSA saves carries instead of propagating them.
+</span><span id="__span-61-2"><a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>The numerical value is represented as Sum + shifted Carry.
+</span></code></pre></div>
+<p>Question:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>Where is the CPA used in a tree multiplier?
+</span></code></pre></div>
+<p>Answer:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>Only at the final stage, after the partial product matrix has been reduced to two rows.
+</span></code></pre></div>
+<h2 id="xi-suggested-report-description">XI. Suggested Report Description<a class="headerlink" href="#xi-suggested-report-description" title="Permanent link">&para;</a></h2>
+<p>如果你在实验报告中介绍这个 multiplier，可以这样写：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>The signed 9 bit multiplier is implemented using a Modified Baugh-Wooley partial
+</span><span id="__span-64-2"><a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>product generator followed by a Dadda carry-save reduction tree. The Baugh-Wooley
+</span><span id="__span-64-3"><a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a>scheme converts the two&#39;s-complement signed partial products into a positive dot
+</span><span id="__span-64-4"><a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a>matrix with correction bits at columns 9 and 17. The Dadda tree then reduces the
+</span><span id="__span-64-5"><a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a>column heights according to the target sequence 6, 4, 3, and 2 using only half
+</span><span id="__span-64-6"><a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a>adders and full adders. After the matrix is reduced to two rows, an 18 bit
+</span><span id="__span-64-7"><a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a>ripple-carry CPA generates the final two&#39;s-complement product.
+</span></code></pre></div>
+<p>这段话涵盖了：</p>
+<ul>
+<li>signed partial product generation</li>
+<li>correction bits</li>
+<li>CSA-style reduction</li>
+<li>Dadda target sequence</li>
+<li>final CPA</li>
+</ul>
+<p>也正好对应课程 Chapter4 中的 signed multiplier, Baugh-Wooley, Wallace/Dadda tree 和 CPA/CSA。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../../javascripts/extra.js?v=20260604-2"></script>
+      
+        <script src="../../../../../javascripts/crypto.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+        <script src="../../../../../javascripts/katex.js"></script>
+      
+    
+  </body>
+</html>
