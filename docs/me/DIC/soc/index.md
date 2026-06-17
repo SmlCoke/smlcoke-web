@@ -40,4 +40,10 @@ hide:
 	<p class="card-desc">Advanced High-performance Bus 协议与 wait state 机制</p>
 </a>
 
+<a class="note-card blue" href="arithmetics/compression/">
+	<span class="card-icon">🔗</span>
+	<div class="card-title">乘法器的部分和压缩</div>
+	<p class="card-desc">部分和压缩的设计方法</p>
+</a>
+
 </div>

@@ -138,6 +138,7 @@ nav:
           - SoC Processor: me/DIC/soc/processor/index.md
           - AXI Handshake: me/DIC/soc/axi/index.md
           - AHB Protocol: me/DIC/soc/ahb/index.md
+          - Compression: me/DIC/soc/arithmetics/compression/index.md
     - Verilog HDL Basics: me/verilog/index.md
     - EDA Tools:
       - me/EDA/index.md
