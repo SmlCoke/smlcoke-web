@@ -10,13 +10,13 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/me/DIC/soc/arithmetics/compression/">
+        <link rel="canonical" href="https://smlcoke.com/me/DIC/soc/arithmetics/cpa/">
       
       
-        <link rel="prev" href="../../ahb/">
+        <link rel="prev" href="../compression/">
       
       
-        <link rel="next" href="../cpa/">
+        <link rel="next" href="../../../../verilog/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Compression - SmlCoke Home</title>
+        <title>CPA - SmlCoke Home</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#9-bit-multiplier-partial-product-reduction-basics" class="md-skip">
+        <a href="#carry-propagate-adder-basics" class="md-skip">
           跳转至
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Compression
+              CPA
             
           </span>
         </div>
@@ -2217,6 +2217,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../compression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -2236,7 +2264,7 @@
   <span class="md-ellipsis">
     
   
-    Compression
+    CPA
   
 
     
@@ -2254,7 +2282,7 @@
   <span class="md-ellipsis">
     
   
-    Compression
+    CPA
   
 
     
@@ -2280,22 +2308,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#i-from-multiplication-to-dot-matrix" class="md-nav__link">
+  <a href="#i-what-is-a-cpa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        I. From Multiplication To Dot Matrix
+        I. What Is A CPA
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="I. From Multiplication To Dot Matrix">
+    <nav class="md-nav" aria-label="I. What Is A CPA">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
+  <a href="#11-cpa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.1 为什么乘法器不是一个简单的加法器
+        1.1 CPA 的任务
       
     </span>
   </a>
@@ -2303,10 +2331,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12-dot-matrix" class="md-nav__link">
+  <a href="#12" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.2 dot matrix 的含义
+        1.2 一位全加器公式
       
     </span>
   </a>
@@ -2314,10 +2342,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#13" class="md-nav__link">
+  <a href="#13-propagate-generate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.3 乘法器压缩的目标
+        1.3 Propagate 和 Generate
       
     </span>
   </a>
@@ -2325,10 +2353,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#14-9-bit-modified-baugh-wooley" class="md-nav__link">
+  <a href="#14-propagategenerate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.4 9 bit Modified Baugh-Wooley 的初始列高度
+        1.4 Propagate/Generate 真值表
       
     </span>
   </a>
@@ -2341,22 +2369,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ii-cpa-and-ripple-carry-adder" class="md-nav__link">
+  <a href="#ii-rca-ripple-carry-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        II. CPA And Ripple-Carry Adder
+        II. RCA: Ripple-Carry Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="II. CPA And Ripple-Carry Adder">
+    <nav class="md-nav" aria-label="II. RCA: Ripple-Carry Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-cpa" class="md-nav__link">
+  <a href="#21" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1 CPA 的准确含义
+        2.1 基本结构
       
     </span>
   </a>
@@ -2364,10 +2392,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-half-adder" class="md-nav__link">
+  <a href="#22" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2 Half Adder
+        2.2 延迟和面积
       
     </span>
   </a>
@@ -2375,10 +2403,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-full-adder" class="md-nav__link">
+  <a href="#23-4-bit-rca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.3 Full Adder
+        2.3 4 bit RCA 例子
       
     </span>
   </a>
@@ -2386,32 +2414,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#24-ripple-carry-adder" class="md-nav__link">
+  <a href="#24-rca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.4 Ripple-Carry Adder 的递推公式
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#25-rca" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.5 RCA 例子
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#26-cpa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.6 CPA 在乘法器里的位置
+        2.4 RCA 适合什么时候用
       
     </span>
   </a>
@@ -2424,22 +2430,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iii-csa-carry-save-adder" class="md-nav__link">
+  <a href="#iii-cla-carry-lookahead-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        III. CSA: Carry-Save Adder
+        III. CLA: Carry-Lookahead Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="III. CSA: Carry-Save Adder">
+    <nav class="md-nav" aria-label="III. CLA: Carry-Lookahead Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-csa" class="md-nav__link">
+  <a href="#31-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 CSA 解决什么问题
+        3.1 CLA 的核心思想
       
     </span>
   </a>
@@ -2447,10 +2453,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-csa-fa" class="md-nav__link">
+  <a href="#32-4-bit-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.2 CSA 的基本单元就是 FA
+        3.2 4 bit CLA 结构
       
     </span>
   </a>
@@ -2458,10 +2464,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-csa-cpa" class="md-nav__link">
+  <a href="#33-group-propagate-group-generate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.3 CSA 和 CPA 的根本区别
+        3.3 Group Propagate 和 Group Generate
       
     </span>
   </a>
@@ -2469,21 +2475,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#34-csa" class="md-nav__link">
+  <a href="#34-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.4 CSA 数值例子
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-csa-dot-matrix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 CSA 在 dot matrix 中的解释
+        3.4 CLA 的优缺点
       
     </span>
   </a>
@@ -2496,22 +2491,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iv-partial-product-compression" class="md-nav__link">
+  <a href="#iv-carry-skip-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IV. Partial Product Compression
+        IV. Carry-Skip Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="IV. Partial Product Compression">
+    <nav class="md-nav" aria-label="IV. Carry-Skip Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#41-column-height" class="md-nav__link">
+  <a href="#41-carry-skip" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.1 column height
+        4.1 Carry-skip 的核心思想
       
     </span>
   </a>
@@ -2519,10 +2514,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#42-fa-column-height" class="md-nav__link">
+  <a href="#42" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.2 FA 如何改变 column height
+        4.2 结构
       
     </span>
   </a>
@@ -2530,10 +2525,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#43-ha-column-height" class="md-nav__link">
+  <a href="#43" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.3 HA 如何改变 column height
+        4.3 例子
       
     </span>
   </a>
@@ -2541,10 +2536,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-2" class="md-nav__link">
+  <a href="#44" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4 为什么最终要压到 2 行
+        4.4 延迟直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 优缺点
       
     </span>
   </a>
@@ -2557,22 +2563,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#v-wallace-tree" class="md-nav__link">
+  <a href="#v-carry-select-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        V. Wallace Tree
+        V. Carry-Select Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="V. Wallace Tree">
+    <nav class="md-nav" aria-label="V. Carry-Select Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#51-wallace-tree" class="md-nav__link">
+  <a href="#51-carry-select" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.1 Wallace Tree 的核心思想
+        5.1 Carry-select 的核心思想
       
     </span>
   </a>
@@ -2580,10 +2586,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#52-wallace-tree" class="md-nav__link">
+  <a href="#52" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.2 Wallace Tree 的算法描述
+        5.2 数学描述
       
     </span>
   </a>
@@ -2591,10 +2597,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#53-wallace-tree" class="md-nav__link">
+  <a href="#53-16-bit-carry-select" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.3 Wallace Tree 的直觉例子
+        5.3 16 bit carry-select 例子
       
     </span>
   </a>
@@ -2602,10 +2608,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#54-wallace-tree" class="md-nav__link">
+  <a href="#54-carry-select-tree" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.4 Wallace Tree 的优缺点
+        5.4 Carry-select tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 优缺点
       
     </span>
   </a>
@@ -2618,22 +2635,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vi-dadda-tree" class="md-nav__link">
+  <a href="#vi-conditional-sum-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VI. Dadda Tree
+        VI. Conditional-Sum Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="VI. Dadda Tree">
+    <nav class="md-nav" aria-label="VI. Conditional-Sum Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#61-dadda-tree" class="md-nav__link">
+  <a href="#61-conditional-sum" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.1 Dadda Tree 的核心思想
+        6.1 Conditional-sum 是什么
       
     </span>
   </a>
@@ -2641,10 +2658,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#62-dadda-target-height" class="md-nav__link">
+  <a href="#62-block" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2 Dadda target height 序列
+        6.2 两个 block 如何合并
       
     </span>
   </a>
@@ -2652,32 +2669,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#63-dadda-tree" class="md-nav__link">
+  <a href="#63" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.3 Dadda Tree 的压缩规则
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64-9-bit-multiplier-dadda" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.4 9 bit multiplier 的 Dadda 压缩计划
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#65-dadda-tree" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.5 Dadda Tree 的优缺点
+        6.3 延迟和面积
       
     </span>
   </a>
@@ -2690,22 +2685,55 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vii-wallace-tree-vs-dadda-tree" class="md-nav__link">
+  <a href="#vii-parallel-prefix-adders" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VII. Wallace Tree vs Dadda Tree
+        VII. Parallel-Prefix Adders
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="VII. Wallace Tree vs Dadda Tree">
+    <nav class="md-nav" aria-label="VII. Parallel-Prefix Adders">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#71" class="md-nav__link">
+  <a href="#71-prefix-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7.1 核心差异
+        7.1 Prefix adder 的核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-prefix-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Prefix operator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-prefix-carry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 如何由 prefix 得到 carry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-8-bit-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 8 bit prefix 例子
       
     </span>
   </a>
@@ -2718,22 +2746,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#viii-connecting-this-to-modified-baugh-wooley" class="md-nav__link">
+  <a href="#viii-common-prefix-topologies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VIII. Connecting This To Modified Baugh-Wooley
+        VIII. Common Prefix Topologies
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="VIII. Connecting This To Modified Baugh-Wooley">
+    <nav class="md-nav" aria-label="VIII. Common Prefix Topologies">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#81-signed-multiplication" class="md-nav__link">
+  <a href="#81-kogge-stone-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.1 signed multiplication 的问题
+        8.1 Kogge-Stone Adder
       
     </span>
   </a>
@@ -2741,10 +2769,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#82-baugh-wooley" class="md-nav__link">
+  <a href="#82-brent-kung-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2 Baugh-Wooley 的基本做法
+        8.2 Brent-Kung Adder
       
     </span>
   </a>
@@ -2752,10 +2780,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#83-multiplierv" class="md-nav__link">
+  <a href="#83-sklansky-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.3 对你的 multiplier.v 的实现提醒
+        8.3 Sklansky Adder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-han-carlson-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Han-Carlson Adder
       
     </span>
   </a>
@@ -2768,22 +2807,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ix-how-to-write-the-rtl-compression-network" class="md-nav__link">
+  <a href="#ix-comparison-table" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IX. How To Write The RTL Compression Network
+        IX. Comparison Table
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="IX. How To Write The RTL Compression Network">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x-choosing-a-final-cpa-for-lab2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X. Choosing A Final CPA For LAB2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X. Choosing A Final CPA For LAB2">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#91" class="md-nav__link">
+  <a href="#101-multiplier" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.1 推荐的结构化写法
+        10.1 你的 multiplier 最终需要什么
       
     </span>
   </a>
@@ -2791,10 +2841,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#92-faha" class="md-nav__link">
+  <a href="#102-18-bit-rca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.2 每个 FA/HA 都要检查权重
+        10.2 推荐第一版: 18 bit RCA
       
     </span>
   </a>
@@ -2802,10 +2852,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#93" class="md-nav__link">
+  <a href="#103-rca-4-bit-block-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.3 最终两行的构造
+        10.3 如果 RCA 时序不够: 4 bit block CLA
       
     </span>
   </a>
@@ -2813,10 +2863,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#94" class="md-nav__link">
+  <a href="#104-carry-select" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.4 推荐实现顺序
+        10.4 如果想展示优化: Carry-select
       
     </span>
   </a>
@@ -2824,10 +2874,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#95" class="md-nav__link">
+  <a href="#105-kogge-stone" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.5 常见错误
+        10.5 不推荐第一版就写 Kogge-Stone
       
     </span>
   </a>
@@ -2840,22 +2890,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#x-exam-oriented-summary" class="md-nav__link">
+  <a href="#xi-worked-example-4-bit-cla-vs-rca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        X. Exam-Oriented Summary
+        XI. Worked Example: 4 Bit CLA vs RCA
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="X. Exam-Oriented Summary">
+    <nav class="md-nav" aria-label="XI. Worked Example: 4 Bit CLA vs RCA">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#101" class="md-nav__link">
+  <a href="#111-rca-carry-chain" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.1 一句话总结
+        11.1 RCA 的 carry chain
       
     </span>
   </a>
@@ -2863,10 +2913,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#102" class="md-nav__link">
+  <a href="#112-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.2 关键公式
+        11.2 CLA 的直接展开
       
     </span>
   </a>
@@ -2874,10 +2924,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#103" class="md-nav__link">
+  <a href="#113" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.3 面试和考试常见问法
+        11.3 小例子
       
     </span>
   </a>
@@ -2890,10 +2940,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#xi-suggested-report-description" class="md-nav__link">
+  <a href="#xii-exam-oriented-summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        XI. Suggested Report Description
+        XII. Exam-Oriented Summary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XII. Exam-Oriented Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 必背概念
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 必背公式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 典型考题回答
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xiii-suggested-report-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XIII. Suggested Report Description
       
     </span>
   </a>
@@ -2904,34 +3004,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../cpa/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CPA
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -4840,22 +4912,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#i-from-multiplication-to-dot-matrix" class="md-nav__link">
+  <a href="#i-what-is-a-cpa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        I. From Multiplication To Dot Matrix
+        I. What Is A CPA
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="I. From Multiplication To Dot Matrix">
+    <nav class="md-nav" aria-label="I. What Is A CPA">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
+  <a href="#11-cpa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.1 为什么乘法器不是一个简单的加法器
+        1.1 CPA 的任务
       
     </span>
   </a>
@@ -4863,10 +4935,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12-dot-matrix" class="md-nav__link">
+  <a href="#12" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.2 dot matrix 的含义
+        1.2 一位全加器公式
       
     </span>
   </a>
@@ -4874,10 +4946,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#13" class="md-nav__link">
+  <a href="#13-propagate-generate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.3 乘法器压缩的目标
+        1.3 Propagate 和 Generate
       
     </span>
   </a>
@@ -4885,10 +4957,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#14-9-bit-modified-baugh-wooley" class="md-nav__link">
+  <a href="#14-propagategenerate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.4 9 bit Modified Baugh-Wooley 的初始列高度
+        1.4 Propagate/Generate 真值表
       
     </span>
   </a>
@@ -4901,22 +4973,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ii-cpa-and-ripple-carry-adder" class="md-nav__link">
+  <a href="#ii-rca-ripple-carry-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        II. CPA And Ripple-Carry Adder
+        II. RCA: Ripple-Carry Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="II. CPA And Ripple-Carry Adder">
+    <nav class="md-nav" aria-label="II. RCA: Ripple-Carry Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-cpa" class="md-nav__link">
+  <a href="#21" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1 CPA 的准确含义
+        2.1 基本结构
       
     </span>
   </a>
@@ -4924,10 +4996,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-half-adder" class="md-nav__link">
+  <a href="#22" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2 Half Adder
+        2.2 延迟和面积
       
     </span>
   </a>
@@ -4935,10 +5007,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-full-adder" class="md-nav__link">
+  <a href="#23-4-bit-rca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.3 Full Adder
+        2.3 4 bit RCA 例子
       
     </span>
   </a>
@@ -4946,32 +5018,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#24-ripple-carry-adder" class="md-nav__link">
+  <a href="#24-rca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.4 Ripple-Carry Adder 的递推公式
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#25-rca" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.5 RCA 例子
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#26-cpa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.6 CPA 在乘法器里的位置
+        2.4 RCA 适合什么时候用
       
     </span>
   </a>
@@ -4984,22 +5034,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iii-csa-carry-save-adder" class="md-nav__link">
+  <a href="#iii-cla-carry-lookahead-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        III. CSA: Carry-Save Adder
+        III. CLA: Carry-Lookahead Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="III. CSA: Carry-Save Adder">
+    <nav class="md-nav" aria-label="III. CLA: Carry-Lookahead Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-csa" class="md-nav__link">
+  <a href="#31-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 CSA 解决什么问题
+        3.1 CLA 的核心思想
       
     </span>
   </a>
@@ -5007,10 +5057,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-csa-fa" class="md-nav__link">
+  <a href="#32-4-bit-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.2 CSA 的基本单元就是 FA
+        3.2 4 bit CLA 结构
       
     </span>
   </a>
@@ -5018,10 +5068,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-csa-cpa" class="md-nav__link">
+  <a href="#33-group-propagate-group-generate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.3 CSA 和 CPA 的根本区别
+        3.3 Group Propagate 和 Group Generate
       
     </span>
   </a>
@@ -5029,21 +5079,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#34-csa" class="md-nav__link">
+  <a href="#34-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.4 CSA 数值例子
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-csa-dot-matrix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 CSA 在 dot matrix 中的解释
+        3.4 CLA 的优缺点
       
     </span>
   </a>
@@ -5056,22 +5095,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iv-partial-product-compression" class="md-nav__link">
+  <a href="#iv-carry-skip-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IV. Partial Product Compression
+        IV. Carry-Skip Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="IV. Partial Product Compression">
+    <nav class="md-nav" aria-label="IV. Carry-Skip Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#41-column-height" class="md-nav__link">
+  <a href="#41-carry-skip" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.1 column height
+        4.1 Carry-skip 的核心思想
       
     </span>
   </a>
@@ -5079,10 +5118,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#42-fa-column-height" class="md-nav__link">
+  <a href="#42" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.2 FA 如何改变 column height
+        4.2 结构
       
     </span>
   </a>
@@ -5090,10 +5129,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#43-ha-column-height" class="md-nav__link">
+  <a href="#43" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.3 HA 如何改变 column height
+        4.3 例子
       
     </span>
   </a>
@@ -5101,10 +5140,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-2" class="md-nav__link">
+  <a href="#44" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4 为什么最终要压到 2 行
+        4.4 延迟直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 优缺点
       
     </span>
   </a>
@@ -5117,22 +5167,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#v-wallace-tree" class="md-nav__link">
+  <a href="#v-carry-select-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        V. Wallace Tree
+        V. Carry-Select Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="V. Wallace Tree">
+    <nav class="md-nav" aria-label="V. Carry-Select Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#51-wallace-tree" class="md-nav__link">
+  <a href="#51-carry-select" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.1 Wallace Tree 的核心思想
+        5.1 Carry-select 的核心思想
       
     </span>
   </a>
@@ -5140,10 +5190,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#52-wallace-tree" class="md-nav__link">
+  <a href="#52" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.2 Wallace Tree 的算法描述
+        5.2 数学描述
       
     </span>
   </a>
@@ -5151,10 +5201,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#53-wallace-tree" class="md-nav__link">
+  <a href="#53-16-bit-carry-select" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.3 Wallace Tree 的直觉例子
+        5.3 16 bit carry-select 例子
       
     </span>
   </a>
@@ -5162,10 +5212,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#54-wallace-tree" class="md-nav__link">
+  <a href="#54-carry-select-tree" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.4 Wallace Tree 的优缺点
+        5.4 Carry-select tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 优缺点
       
     </span>
   </a>
@@ -5178,22 +5239,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vi-dadda-tree" class="md-nav__link">
+  <a href="#vi-conditional-sum-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VI. Dadda Tree
+        VI. Conditional-Sum Adder
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="VI. Dadda Tree">
+    <nav class="md-nav" aria-label="VI. Conditional-Sum Adder">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#61-dadda-tree" class="md-nav__link">
+  <a href="#61-conditional-sum" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.1 Dadda Tree 的核心思想
+        6.1 Conditional-sum 是什么
       
     </span>
   </a>
@@ -5201,10 +5262,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#62-dadda-target-height" class="md-nav__link">
+  <a href="#62-block" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2 Dadda target height 序列
+        6.2 两个 block 如何合并
       
     </span>
   </a>
@@ -5212,32 +5273,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#63-dadda-tree" class="md-nav__link">
+  <a href="#63" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.3 Dadda Tree 的压缩规则
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64-9-bit-multiplier-dadda" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.4 9 bit multiplier 的 Dadda 压缩计划
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#65-dadda-tree" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.5 Dadda Tree 的优缺点
+        6.3 延迟和面积
       
     </span>
   </a>
@@ -5250,22 +5289,55 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vii-wallace-tree-vs-dadda-tree" class="md-nav__link">
+  <a href="#vii-parallel-prefix-adders" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VII. Wallace Tree vs Dadda Tree
+        VII. Parallel-Prefix Adders
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="VII. Wallace Tree vs Dadda Tree">
+    <nav class="md-nav" aria-label="VII. Parallel-Prefix Adders">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#71" class="md-nav__link">
+  <a href="#71-prefix-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7.1 核心差异
+        7.1 Prefix adder 的核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-prefix-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Prefix operator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-prefix-carry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 如何由 prefix 得到 carry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-8-bit-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 8 bit prefix 例子
       
     </span>
   </a>
@@ -5278,22 +5350,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#viii-connecting-this-to-modified-baugh-wooley" class="md-nav__link">
+  <a href="#viii-common-prefix-topologies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VIII. Connecting This To Modified Baugh-Wooley
+        VIII. Common Prefix Topologies
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="VIII. Connecting This To Modified Baugh-Wooley">
+    <nav class="md-nav" aria-label="VIII. Common Prefix Topologies">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#81-signed-multiplication" class="md-nav__link">
+  <a href="#81-kogge-stone-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.1 signed multiplication 的问题
+        8.1 Kogge-Stone Adder
       
     </span>
   </a>
@@ -5301,10 +5373,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#82-baugh-wooley" class="md-nav__link">
+  <a href="#82-brent-kung-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2 Baugh-Wooley 的基本做法
+        8.2 Brent-Kung Adder
       
     </span>
   </a>
@@ -5312,10 +5384,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#83-multiplierv" class="md-nav__link">
+  <a href="#83-sklansky-adder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.3 对你的 multiplier.v 的实现提醒
+        8.3 Sklansky Adder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-han-carlson-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Han-Carlson Adder
       
     </span>
   </a>
@@ -5328,22 +5411,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ix-how-to-write-the-rtl-compression-network" class="md-nav__link">
+  <a href="#ix-comparison-table" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IX. How To Write The RTL Compression Network
+        IX. Comparison Table
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="IX. How To Write The RTL Compression Network">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x-choosing-a-final-cpa-for-lab2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X. Choosing A Final CPA For LAB2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X. Choosing A Final CPA For LAB2">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#91" class="md-nav__link">
+  <a href="#101-multiplier" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.1 推荐的结构化写法
+        10.1 你的 multiplier 最终需要什么
       
     </span>
   </a>
@@ -5351,10 +5445,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#92-faha" class="md-nav__link">
+  <a href="#102-18-bit-rca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.2 每个 FA/HA 都要检查权重
+        10.2 推荐第一版: 18 bit RCA
       
     </span>
   </a>
@@ -5362,10 +5456,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#93" class="md-nav__link">
+  <a href="#103-rca-4-bit-block-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.3 最终两行的构造
+        10.3 如果 RCA 时序不够: 4 bit block CLA
       
     </span>
   </a>
@@ -5373,10 +5467,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#94" class="md-nav__link">
+  <a href="#104-carry-select" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.4 推荐实现顺序
+        10.4 如果想展示优化: Carry-select
       
     </span>
   </a>
@@ -5384,10 +5478,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#95" class="md-nav__link">
+  <a href="#105-kogge-stone" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.5 常见错误
+        10.5 不推荐第一版就写 Kogge-Stone
       
     </span>
   </a>
@@ -5400,22 +5494,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#x-exam-oriented-summary" class="md-nav__link">
+  <a href="#xi-worked-example-4-bit-cla-vs-rca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        X. Exam-Oriented Summary
+        XI. Worked Example: 4 Bit CLA vs RCA
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="X. Exam-Oriented Summary">
+    <nav class="md-nav" aria-label="XI. Worked Example: 4 Bit CLA vs RCA">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#101" class="md-nav__link">
+  <a href="#111-rca-carry-chain" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.1 一句话总结
+        11.1 RCA 的 carry chain
       
     </span>
   </a>
@@ -5423,10 +5517,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#102" class="md-nav__link">
+  <a href="#112-cla" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.2 关键公式
+        11.2 CLA 的直接展开
       
     </span>
   </a>
@@ -5434,10 +5528,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#103" class="md-nav__link">
+  <a href="#113" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.3 面试和考试常见问法
+        11.3 小例子
       
     </span>
   </a>
@@ -5450,10 +5544,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#xi-suggested-report-description" class="md-nav__link">
+  <a href="#xii-exam-oriented-summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        XI. Suggested Report Description
+        XII. Exam-Oriented Summary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XII. Exam-Oriented Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 必背概念
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 必背公式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 典型考题回答
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xiii-suggested-report-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XIII. Suggested Report Description
       
     </span>
   </a>
@@ -5477,295 +5621,165 @@
 
 
 
-<h1 id="9-bit-multiplier-partial-product-reduction-basics">9 bit Multiplier Partial Product Reduction Basics<a class="headerlink" href="#9-bit-multiplier-partial-product-reduction-basics" title="Permanent link">&para;</a></h1>
-<p>本文用 9 bit signed multiplier 设计为例，目标是从 0 开始理解下面四个概念：</p>
+<h1 id="carry-propagate-adder-basics">Carry-Propagate Adder Basics<a class="headerlink" href="#carry-propagate-adder-basics" title="Permanent link">&para;</a></h1>
+<p>本文面向 LAB2 的 9 bit signed multiplier 最终 CPA 设计，目标是从 0 开始理解常见的 carry-propagate adder 结构。</p>
+<p>在乘法器中，Dadda/Wallace 压缩树只负责把很多 partial product dots 压成两行：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>row0 + row1
+</span></code></pre></div>
+<p>最后一步必须用 CPA 得到标准二进制乘积：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>two rows -&gt; final CPA -&gt; product
+</span></code></pre></div>
+<p>本文重点介绍：</p>
 <ul>
-<li>CPA / RCA: carry-propagate adder / ripple-carry adder</li>
-<li>CSA: carry-save adder</li>
-<li>Wallace Tree</li>
-<li>Dadda Tree</li>
+<li>RCA: ripple-carry adder</li>
+<li>CLA: carry-lookahead adder</li>
+<li>Carry-skip adder</li>
+<li>Carry-select adder</li>
+<li>Conditional-sum adder</li>
+<li>Parallel-prefix adder: Kogge-Stone, Brent-Kung, Sklansky</li>
+<li>对 LAB2 18 bit final CPA 的选型建议</li>
 </ul>
-<p>这些概念在乘法器中的关系可以先用一句话抓住：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>partial products -&gt; CSA compression tree -&gt; two rows -&gt; final CPA -&gt; product
+<h2 id="i-what-is-a-cpa">I. What Is A CPA<a class="headerlink" href="#i-what-is-a-cpa" title="Permanent link">&para;</a></h2>
+<h3 id="11-cpa">1.1 CPA 的任务<a class="headerlink" href="#11-cpa" title="Permanent link">&para;</a></h3>
+<p>CPA 是 carry-propagate adder，意思是“进位传播加法器”。它和 CSA 的根本区别是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>CSA: 不传播长进位，只把多行压成两行。
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>CPA: 传播进位，输出标准二进制和。
 </span></code></pre></div>
-<p>其中 Wallace Tree 和 Dadda Tree 都不是新的加法器单元，而是组织很多 HA/FA 的不同调度策略。</p>
-<h2 id="i-from-multiplication-to-dot-matrix">I. From Multiplication To Dot Matrix<a class="headerlink" href="#i-from-multiplication-to-dot-matrix" title="Permanent link">&para;</a></h2>
-<h3 id="11">1.1 为什么乘法器不是一个简单的加法器<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
-<p>以无符号乘法为例，两个 n bit 数</p>
+<p>假设要计算：</p>
 <div class="arithmatex">\[
-A = \sum_{i=0}^{n-1} a_i 2^i,\quad
-B = \sum_{j=0}^{n-1} b_j 2^j
+S = A + B + c_0
 \]</div>
-<p>则乘积为</p>
+<p>其中：</p>
 <div class="arithmatex">\[
-P = A \times B
-  = \sum_{i=0}^{n-1}\sum_{j=0}^{n-1} a_i b_j 2^{i+j}
+A = \sum_{i=0}^{n-1} a_i2^i,\quad
+B = \sum_{i=0}^{n-1} b_i2^i
 \]</div>
-<p>其中每一项</p>
+<p>CPA 要输出：</p>
 <div class="arithmatex">\[
-p_{i,j} = a_i b_j
+S = \sum_{i=0}^{n-1}s_i2^i + c_n2^n
 \]</div>
-<p>就是一个 partial product bit。它的权重是</p>
-<div class="arithmatex">\[
-2^{i+j}
-\]</div>
-<p>所以乘法器的本质是：先生成很多带权重的 bit，再把相同权重的 bit 加起来。</p>
-<h3 id="12-dot-matrix">1.2 dot matrix 的含义<a class="headerlink" href="#12-dot-matrix" title="Permanent link">&para;</a></h3>
-<p>在乘法器课件里经常会看到点图。每一个点代表一个 bit，所在的列代表这个 bit 的权重。</p>
-<p>例如 4 bit unsigned multiplier 的 column height 是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>column: 0 1 2 3 4 5 6
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>height: 1 2 3 4 3 2 1
+<p>这里 <span class="arithmatex">\(c_n\)</span> 是最终进位。对于固定 18 bit 二补码乘法器，如果只需要 18 bit 输出，最终超出 bit 17 的 carry 可以丢弃。</p>
+<h3 id="12">1.2 一位全加器公式<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
+<p>一位 full adder 的输入是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>a_i, b_i, c_i
 </span></code></pre></div>
-<p>解释如下：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>column 0: a0b0
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>column 1: a1b0, a0b1
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>column 2: a2b0, a1b1, a0b2
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>column 3: a3b0, a2b1, a1b2, a0b3
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>...
-</span></code></pre></div>
-<p>每一列的所有 dots 都拥有相同权重。例如 column 3 中的每个 dot 都乘以 <span class="arithmatex">\(2^3\)</span>。</p>
-<h3 id="13">1.3 乘法器压缩的目标<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
-<p>假设某一列有 9 个 dots。如果直接用普通加法器逐行相加，会产生很长的 carry propagation path。乘法器的高速设计通常分两步：</p>
-<ol>
-<li>使用 CSA tree 把每一列的 dot height 压到不超过 2。</li>
-<li>最后只剩两行数时，再用一次 CPA 得到标准二进制乘积。</li>
-</ol>
-<p>也就是：</p>
-<div class="arithmatex">\[
-\sum \text{all dots}
-\quad\Rightarrow\quad
-R_0 + R_1
-\quad\Rightarrow\quad
-P
-\]</div>
-<p>第一步不传播长进位，第二步才传播进位。</p>
-<h3 id="14-9-bit-modified-baugh-wooley">1.4 9 bit Modified Baugh-Wooley 的初始列高度<a class="headerlink" href="#14-9-bit-modified-baugh-wooley" title="Permanent link">&para;</a></h3>
-<p>对 9 bit signed multiplier，使用 Modified Baugh-Wooley 后，初始 dot matrix 仍然可以被看成 18 个权重列：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>column: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>height: 1 2 3 4 5 6 7 8 9 9  7  6  5  4  3  2  1  1
-</span></code></pre></div>
-<p>这里 column 17 的那个 dot 来自 Baugh-Wooley 的 correction bit。对 9 bit 二补码乘法，常用修正常数为：</p>
-<div class="arithmatex">\[
-2^{17} + 2^9
-\]</div>
-<p>也就是在 column 17 和 column 9 各加入一个常数 dot。</p>
-<h2 id="ii-cpa-and-ripple-carry-adder">II. CPA And Ripple-Carry Adder<a class="headerlink" href="#ii-cpa-and-ripple-carry-adder" title="Permanent link">&para;</a></h2>
-<h3 id="21-cpa">2.1 CPA 的准确含义<a class="headerlink" href="#21-cpa" title="Permanent link">&para;</a></h3>
-<p>CPA 是 carry-propagate adder，即进位传播加法器。它的特点是输出是标准二进制结果，必须把 carry 从低位传播到高位。</p>
-<p>Ripple-carry adder, 简称 RCA，是最基本的 CPA。很多同学会把 CPA 和 RCA 混着说，但严格讲：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>CPA: 一类会传播进位的最终加法器
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>RCA: 最简单的一种 CPA
-</span></code></pre></div>
-<p>其他 CPA 还包括 CLA, carry-skip adder, carry-select adder 等。</p>
-<h3 id="22-half-adder">2.2 Half Adder<a class="headerlink" href="#22-half-adder" title="Permanent link">&para;</a></h3>
-<p>Half adder, 简称 HA，用来加两个 1 bit 输入：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>x + y -&gt; sum, carry
+<p>输出是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>s_i, c_{i+1}
 </span></code></pre></div>
 <p>公式为：</p>
-<div class="arithmatex">\[
-s = x \oplus y
-\]</div>
-<div class="arithmatex">\[
-c = x y
-\]</div>
-<p>数值上有：</p>
-<div class="arithmatex">\[
-x + y = s + 2c
-\]</div>
-<p>如果这个 HA 位于 column k，则：</p>
-<div class="arithmatex">\[
-(x+y)2^k = s2^k + c2^{k+1}
-\]</div>
-<p>所以 HA 的 sum 留在本列，carry 进入高一列。</p>
-<h3 id="23-full-adder">2.3 Full Adder<a class="headerlink" href="#23-full-adder" title="Permanent link">&para;</a></h3>
-<p>Full adder, 简称 FA，用来加三个 1 bit 输入：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>x + y + z -&gt; sum, carry
-</span></code></pre></div>
-<p>公式为：</p>
-<div class="arithmatex">\[
-s = x \oplus y \oplus z
-\]</div>
-<div class="arithmatex">\[
-c = xy + yz + xz
-\]</div>
-<p>数值上有：</p>
-<div class="arithmatex">\[
-x + y + z = s + 2c
-\]</div>
-<p>如果 FA 位于 column k，则：</p>
-<div class="arithmatex">\[
-(x+y+z)2^k = s2^k + c2^{k+1}
-\]</div>
-<p>因此 FA 也可以被称为 3:2 compressor：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>3 input dots -&gt; 1 sum dot in same column + 1 carry dot in next column
-</span></code></pre></div>
-<h3 id="24-ripple-carry-adder">2.4 Ripple-Carry Adder 的递推公式<a class="headerlink" href="#24-ripple-carry-adder" title="Permanent link">&para;</a></h3>
-<p>对两个 n bit 输入 <span class="arithmatex">\(A\)</span> 和 <span class="arithmatex">\(B\)</span>，RCA 从最低位开始逐位相加：</p>
-<div class="arithmatex">\[
-c_0 = 0
-\]</div>
 <div class="arithmatex">\[
 s_i = a_i \oplus b_i \oplus c_i
 \]</div>
 <div class="arithmatex">\[
 c_{i+1} = a_i b_i + a_i c_i + b_i c_i
 \]</div>
-<p>最终结果为：</p>
+<p>如果直接用 full adder 串起来，就是 RCA。</p>
+<h3 id="13-propagate-generate">1.3 Propagate 和 Generate<a class="headerlink" href="#13-propagate-generate" title="Permanent link">&para;</a></h3>
+<p>为了分析高速加法器，通常定义：</p>
 <div class="arithmatex">\[
-S = \sum_{i=0}^{n-1}s_i2^i + c_n2^n
-\]</div>
-<p>关键点是：第 i 位的计算依赖 <span class="arithmatex">\(c_i\)</span>，而 <span class="arithmatex">\(c_i\)</span> 又来自第 i-1 位。所以 RCA 的延迟随位宽线性增长：</p>
-<div class="arithmatex">\[
-T_{RCA} \approx n \cdot T_{FA}
-\]</div>
-<p>这就是 ripple 的含义：carry 像水波一样从低位一级一级传到高位。</p>
-<h3 id="25-rca">2.5 RCA 例子<a class="headerlink" href="#25-rca" title="Permanent link">&para;</a></h3>
-<p>计算：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>  1011  = 11
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>+ 0110  =  6
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>------
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a> 10001  = 17
-</span></code></pre></div>
-<p>逐位过程：</p>
-<table>
-<thead>
-<tr>
-<th>bit</th>
-<th>a_i</th>
-<th>b_i</th>
-<th>c_i</th>
-<th>s_i</th>
-<th>c_{i+1}</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>3</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>所以：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>s[3:0] = 0001
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>c4     = 1
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>result = 10001
-</span></code></pre></div>
-<h3 id="26-cpa">2.6 CPA 在乘法器里的位置<a class="headerlink" href="#26-cpa" title="Permanent link">&para;</a></h3>
-<p>在高速乘法器中，CPA 通常只放在最后一步：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>many partial product rows
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>        |
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        v
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>CSA / Wallace / Dadda compression
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        |
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        v
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>two rows
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>        |
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>        v
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>final CPA
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>        |
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        v
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>product
-</span></code></pre></div>
-<p>原因是 CPA 会传播进位。如果在压缩树中间就频繁使用 CPA，会把 critical path 拉长。</p>
-<p>考试里常见判断：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>CSA tree reduces the number of operands.
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>CPA produces the final binary result.
-</span></code></pre></div>
-<h2 id="iii-csa-carry-save-adder">III. CSA: Carry-Save Adder<a class="headerlink" href="#iii-csa-carry-save-adder" title="Permanent link">&para;</a></h2>
-<h3 id="31-csa">3.1 CSA 解决什么问题<a class="headerlink" href="#31-csa" title="Permanent link">&para;</a></h3>
-<p>如果要加很多个数，例如：</p>
-<div class="arithmatex">\[
-X_0 + X_1 + X_2 + \cdots + X_{m-1}
-\]</div>
-<p>使用 RCA tree 的问题是每一级 RCA 都要传播 carry，延迟很长。</p>
-<p>CSA 的思想是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>不要立刻传播进位。
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>把 carry 保存到下一列，留给后面的压缩级继续处理。
-</span></code></pre></div>
-<p>所以 CSA 的输出不是一个最终二进制数，而是两个向量：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sum row
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>carry row
-</span></code></pre></div>
-<p>这两个向量还需要继续相加，最终才得到标准二进制数。</p>
-<h3 id="32-csa-fa">3.2 CSA 的基本单元就是 FA<a class="headerlink" href="#32-csa-fa" title="Permanent link">&para;</a></h3>
-<p>一个 n bit CSA 可以看成 n 个互不串联的 FA。第 i 位独立计算：</p>
-<div class="arithmatex">\[
-s_i = x_i \oplus y_i \oplus z_i
+p_i = a_i \oplus b_i
 \]</div>
 <div class="arithmatex">\[
-c_{i+1} = x_i y_i + y_i z_i + x_i z_i
-\]</div>
-<p>注意这里不是 <span class="arithmatex">\(c_i\)</span>，而是 <span class="arithmatex">\(c_{i+1}\)</span>。这是因为该 carry 的权重比当前列高一位。</p>
-<p>向量形式为：</p>
-<div class="arithmatex">\[
-X + Y + Z = S + (C \ll 1)
+g_i = a_i b_i
 \]</div>
 <p>其中：</p>
 <ul>
-<li><span class="arithmatex">\(S\)</span> 是 sum row</li>
-<li><span class="arithmatex">\(C\)</span> 是 carry row</li>
-<li><span class="arithmatex">\(C \ll 1\)</span> 表示 carry row 左移一位后再参与数值求和</li>
+<li><span class="arithmatex">\(g_i\)</span>: generate。若 <span class="arithmatex">\(g_i=1\)</span>，bit i 自己一定产生进位。</li>
+<li><span class="arithmatex">\(p_i\)</span>: propagate。若 <span class="arithmatex">\(p_i=1\)</span>，输入进位 <span class="arithmatex">\(c_i\)</span> 会传到 <span class="arithmatex">\(c_{i+1}\)</span>。</li>
 </ul>
-<h3 id="33-csa-cpa">3.3 CSA 和 CPA 的根本区别<a class="headerlink" href="#33-csa-cpa" title="Permanent link">&para;</a></h3>
-<p>CPA 的第 i 位需要等待低位 carry：</p>
+<p>于是：</p>
 <div class="arithmatex">\[
-s_i = f(a_i,b_i,c_i)
+s_i = p_i \oplus c_i
 \]</div>
-<p>CSA 的第 i 位只看本列输入：</p>
 <div class="arithmatex">\[
-s_i,c_{i+1} = f(x_i,y_i,z_i)
+c_{i+1} = g_i + p_i c_i
 \]</div>
-<p>所以 CSA 不会产生横跨很多 bit 的 carry chain。它的单级延迟近似是一个 FA 的延迟：</p>
-<div class="arithmatex">\[
-T_{CSA} \approx T_{FA}
-\]</div>
-<h3 id="34-csa">3.4 CSA 数值例子<a class="headerlink" href="#34-csa" title="Permanent link">&para;</a></h3>
-<p>计算三个 4 bit 数：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>X = 1011 = 11
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Y = 0110 =  6
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Z = 0101 =  5
-</span></code></pre></div>
-<p>真实结果是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>11 + 6 + 5 = 22 = 10110
-</span></code></pre></div>
-<p>逐列使用 FA：</p>
+<p>这是 CPA 设计中最重要的递推式。几乎所有高速 CPA 都是在加速这个式子的求解。</p>
+<h3 id="14-propagategenerate">1.4 Propagate/Generate 真值表<a class="headerlink" href="#14-propagategenerate" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
-<th>bit</th>
-<th>x_i</th>
-<th>y_i</th>
-<th>z_i</th>
-<th>s_i</th>
-<th>carry to bit i+1</th>
+<th>a_i</th>
+<th>b_i</th>
+<th>p_i = a_i xor b_i</th>
+<th>g_i = a_i b_i</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>kill carry</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>propagate carry</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>propagate carry</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>generate carry</td>
+</tr>
+</tbody>
+</table>
+<p>注意：有些教材会定义 <span class="arithmatex">\(p_i=a_i+b_i\)</span>，即 OR propagate。本文使用更常见的 XOR propagate。两种定义都能推导 CLA，但 sum 公式会略有不同。</p>
+<h2 id="ii-rca-ripple-carry-adder">II. RCA: Ripple-Carry Adder<a class="headerlink" href="#ii-rca-ripple-carry-adder" title="Permanent link">&para;</a></h2>
+<h3 id="21">2.1 基本结构<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<p>RCA 是最简单的 CPA。它把 n 个 full adders 从低位到高位串联：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>c0 -&gt; FA0 -&gt; c1 -&gt; FA1 -&gt; c2 -&gt; ... -&gt; FA(n-1) -&gt; cn
+</span></code></pre></div>
+<p>第 i 位：</p>
+<div class="arithmatex">\[
+s_i = p_i \oplus c_i
+\]</div>
+<div class="arithmatex">\[
+c_{i+1} = g_i + p_i c_i
+\]</div>
+<p>由于 <span class="arithmatex">\(c_{i+1}\)</span> 依赖 <span class="arithmatex">\(c_i\)</span>，所以 bit i+1 必须等待 bit i 的 carry。</p>
+<h3 id="22">2.2 延迟和面积<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<p>RCA 面积很小：</p>
+<div class="arithmatex">\[
+Area_{RCA} = O(n)
+\]</div>
+<p>但延迟随位宽线性增长：</p>
+<div class="arithmatex">\[
+Delay_{RCA} = O(n)
+\]</div>
+<p>更具体地说，critical path 通常是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>c0 -&gt; c1 -&gt; c2 -&gt; ... -&gt; cn
+</span></code></pre></div>
+<p>也就是 carry chain。</p>
+<h3 id="23-4-bit-rca">2.3 4 bit RCA 例子<a class="headerlink" href="#23-4-bit-rca" title="Permanent link">&para;</a></h3>
+<p>计算：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>  A = 1011 = 11
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>+ B = 0110 =  6
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>--------------
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>      10001 = 17
+</span></code></pre></div>
+<p>先计算每一位的 p/g：</p>
+<table>
+<thead>
+<tr>
+<th>i</th>
+<th>a_i</th>
+<th>b_i</th>
+<th>p_i</th>
+<th>g_i</th>
 </tr>
 </thead>
 <tbody>
@@ -5775,13 +5789,11 @@ T_{CSA} \approx T_{FA}
 <td>0</td>
 <td>1</td>
 <td>0</td>
-<td>1</td>
 </tr>
 <tr>
 <td>1</td>
 <td>1</td>
 <td>1</td>
-<td>0</td>
 <td>0</td>
 <td>1</td>
 </tr>
@@ -5791,741 +5803,761 @@ T_{CSA} \approx T_{FA}
 <td>1</td>
 <td>1</td>
 <td>0</td>
-<td>1</td>
 </tr>
 <tr>
 <td>3</td>
 <td>1</td>
-<td>0</td>
 <td>0</td>
 <td>1</td>
 <td>0</td>
 </tr>
 </tbody>
 </table>
-<p>得到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>S      = 1000
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>C &lt;&lt; 1 = 01110
-</span></code></pre></div>
-<p>相加：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>  01000
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>+ 01110
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>-------
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  10110 = 22
-</span></code></pre></div>
-<p>注意 CSA 本身没有直接输出 10110。它只是把三个操作数变成了两个操作数。</p>
-<h3 id="35-csa-dot-matrix">3.5 CSA 在 dot matrix 中的解释<a class="headerlink" href="#35-csa-dot-matrix" title="Permanent link">&para;</a></h3>
-<p>如果某个 column k 中有 3 个 dots：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>column k: x, y, z
-</span></code></pre></div>
-<p>用一个 FA 后变成：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>column k:   sum
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>column k+1: carry
-</span></code></pre></div>
-<p>数值不变：</p>
+<p>设 <span class="arithmatex">\(c_0=0\)</span>：</p>
 <div class="arithmatex">\[
-(x+y+z)2^k = s2^k + c2^{k+1}
+c_1 = g_0 + p_0c_0 = 0
 \]</div>
-<p>这就是部分积压缩树的全部基础。</p>
-<h2 id="iv-partial-product-compression">IV. Partial Product Compression<a class="headerlink" href="#iv-partial-product-compression" title="Permanent link">&para;</a></h2>
-<h3 id="41-column-height">4.1 column height<a class="headerlink" href="#41-column-height" title="Permanent link">&para;</a></h3>
-<p>column height 指某个权重列里有多少个 dots。</p>
+<div class="arithmatex">\[
+c_2 = g_1 + p_1c_1 = 1
+\]</div>
+<div class="arithmatex">\[
+c_3 = g_2 + p_2c_2 = 1
+\]</div>
+<div class="arithmatex">\[
+c_4 = g_3 + p_3c_3 = 1
+\]</div>
+<p>sum:</p>
+<div class="arithmatex">\[
+s_0 = p_0 \oplus c_0 = 1
+\]</div>
+<div class="arithmatex">\[
+s_1 = p_1 \oplus c_1 = 0
+\]</div>
+<div class="arithmatex">\[
+s_2 = p_2 \oplus c_2 = 0
+\]</div>
+<div class="arithmatex">\[
+s_3 = p_3 \oplus c_3 = 0
+\]</div>
+<p>结果：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>c4 s3 s2 s1 s0 = 1 0001
+</span></code></pre></div>
+<h3 id="24-rca">2.4 RCA 适合什么时候用<a class="headerlink" href="#24-rca" title="Permanent link">&para;</a></h3>
+<p>RCA 适合：</p>
+<ul>
+<li>位宽小。</li>
+<li>时序不紧。</li>
+<li>面积优先。</li>
+<li>教学和手写门级实现。</li>
+</ul>
+<p>对 LAB2 的 18 bit final CPA，如果目标频率是 100 MHz，RCA 往往是可以先尝试的版本。它非常容易写对，也方便验证。</p>
+<h2 id="iii-cla-carry-lookahead-adder">III. CLA: Carry-Lookahead Adder<a class="headerlink" href="#iii-cla-carry-lookahead-adder" title="Permanent link">&para;</a></h2>
+<h3 id="31-cla">3.1 CLA 的核心思想<a class="headerlink" href="#31-cla" title="Permanent link">&para;</a></h3>
+<p>CLA 试图避免 carry 一级一级 ripple，而是用组合逻辑直接算出每一级 carry。</p>
+<p>从基本递推式开始：</p>
+<div class="arithmatex">\[
+c_{i+1}=g_i+p_ic_i
+\]</div>
+<p>展开前几级：</p>
+<div class="arithmatex">\[
+c_1 = g_0 + p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_2 = g_1 + p_1c_1
+    = g_1 + p_1g_0 + p_1p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_3 = g_2 + p_2c_2
+    = g_2 + p_2g_1 + p_2p_1g_0 + p_2p_1p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_4 = g_3 + p_3g_2 + p_3p_2g_1 + p_3p_2p_1g_0 + p_3p_2p_1p_0c_0
+\]</div>
+<p>这就是 lookahead。它用更多门电路换更短延迟。</p>
+<h3 id="32-4-bit-cla">3.2 4 bit CLA 结构<a class="headerlink" href="#32-4-bit-cla" title="Permanent link">&para;</a></h3>
+<p>4 bit CLA 通常先计算 bit-level p/g：</p>
+<div class="arithmatex">\[
+p_i = a_i \oplus b_i,\quad g_i = a_ib_i
+\]</div>
+<p>然后并行计算：</p>
+<div class="arithmatex">\[
+c_1 = g_0 + p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_2 = g_1 + p_1g_0 + p_1p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_3 = g_2 + p_2g_1 + p_2p_1g_0 + p_2p_1p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_4 = g_3 + p_3g_2 + p_3p_2g_1 + p_3p_2p_1g_0 + p_3p_2p_1p_0c_0
+\]</div>
+<p>最后：</p>
+<div class="arithmatex">\[
+s_i = p_i \oplus c_i
+\]</div>
+<h3 id="33-group-propagate-group-generate">3.3 Group Propagate 和 Group Generate<a class="headerlink" href="#33-group-propagate-group-generate" title="Permanent link">&para;</a></h3>
+<p>对一个 4 bit block，可以定义：</p>
+<div class="arithmatex">\[
+P_{3:0}=p_3p_2p_1p_0
+\]</div>
+<div class="arithmatex">\[
+G_{3:0}=g_3+p_3g_2+p_3p_2g_1+p_3p_2p_1g_0
+\]</div>
+<p>于是 block carry out 可以写成：</p>
+<div class="arithmatex">\[
+c_4=G_{3:0}+P_{3:0}c_0
+\]</div>
+<p>这和单 bit 公式形式完全一样：</p>
+<div class="arithmatex">\[
+c_{out}=G+Pc_{in}
+\]</div>
+<p>所以 CLA 可以层次化：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>bit p/g -&gt; 4 bit group P/G -&gt; higher-level CLA -&gt; carries
+</span></code></pre></div>
+<h3 id="34-cla">3.4 CLA 的优缺点<a class="headerlink" href="#34-cla" title="Permanent link">&para;</a></h3>
+<p>优点：</p>
+<ul>
+<li>比 RCA 快。</li>
+<li>block 化后结构仍然比较规整。</li>
+<li>适合 16 bit, 32 bit 等中等位宽。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>直接展开大位宽 carry 会导致扇入很大。</li>
+<li>面积比 RCA 大。</li>
+<li>wiring 和门级 fan-in 要注意。</li>
+</ul>
+<p>考试里可以这样总结：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>CLA speeds up addition by computing carries in advance using propagate and generate signals.
+</span></code></pre></div>
+<h2 id="iv-carry-skip-adder">IV. Carry-Skip Adder<a class="headerlink" href="#iv-carry-skip-adder" title="Permanent link">&para;</a></h2>
+<h3 id="41-carry-skip">4.1 Carry-skip 的核心思想<a class="headerlink" href="#41-carry-skip" title="Permanent link">&para;</a></h3>
+<p>Carry-skip adder 又叫 carry-bypass adder。它仍然在 block 内使用 RCA，但如果整个 block 都会 propagate carry，就让 carry 直接跳过这个 block。</p>
+<p>对一个 block，定义：</p>
+<div class="arithmatex">\[
+P_{block} = \prod_{i=m}^{k} p_i
+\]</div>
+<p>如果 <span class="arithmatex">\(P_{block}=1\)</span>，表示这个 block 中每一位都会传播 carry，于是：</p>
+<div class="arithmatex">\[
+c_{out}=c_{in}
+\]</div>
+<p>如果 <span class="arithmatex">\(P_{block}=0\)</span>，则使用 block 内 RCA 算出来的 carry：</p>
+<div class="arithmatex">\[
+c_{out}=c_{ripple}
+\]</div>
+<p>所以可以用 mux 表示：</p>
+<div class="arithmatex">\[
+c_{out}=P_{block}c_{in}+\overline{P_{block}}c_{ripple}
+\]</div>
+<h3 id="42">4.2 结构<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>一个 4 bit carry-skip block：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>        p0 p1 p2 p3
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>         |  |  |  |
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>         AND tree -&gt; P_block
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>cin -&gt; FA0 -&gt; FA1 -&gt; FA2 -&gt; FA3 -&gt; c_ripple
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>  \                                 /
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>   ------------ mux ---------------
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>                 |
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>               cout
+</span></code></pre></div>
+<h3 id="43">4.3 例子<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<p>如果某 4 bit block 中：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>p3 p2 p1 p0 = 1111
+</span></code></pre></div>
+<p>那么：</p>
+<div class="arithmatex">\[
+P_{block}=1
+\]</div>
+<p>无论 block 内部如何 ripple，carry out 都等于 carry in：</p>
+<div class="arithmatex">\[
+c_{out}=c_{in}
+\]</div>
+<p>如果：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>p3 p2 p1 p0 = 1011
+</span></code></pre></div>
+<p>那么：</p>
+<div class="arithmatex">\[
+P_{block}=0
+\]</div>
+<p>carry 不能保证跳过整个 block，必须使用 RCA 算出来的 <span class="arithmatex">\(c_{ripple}\)</span>。</p>
+<h3 id="44">4.4 延迟直觉<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
+<p>Carry-skip 的 worst-case path 通常包括：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>first block ripple + middle block skips + last block ripple
+</span></code></pre></div>
+<p>它比纯 RCA 快，但通常不如 CLA 或 parallel-prefix 快。</p>
+<h3 id="45">4.5 优缺点<a class="headerlink" href="#45" title="Permanent link">&para;</a></h3>
+<p>优点：</p>
+<ul>
+<li>比 RCA 快。</li>
+<li>面积增加不大。</li>
+<li>实现比 CLA 简单。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>加速依赖 block propagate。</li>
+<li>最坏情况仍然有 ripple 段。</li>
+<li>block size 需要权衡。</li>
+</ul>
+<h2 id="v-carry-select-adder">V. Carry-Select Adder<a class="headerlink" href="#v-carry-select-adder" title="Permanent link">&para;</a></h2>
+<h3 id="51-carry-select">5.1 Carry-select 的核心思想<a class="headerlink" href="#51-carry-select" title="Permanent link">&para;</a></h3>
+<p>Carry-select adder, 简称 CSLA。它的想法非常直接：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>既然不知道 block 的 cin 是 0 还是 1，
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>那就两个都提前算好。
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>等真正 cin 到来后，用 mux 选择正确结果。
+</span></code></pre></div>
+<p>对每个 block：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>RCA0 assumes cin = 0
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>RCA1 assumes cin = 1
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>real cin selects one result
+</span></code></pre></div>
+<h3 id="52">5.2 数学描述<a class="headerlink" href="#52" title="Permanent link">&para;</a></h3>
+<p>对一个 block，预先计算：</p>
+<div class="arithmatex">\[
+(S^{(0)}, c_{out}^{(0)}) = A_{block}+B_{block}+0
+\]</div>
+<div class="arithmatex">\[
+(S^{(1)}, c_{out}^{(1)}) = A_{block}+B_{block}+1
+\]</div>
+<p>当真实 <span class="arithmatex">\(c_{in}\)</span> 到来：</p>
+<div class="arithmatex">\[
+S =
+\begin{cases}
+S^{(0)}, &amp; c_{in}=0 \\
+S^{(1)}, &amp; c_{in}=1
+\end{cases}
+\]</div>
+<div class="arithmatex">\[
+c_{out} =
+\begin{cases}
+c_{out}^{(0)}, &amp; c_{in}=0 \\
+c_{out}^{(1)}, &amp; c_{in}=1
+\end{cases}
+\]</div>
+<p>硬件上就是 mux：</p>
+<div class="arithmatex">\[
+S = \overline{c_{in}}S^{(0)} + c_{in}S^{(1)}
+\]</div>
+<div class="arithmatex">\[
+c_{out} = \overline{c_{in}}c_{out}^{(0)} + c_{in}c_{out}^{(1)}
+\]</div>
+<h3 id="53-16-bit-carry-select">5.3 16 bit carry-select 例子<a class="headerlink" href="#53-16-bit-carry-select" title="Permanent link">&para;</a></h3>
+<p>把 16 bit 分成 4 个 block：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>block0: bit  3:0
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>block1: bit  7:4
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>block2: bit 11:8
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>block3: bit 15:12
+</span></code></pre></div>
+<p>block0 必须根据真实 <span class="arithmatex">\(c_0\)</span> ripple：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>block0 uses one RCA
+</span></code></pre></div>
+<p>block1, block2, block3 可以各自并行计算两种情况：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cin = 0 version
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>cin = 1 version
+</span></code></pre></div>
+<p>当 block0 的 carry out 到来后，选择 block1 的结果；block1 的 selected carry 再选择 block2；依此类推。</p>
+<p>关键路径大致是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>block0 RCA delay + several mux delays
+</span></code></pre></div>
+<p>而不是：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>all 16 bits RCA delay
+</span></code></pre></div>
+<h3 id="54-carry-select-tree">5.4 Carry-select tree<a class="headerlink" href="#54-carry-select-tree" title="Permanent link">&para;</a></h3>
+<p>普通 CSLA 的 block carry selection 仍然是串行 mux 链。为了进一步加速，可以把选择过程做成 tree 或层次结构。</p>
+<p>例如 16 bit 可以先分为 4 bit 小块，再把两个小块合成 8 bit conditional result：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>4 bit conditional sums
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>        |
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>        v
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>8 bit conditional sums
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>        |
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>        v
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>16 bit final selection
+</span></code></pre></div>
+<p>这种结构接近 conditional-sum adder：它不仅预计算 sum，也预计算更大范围在 carry-in 为 0/1 时的结果，然后用层次化 mux 选择。</p>
+<p>直觉上：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>linear carry-select: selection path is a chain
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>tree carry-select: selection path is a tree
+</span></code></pre></div>
+<p>代价是更多硬件和更多 mux。</p>
+<h3 id="55">5.5 优缺点<a class="headerlink" href="#55" title="Permanent link">&para;</a></h3>
+<p>优点：</p>
+<ul>
+<li>延迟比 RCA 小很多。</li>
+<li>概念简单。</li>
+<li>block 化实现方便。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>面积较大，因为很多 block 算两遍。</li>
+<li>mux 很多。</li>
+<li>对小位宽未必值得。</li>
+</ul>
+<p>考试里可以这样总结：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>Carry-select adder reduces delay by precomputing both possible carry-in cases and selecting the correct one later.
+</span></code></pre></div>
+<h2 id="vi-conditional-sum-adder">VI. Conditional-Sum Adder<a class="headerlink" href="#vi-conditional-sum-adder" title="Permanent link">&para;</a></h2>
+<h3 id="61-conditional-sum">6.1 Conditional-sum 是什么<a class="headerlink" href="#61-conditional-sum" title="Permanent link">&para;</a></h3>
+<p>Conditional-sum adder 可以看成 carry-select 的树形推广。</p>
+<p>它对每个 bit 或小 block 都计算两种结果：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>cin = 0
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>cin = 1
+</span></code></pre></div>
+<p>然后逐级合并，形成更大 block 在 carry-in 为 0/1 时的条件结果。</p>
+<h3 id="62-block">6.2 两个 block 如何合并<a class="headerlink" href="#62-block" title="Permanent link">&para;</a></h3>
+<p>假设低 block L 和高 block H 都已经有两套结果：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>L0: low block result when cin = 0
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>L1: low block result when cin = 1
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>H0: high block result when its cin = 0
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>H1: high block result when its cin = 1
+</span></code></pre></div>
+<p>当整个 combined block 的 cin = 0 时：</p>
+<ol>
+<li>低 block 使用 L0。</li>
+<li>L0 的 carry out 决定高 block 选 H0 还是 H1。</li>
+</ol>
+<p>当整个 combined block 的 cin = 1 时：</p>
+<ol>
+<li>低 block 使用 L1。</li>
+<li>L1 的 carry out 决定高 block 选 H0 还是 H1。</li>
+</ol>
+<p>这样就能生成 combined block 的两套条件结果。</p>
+<h3 id="63">6.3 延迟和面积<a class="headerlink" href="#63" title="Permanent link">&para;</a></h3>
+<p>Conditional-sum 的选择网络是树形的，所以延迟大致是：</p>
+<div class="arithmatex">\[
+Delay = O(\log n)
+\]</div>
+<p>但它需要大量重复计算和 mux，所以面积较大：</p>
+<div class="arithmatex">\[
+Area &gt; Area_{CSLA} &gt; Area_{RCA}
+\]</div>
+<p>它更像理论上优雅、速度较快，但手写 RTL 比较繁琐的结构。</p>
+<h2 id="vii-parallel-prefix-adders">VII. Parallel-Prefix Adders<a class="headerlink" href="#vii-parallel-prefix-adders" title="Permanent link">&para;</a></h2>
+<h3 id="71-prefix-adder">7.1 Prefix adder 的核心思想<a class="headerlink" href="#71-prefix-adder" title="Permanent link">&para;</a></h3>
+<p>Parallel-prefix adder 是现代高速 CPA 中非常重要的一类，包括：</p>
+<ul>
+<li>Kogge-Stone adder</li>
+<li>Brent-Kung adder</li>
+<li>Sklansky adder</li>
+<li>Han-Carlson adder</li>
+</ul>
+<p>它们的共同目标是快速计算所有 carry。</p>
+<p>基本公式仍然是：</p>
+<div class="arithmatex">\[
+c_{i+1}=g_i+p_ic_i
+\]</div>
+<p>难点是快速得到每一位从低位到当前位的 group generate 和 group propagate。</p>
+<h3 id="72-prefix-operator">7.2 Prefix operator<a class="headerlink" href="#72-prefix-operator" title="Permanent link">&para;</a></h3>
+<p>定义每一位的 pair：</p>
+<div class="arithmatex">\[
+(G_i,P_i)=(g_i,p_i)
+\]</div>
+<p>如果有两个相邻区间：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>high interval: (G_H, P_H)
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>low interval : (G_L, P_L)
+</span></code></pre></div>
+<p>合并后的区间满足：</p>
+<div class="arithmatex">\[
+G = G_H + P_HG_L
+\]</div>
+<div class="arithmatex">\[
+P = P_HP_L
+\]</div>
+<p>记作 prefix operator：</p>
+<div class="arithmatex">\[
+(G_H,P_H)\circ(G_L,P_L)
+= (G_H+P_HG_L,\ P_HP_L)
+\]</div>
+<p>这个 operator 是 associative 的：</p>
+<div class="arithmatex">\[
+X\circ(Y\circ Z)=(X\circ Y)\circ Z
+\]</div>
+<p>因此可以用 tree 并行计算所有前缀。</p>
+<h3 id="73-prefix-carry">7.3 如何由 prefix 得到 carry<a class="headerlink" href="#73-prefix-carry" title="Permanent link">&para;</a></h3>
+<p>如果已经算出：</p>
+<div class="arithmatex">\[
+(G_{i:0},P_{i:0})
+\]</div>
+<p>则：</p>
+<div class="arithmatex">\[
+c_{i+1}=G_{i:0}+P_{i:0}c_0
+\]</div>
+<p>然后：</p>
+<div class="arithmatex">\[
+s_i=p_i\oplus c_i
+\]</div>
+<h3 id="74-8-bit-prefix">7.4 8 bit prefix 例子<a class="headerlink" href="#74-8-bit-prefix" title="Permanent link">&para;</a></h3>
+<p>对 bit 0 到 bit 7，先有：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>(g0,p0), (g1,p1), ..., (g7,p7)
+</span></code></pre></div>
+<p>目标是并行算：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>(G0:0, P0:0)
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>(G1:0, P1:0)
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>(G2:0, P2:0)
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>...
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>(G7:0, P7:0)
+</span></code></pre></div>
 <p>例如：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>column 8 has height 9
-</span></code></pre></div>
-<p>表示 column 8 中有 9 个权重为 <span class="arithmatex">\(2^8\)</span> 的 bit 需要相加。</p>
-<h3 id="42-fa-column-height">4.2 FA 如何改变 column height<a class="headerlink" href="#42-fa-column-height" title="Permanent link">&para;</a></h3>
-<p>在 column k 放一个 FA：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>consume: 3 dots from column k
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>produce: 1 sum dot to column k
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>         1 carry dot to column k+1
-</span></code></pre></div>
-<p>因此本列高度减少 2：</p>
 <div class="arithmatex">\[
-h_k' = h_k - 2
+G_{3:0}=g_3+p_3g_2+p_3p_2g_1+p_3p_2p_1g_0
 \]</div>
-<p>下一列高度增加 1：</p>
 <div class="arithmatex">\[
-h_{k+1}' = h_{k+1} + 1
+P_{3:0}=p_3p_2p_1p_0
 \]</div>
-<h3 id="43-ha-column-height">4.3 HA 如何改变 column height<a class="headerlink" href="#43-ha-column-height" title="Permanent link">&para;</a></h3>
-<p>在 column k 放一个 HA：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>consume: 2 dots from column k
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>produce: 1 sum dot to column k
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>         1 carry dot to column k+1
-</span></code></pre></div>
-<p>因此本列高度减少 1：</p>
-<div class="arithmatex">\[
-h_k' = h_k - 1
-\]</div>
-<p>下一列高度增加 1：</p>
-<div class="arithmatex">\[
-h_{k+1}' = h_{k+1} + 1
-\]</div>
-<p>HA 的总 dot 数没有减少，但它可以降低当前列高度，把压力推给高一列。</p>
-<h3 id="44-2">4.4 为什么最终要压到 2 行<a class="headerlink" href="#44-2" title="Permanent link">&para;</a></h3>
-<p>当所有 column height 都不超过 2 时，可以把每列最多两个 dots 分别放入两行：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>row0[k] = first dot in column k, or 0
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>row1[k] = second dot in column k, or 0
-</span></code></pre></div>
-<p>于是整个 dot matrix 等价于：</p>
-<div class="arithmatex">\[
-P = Row0 + Row1
-\]</div>
-<p>这时只需要一个 18 bit CPA。</p>
-<h2 id="v-wallace-tree">V. Wallace Tree<a class="headerlink" href="#v-wallace-tree" title="Permanent link">&para;</a></h2>
-<h3 id="51-wallace-tree">5.1 Wallace Tree 的核心思想<a class="headerlink" href="#51-wallace-tree" title="Permanent link">&para;</a></h3>
-<p>Wallace Tree 的原则可以概括为：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>每一级尽可能多地压缩。
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>只要某列有 3 个或更多 dots，就尽量放 FA。
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>必要时用 HA 处理剩下的 2 个 dots。
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>重复直到所有列高度不超过 2。
-</span></code></pre></div>
-<p>它的目标是减少压缩级数，也就是缩短 critical path。</p>
-<h3 id="52-wallace-tree">5.2 Wallace Tree 的算法描述<a class="headerlink" href="#52-wallace-tree" title="Permanent link">&para;</a></h3>
-<p>给定初始 dot matrix：</p>
-<ol>
-<li>对每一列，将 dots 尽量按 3 个一组。</li>
-<li>每组 3 个 dots 用一个 FA。</li>
-<li>FA 的 sum 输出进入下一 stage 的同一列。</li>
-<li>FA 的 carry 输出进入下一 stage 的高一列。</li>
-<li>对每一 stage 重复上述过程。</li>
-<li>直到所有列的 height 都不超过 2。</li>
-</ol>
-<p>注意：一个 stage 内的 FA/HA 是并行的。某列 FA 产生的 carry 应该作为下一 stage 的输入，而不是同一 stage 内继续串到另一个 FA。否则就会把两个 FA 串联起来，破坏 tree 的并行性。</p>
-<h3 id="53-wallace-tree">5.3 Wallace Tree 的直觉例子<a class="headerlink" href="#53-wallace-tree" title="Permanent link">&para;</a></h3>
-<p>以 4x4 unsigned multiplier 为例，初始高度为：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>column: 0 1 2 3 4 5 6
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>height: 1 2 3 4 3 2 1
-</span></code></pre></div>
-<p>Wallace Tree 会在 column 2, 3, 4 等较高的列尽快放 FA/HA，使下一 stage 的高度迅速下降。</p>
-<p>例如 column 3 初始有 4 个 dots，可以先用一个 FA 消耗 3 个：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>column 3: 4 dots
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>   use 1 FA
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>column 3 next stage: 2 dots
-</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>column 4 next stage: receives 1 carry dot
-</span></code></pre></div>
-<p>这一步局部上把 column 3 的压力降下来了，但 column 4 会变高。这就是为什么压缩树需要逐级规划，而不能只盯着单列看。</p>
-<h3 id="54-wallace-tree">5.4 Wallace Tree 的优缺点<a class="headerlink" href="#54-wallace-tree" title="Permanent link">&para;</a></h3>
-<p>优点：</p>
+<p>Prefix tree 的作用就是快速算出这些 <span class="arithmatex">\(G_{i:0}\)</span> 和 <span class="arithmatex">\(P_{i:0}\)</span>。</p>
+<h2 id="viii-common-prefix-topologies">VIII. Common Prefix Topologies<a class="headerlink" href="#viii-common-prefix-topologies" title="Permanent link">&para;</a></h2>
+<h3 id="81-kogge-stone-adder">8.1 Kogge-Stone Adder<a class="headerlink" href="#81-kogge-stone-adder" title="Permanent link">&para;</a></h3>
+<p>Kogge-Stone 是速度很快的 prefix adder。</p>
+<p>特点：</p>
 <ul>
-<li>通常压缩级数少。</li>
-<li>延迟较低，适合追求速度。</li>
-<li>概念简单：能压就压。</li>
+<li>逻辑深度小：</li>
 </ul>
-<p>缺点：</p>
-<ul>
-<li>结构不规则。</li>
-<li>wire routing 复杂。</li>
-<li>可能使用比 Dadda Tree 更多的 HA/FA。</li>
-<li>手写 RTL 时容易乱，尤其是 9x9 以上。</li>
-</ul>
-<p>考试里可以这样记：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Wallace: greedy reduction, faster but less regular.
-</span></code></pre></div>
-<h2 id="vi-dadda-tree">VI. Dadda Tree<a class="headerlink" href="#vi-dadda-tree" title="Permanent link">&para;</a></h2>
-<h3 id="61-dadda-tree">6.1 Dadda Tree 的核心思想<a class="headerlink" href="#61-dadda-tree" title="Permanent link">&para;</a></h3>
-<p>Dadda Tree 和 Wallace Tree 一样使用 FA/HA 压缩 dot matrix，但 Dadda Tree 不急着在早期压到很低。</p>
-<p>它的原则是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>每一级只压到刚好满足目标高度。
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>不要过早使用不必要的 HA/FA。
-</span></code></pre></div>
-<p>这样通常可以用更少的加法器，同时保持接近 Wallace Tree 的压缩级数。</p>
-<h3 id="62-dadda-target-height">6.2 Dadda target height 序列<a class="headerlink" href="#62-dadda-target-height" title="Permanent link">&para;</a></h3>
-<p>Dadda Tree 先生成一组目标高度：</p>
 <div class="arithmatex">\[
-d_1 = 2
+O(\log n)
 \]</div>
-<div class="arithmatex">\[
-d_{k+1} = \left\lfloor \frac{3}{2} d_k \right\rfloor
-\]</div>
-<p>所以序列为：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>2, 3, 4, 6, 9, 13, ...
-</span></code></pre></div>
-<p>如果初始最大 column height 是 9，则压缩目标倒着使用：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>9 -&gt; 6 -&gt; 4 -&gt; 3 -&gt; 2
-</span></code></pre></div>
-<p>真正需要执行的 reduction stage 是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>target 6
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>target 4
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>target 3
-</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>target 2
-</span></code></pre></div>
-<h3 id="63-dadda-tree">6.3 Dadda Tree 的压缩规则<a class="headerlink" href="#63-dadda-tree" title="Permanent link">&para;</a></h3>
-<p>对某一级 target height <span class="arithmatex">\(d\)</span>，目标是让该级输出的每一列高度不超过 <span class="arithmatex">\(d\)</span>。</p>
-<p>对 column k：</p>
 <ul>
-<li>如果本列输出高度会超过 <span class="arithmatex">\(d\)</span>，就放 FA 或 HA。</li>
-<li>FA 让本列输出高度减少 2，并向 column k+1 输出一个 carry。</li>
-<li>HA 让本列输出高度减少 1，并向 column k+1 输出一个 carry。</li>
-<li>Dadda Tree 倾向于使用刚好够用的 FA/HA，而不是像 Wallace Tree 那样尽量压。</li>
+<li>fan-out 小。</li>
+<li>wiring 很多。</li>
+<li>area 较大。</li>
 </ul>
-<p>常用直觉规则：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>if height is much higher than target:
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>    use FA
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>if height is only target + 1:
-</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>    use HA
+<p>8 bit Kogge-Stone 大概分 3 个 prefix levels：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>level 1: distance 1
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>level 2: distance 2
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>level 3: distance 4
 </span></code></pre></div>
-<p>更严格地说，设计时要从低列到高列考虑，因为低列产生的 carry 会增加高列在下一 stage 的高度。</p>
-<h3 id="64-9-bit-multiplier-dadda">6.4 9 bit multiplier 的 Dadda 压缩计划<a class="headerlink" href="#64-9-bit-multiplier-dadda" title="Permanent link">&para;</a></h3>
-<p>对于 9 bit Modified Baugh-Wooley multiplier，可以从下面的初始高度出发：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>column: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
-</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>height: 1 2 3 4 5 6 7 8 9 9  7  6  5  4  3  2  1  1
+<p>每一层把更远范围的 carry 信息合并进来。</p>
+<p>适合：</p>
+<ul>
+<li>高性能处理器 ALU。</li>
+<li>宽位加法器。</li>
+<li>timing 非常紧的路径。</li>
+</ul>
+<p>不太适合：</p>
+<ul>
+<li>很小位宽。</li>
+<li>面积敏感的课程实验。</li>
+</ul>
+<h3 id="82-brent-kung-adder">8.2 Brent-Kung Adder<a class="headerlink" href="#82-brent-kung-adder" title="Permanent link">&para;</a></h3>
+<p>Brent-Kung 比 Kogge-Stone 更省面积和 wiring，但逻辑层数更多。</p>
+<p>特点：</p>
+<ul>
+<li>area 较小。</li>
+<li>wiring 较少。</li>
+<li>fan-out 可控。</li>
+<li>delay 比 Kogge-Stone 略大。</li>
+</ul>
+<p>可以粗略记为：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Kogge-Stone: faster, larger
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>Brent-Kung : smaller, slower
 </span></code></pre></div>
-<p>一个可行的 Dadda target 计划是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Stage 1: reduce to height &lt;= 6
-</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>Stage 2: reduce to height &lt;= 4
-</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>Stage 3: reduce to height &lt;= 3
-</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>Stage 4: reduce to height &lt;= 2
-</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>Final : 18 bit CPA
-</span></code></pre></div>
-<p>下表给出一种可行的压缩数量安排。这里的 <code>FA=2, HA=1</code> 表示在该列放 2 个 FA 和 1 个 HA。具体 wire 名称可以由你在 RTL 中自行编号。</p>
-<h4 id="stage-1-target-height-6">Stage 1: target height 6<a class="headerlink" href="#stage-1-target-height-6" title="Permanent link">&para;</a></h4>
+<p>Brent-Kung 常被看作很好的折中结构。</p>
+<h3 id="83-sklansky-adder">8.3 Sklansky Adder<a class="headerlink" href="#83-sklansky-adder" title="Permanent link">&para;</a></h3>
+<p>Sklansky 又叫 divide-and-conquer adder。</p>
+<p>特点：</p>
+<ul>
+<li>prefix depth 小。</li>
+<li>结构很规整。</li>
+<li>某些节点 fan-out 很大。</li>
+</ul>
+<p>大 fan-out 会让实际物理实现中负载变大，因此理论逻辑级数少不一定代表实际最快。</p>
+<h3 id="84-han-carlson-adder">8.4 Han-Carlson Adder<a class="headerlink" href="#84-han-carlson-adder" title="Permanent link">&para;</a></h3>
+<p>Han-Carlson 是 Kogge-Stone 和 Brent-Kung 的折中。</p>
+<p>特点：</p>
+<ul>
+<li>比 Kogge-Stone 少 wiring。</li>
+<li>比 Brent-Kung 快。</li>
+<li>结构复杂度中等。</li>
+</ul>
+<p>如果不是为了做高性能加法器专题，课程实验中通常不需要手写 Han-Carlson。</p>
+<h2 id="ix-comparison-table">IX. Comparison Table<a class="headerlink" href="#ix-comparison-table" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>column</th>
-<th>FA count</th>
-<th>HA count</th>
+<th>Adder</th>
+<th>Delay</th>
+<th>Area</th>
+<th>Wiring</th>
+<th>Concept</th>
+<th>适合场景</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>6</td>
-<td>0</td>
-<td>1</td>
+<td>RCA</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>很少</td>
+<td>最简单</td>
+<td>小位宽、面积优先</td>
 </tr>
 <tr>
-<td>7</td>
-<td>1</td>
-<td>1</td>
+<td>CLA</td>
+<td>O(log n) 或 block-level</td>
+<td>中等</td>
+<td>中等</td>
+<td>提前算 carry</td>
+<td>中等位宽</td>
 </tr>
 <tr>
-<td>8</td>
-<td>2</td>
-<td>1</td>
+<td>Carry-skip</td>
+<td>约 O(sqrt n)</td>
+<td>小到中等</td>
+<td>少</td>
+<td>carry 跳过 block</td>
+<td>简单提速</td>
 </tr>
 <tr>
-<td>9</td>
-<td>3</td>
-<td>0</td>
+<td>Carry-select</td>
+<td>block RCA + mux chain</td>
+<td>较大</td>
+<td>中等</td>
+<td>两种 cin 都预计算</td>
+<td>位宽中等、速度优先</td>
 </tr>
 <tr>
-<td>10</td>
-<td>2</td>
-<td>0</td>
+<td>Conditional-sum</td>
+<td>O(log n)</td>
+<td>大</td>
+<td>多</td>
+<td>tree select</td>
+<td>高速但面积大</td>
 </tr>
 <tr>
-<td>11</td>
-<td>1</td>
-<td>0</td>
+<td>Kogge-Stone</td>
+<td>O(log n)</td>
+<td>大</td>
+<td>很多</td>
+<td>prefix tree</td>
+<td>极高速</td>
+</tr>
+<tr>
+<td>Brent-Kung</td>
+<td>O(log n)</td>
+<td>中等</td>
+<td>较少</td>
+<td>prefix tree</td>
+<td>面积/速度折中</td>
+</tr>
+<tr>
+<td>Sklansky</td>
+<td>O(log n)</td>
+<td>中等</td>
+<td>中等</td>
+<td>divide-and-conquer</td>
+<td>低深度但 fan-out 大</td>
 </tr>
 </tbody>
 </table>
-<p>该 stage 后的高度可以达到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>1 2 3 4 5 6 6 6 6 6 6 6 6 4 3 2 1 1
+<h2 id="x-choosing-a-final-cpa-for-lab2">X. Choosing A Final CPA For LAB2<a class="headerlink" href="#x-choosing-a-final-cpa-for-lab2" title="Permanent link">&para;</a></h2>
+<h3 id="101-multiplier">10.1 你的 multiplier 最终需要什么<a class="headerlink" href="#101-multiplier" title="Permanent link">&para;</a></h3>
+<p>你的 Dadda tree 会把 18 个 column 压到最多两行。最终 CPA 输入可以理解为：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>row0[17:0]
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>row1[17:0]
 </span></code></pre></div>
-<h4 id="stage-2-target-height-4">Stage 2: target height 4<a class="headerlink" href="#stage-2-target-height-4" title="Permanent link">&para;</a></h4>
-<table>
-<thead>
-<tr>
-<th>column</th>
-<th>FA count</th>
-<th>HA count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>4</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>6</td>
-<td>2</td>
-<td>0</td>
-</tr>
-<tr>
-<td>7</td>
-<td>2</td>
-<td>0</td>
-</tr>
-<tr>
-<td>8</td>
-<td>2</td>
-<td>0</td>
-</tr>
-<tr>
-<td>9</td>
-<td>2</td>
-<td>0</td>
-</tr>
-<tr>
-<td>10</td>
-<td>2</td>
-<td>0</td>
-</tr>
-<tr>
-<td>11</td>
-<td>2</td>
-<td>0</td>
-</tr>
-<tr>
-<td>12</td>
-<td>2</td>
-<td>0</td>
-</tr>
-<tr>
-<td>13</td>
-<td>1</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>该 stage 后的高度可以达到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>1 2 3 4 4 4 4 4 4 4 4 4 4 4 4 2 1 1
+<p>输出：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>out[17:0] = row0 + row1
 </span></code></pre></div>
-<h4 id="stage-3-target-height-3">Stage 3: target height 3<a class="headerlink" href="#stage-3-target-height-3" title="Permanent link">&para;</a></h4>
-<table>
-<thead>
-<tr>
-<th>column</th>
-<th>FA count</th>
-<th>HA count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>3</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>4</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>6</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>7</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>8</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>9</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>10</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>11</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>12</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>13</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>14</td>
-<td>1</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>该 stage 后的高度可以达到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>1 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 1
+<p>由于这是 9 bit signed x 9 bit signed，完整乘积正好是 18 bit 二补码。因此 bit 18 的最终 carry 不需要作为输出。</p>
+<h3 id="102-18-bit-rca">10.2 推荐第一版: 18 bit RCA<a class="headerlink" href="#102-18-bit-rca" title="Permanent link">&para;</a></h3>
+<p>第一版建议使用 RCA：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>bit 0 FA -&gt; bit 1 FA -&gt; ... -&gt; bit 17 FA
 </span></code></pre></div>
-<h4 id="stage-4-target-height-2">Stage 4: target height 2<a class="headerlink" href="#stage-4-target-height-2" title="Permanent link">&para;</a></h4>
-<table>
-<thead>
-<tr>
-<th>column</th>
-<th>FA count</th>
-<th>HA count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>3</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>6</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>7</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>8</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>9</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>10</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>11</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>12</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>13</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>14</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>15</td>
-<td>1</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>该 stage 后的高度为：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1
-</span></code></pre></div>
-<p>这时所有列的高度都不超过 2，可以进入最终 CPA。</p>
-<h3 id="65-dadda-tree">6.5 Dadda Tree 的优缺点<a class="headerlink" href="#65-dadda-tree" title="Permanent link">&para;</a></h3>
-<p>优点：</p>
+<p>理由：</p>
 <ul>
-<li>通常比 Wallace Tree 使用更少 HA/FA。</li>
-<li>延迟仍然接近 Wallace Tree。</li>
-<li>适合手工规划，因为每级 target 很清楚。</li>
+<li>最容易写对。</li>
+<li>面积小。</li>
+<li>和门级实现要求最匹配。</li>
+<li>18 bit 位宽不大。</li>
+<li>当前系统 100 MHz 目标下大概率可接受。</li>
 </ul>
-<p>缺点：</p>
-<ul>
-<li>比 Wallace Tree 稍微难理解。</li>
-<li>每一级要小心统计 carry 对高列的影响。</li>
-<li>RTL wire 命名和表格管理比较繁琐。</li>
-</ul>
-<p>考试里可以这样记：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>Dadda: delayed reduction, fewer adders, similar number of levels.
+<p>门级 RCA 可以按下面的模式写：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>c[0] = 0
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>for i = 0..17:
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>    out[i] = row0[i] xor row1[i] xor c[i]
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>    c[i+1] = majority(row0[i], row1[i], c[i])
 </span></code></pre></div>
-<h2 id="vii-wallace-tree-vs-dadda-tree">VII. Wallace Tree vs Dadda Tree<a class="headerlink" href="#vii-wallace-tree-vs-dadda-tree" title="Permanent link">&para;</a></h2>
-<h3 id="71">7.1 核心差异<a class="headerlink" href="#71" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Feature</th>
-<th>Wallace Tree</th>
-<th>Dadda Tree</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>基本单元</td>
-<td>HA/FA</td>
-<td>HA/FA</td>
-</tr>
-<tr>
-<td>策略</td>
-<td>每级尽量多压</td>
-<td>每级只压到目标高度</td>
-</tr>
-<tr>
-<td>目标</td>
-<td>尽快减少高度</td>
-<td>减少硬件数量</td>
-</tr>
-<tr>
-<td>结构</td>
-<td>更不规则</td>
-<td>规划更清晰</td>
-</tr>
-<tr>
-<td>速度</td>
-<td>通常很快</td>
-<td>接近 Wallace</td>
-</tr>
-<tr>
-<td>面积</td>
-<td>可能较大</td>
-<td>通常较小</td>
-</tr>
-</tbody>
-</table>
-<h2 id="viii-connecting-this-to-modified-baugh-wooley">VIII. Connecting This To Modified Baugh-Wooley<a class="headerlink" href="#viii-connecting-this-to-modified-baugh-wooley" title="Permanent link">&para;</a></h2>
-<h3 id="81-signed-multiplication">8.1 signed multiplication 的问题<a class="headerlink" href="#81-signed-multiplication" title="Permanent link">&para;</a></h3>
-<p>二补码 signed number 可以写成：</p>
-<div class="arithmatex">\[
-A = -a_{n-1}2^{n-1} + \sum_{i=0}^{n-2} a_i2^i
-\]</div>
-<div class="arithmatex">\[
-B = -b_{n-1}2^{n-1} + \sum_{j=0}^{n-2} b_j2^j
-\]</div>
-<p>展开：</p>
-<div class="arithmatex">\[
-\begin{aligned}
-P
-&amp;= A B \\
-&amp;= \sum_{i=0}^{n-2}\sum_{j=0}^{n-2} a_i b_j 2^{i+j} \\
-&amp;\quad - \sum_{i=0}^{n-2} a_i b_{n-1}2^{i+n-1} \\
-&amp;\quad - \sum_{j=0}^{n-2} a_{n-1} b_j2^{j+n-1} \\
-&amp;\quad + a_{n-1}b_{n-1}2^{2n-2}
-\end{aligned}
-\]</div>
-<p>中间两项是负的，这就是 signed multiplier 比 unsigned multiplier 麻烦的地方。</p>
-<h3 id="82-baugh-wooley">8.2 Baugh-Wooley 的基本做法<a class="headerlink" href="#82-baugh-wooley" title="Permanent link">&para;</a></h3>
-<p>Baugh-Wooley 的目标是把负的 partial product 转换成正的 bit matrix 加常数补偿。</p>
-<p>对 sign-related partial products 做取反：</p>
-<div class="arithmatex">\[
-a_i b_{n-1} \rightarrow \overline{a_i b_{n-1}}
-\]</div>
-<div class="arithmatex">\[
-a_{n-1} b_j \rightarrow \overline{a_{n-1} b_j}
-\]</div>
-<p>然后加入 correction bits，使整体数值保持不变。</p>
-<p>对 n bit multiplier，Modified Baugh-Wooley 常见修正为：</p>
-<div class="arithmatex">\[
-2^{2n-1} + 2^n
-\]</div>
-<blockquote>
-<p>证明：<span class="arithmatex">\(- \sum_{i=0}^{n-2} a_i b_{n-1}2^{i+n-1}\)</span> 和 <span class="arithmatex">\(- \sum_{j=0}^{n-2} a_{n-1} b_j2^{j+n-1}\)</span> 转化为 <span class="arithmatex">\(\sum_{i=0}^{n-2}\overline{a_i b_{n-1}}2^{i+n-1}\)</span> 以及 <span class="arithmatex">\(\sum_{j=0}^{n-2}\overline{a_{n-1} b_j}2^{j+n-1}\)</span> 后，需要额外<strong>减去</strong>：<br />
-<span class="arithmatex">\(2(2^{n-1}+2^{n}+...+2^{2n-3})\)</span>，这里的<span class="arithmatex">\(2n-3\)</span>是因为一共有 <span class="arithmatex">\(n-1\)</span> 列需要修正。<br />
-因此 <span class="arithmatex">\(2(2^{n-1}+2^{n}+...+2^{2n-3}) = -(2^{2n-1}-2^n)\)</span><br />
-最终结果是 <span class="arithmatex">\(2n\)</span> 比特数，在 <span class="arithmatex">\(2n\)</span> 比特数范围内，加上 <span class="arithmatex">\(2^{2n}\)</span> 与原始值相等，因此修正常数可以化简为：<br />
-<span class="arithmatex">\(2^{2n}-(2^{2n-1}-2^n)=2^{2n-1}+2^n\)</span></p>
-</blockquote>
-<p>对本案例 n=9：</p>
-<div class="arithmatex">\[
-2^{17} + 2^9
-\]</div>
 <p>也就是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>add constant 1 at column 17
-</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>add constant 1 at column 9
-</span></code></pre></div>
-<h3 id="83-multiplierv">8.3 对你的 multiplier.v 的实现提醒<a class="headerlink" href="#83-multiplierv" title="Permanent link">&para;</a></h3>
-<p>如果采用 Modified Baugh-Wooley，sign-related partial products 通常应该是 complemented dots：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>pp[i][8] = ~(a[i] &amp; b[8]) for i = 0..7
-</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>pp[8][j] = ~(a[8] &amp; b[j]) for j = 0..7
-</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>pp[8][8] =  (a[8] &amp; b[8])
-</span></code></pre></div>
-<p>并且需要把 correction bits 放入 column 9 和 column 17。</p>
-<p>之后的 Dadda/Wallace tree 不需要知道这些 dots 的语义。它只负责保持数值等价地压缩 dots：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>same column dot -&gt; same weight
-</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>FA sum -&gt; same column
-</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>FA carry -&gt; next column
-</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>HA sum -&gt; same column
-</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>HA carry -&gt; next column
-</span></code></pre></div>
-<h2 id="ix-how-to-write-the-rtl-compression-network">IX. How To Write The RTL Compression Network<a class="headerlink" href="#ix-how-to-write-the-rtl-compression-network" title="Permanent link">&para;</a></h2>
-<h3 id="91">9.1 推荐的结构化写法<a class="headerlink" href="#91" title="Permanent link">&para;</a></h3>
-<p>手写压缩树时，建议按 stage 和 column 命名：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>s1_c8_0   stage 1, column 8, sum dot 0
-</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>c1_c9_0   stage 1, generated carry into column 9, carry dot 0
-</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>s2_c8_0   stage 2, column 8, sum dot 0
-</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>...
-</span></code></pre></div>
-<p>不要只用 <code>wire tmp1, tmp2, tmp3</code>，后面一定会迷路。</p>
-<h3 id="92-faha">9.2 每个 FA/HA 都要检查权重<a class="headerlink" href="#92-faha" title="Permanent link">&para;</a></h3>
-<p>如果在 column k 放 FA：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>fa_sum(x, y, z)   -&gt; column k
-</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>fa_carry(x, y, z) -&gt; column k+1
-</span></code></pre></div>
-<p>如果在 column k 放 HA：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>ha_sum(x, y)      -&gt; column k
-</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>ha_carry(x, y)    -&gt; column k+1
-</span></code></pre></div>
-<p>这是压缩树最重要的 invariant。只要这个 invariant 不破，整个树的数值就是对的。</p>
-<h3 id="93">9.3 最终两行的构造<a class="headerlink" href="#93" title="Permanent link">&para;</a></h3>
-<p>当压缩到 height &lt;= 2 后，把每一列的 dots 填入两行：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>row0[k] = column k first remaining dot
-</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>row1[k] = column k second remaining dot, or 0
-</span></code></pre></div>
-<p>然后使用 18 bit RCA：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>{carry_out, out[17:0]} = row0 + row1
-</span></code></pre></div>
-<p>在手写门级时，应该用 FA 串出最终 RCA，而不是直接写 <code>+</code>。最终超出 bit 17 的 carry 可以丢弃，因为 9 bit signed product 正好用 18 bit 二补码表示。</p>
-<h3 id="94">9.4 推荐实现顺序<a class="headerlink" href="#94" title="Permanent link">&para;</a></h3>
-<p>建议按下面顺序做，不要一次写完全部：</p>
-<ol>
-<li>先确认 Baugh-Wooley partial product 和 correction bits。</li>
-<li>写 HA/FA function 或 module。</li>
-<li>按 Dadda Stage 1 写 wire，并用小 testbench 验证 stage 后 column height。</li>
-<li>写 Stage 2, Stage 3, Stage 4。</li>
-<li>构造 <code>row0</code> 和 <code>row1</code>。</li>
-<li>写最终 18 bit RCA。</li>
-<li>穷举 512 x 512 个输入，和 <code>a * b</code> golden 比较。</li>
-<li>替换进 image processor，跑 <code>make debug</code>。</li>
-</ol>
-<h3 id="95">9.5 常见错误<a class="headerlink" href="#95" title="Permanent link">&para;</a></h3>
-<h4 id="1-carry">错误 1: carry 放错列<a class="headerlink" href="#1-carry" title="Permanent link">&para;</a></h4>
-<p>FA/HA 的 carry 必须进入高一列：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>column k carry -&gt; column k+1
-</span></code></pre></div>
-<p>如果留在原列，数值会变成错的。</p>
-<h4 id="2-csa">错误 2: 把 CSA 当成最终结果<a class="headerlink" href="#2-csa" title="Permanent link">&para;</a></h4>
-<p>CSA 输出的 <code>sum</code> 和 <code>carry</code> 不是最终结果。必须做：</p>
 <div class="arithmatex">\[
-Result = Sum + (Carry \ll 1)
+out_i = row0_i \oplus row1_i \oplus c_i
 \]</div>
-<p>在 dot matrix 表达里，carry 已经被放到高一列，所以最后是：</p>
 <div class="arithmatex">\[
-Result = Row0 + Row1
+c_{i+1}=row0_irow1_i+row0_ic_i+row1_ic_i
 \]</div>
-<h4 id="3-baugh-wooley-sign-dots">错误 3: Baugh-Wooley sign dots 没取反<a class="headerlink" href="#3-baugh-wooley-sign-dots" title="Permanent link">&para;</a></h4>
-<p>signed multiplier 的 sign-related partial products 不能直接照 unsigned multiplier 写。Modified Baugh-Wooley 的核心就是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>invert sign-related dots
-</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>add correction constants
+<h3 id="103-rca-4-bit-block-cla">10.3 如果 RCA 时序不够: 4 bit block CLA<a class="headerlink" href="#103-rca-4-bit-block-cla" title="Permanent link">&para;</a></h3>
+<p>如果 DC 报告显示 final CPA 是关键路径，可以升级为 block CLA。</p>
+<p>一种适合 18 bit 的切法：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>block0: bit  3:0
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>block1: bit  7:4
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>block2: bit 11:8
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>block3: bit 15:12
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>block4: bit 17:16
 </span></code></pre></div>
-<h4 id="4-cpa">错误 4: 在压缩树中间使用长 CPA<a class="headerlink" href="#4-cpa" title="Permanent link">&para;</a></h4>
-<p>压缩树中间应该用 HA/FA 的 CSA-style reduction。中间使用完整 CPA 会传播 carry，导致 critical path 增长。</p>
-<h4 id="5-stage-fa">错误 5: 同一 stage 中串联多个 FA<a class="headerlink" href="#5-stage-fa" title="Permanent link">&para;</a></h4>
-<p>压缩树的一个 stage 应该是一层并行 compressor。某个 FA 产生的 carry 通常作为下一 stage 的输入。如果你把这个 carry 立刻送入同一 stage 的另一个 FA，就会形成串联路径，使延迟变长。</p>
-<h2 id="x-exam-oriented-summary">X. Exam-Oriented Summary<a class="headerlink" href="#x-exam-oriented-summary" title="Permanent link">&para;</a></h2>
-<h3 id="101">10.1 一句话总结<a class="headerlink" href="#101" title="Permanent link">&para;</a></h3>
+<p>每个 4 bit block 内部用 CLA 直接算 carry，block 间也可以用 group P/G 进一步 lookahead。</p>
+<p>这样比纯 RCA 快，但复杂度仍然可控。</p>
+<h3 id="104-carry-select">10.4 如果想展示优化: Carry-select<a class="headerlink" href="#104-carry-select" title="Permanent link">&para;</a></h3>
+<p>如果实验报告想体现 CPA 优化，可以做 18 bit carry-select：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>block0: 4 bit RCA
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>block1: 4 bit dual RCA + mux
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>block2: 4 bit dual RCA + mux
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>block3: 4 bit dual RCA + mux
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>block4: 2 bit dual RCA + mux
+</span></code></pre></div>
+<p>关键路径大致变成：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>4 bit RCA delay + 4 mux delays
+</span></code></pre></div>
+<p>比 18 bit RCA 短，但面积大约会增加，因为后面每个 block 有两套 RCA。</p>
+<h3 id="105-kogge-stone">10.5 不推荐第一版就写 Kogge-Stone<a class="headerlink" href="#105-kogge-stone" title="Permanent link">&para;</a></h3>
+<p>Kogge-Stone 对 18 bit 当然可行，但手写容易出错，而且 wiring 很多。对于这个实验来说，它更适合作为“如果有额外时间再优化”的版本。</p>
+<p>建议路线：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>Version 1: RCA, make it correct
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>Version 2: 4 bit block CLA or carry-select, compare DC timing/area
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>Version 3: prefix adder only if you want an advanced optimization story
+</span></code></pre></div>
+<h2 id="xi-worked-example-4-bit-cla-vs-rca">XI. Worked Example: 4 Bit CLA vs RCA<a class="headerlink" href="#xi-worked-example-4-bit-cla-vs-rca" title="Permanent link">&para;</a></h2>
+<h3 id="111-rca-carry-chain">11.1 RCA 的 carry chain<a class="headerlink" href="#111-rca-carry-chain" title="Permanent link">&para;</a></h3>
+<p>RCA 中：</p>
+<div class="arithmatex">\[
+c_1 = g_0+p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_2 = g_1+p_1c_1
+\]</div>
+<div class="arithmatex">\[
+c_3 = g_2+p_2c_2
+\]</div>
+<div class="arithmatex">\[
+c_4 = g_3+p_3c_3
+\]</div>
+<p>每一级都等前一级。</p>
+<h3 id="112-cla">11.2 CLA 的直接展开<a class="headerlink" href="#112-cla" title="Permanent link">&para;</a></h3>
+<p>CLA 中：</p>
+<div class="arithmatex">\[
+c_1 = g_0+p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_2 = g_1+p_1g_0+p_1p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_3 = g_2+p_2g_1+p_2p_1g_0+p_2p_1p_0c_0
+\]</div>
+<div class="arithmatex">\[
+c_4 = g_3+p_3g_2+p_3p_2g_1+p_3p_2p_1g_0+p_3p_2p_1p_0c_0
+\]</div>
+<p>所以 CLA 通过更大的组合逻辑提前算 carry。它不是不需要 carry，而是不让 carry 一级一级 ripple。</p>
+<h3 id="113">11.3 小例子<a class="headerlink" href="#113" title="Permanent link">&para;</a></h3>
+<p>令：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>A = 1011
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>B = 0110
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>c0 = 0
+</span></code></pre></div>
+<p>得到：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>p3 p2 p1 p0 = 1 1 0 1
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>g3 g2 g1 g0 = 0 0 1 0
+</span></code></pre></div>
+<p>CLA 计算：</p>
+<div class="arithmatex">\[
+c_1 = 0 + 1\cdot0 = 0
+\]</div>
+<div class="arithmatex">\[
+c_2 = 1 + 0\cdot0 + 0\cdot1\cdot0 = 1
+\]</div>
+<div class="arithmatex">\[
+c_3 = 0 + 1\cdot1 + 1\cdot0\cdot0 + 1\cdot0\cdot1\cdot0 = 1
+\]</div>
+<div class="arithmatex">\[
+c_4 = 0 + 1\cdot0 + 1\cdot1\cdot1 + 1\cdot1\cdot0\cdot0 + 1\cdot1\cdot0\cdot1\cdot0 = 1
+\]</div>
+<p>sum:</p>
+<div class="arithmatex">\[
+s_i=p_i\oplus c_i
+\]</div>
+<p>所以：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>s = 0001
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>c4 = 1
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>result = 10001
+</span></code></pre></div>
+<p>结果和 RCA 一样，但 carry 的计算方式不同。</p>
+<h2 id="xii-exam-oriented-summary">XII. Exam-Oriented Summary<a class="headerlink" href="#xii-exam-oriented-summary" title="Permanent link">&para;</a></h2>
+<h3 id="121">12.1 必背概念<a class="headerlink" href="#121" title="Permanent link">&para;</a></h3>
 <p>CPA:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>Propagates carry and produces the final binary sum.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>Propagates carry and outputs the final binary sum.
 </span></code></pre></div>
 <p>RCA:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>The simplest CPA. Delay grows linearly with bit width.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>Smallest and simplest CPA, but carry delay is linear in bit width.
 </span></code></pre></div>
-<p>CSA:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>Saves carry instead of propagating it. Converts 3 operands into 2 operands.
+<p>CLA:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>Uses generate/propagate equations to compute carries in advance.
 </span></code></pre></div>
-<p>Wallace Tree:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>Greedily compresses partial products as early as possible.
+<p>Carry-skip:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>Lets carry bypass a block when all bits in that block propagate carry.
 </span></code></pre></div>
-<p>Dadda Tree:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>Compresses only to scheduled target heights, usually using fewer adders.
+<p>Carry-select:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>Precomputes both cin=0 and cin=1 results, then selects by the real carry.
 </span></code></pre></div>
-<h3 id="102">10.2 关键公式<a class="headerlink" href="#102" title="Permanent link">&para;</a></h3>
-<p>HA:</p>
+<p>Parallel-prefix:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>Uses an associative prefix operator to compute all carries in logarithmic depth.
+</span></code></pre></div>
+<h3 id="122">12.2 必背公式<a class="headerlink" href="#122" title="Permanent link">&para;</a></h3>
+<p>Bit propagate/generate:</p>
 <div class="arithmatex">\[
-s = x \oplus y,\quad c = xy
+p_i=a_i\oplus b_i,\quad g_i=a_ib_i
 \]</div>
-<p>FA:</p>
+<p>Carry recurrence:</p>
 <div class="arithmatex">\[
-s = x \oplus y \oplus z
+c_{i+1}=g_i+p_ic_i
 \]</div>
+<p>Sum:</p>
 <div class="arithmatex">\[
-c = xy + yz + xz
+s_i=p_i\oplus c_i
 \]</div>
-<p>CSA:</p>
+<p>Prefix combine:</p>
 <div class="arithmatex">\[
-X + Y + Z = S + (C \ll 1)
+(G_H,P_H)\circ(G_L,P_L)
+= (G_H+P_HG_L,\ P_HP_L)
 \]</div>
-<p>Dadda target:</p>
+<p>Block carry:</p>
 <div class="arithmatex">\[
-d_1 = 2,\quad d_{k+1} = \left\lfloor \frac{3}{2}d_k \right\rfloor
+c_{out}=G_{block}+P_{block}c_{in}
 \]</div>
-<p>9 bit Baugh-Wooley correction:</p>
-<div class="arithmatex">\[
-2^{17} + 2^9
-\]</div>
-<h3 id="103">10.3 面试和考试常见问法<a class="headerlink" href="#103" title="Permanent link">&para;</a></h3>
+<h3 id="123">12.3 典型考题回答<a class="headerlink" href="#123" title="Permanent link">&para;</a></h3>
 <p>Question:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>Why not use ripple-carry adders to add all partial products directly?
+<div class="language-text highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>Why is RCA slow?
 </span></code></pre></div>
 <p>Answer:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>Because each RCA propagates carry across many bits, creating a long critical path.
-</span><span id="__span-56-2"><a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>CSA compression avoids long carry propagation until the final CPA.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>Because each bit&#39;s carry depends on the previous bit&#39;s carry, so the carry must ripple through all bits in the worst case.
 </span></code></pre></div>
 <p>Question:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>What is the difference between Wallace and Dadda?
+<div class="language-text highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>How does CLA speed up addition?
 </span></code></pre></div>
 <p>Answer:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>Wallace compresses aggressively at each level.
-</span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>Dadda delays compression according to target heights and usually uses fewer adders.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>CLA expands carry equations using generate and propagate signals, allowing carries to be computed in parallel or hierarchically.
 </span></code></pre></div>
 <p>Question:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>Why does a CSA output two rows instead of one result?
+<div class="language-text highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>What is the cost of carry-select adder?
 </span></code></pre></div>
 <p>Answer:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>Because CSA saves carries instead of propagating them.
-</span><span id="__span-60-2"><a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>The numerical value is represented as Sum + shifted Carry.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>It reduces delay by precomputing both carry-in cases, but it increases area because many blocks are duplicated and muxes are required.
 </span></code></pre></div>
 <p>Question:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>Where is the CPA used in a tree multiplier?
+<div class="language-text highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>What is the key idea of parallel-prefix adders?
 </span></code></pre></div>
 <p>Answer:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>Only at the final stage, after the partial product matrix has been reduced to two rows.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>They use the associative generate/propagate prefix operator to compute all carry signals with logarithmic logic depth.
 </span></code></pre></div>
-<h2 id="xi-suggested-report-description">XI. Suggested Report Description<a class="headerlink" href="#xi-suggested-report-description" title="Permanent link">&para;</a></h2>
-<p>如果你在实验报告中介绍这个 multiplier，可以这样写：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>The signed 9 bit multiplier is implemented using a Modified Baugh-Wooley partial
-</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>product generator followed by a Dadda carry-save reduction tree. The Baugh-Wooley
-</span><span id="__span-63-3"><a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>scheme converts the two&#39;s-complement signed partial products into a positive dot
-</span><span id="__span-63-4"><a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a>matrix with correction bits at columns 9 and 17. The Dadda tree then reduces the
-</span><span id="__span-63-5"><a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a>column heights according to the target sequence 6, 4, 3, and 2 using only half
-</span><span id="__span-63-6"><a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a>adders and full adders. After the matrix is reduced to two rows, an 18 bit
-</span><span id="__span-63-7"><a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a>ripple-carry CPA generates the final two&#39;s-complement product.
+<h2 id="xiii-suggested-report-description">XIII. Suggested Report Description<a class="headerlink" href="#xiii-suggested-report-description" title="Permanent link">&para;</a></h2>
+<p>如果你最终使用 RCA，可以在报告中写：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>After Dadda reduction, the partial product matrix is reduced to two 18 bit rows.
+</span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>The final carry-propagate addition is implemented as an 18 bit ripple-carry
+</span><span id="__span-57-3"><a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>adder using full-adder equations. Although RCA has linear carry propagation
+</span><span id="__span-57-4"><a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a>delay, the final adder width is only 18 bits, so it provides a compact and
+</span><span id="__span-57-5"><a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a>straightforward gate-level implementation for this lab.
 </span></code></pre></div>
-<p>这段话涵盖了：</p>
-<ul>
-<li>signed partial product generation</li>
-<li>correction bits</li>
-<li>CSA-style reduction</li>
-<li>Dadda target sequence</li>
-<li>final CPA</li>
-</ul>
-<p>也正好对应课程 Chapter4 中的 signed multiplier, Baugh-Wooley, Wallace/Dadda tree 和 CPA/CSA。</p>
+<p>如果你使用 carry-select 或 CLA，可以补充：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>To reduce the final carry propagation delay, the final CPA can be replaced by
+</span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>a block carry-lookahead or carry-select adder. These structures trade extra
+</span><span id="__span-58-3"><a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>area for shorter carry computation delay by computing carries in advance or
+</span><span id="__span-58-4"><a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a>precomputing both possible carry-in cases.
+</span></code></pre></div>
 
 
 
