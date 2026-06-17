@@ -46,4 +46,10 @@ hide:
 	<p class="card-desc">部分和压缩的设计方法</p>
 </a>
 
+<a class="note-card blue" href="arithmetics/cpa/">
+	<span class="card-icon">🔗</span>
+	<div class="card-title">CPA 进位传播加法器</div>
+	<p class="card-desc">进位传播加法器的设计方法</p>
+</a>
+
 </div>
