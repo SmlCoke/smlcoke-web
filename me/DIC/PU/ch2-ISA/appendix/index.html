@@ -4272,12 +4272,14 @@
 </tbody>
 </table>
 <h3 id="12">1.2 各格式详细字段定义<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
-<p>所有格式均为32位，字段从高位（bit31）到低位（bit0）排列，核心字段说明：<br />
-- <code>opcode</code>：7位操作码，区分指令大类<br />
-- <code>rs1/rs2</code>：5位源寄存器编号，支持0<span class="arithmatex">\(\sim\)</span>31<br />
-- <code>rd</code>：5位目的寄存器编号<br />
-- <code>funct3/funct7</code>：扩展操作码，区分同opcode下的不同指令<br />
-- <code>immediate</code>：立即数字段，不同格式拆分方式不同</p>
+<p>所有格式均为32位，字段从高位（bit31）到低位（bit0）排列，核心字段说明：</p>
+<ul>
+<li><code>opcode</code>：7位操作码，区分指令大类</li>
+<li><code>rs1/rs2</code>：5位源寄存器编号，支持0<span class="arithmatex">\(\sim\)</span>31</li>
+<li><code>rd</code>：5位目的寄存器编号</li>
+<li><code>funct3/funct7</code>：扩展操作码，区分同opcode下的不同指令</li>
+<li><code>immediate</code>：立即数字段，不同格式拆分方式不同</li>
+</ul>
 <h4 id="121-r-type-">1.2.1 R-type（寄存器-寄存器型）<a class="headerlink" href="#121-r-type-" title="Permanent link">&para;</a></h4>
 <p><strong>字段结构</strong>：</p>
 <table>
@@ -4332,10 +4334,12 @@
 </tbody>
 </table>
 <ul>
-<li>核心opcode：</li>
+<li>核心opcode：<ul>
 <li>立即数<strong>算术</strong>：<code>0010011</code>（<code>addi/xori/ori/andi</code>等）</li>
 <li><strong>内存加载</strong>：<code>0000011</code>（<code>lw/lb/lh</code>等）</li>
 <li><strong>寄存器跳转</strong>：<code>1100111</code>（<code>jalr</code>）</li>
+</ul>
+</li>
 <li>特点：<strong>12位有符号立即数</strong>，支持符号扩展，12位有符号立即数范围为<span class="arithmatex">\(-2048\sim 2047\)</span></li>
 </ul>
 <h4 id="123-s-type">1.2.3 S-type（存储型）<a class="headerlink" href="#123-s-type" title="Permanent link">&para;</a></h4>
@@ -4417,10 +4421,12 @@
 <ul>
 <li>固定opcode：<code>0110111</code>（<code>lui</code>）</li>
 <li>核心指令：<code>lui</code>（Load Upper Immediate），将20位立即数加载到寄存器高20位，低12位清0</li>
-<li>典型用法：配合<code>addi</code>构建32位常数<br />
-  <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>lui x9, 0x3D        # x9 = 0x0003D000
+<li>
+<p>典型用法：配合<code>addi</code>构建32位常数</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>lui x9, 0x3D        # x9 = 0x0003D000
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>addi x9, x9, 0x900  # x9 = 0x0003D900
-</span></code></pre></div></li>
+</span></code></pre></div>
+</li>
 </ul>
 <h4 id="126-uj-typej-type">1.2.6 UJ-type（无条件跳转型，J-type）<a class="headerlink" href="#126-uj-typej-type" title="Permanent link">&para;</a></h4>
 <p><strong>字段结构</strong>：</p>
