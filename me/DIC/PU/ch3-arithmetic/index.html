@@ -2273,10 +2273,60 @@
   <a href="#grs-guard-round-sticky" class="md-nav__link">
     <span class="md-ellipsis">
       
-        八、浮点运算的硬件精度：GRS 位 (Guard, Round, Sticky)
+        八、浮点运算的硬件精度：GRS 位 (Guard, Round, Sticky) 与舍入规则
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="八、浮点运算的硬件精度：GRS 位 (Guard, Round, Sticky) 与舍入规则">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-grs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 GRS 位的定义与作用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-rounding-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 舍入规则 (Rounding Rules)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-rneround-to-nearest-ties-to-even" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 RNE(Round to Nearest, ties to Even) 的处理流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 运算示例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -5038,10 +5088,60 @@
   <a href="#grs-guard-round-sticky" class="md-nav__link">
     <span class="md-ellipsis">
       
-        八、浮点运算的硬件精度：GRS 位 (Guard, Round, Sticky)
+        八、浮点运算的硬件精度：GRS 位 (Guard, Round, Sticky) 与舍入规则
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="八、浮点运算的硬件精度：GRS 位 (Guard, Round, Sticky) 与舍入规则">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-grs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 GRS 位的定义与作用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-rounding-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 舍入规则 (Rounding Rules)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-rneround-to-nearest-ties-to-even" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 RNE(Round to Nearest, ties to Even) 的处理流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 运算示例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -5341,7 +5441,6 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 </ul>
 </li>
 </ul>
-<p>这部分笔记将重点整理课件中关于<strong>浮点数（Floating Point）</strong>的表示、IEEE 754 标准以及编码细节。</p>
 <h2 id="floating-point-representation">五、浮点数表示与编码 (Floating-Point Representation)<a class="headerlink" href="#floating-point-representation" title="Permanent link">&para;</a></h2>
 <p>浮点数用于表示非整数，包括极大或极小的数值，其形式类似于科学计数法。</p>
 <h3 id="51-binary-scientific-notation">5.1 二进制科学计数法 (Binary Scientific Notation)<a class="headerlink" href="#51-binary-scientific-notation" title="Permanent link">&para;</a></h3>
@@ -5571,10 +5670,10 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 对于两个浮点数 <span class="arithmatex">\(x_1\)</span> 和 <span class="arithmatex">\(x_2\)</span>，实际指数相乘等于相加：<span class="arithmatex">\(e_{result} = e_1 + e_2\)</span>。<br />
 但是在 IEEE 754 中，寄存器里存的是带偏置的指数 <span class="arithmatex">\(E\)</span>（<span class="arithmatex">\(E = e + Bias\)</span>）。<br />
 如果直接把两个寄存器的 <span class="arithmatex">\(E\)</span> 相加：</p>
-<div class="arithmatex">\[E_1 + E_2 = (e_1 + Bias) + (e_2 + Bias) = e_1 + e_2 + 2 \times Bias\]</div>
+<div class="arithmatex">\[E_1 + E_2 = (e_1 + \text{Bias}) + (e_2 + \text{Bias}) = e_1 + e_2 + 2 \times \text{Bias}\]</div>
 <p><strong>结果多出了一个 Bias！</strong><br />
 因此，浮点乘法计算指数的公式为：</p>
-<div class="arithmatex">\[\mathbf{E_{result} = E_1 + E_2 - Bias}\]</div>
+<div class="arithmatex">\[\mathbf{E_{result} = E_1 + E_2 - \text{Bias}}\]</div>
 <p><strong>(2) 尾数相乘 (Multiply Significands)</strong></p>
 <ul>
 <li>将两个带隐含位的尾数（<span class="arithmatex">\(1.M_1\)</span> 和 <span class="arithmatex">\(1.M_2\)</span>）当作无符号整数送入乘法器（如我们之前学过的<strong>华莱士树乘法器</strong> ）。</li>
@@ -5592,13 +5691,143 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <li>符号位直接通过异或逻辑门得出：<span class="arithmatex">\(\mathbf{S_{result} = S_1 \oplus S_2}\)</span>。</li>
 </ul>
 <hr />
-<h2 id="grs-guard-round-sticky">八、浮点运算的硬件精度：GRS 位 (Guard, Round, Sticky)<a class="headerlink" href="#grs-guard-round-sticky" title="Permanent link">&para;</a></h2>
+<h2 id="grs-guard-round-sticky">八、浮点运算的硬件精度：GRS 位 (Guard, Round, Sticky) 与舍入规则<a class="headerlink" href="#grs-guard-round-sticky" title="Permanent link">&para;</a></h2>
+<h3 id="81-grs">8.1 GRS 位的定义与作用<a class="headerlink" href="#81-grs" title="Permanent link">&para;</a></h3>
 <p>在对齐（右移）或乘法运算中，尾数低位被移出后，如果直接丢弃，会造成极大的精度损失。为了硬件能够按照 IEEE 754 标准进行精确的<strong>舍入（Rounding to nearest even，向偶数舍入）</strong>，硬件 ALU 在尾数运算时会向右<strong>多扩展 3 个附加位</strong>：</p>
 <ol>
-<li><strong>Guard Bit (保护位)</strong>：位于最低有效位（LSB）右侧的第 1 位。用于保存移出时的最高位精度。</li>
-<li><strong>Round Bit (舍入位)</strong>：位于 Guard 右侧的第 2 位。</li>
-<li><strong>Sticky Bit (粘滞位)</strong>：位于 Round 右侧。<strong>关键特性</strong>：只要在移位过程中，有<strong>任何一个非零的位 (1)</strong> 被移过了 Round 位，Sticky 位就会被<strong>“粘”成 1</strong>，且一直保持为 1。它用于判断后续的数是否正好是一半（Tie），以此决定“向偶数舍入”的走向。</li>
+<li><strong>保护位 (Guard bit, G)</strong>：尾数右边第一位。对齐时被移出尾数的第一位数据会落入 G。</li>
+<li><strong>舍入位 (Round bit, R)</strong>：G 右边的一位。被移出的第二位数据落入 R。</li>
+<li><strong>粘性位 (Sticky bit, S)</strong>：R 右边的所有位。<strong>它的机制非常特殊</strong>：只要有任何一个 <code>1</code> 被移出到它的位置（或它的右边），<strong>S 就会被永久置为 <code>1</code> 并锁死</strong>；只有当移出的全都是 <code>0</code> 时，S 才为 <code>0</code>。<ul>
+<li><em>数学公式</em>：一旦有 <code>1</code> 移入 <span class="arithmatex">\(S\)</span>，则 <span class="arithmatex">\(S = 1\)</span>。</li>
+</ul>
+</li>
 </ol>
+<p>可以把 G, R, S 三位组合看作是尾数最低有效位（LSB, Unit of Last Place）右侧的小数：</p>
+<ul>
+<li><strong><code>GRS = 0xx</code></strong> (即 <span class="arithmatex">\(G=0\)</span>)：代表丢弃的部分 <strong><span class="arithmatex">\(&lt; 0.5\)</span> LSB</strong>（距离下舍入的值更近）。</li>
+<li><strong><code>GRS = 100</code></strong>：代表丢弃的部分 <strong>恰好等于 <span class="arithmatex">\(0.5\)</span> LSB</strong>（处于两个可表示值的正中间，即 <strong>Tie</strong> 状态）。</li>
+<li><strong><code>GRS = 1xx</code> (且 <span class="arithmatex">\(R\)</span> 或 <span class="arithmatex">\(S\)</span> 至少有一个为 1)</strong>：代表丢弃的部分 <strong><span class="arithmatex">\(&gt; 0.5\)</span> LSB</strong>（距离上舍入的值更近）。</li>
+</ul>
+<h3 id="82-rounding-rules">8.2 舍入规则 (Rounding Rules)<a class="headerlink" href="#82-rounding-rules" title="Permanent link">&para;</a></h3>
+<p>IEEE 754-2008 定义了 5 种舍入模式。在体系结构考试中，<strong>最常考也最复杂的是第一种（默认模式）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">舍入模式 (Rounding Mode)</th>
+<th style="text-align: left;">英文名称</th>
+<th style="text-align: left;">核心规则与 GRS 行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1. 偶数优先舍入 (默认)</strong></td>
+<td style="text-align: left;"><strong>RNE (Round to Nearest, ties to Even)</strong></td>
+<td style="text-align: left;">舍入到最接近的值。如果是 Tie（<span class="arithmatex">\(GRS = 100\)</span>），则<strong>舍入到尾数最低位（LSB）为 <code>0</code> (偶数)</strong> 的那一边。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. 四舍五入 (远离 0)</strong></td>
+<td style="text-align: left;"><strong>RNA (Round to Nearest, ties away from zero)</strong></td>
+<td style="text-align: left;">舍入到最接近的值。如果是 Tie，一律向远离 0 的方向舍入（即绝对值变大）。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. 向零舍入 (截断)</strong></td>
+<td style="text-align: left;"><strong>RTZ (Round toward Zero / Truncate)</strong></td>
+<td style="text-align: left;">一律直接丢弃 G, R, S 保护位，尾数保持不变。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4. 向正无穷舍入 (朝天)</strong></td>
+<td style="text-align: left;"><strong>RUP (Round toward <span class="arithmatex">\(+\infty\)</span>)</strong></td>
+<td style="text-align: left;">若为正数且 <span class="arithmatex">\(GRS &gt; 0\)</span>，尾数加 1；若为负数，直接截断（绝对值变小）。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5. 向负无穷舍入 (朝地)</strong></td>
+<td style="text-align: left;"><strong>RDN (Round toward <span class="arithmatex">\(-\infty\)</span>)</strong></td>
+<td style="text-align: left;">若为负数且 <span class="arithmatex">\(GRS &gt; 0\)</span>，尾数加 1（绝对值变大）；若为正数，直接截断。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="83-rneround-to-nearest-ties-to-even">8.3 RNE(Round to Nearest, ties to Even) 的处理流程<a class="headerlink" href="#83-rneround-to-nearest-ties-to-even" title="Permanent link">&para;</a></h3>
+<ul>
+<li>若 <strong><code>GRS &lt; 100</code></strong>（即 <span class="arithmatex">\(G=0\)</span>）：<strong>直接截断</strong>（尾数不变）。</li>
+<li>若 <strong><code>GRS &gt; 100</code></strong>（即 <span class="arithmatex">\(G=1\)</span> 且 <span class="arithmatex">\(R \| S == 1\)</span>）：<strong>尾数加 1</strong>。</li>
+<li>若 <strong><code>GRS == 100</code></strong>（Tie，正好一半）：<ul>
+<li>若尾数最低位为 <code>0</code>（已经是偶数）：<strong>直接截断</strong>（保持偶数）。</li>
+<li>若尾数最低位为 <code>1</code>（奇数）：<strong>尾数加 1</strong>（使其变为偶数 <code>0</code>）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="84">8.4 运算示例<a class="headerlink" href="#84" title="Permanent link">&para;</a></h3>
+<p>为了最清晰地展示这个过程，我们假设一个<strong>4 位有效尾数</strong>（1 位隐含的整数 + 3 位小数，即格式为 <code>1.xxx</code>）的简化浮点系统。</p>
+<p><strong>计算：<span class="arithmatex">\(1.000_2 \times 2^5 - 1.001_2 \times 2^1\)</span></strong></p>
+<h4 id="align-exponents">第一步：对齐阶数 (Align Exponents)<a class="headerlink" href="#align-exponents" title="Permanent link">&para;</a></h4>
+<p>为了进行减法，我们需要将阶数小的数据右移，使其阶数对齐到 <span class="arithmatex">\(2^5\)</span>。</p>
+<ul>
+<li>操作数 <span class="arithmatex">\(X = 1.000_2 \times 2^5\)</span> （不需要移动）</li>
+<li>操作数 <span class="arithmatex">\(Y = 1.001_2 \times 2^1\)</span> （需要右移 <span class="arithmatex">\(5 - 1 = 4\)</span> 位）</li>
+</ul>
+<p><strong>右移过程中 G, R, S 位的变化追踪：</strong></p>
+<ul>
+<li>初始 <span class="arithmatex">\(Y\)</span> 尾数：<code>1.001</code></li>
+<li>右移 1 位：<code>0.100</code>，此时被移出的 <code>1</code> 进入 <span class="arithmatex">\(G\)</span> <span class="arithmatex">\(\rightarrow\)</span> <strong><code>0.100 | G=1, R=0, S=0</code></strong></li>
+<li>右移 2 位：<code>0.010</code>，先前的 <code>1</code> 移入 <span class="arithmatex">\(R\)</span> <span class="arithmatex">\(\rightarrow\)</span> <strong><code>0.010 | G=0, R=1, S=0</code></strong></li>
+<li>右移 3 位：<code>0.001</code>，先前的 <code>1</code> 移入 <span class="arithmatex">\(S\)</span> <span class="arithmatex">\(\rightarrow\)</span> <strong><code>0.001 | G=0, R=0, S=1</code></strong></li>
+<li>
+<p>右移 4 位：<code>0.000</code>，尾数末尾的另一个 <code>1</code> 移入 <span class="arithmatex">\(G\)</span>。先前移入 <span class="arithmatex">\(S\)</span> 的 <code>1</code> 依然保存在 <span class="arithmatex">\(S\)</span>。<br />
+    最终对齐后的 <span class="arithmatex">\(Y\)</span> 为：</p>
+<div class="arithmatex">\[Y = 0.000_2 \times 2^5 \quad (\mathbf{G=1, R=0, S=1})\]</div>
+</li>
+</ul>
+<h4 id="significand-subtraction">第二步：尾数减法 (Significand Subtraction)<a class="headerlink" href="#significand-subtraction" title="Permanent link">&para;</a></h4>
+<p>我们带上 G, R, S 位进行高精度减法：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>  X:  1.000 | 0 0 0  (GRS)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>- Y:  0.000 | 1 0 1  (GRS)
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>-----------------------
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>结果: 0.111 | 0 1 1  (GRS)  &lt;-- 结果为 0.111_011_2 * 2^5
+</span></code></pre></div>
+<h4 id="renormalization">第三步：规格化 (Renormalization)<a class="headerlink" href="#renormalization" title="Permanent link">&para;</a></h4>
+<p>因为结果为 <code>0.111...</code>，不满足 <code>1.xxx</code> 的规格化要求。我们需要将其<strong>左移 1 位</strong>，同时将阶数减 1。</p>
+<ul>
+<li>左移 1 位后，原来的 <span class="arithmatex">\(G\)</span>（<code>0</code>）被移入尾数的最低位。</li>
+<li>原来的 <span class="arithmatex">\(R\)</span>（<code>1</code>）移入 <span class="arithmatex">\(G\)</span>，<span class="arithmatex">\(S\)</span>（<code>1</code>）移入 <span class="arithmatex">\(R\)</span>。</li>
+<li>
+<p>规格化后的中间结果为：</p>
+<div class="arithmatex">\[\text{Fraction} = 1.110_2 \times 2^4 \quad (\mathbf{G=1, R=1, S=0})\]</div>
+<p><em>(注意：这就是为什么我们需要 R 和 S 位的深层次原因。左移后，原来的保护位补了上来，我们依然拥有高精度的舍入信息。)</em></p>
+</li>
+</ul>
+<h4 id="rne">第四步：执行 RNE（偶数优先）舍入<a class="headerlink" href="#rne" title="Permanent link">&para;</a></h4>
+<p>此时我们的尾数最后一行为 <code>1.110</code>，其保护位为 <strong><code>GRS = 110</code></strong>。</p>
+<ol>
+<li><strong>评估 GRS</strong>：因为 <span class="arithmatex">\(G=1, R=1, S=0\)</span>，所以 <span class="arithmatex">\(GRS = 110\)</span>。</li>
+<li><strong>判断大小</strong>：<span class="arithmatex">\(110 &gt; 100\)</span>，说明丢弃的部分大于 <span class="arithmatex">\(0.5\)</span> LSB（更靠近大数一侧）。</li>
+<li>
+<p><strong>舍入操作</strong>：执行<strong>上舍入 (Round Up)</strong>，将尾数最低位加 1：</p>
+<div class="arithmatex">\[1.110 + 0.001 = 1.111\]</div>
+</li>
+</ol>
+<h4 id="_7">最终计算结果：<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>输出值存入寄存器：<strong><span class="arithmatex">\(1.111_2 \times 2^4\)</span></strong></p>
+<h4 id="tie-grs-100">Tie 状态（<span class="arithmatex">\(GRS = 100\)</span>）的“奇偶舍入”补充实例<a class="headerlink" href="#tie-grs-100" title="Permanent link">&para;</a></h4>
+<p>如果上述减法算出来的最终中间结果是：</p>
+<div class="arithmatex">\[\text{Fraction} = 1.110_2 \times 2^4 \quad (\mathbf{G=1, R=0, S=0})\]</div>
+<p>此时 <span class="arithmatex">\(GRS = 100\)</span>，处于 <strong>Tie</strong> 状态（正中间）。</p>
+<ul>
+<li><strong>看尾数的 LSB</strong>：当前尾数 <code>1.110</code> 的最后一位是 <code>0</code>（偶数）。</li>
+<li><strong>舍入决定</strong>：为了保持偶数，我们选择<strong>下舍入（截断）</strong>。</li>
+<li><strong>最终结果</strong>：<span class="arithmatex">\(1.110 \times 2^4\)</span>。</li>
+</ul>
+<p>而如果中间结果是：</p>
+<div class="arithmatex">\[\text{Fraction} = 1.111_2 \times 2^4 \quad (\mathbf{G=1, R=0, S=0})\]</div>
+<p>此时同样是 <span class="arithmatex">\(GRS = 100\)</span>。</p>
+<ul>
+<li><strong>看尾数的 LSB</strong>：当前尾数 <code>1.111</code> 的最后一位是 <code>1</code>（奇数）。</li>
+<li>
+<p><strong>舍入决定</strong>：为了使其变为偶数，我们选择<strong>上舍入（加 1）</strong>：</p>
+<div class="arithmatex">\[1.111 + 0.001 = 10.000\]</div>
+<p>此时产生进位，需要重新规格化：<span class="arithmatex">\(1.000 \times 2^5\)</span>。</p>
+</li>
+</ul>
+<p>这种向最接近的偶数舍入的机制，能够在连续的大量浮点数运算中，使得正向误差和负向误差相互抵消，从而将系统的整体统计偏差（Bias）降到最低。</p>
 <hr />
 <h2 id="risc-v-risc-v-fp-architecture">九、RISC-V 浮点指令集架构 (RISC-V FP Architecture)<a class="headerlink" href="#risc-v-risc-v-fp-architecture" title="Permanent link">&para;</a></h2>
 <p>RISC-V 将浮点功能作为可选扩展（Extensions）：</p>
@@ -5640,8 +5869,8 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <li><code>fle.s rd, fs1, fs2</code>：Less or Equal (小于等于)。</li>
 </ul>
 <p><strong>代码示例</strong>：判断 <code>f1</code> 和 <code>f2</code> 是否相等，如果不等则跳转到 <code>Label</code></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>feq.s x5, f1, f2    # 如果 f1 == f2，将整数 1 存入 x5；否则存 0
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>beq   x5, x0, Label # 如果 x5 等于 0 (即比较结果为假)，则跳转到 Label
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>feq.s x5, f1, f2    # 如果 f1 == f2，将整数 1 存入 x5；否则存 0
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>beq   x5, x0, Label # 如果 x5 等于 0 (即比较结果为假)，则跳转到 Label
 </span></code></pre></div>
 <p><strong>(4) 浮点与整数的转换 (Conversion)</strong><br />
 用于在浮点寄存器和整数寄存器之间转换数据格式。</p>
