@@ -30,13 +30,13 @@ bne t3, t4, overflow  # 如果 t2<0 且 t1+t2>=t1，或 t2>=0 且 t1+t2<t1，则
 
 **(1) 保存现场**：
    
-    - 记录发生异常/被中断的指令的 PC 值。在 RISC-V 中，保存在 **SEPC (Supervisor Exception Program Counter)** 寄存器中。`SEPC` 是专用寄存器，软件无法控制。
-    - 记录异常发生的原因。在 RISC-V 中，保存在 **SCAUSE (Supervisor Exception Cause)** 寄存器中。
+- 记录发生异常/被中断的指令的 PC 值。在 RISC-V 中，保存在 **SEPC (Supervisor Exception Program Counter)** 寄存器中。`SEPC` 是专用寄存器，软件无法控制。
+- 记录异常发生的原因。在 RISC-V 中，保存在 **SCAUSE (Supervisor Exception Cause)** 寄存器中。
 
 **(2) 跳转到处理程序 (Handler)**：
 
-    - **向量中断 (Vectored Interrupts)**：根据不同的异常原因，直接跳转到对应的地址（例如：未定义操作码跳转到 `C000 0000`，溢出跳转到 `C000 0020`）。
-    - **单一入口点 (Single entry point)**：所有异常跳到同一个基地址（如 `1C090000`），然后由软件读取 SCAUSE 寄存器，再利用 `switch-case` 跳转到具体的处理函数。
+- **向量中断 (Vectored Interrupts)**：根据不同的异常原因，直接跳转到对应的地址（例如：未定义操作码跳转到 `C000 0000`，溢出跳转到 `C000 0020`）。
+- **单一入口点 (Single entry point)**：所有异常跳到同一个基地址（如 `1C090000`），然后由软件读取 SCAUSE 寄存器，再利用 `switch-case` 跳转到具体的处理函数。
 
 !!! note "处理程序 (Handler) 的执行动作"
     (1) 读取 SCAUSE 确定原因并执行相应动作。
