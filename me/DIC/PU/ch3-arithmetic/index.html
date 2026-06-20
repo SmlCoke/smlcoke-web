@@ -5184,7 +5184,6 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <p class="admonition-title">Theorem 2.</p>
 <p>计算机中，<strong>加法和减法都可以通过补码的加法实现</strong></p>
 </div>
-<p>根据课件内容，我为你整理了关于<strong>整数加减法、溢出处理、乘法运算及其电路实现、RISC-V实现</strong>的学习笔记。作为微电子专业的学生，这部分重点关注<strong>硬件实现的演进（从串行到并行加速）</strong>以及<strong>硬件开销的优化</strong>。</p>
 <h2 id="_3">二、整数加减法与溢出处理<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <h3 id="21-integer-addition-subtraction">2.1 整数加减法 (Integer Addition &amp; Subtraction)<a class="headerlink" href="#21-integer-addition-subtraction" title="Permanent link">&para;</a></h3>
 <ul>
@@ -5224,7 +5223,7 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 </ul>
 <p><img alt="alt text" src="image.webp" /></p>
 <h3 id="32-optimized-multiplier">3.2 优化后的乘法器电路 (Optimized Multiplier)<a class="headerlink" href="#32-optimized-multiplier" title="Permanent link">&para;</a></h3>
-<p>为了减小面积和提升速度，微电子设计中常采用优化电路：</p>
+<p>为了减小面积和提升速度，芯片设计中常采用优化电路：</p>
 <ul>
 <li><strong>并行化设计</strong>：将<strong>加法和移位步骤并行执行</strong>。</li>
 <li><strong>寄存器优化</strong>：乘积寄存器的右半部分最初存放乘数，随着运算进行，乘数被移出，乘积的低位被移入，从而节省空间。</li>
@@ -5233,9 +5232,9 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <h3 id="33-real-multiplier-structure">3.3 高性能“真实”乘法器 (Real Multiplier Structure)<a class="headerlink" href="#33-real-multiplier-structure" title="Permanent link">&para;</a></h3>
 <p>现代芯片（如GPU/高性能CPU）中使用更复杂的电路结构：</p>
 <ul>
-<li><strong>布斯编码 (Booth Encoder)</strong>：通过对乘数进行编码，减少产生的<strong>部分积（Partial Products）</strong>数量。</li>
-<li><strong>华莱士树 (Wallace Tree)</strong>：采用树状结构的加法器阵列，实现部分积的<strong>并行压缩相加</strong>，大幅降低延迟。</li>
-<li><strong>先行进位加法器 (Carry Look-ahead Adder, CLA)</strong>：用于最后的求和阶段，以极快速度处理进位传递。</li>
+<li><strong>Booth Recoding</strong>：通过对乘数进行编码，减少产生的<strong>部分积（Partial Products）</strong>数量。</li>
+<li><strong>Wallace Tree/Dadda Tree</strong>：采用树状结构的加法器阵列，实现部分积的<strong>并行压缩相加</strong>，大幅降低延迟。</li>
+<li><strong>超前进位加法器 (Carry Look-ahead Adder, CLA)</strong>：用于最后的求和阶段（CPA），以极快速度处理进位传递。</li>
 </ul>
 <p><img alt="alt text" src="image-2.webp" /></p>
 <h3 id="34-risc-v">3.4 RISC-V 乘法指令实现<a class="headerlink" href="#34-risc-v" title="Permanent link">&para;</a></h3>
@@ -5295,7 +5294,7 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <tbody>
 <tr>
 <td><strong>Restoring</strong></td>
-<td><span class="arithmatex">\(r - d(&lt;0)\)</span> restor to <span class="arithmatex">\(r\)</span></td>
+<td><span class="arithmatex">\(r - d(&lt;0)\)</span> restore to <span class="arithmatex">\(r\)</span></td>
 <td><span class="arithmatex">\(r \times 2 - d\)</span></td>
 </tr>
 <tr>
@@ -5321,10 +5320,12 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <p>有符号除法的核心原则是“<strong>余数的符号必须与被除数一致</strong>”：</p>
 <ol>
 <li>取被除数和除数的<strong>绝对值</strong>进行<strong>除法</strong>运算。</li>
-<li><strong>调整符号规则</strong>：<br />
-        - 如果操作数异号，则商为负。<br />
-        - <strong>余数的符号必须与被除数一致</strong>。<br />
-        - 这意味着商总是<strong>向零舍入（Rounded toward zero）</strong>。</li>
+<li><strong>调整符号规则</strong>：<ul>
+<li>如果操作数异号，则商为负。</li>
+<li><strong>余数的符号必须与被除数一致</strong>。</li>
+<li>这意味着商总是<strong>向零舍入（Rounded toward zero）</strong>。</li>
+</ul>
+</li>
 </ol>
 <h3 id="5-risc-v">5. RISC-V 除法指令实现<a class="headerlink" href="#5-risc-v" title="Permanent link">&para;</a></h3>
 <p>RISC-V 将商和余数的获取拆分为不同的指令，且区分有符号与无符号：</p>
