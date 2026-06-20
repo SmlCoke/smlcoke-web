@@ -4601,15 +4601,13 @@
 <h3 id="72-handling-exceptions">7.2 异常/中断的处理机制 (Handling Exceptions)<a class="headerlink" href="#72-handling-exceptions" title="Permanent link">&para;</a></h3>
 <p>为了让操作系统（OS）能够接管并处理异常，硬件必须自动完成以下操作：</p>
 <p><strong>(1) 保存现场</strong>：</p>
-<ul>
-<li>记录发生异常/被中断的指令的 PC 值。在 RISC-V 中，保存在 <strong>SEPC (Supervisor Exception Program Counter)</strong> 寄存器中。<code>SEPC</code> 是专用寄存器，软件无法控制。</li>
-<li>记录异常发生的原因。在 RISC-V 中，保存在 <strong>SCAUSE (Supervisor Exception Cause)</strong> 寄存器中。</li>
-</ul>
+<div class="language-text highlight"><pre><span></span><code>- 记录发生异常/被中断的指令的 PC 值。在 RISC-V 中，保存在 **SEPC (Supervisor Exception Program Counter)** 寄存器中。`SEPC` 是专用寄存器，软件无法控制。
+- 记录异常发生的原因。在 RISC-V 中，保存在 **SCAUSE (Supervisor Exception Cause)** 寄存器中。
+</code></pre></div>
 <p><strong>(2) 跳转到处理程序 (Handler)</strong>：</p>
-<ul>
-<li><strong>向量中断 (Vectored Interrupts)</strong>：根据不同的异常原因，直接跳转到对应的地址（例如：未定义操作码跳转到 <code>C000 0000</code>，溢出跳转到 <code>C000 0020</code>）。</li>
-<li><strong>单一入口点 (Single entry point)</strong>：所有异常跳到同一个基地址（如 <code>1C090000</code>），然后由软件读取 SCAUSE 寄存器，再利用 <code>switch-case</code> 跳转到具体的处理函数。</li>
-</ul>
+<div class="language-text highlight"><pre><span></span><code>- **向量中断 (Vectored Interrupts)**：根据不同的异常原因，直接跳转到对应的地址（例如：未定义操作码跳转到 `C000 0000`，溢出跳转到 `C000 0020`）。
+- **单一入口点 (Single entry point)**：所有异常跳到同一个基地址（如 `1C090000`），然后由软件读取 SCAUSE 寄存器，再利用 `switch-case` 跳转到具体的处理函数。
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">处理程序 (Handler) 的执行动作</p>
 <p>(1) 读取 SCAUSE 确定原因并执行相应动作。<br />
@@ -4645,9 +4643,11 @@
 <li><strong>组合限制</strong>：为了简化译码器和发射逻辑，严格规定一条是 <code>ALU/Branch</code> 指令，另一条是 <code>Load/Store</code> 指令。如果某类指令缺失，必须用 <code>nop</code> (气泡) 填充。</li>
 </ul>
 <p><strong>硬件架构的修改</strong>：<br />
-为了支持双发射，数据通路（Datapath）需要付出额外的硬件成本：<br />
-1. <strong>寄存器堆 (Register File, RF) 端口增加</strong>：两条指令同时读取和写入，RF 需要增加到<strong>额外的读端口和写端口</strong>（例如需要 4个读端口，2个写端口）。<br />
-2. <strong>增加额外的 ALU</strong>：原本五级流水线中<strong>唯一的 ALU 不能同时处理数据运算和内存地址计算</strong>，必须为 <code>Load/Store</code> 流水线单独增加一个<strong>用于地址计算</strong>的 ALU/Adder。</p>
+为了支持双发射，数据通路（Datapath）需要付出额外的硬件成本：</p>
+<ol>
+<li><strong>寄存器堆 (Register File, RF) 端口增加</strong>：两条指令同时读取和写入，RF 需要增加到<strong>额外的读端口和写端口</strong>（例如需要 4个读端口，2个写端口）。</li>
+<li><strong>增加额外的 ALU</strong>：原本五级流水线中<strong>唯一的 ALU 不能同时处理数据运算和内存地址计算</strong>，必须为 <code>Load/Store</code> 流水线单独增加一个<strong>用于地址计算</strong>的 ALU/Adder。</li>
+</ol>
 <h4 id="822-hazards-in-the-dual-issue-risc-v">8.2.2 Hazards in the Dual-Issue RISC-V<a class="headerlink" href="#822-hazards-in-the-dual-issue-risc-v" title="Permanent link">&para;</a></h4>
 <p>双发射架构中，更多的指令并行执行，此时冒险的情况更复杂，主要有以下几类：</p>
 <p><strong>(1) EX data hazard</strong></p>
@@ -4660,14 +4660,14 @@
 <p>Still <strong>one cycle use latency</strong>, but now <strong>two instructions</strong> are affected.</p>
 <p><strong>(3) More aggressive scheduling required</strong></p>
 <h4 id="823-scheduling-example">8.2.3 Scheduling Example<a class="headerlink" href="#823-scheduling-example" title="Permanent link">&para;</a></h4>
-<p>以如下RISC-V循环代码为例，展示静态双发射的指令调度优化：<br />
+<p>以如下RISC-V循环代码为例，展示静态双发射的指令调度优化：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Loop:
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ld    x31, 0(x20)   # x31=array element
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>add   x31, x31, x21 # add scalar in x21
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>sd    x31, 0(x20)   # store result
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>addi  x20, x20, –8  # decrement pointer
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>blt   x22, x20, Loop # branch if x22&lt;x20
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><strong>基础双发射调度结果</strong><br />
 严格遵循「1条ALU/branch + 1条Load/Store」的发射包规则，调度后每个周期的指令包如下：</p>
 <table>
@@ -4709,7 +4709,7 @@
 <h3 id="83-loop-unrolling">8.3 循环展开 (Loop Unrolling) 优化<a class="headerlink" href="#83-loop-unrolling" title="Permanent link">&para;</a></h3>
 <p>循环展开是挖掘ILP的核心编译器优化手段，核心思想是<strong>复制循环体，减少循环控制指令的开销，暴露更多可并行的指令</strong>，配合多发射技术进一步提升IPC。</p>
 <h4 id="831">8.3.1 单发射架构下的循环展开<a class="headerlink" href="#831" title="Permanent link">&para;</a></h4>
-<p>以上述循环代码为例，4次循环展开后的基础代码如下：<br />
+<p>以上述循环代码为例，4次循环展开后的基础代码如下：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Loop:
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ld    x28, 0(x20)
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>add   x28, x28, x21
@@ -4725,13 +4725,13 @@
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>sd    x31, -24(x20)
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>addi  x20, x20, -32
 </span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>blt   x22, x20, Loop
-</span></code></pre></div></p>
+</span></code></pre></div>
 <ul>
 <li>优化收益：原本1次循环需要1条<code>addi</code>+1条<code>blt</code>，4次循环展开后，<strong>循环控制指令的开销</strong>降低为原来的1/4。</li>
 <li>代价：<strong>需要占用更多的通用寄存器</strong>（x28~x31），同时代码体积增大。</li>
 </ul>
 <h4 id="832">8.3.2 循环展开+流水线调度<a class="headerlink" href="#832" title="Permanent link">&para;</a></h4>
-<p>在循环展开的基础上，编译器可<strong>通过指令重排，规避Load-use等数据冒险</strong>，进一步消除流水线气泡。优化后的指令序列如下：<br />
+<p>在循环展开的基础上，编译器可<strong>通过指令重排，规避Load-use等数据冒险</strong>，进一步消除流水线气泡。优化后的指令序列如下：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Loop:
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ld    x28, 0(x20)
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ld    x29, -8(x20)
@@ -4747,8 +4747,8 @@
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>sd    x30, 16(x20)
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>sd    x31, 8(x20)
 </span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>blt   x22, x20, Loop
-</span></code></pre></div><br />
-核心优化逻辑：将<strong>所有Load指令提前</strong>，利用<strong>Load的延迟间隙</strong>完成其他指令的执行，彻底消除Load-use冒险带来的流水线停顿。</p>
+</span></code></pre></div>
+<p>核心优化逻辑：将<strong>所有Load指令提前</strong>，利用<strong>Load的延迟间隙</strong>完成其他指令的执行，彻底消除Load-use冒险带来的流水线停顿。</p>
 <h4 id="833">8.3.3 多发射+循环展开的联合优化<a class="headerlink" href="#833" title="Permanent link">&para;</a></h4>
 <p>将静态双发射与4次循环展开结合，最终调度结果如下：</p>
 <table>
@@ -4827,13 +4827,13 @@
 </ul>
 <h4 id="842-out-of-order-ooo">8.4.2 动态流水线调度与乱序执行 (Out-of-Order, OOO)<a class="headerlink" href="#842-out-of-order-ooo" title="Permanent link">&para;</a></h4>
 <p>动态调度的核心能力是<strong>允许CPU乱序执行指令，以规避流水线停顿，但最终按序提交结果到寄存器</strong>，保证程序执行的语义正确性。</p>
-<p><strong>示例</strong>：如下指令序列中，<code>add</code>指令依赖<code>ld</code>的结果，会产生Load-use停顿，但<code>sub</code>和<code>andi</code>指令与前后指令无依赖，可在<code>ld</code>的延迟间隙提前执行：<br />
+<p><strong>示例</strong>：如下指令序列中，<code>add</code>指令依赖<code>ld</code>的结果，会产生Load-use停顿，但<code>sub</code>和<code>andi</code>指令与前后指令无依赖，可在<code>ld</code>的延迟间隙提前执行：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ld    x31, 0(x21)   -&gt;  ld    x31, 0(x21)
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>add   x1, x31, x2   -&gt;  sub   x23, x23, x3
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>sub   x23, x23, x3  -&gt;  add   x1, x31, x2
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>andi  x5, x23, 20   -&gt;  andi  x5, x23, 20
-</span></code></pre></div><br />
-执行逻辑：CPU可在等待<code>ld</code>从内存读取数据的同时，先完成<code>sub</code>指令的执行，充分利用流水线资源，消除无效停顿。</p>
+</span></code></pre></div>
+<p>执行逻辑：CPU可在等待<code>ld</code>从内存读取数据的同时，先完成<code>sub</code>指令的执行，充分利用流水线资源，消除无效停顿。</p>
 <h4 id="843-cpu">8.4.3 动态调度CPU的核心结构<a class="headerlink" href="#843-cpu" title="Permanent link">&para;</a></h4>
 <p>动态调度CPU的核心流水线结构分为三大阶段，严格遵循「<strong>按序取指发射、乱序执行、按序提交</strong>」的核心原则：</p>
 <p><img alt="" src="image-45.webp" /></p>
