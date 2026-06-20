@@ -6061,30 +6061,38 @@
 <h2 id="risc-v_1">三、RISC-V四大核心设计原则<a class="headerlink" href="#risc-v_1" title="Permanent link">&para;</a></h2>
 <p>这是RISC-V架构设计的核心思想，贯穿整个指令集规范：</p>
 <ol>
-<li><strong>Simplicity favors regularity（简洁源于规整性）</strong><br />
-    所有算术操作采用统一的三操作数格式（2源1目的），规整的指令格式大幅简化硬件解码与实现，以低成本实现更高性能。</li>
-<li><strong>Smaller is faster（越小越快）</strong><br />
-<strong>采用32个32位的寄存器文件</strong>，容量远小于主存，但访问延迟远低于内存，高频访问数据优先放入寄存器，是性能优化的核心手段。</li>
-<li><strong>Make the common case fast（让常见场景更快）</strong><br />
-    程序中小常数的使用非常普遍，<strong>指令内置立即数操作数，避免额外的内存load指令</strong>，大幅提升常用操作的执行效率。</li>
-<li><strong>Good design demands good compromises（优秀的设计需要合理的折中）</strong><br />
-    多指令格式虽增加了解码复杂度，但<strong>保证了所有指令统一32位固定长度</strong>，且各格式的核心字段位置尽可能对齐，平衡了编程灵活性与硬件实现难度。</li>
+<li>
+<p><strong>Simplicity favors regularity（简洁源于规整性）</strong><br />
+    所有算术操作采用统一的三操作数格式（2源1目的），规整的指令格式大幅简化硬件解码与实现，以低成本实现更高性能。</p>
+</li>
+<li>
+<p><strong>Smaller is faster（越小越快）</strong><br />
+<strong>采用32个32位的寄存器文件</strong>，容量远小于主存，但访问延迟远低于内存，高频访问数据优先放入寄存器，是性能优化的核心手段。</p>
+</li>
+<li>
+<p><strong>Make the common case fast（让常见场景更快）</strong><br />
+    程序中小常数的使用非常普遍，<strong>指令内置立即数操作数，避免额外的内存load指令</strong>，大幅提升常用操作的执行效率。</p>
+</li>
+<li>
+<p><strong>Good design demands good compromises（优秀的设计需要合理的折中）</strong><br />
+    多指令格式虽增加了解码复杂度，但<strong>保证了所有指令统一32位固定长度</strong>，且各格式的核心字段位置尽可能对齐，平衡了编程灵活性与硬件实现难度。</p>
+</li>
 </ol>
 <hr />
 <h2 id="_1">四、算术操作与操作数体系<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h3 id="41">4.1 算术操作基础<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
-<p>RISC-V所有算术指令采用<strong>三操作数格式</strong>，固定为「<strong>2个源操作数 + 1个目的操作数</strong>」，格式如下：<br />
+<p>RISC-V所有算术指令采用<strong>三操作数格式</strong>，固定为「<strong>2个源操作数 + 1个目的操作数</strong>」，格式如下：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>add a, b, c   # 语义：a = b + c
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><strong>示例：C代码编译为RISC-V汇编</strong><br />
-C代码：<br />
+C代码：</p>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
-</span></code></pre></div><br />
-编译后的RISC-V汇编：<br />
+</span></code></pre></div>
+<p>编译后的RISC-V汇编：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>add t0, g, h   # 临时寄存器t0 = g + h
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>add t1, i, j   # 临时寄存器t1 = i + j
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>sub f, t0, t1  # f = t0 - t1
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h3 id="42">4.2 寄存器操作数<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
 <p>寄存器是CPU中最快的存储单元，是算术指令的核心操作数：</p>
 <ul>
@@ -6131,30 +6139,30 @@ C代码：<br />
 </table>
 <h4 id="_4">内存操作示例<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
 <p><strong>示例1：数组读取</strong><br />
-C代码：<br />
+C代码：</p>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1">// g对应x20，h对应x21，数组A的基地址对应x22</span>
-</span></code></pre></div><br />
-编译后的汇编：<br />
+</span></code></pre></div>
+<p>编译后的汇编：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>lw x9, 32(x22)    # 计算地址：x22 + 32（4字节/字 × 下标8），加载A[8]到x9
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>add x20, x21, x9  # g = h + A[8]
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><strong>示例2：数组写入</strong><br />
-C代码：<br />
+C代码：</p>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">A</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1">// h对应x21，数组A的基地址对应x22</span>
-</span></code></pre></div><br />
-编译后的汇编：<br />
+</span></code></pre></div>
+<p>编译后的汇编：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>lw x9, 32(x22)    # 加载A[8]到x9
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>add x9, x21, x9   # x9 = h + A[8]
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>sw x9, 48(x22)    # 将x9写入A[12]，地址偏移48=4×12
-</span></code></pre></div></p>
+</span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Memory 与 Register</p>
 <p>Compiler must <strong>use registers for variables as much as possible</strong><br />
 - Only spill to memory for less frequently used variables<br />
-- Register optimization is important!<br />
-一般来叔，我们尽量多使用寄存器操作，减少内存的访问。</p>
+- Register optimization is important!</p>
+<p>一般来叔，我们尽量多使用寄存器操作，减少内存的访问。</p>
 </div>
 <h3 id="44">4.4 内存对齐规则<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
 <p>RISC-V对不同位宽的内存访问有严格的对齐要求，非对齐访问会触发异常：</p>
@@ -6224,22 +6232,28 @@ C代码：<br />
 </ul>
 <h3 id="46">4.6 立即数与零操作数<a class="headerlink" href="#46" title="Permanent link">&para;</a></h3>
 <ul>
-<li>立即数算术指令：<code>addi</code>，直接在指令中嵌入常数，无需额外内存加载，示例：<br />
-  <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>addi x22, x22, 4   # x22 = x22 + 4
+<li>
+<p>立即数算术指令：<code>addi</code>，直接在指令中嵌入常数，无需额外内存加载，示例：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>addi x22, x22, 4   # x22 = x22 + 4
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>addi x22, x22, -1  # 无专用减法立即数指令，用负数立即数实现减法
-</span></code></pre></div></li>
-<li>x0寄存器的妙用：实现寄存器间数据移动，无需专用mov指令<br />
-  <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>add x2, x1, x0  # x2 = x1 + 0 = x1，等价于mov x2, x1
-</span></code></pre></div></li>
+</span></code></pre></div>
+</li>
+<li>
+<p>x0寄存器的妙用：实现寄存器间数据移动，无需专用mov指令</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>add x2, x1, x0  # x2 = x1 + 0 = x1，等价于mov x2, x1
+</span></code></pre></div>
+</li>
 </ul>
 <h3 id="47">4.7 符号扩展<a class="headerlink" href="#47" title="Permanent link">&para;</a></h3>
 <p>符号扩展是用更多比特表示数字，同时保持数值不变的规则：</p>
 <ul>
 <li>有符号数：<strong>复制符号位到高位</strong></li>
 <li>无符号数：高位补0</li>
-<li>示例：8位数扩展为16位数</li>
+<li>示例：8位数扩展为16位数<ul>
 <li>+2：<code>0000 0010</code> → <code>0000 0000 0000 0010</code></li>
 <li>-2：<code>1111 1110</code> → <code>1111 1111 1111 1110</code></li>
+</ul>
+</li>
 <li>RISC-V应用：<code>addi</code>、<code>lb/lh</code>、<code>beq/bne</code>等指令均会自动执行符号扩展</li>
 </ul>
 <hr />
@@ -6350,10 +6364,12 @@ C代码：<br />
 </tbody>
 </table>
 <ul>
-<li>核心opcode：</li>
+<li>核心opcode：<ul>
 <li>立即数<strong>算术</strong>：<code>0010011</code>（<code>addi/xori/ori/andi</code>等）</li>
 <li><strong>内存加载</strong>：<code>0000011</code>（<code>lw/lb/lh</code>等）</li>
 <li><strong>寄存器跳转</strong>：<code>1100111</code>（<code>jalr</code>）</li>
+</ul>
+</li>
 <li>特点：<strong>12位有符号立即数</strong>，支持符号扩展，12位有符号立即数范围为<span class="arithmatex">\(-2048\sim 2047\)</span></li>
 </ul>
 <p>其他指令编码格式见：<a href="appendix/">附录</a></p>
@@ -6466,33 +6482,33 @@ C代码：<br />
 </tbody>
 </table>
 <h3 id="72-if-else">7.2 案例：<code>if-else</code>语句编译<a class="headerlink" href="#72-if-else" title="Permanent link">&para;</a></h3>
-<p><strong>C代码</strong>：<br />
+<p><strong>C代码</strong>：</p>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="p">)</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">else</span>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
 </span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1">// f/g/h对应x19/x20/x21，i/j对应x22/x23</span>
-</span></code></pre></div><br />
-程序结构：<br />
+</span></code></pre></div>
+<p>程序结构：<br />
 <img alt="alt text" src="image-1.webp" /><br />
-<strong>编译后的RISC-V汇编</strong>：<br />
+<strong>编译后的RISC-V汇编</strong>：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>        bne x22, x23, Else  # 若i != j，跳转到Else分支
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>        add x19, x20, x21   # if分支：f = g + h
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>        beq x0, x0, Exit     # 无条件跳转到Exit，跳过else分支
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>Else:   sub x19, x20, x21   # else分支：f = g - h
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Exit:                       # 后续指令
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>注意，<code>beq x0, x0, Exit</code> 确保不会执行一次 <code>Else</code>，通过一个恒真的条件实现跳转。<br />
 程序结构：<br />
 <img alt="alt text" src="image-2.webp" /></p>
 <h3 id="73-while">7.3 案例：<code>while</code>循环语句编译<a class="headerlink" href="#73-while" title="Permanent link">&para;</a></h3>
-<p><strong>C代码</strong>：<br />
+<p><strong>C代码</strong>：</p>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">save</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">k</span><span class="p">)</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">// i对应x22，k对应x24，save数组基地址对应x25</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>注意，<code>save</code> 数组存放在 <code>Memory</code> 中，数据位宽32，因此 C 中的索引 <code>+1</code> 不能直接用 <code>Memory</code> 的地址 <code>+1</code> 来访问，应该是地址 <code>+4</code> 来访问下一个元素才对。<br />
-<strong>编译后的RISC-V汇编</strong>：<br />
+<strong>编译后的RISC-V汇编</strong>：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Loop:   slli x10, x22, 2     # x10 = i * 4（字节偏移）
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>        add x10, x10, x25    # x10 = save数组基地址 + i*4 = &amp;save[i]
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>        lw x9, 0(x10)         # x9 = save[i]
@@ -6500,20 +6516,20 @@ C代码：<br />
 </span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>        addi x22, x22, 1      # i += 1
 </span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>        beq x0, x0, Loop      # 跳回循环开头
 </span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>Exit:                           # 循环退出
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h3 id="74-conditional-operations">7.4 更多 conditional Operations<a class="headerlink" href="#74-conditional-operations" title="Permanent link">&para;</a></h3>
-<p>如果 <code>x10</code> &lt; <code>x11</code>，则跳转到 <code>L</code>。<br />
+<p>如果 <code>x10</code> &lt; <code>x11</code>，则跳转到 <code>L</code>。</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>blt x10, x11, L
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>如果在没有 <code>blt</code> 的 MIPS： </p>
 <ul>
 <li><code>slt rd, rs1, rs2</code>：有符号比较，<code>rs1</code> &lt; <code>rs2</code>则<code>rd=1</code>，否则<code>rd=0</code></li>
 <li><code>slti rd, rs1, imm</code>：立即数有符号比较</li>
 <li>
-<p>示例：实现小于跳转<br />
-  <div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>slt x9, x10, x11  # x9 = 1 当且仅当 x10 &lt; x11
+<p>示例：实现小于跳转</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>slt x9, x10, x11  # x9 = 1 当且仅当 x10 &lt; x11
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>bne x9, x0, label  # 若x9 != 0（x10 &lt; x11），跳转到label
-</span></code></pre></div></p>
+</span></code></pre></div>
 </li>
 <li>
 <p><code>slt/stli</code>: 有符号比较</p>
@@ -6821,15 +6837,15 @@ Procedure calls/returns 将在下面介绍。</p>
 </ul>
 <h3 id="102-string-copy">10.2 案例：字符串拷贝（String Copy）<a class="headerlink" href="#102-string-copy" title="Permanent link">&para;</a></h3>
 <p>将 C 语言中基于空字符 <code>\0</code> 结尾的字符串拷贝函数翻译为 RISC-V 汇编。这里重点关注 <code>lbu</code> 和 <code>sb</code> 的使用。</p>
-<p><strong>C代码</strong>：<br />
+<p><strong>C代码</strong>：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">strcpy</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">x</span><span class="p">[],</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">y</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 </span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">!=</span><span class="sc">&#39;\0&#39;</span><span class="p">)</span>
 </span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p><strong>RISC-V 汇编代码</strong> (x, y 基地址分别在 x10, x11 中，i 存放在 x19 中)：<br />
+</span></code></pre></div>
+<p><strong>RISC-V 汇编代码</strong> (x, y 基地址分别在 x10, x11 中，i 存放在 x19 中)：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>strcpy:
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    addi sp, sp, -4     # 调整栈指针，分配1个字的空间
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    sw x19, 0(sp)       # 保存原来的x19寄存器状态到栈上
@@ -6847,7 +6863,7 @@ Procedure calls/returns 将在下面介绍。</p>
 </span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a>L2: lw x19, 0(sp)       # 恢复原始的 x19
 </span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a>    addi sp, sp, 4      # 释放栈空间
 </span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a>    jalr x0, 0(x1)      # 函数返回
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><strong>数组寻址与指针寻址的性能差异：</strong><br />
 案例：<br />
 <img alt="alt text" src="image-8.webp" /><br />
@@ -6857,7 +6873,7 @@ Procedure calls/returns 将在下面介绍。</p>
 <li><strong>数组索引（Array Indexing）</strong>：需要频繁在循环内用乘法（或移位）计算偏移量（<code>Index * ElementSize</code>），再加到基地址上。</li>
 <li><strong>指针运算（Pointers）</strong>：指针直接对应内存地址，循环时只需将指针递增对应的步长，<strong>避开了复杂的索引地址计算</strong>，在底层汇编中指令更少，效率更高。</li>
 </ul>
-<p>当然，现代更加只能的编译器通常会对数组索引进行优化，自动转换为指针运算以提升性能，但理解底层原理有助于编写更高效的代码。</p>
+<p>当然，现代更加智能的编译器通常会对数组索引进行优化，自动转换为指针运算以提升性能，但理解底层原理有助于编写更高效的代码。</p>
 <hr />
 <h2 id="procedure-calling">十一、过程调用（Procedure Calling）与函数栈<a class="headerlink" href="#procedure-calling" title="Permanent link">&para;</a></h2>
 <p>过程调用（即函数调用）使得代码可以复用和模块化。核心在于维护<strong>调用者（Caller）</strong> 与<strong>被调用者（Callee）</strong> 之间的<strong>现场保存、参数传递</strong>以及<strong>返回流转</strong>。</p>
@@ -6884,7 +6900,7 @@ Procedure calls/returns 将在下面介绍。</p>
 <img alt="alt text" src="image-9.webp" /></p>
 <ul>
 <li>(a): 在过程调用前</li>
-<li>(b): 在过程调用器件，栈指针向下伸展，分配空间保存寄存器</li>
+<li>(b): 在过程调用期间，栈指针向下伸展，分配空间保存寄存器</li>
 <li>(c): 在过程返回前，恢复寄存器。</li>
 </ul>
 <p>栈空间中，从高地址向低地址方向伸展，<strong>栈顶指针SP</strong>始终指向<strong>栈的最底部</strong>。</p>
@@ -6946,17 +6962,21 @@ Procedure calls/returns 将在下面介绍。</p>
 </tr>
 </tbody>
 </table>
-<p><em>(注：如果临时寄存器不够用，或者需要嵌套调用其他过程，超出部分及需要跨调用的数据需要被 </em><em>溢出（spill）</em><em> 进内存堆栈中。栈顶指针 SP 始终指向栈的最底部。)</em></p>
+<blockquote>
+<p>注：如果临时寄存器不够用，或者需要嵌套调用其他过程，超出部分及需要跨调用的数据需要被 <strong>溢出（spill）</strong> 进内存堆栈中。栈顶指针 SP 始终指向栈的最底部。<br />
+约定这些是ABI的工作，目的是让不同二进制程序能够协同工作<br />
+比如我们强行要求 callee 如果要用 saved reg 就必须保存，这样无论 caller 是当前程序还是外部程序，在编写的时候无需手动将 save reg 压栈，<span style="color:green">caller 可以随便用这些寄存器，反正 callee 会自动保存</span>，但是对于 temp 系寄存器就要格外小心。又比如约定 参数/返回值寄存器，是为了确保不同程序调用这个子过程时可以找到正确的地方存放参数</p>
+</blockquote>
 <h3 id="113-leaf-procedure">11.3 叶子过程调用（Leaf Procedure）<a class="headerlink" href="#113-leaf-procedure" title="Permanent link">&para;</a></h3>
 <p>叶子过程是指<strong>内部不再调用任何其他函数</strong>的函数。<strong>由于不牵涉二次跳转，只需妥善保存它自己用到的“保存寄存器”即可</strong>。</p>
-<p><strong>C代码</strong>：<br />
+<p><strong>C代码</strong>：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">leaf_example</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
 </span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
 </span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
 </span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
 </span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p><strong>RISC-V汇编</strong> (假定入参已在 x10~x13，我们需要用到临时寄存器x5, x6以及需要保护的寄存器x20作变量f)：<br />
+</span></code></pre></div>
+<p><strong>RISC-V汇编</strong> (假定入参已在 x10~x13，我们需要用到临时寄存器x5, x6以及需要保护的寄存器x20作变量f)：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>leaf_example:
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    addi sp, sp, -12    # 向下伸展栈区，腾出3个字的空间保存寄存器
 </span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    sw x5, 8(sp)        # 压栈保存x5 (如果是严格优化，临时变量x5,x6其实可以不保存)
@@ -6976,7 +6996,7 @@ Procedure calls/returns 将在下面介绍。</p>
 </span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>    addi sp, sp, 12     # 释放栈空间，恢复栈指针SP
 </span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a>
 </span><span id="__span-22-19"><a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a>    jalr x0, 0(x1)      # 跳转回 caller 指定的返回地址 (ra)
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h3 id="114-nested-procedure-calling">11.4 Nested Procedure Calling (嵌套过程调用)<a class="headerlink" href="#114-nested-procedure-calling" title="Permanent link">&para;</a></h3>
 <p><strong>Caller</strong>：</p>
 <ol>
@@ -7056,13 +7076,13 @@ Procedure calls/returns 将在下面介绍。</p>
 有一个很经典的例子就是<strong>递归调用</strong>，如果递归深度过大，就会导致栈溢出。</p>
 </div>
 <h3 id="115-recursive-example">11.5 嵌套调用的递归示例（Recursive Example）<a class="headerlink" href="#115-recursive-example" title="Permanent link">&para;</a></h3>
-<p><strong>C代码实现阶乘</strong>：<br />
+<p><strong>C代码实现阶乘</strong>：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">fact</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fact</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
 </span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p><strong>RISC-V代码实现</strong> (入参n在x10，返回值在x10)：<br />
+</span></code></pre></div>
+<p><strong>RISC-V代码实现</strong> (入参n在x10，返回值在x10)：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>fact: 
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    addi sp, sp, -8     # 为2个元素（当前参数和当前返回地址）分配栈空间
 </span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    sw x1, 4(sp)        # 【极其重要】保存外层Caller传给本函数的返回地址
@@ -7090,7 +7110,7 @@ Procedure calls/returns 将在下面介绍。</p>
 </span><span id="__span-25-25"><a id="__codelineno-25-25" name="__codelineno-25-25" href="#__codelineno-25-25"></a>
 </span><span id="__span-25-26"><a id="__codelineno-25-26" name="__codelineno-25-26" href="#__codelineno-25-26"></a>    mul x10, x10, x6    # x10(返回值) = n * fact(n-1)
 </span><span id="__span-25-27"><a id="__codelineno-25-27" name="__codelineno-25-27" href="#__codelineno-25-27"></a>    jalr x0, 0(x1)      # 带着结果 x10 沿栈往上层返回
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>分析示例：<br />
 <img alt="alt text" src="image-12.webp" /> </p>
 <h2 id="risc-v-memory-layout">十二、RISC-V 内存布局（Memory Layout）<a class="headerlink" href="#risc-v-memory-layout" title="Permanent link">&para;</a></h2>
@@ -7149,9 +7169,9 @@ Procedure calls/returns 将在下面介绍。</p>
 <li><strong>通用计算能力</strong>：通过修改内存中的程序，同一台硬件可以执行完全不同的任务，无需重新设计电路</li>
 </ol>
 <h2 id="c">十四、C程序的完整翻译与执行流程<a class="headerlink" href="#c" title="Permanent link">&para;</a></h2>
-<p>一个C语言程序从源码到在内存中执行，需要经过<strong>编译器(Compiler)、汇编器(Assembler)、链接器(Linker)、加载器(Loader)</strong> 四个核心阶段，全流程如下：<br />
+<p>一个C语言程序从源码到在内存中执行，需要经过<strong>编译器(Compiler)、汇编器(Assembler)、链接器(Linker)、加载器(Loader)</strong> 四个核心阶段，全流程如下：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>C程序(.c) → 编译器 → 汇编程序(.s/.asm) → 汇编器 → 目标模块(.o/.obj) → 链接器 → 可执行文件(.out/.exe) → 加载器 → 内存执行
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h3 id="141-compiler">14.1 编译器（Compiler）<a class="headerlink" href="#141-compiler" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>输入</strong>：C语言源文件(.c)</li>
@@ -7210,10 +7230,12 @@ Procedure calls/returns 将在下面介绍。</p>
 <ul>
 <li><strong>输入</strong>：<strong>多个目标模块、静态/动态库文件</strong>(.a/.so/.lib/.dll)</li>
 <li><strong>输出</strong>：<strong>可执行文件</strong>(.out/.exe)</li>
-<li><strong>核心工作</strong>：</li>
+<li><strong>核心工作</strong>：<ol>
 <li><strong>合并多个目标模块</strong>的代码段、数据段</li>
 <li><strong>解析符号标签</strong>，确定所有符号的绝对内存地址</li>
 <li>修正位置依赖的地址与外部引用，<strong>完成重定位</strong></li>
+</ol>
+</li>
 </ul>
 <h4 id="vs">静态链接 vs 动态链接<a class="headerlink" href="#vs" title="Permanent link">&para;</a></h4>
 <table>
@@ -7256,13 +7278,15 @@ Procedure calls/returns 将在下面介绍。</p>
 <ul>
 <li><strong>输入</strong>：可执行文件</li>
 <li><strong>输出</strong>：<strong>内存中可运行的程序进程</strong></li>
-<li><strong>核心工作步骤</strong>：</li>
+<li><strong>核心工作步骤</strong>：<ol>
 <li>读取可执行文件的头部，确定代码段、数据段的大小</li>
 <li>为程序创建虚拟地址空间</li>
 <li>将代码段和初始化数据复制到内存中，或设置页表项实现按需缺页加载</li>
 <li>在栈上设置程序启动参数（argc、argv）</li>
 <li>初始化寄存器（包括<code>$sp</code>栈指针、<code>$fp</code>帧指针、<code>$gp</code>全局指针）</li>
 <li>跳转到启动例程，将参数传递给<code>main</code>函数；<code>main</code>返回后执行exit系统调用</li>
+</ol>
+</li>
 </ul>
 <h2 id="assembler-pseudoinstructions">十五、汇编器伪指令（Assembler Pseudoinstructions）<a class="headerlink" href="#assembler-pseudoinstructions" title="Permanent link">&para;</a></h2>
 <h3 id="151">15.1 核心定义<a class="headerlink" href="#151" title="Permanent link">&para;</a></h3>
@@ -7305,15 +7329,17 @@ Procedure calls/returns 将在下面介绍。</p>
 </tbody>
 </table>
 <h2 id="java">十六、Java程序的执行机制<a class="headerlink" href="#java" title="Permanent link">&para;</a></h2>
-<p>Java程序采用<strong>跨平台的虚拟机架构</strong>，与C语言的本地编译执行流程有本质区别，核心执行流程如下：<br />
+<p>Java程序采用<strong>跨平台的虚拟机架构</strong>，与C语言的本地编译执行流程有本质区别，核心执行流程如下：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Java程序 → 编译器 → Class文件（Java字节码） → Java虚拟机（JVM） → 解释执行 / JIT即时编译 → 硬件执行
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h3 id="161">16.1 核心执行阶段<a class="headerlink" href="#161" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>编译阶段</strong>：Java源码被编译为<strong>平台无关</strong>的<strong>Java字节码（Bytecode）</strong>，存储在Class文件中，字节码是JVM的标准指令集</li>
-<li><strong>运行阶段</strong>：JVM加载Class文件，采用两种方式执行字节码：</li>
+<li><strong>运行阶段</strong>：JVM加载Class文件，采用两种方式执行字节码：<ul>
 <li><strong>解释执行</strong>：逐条将<strong>字节码翻译为本地机器指令执行，启动快、执行效率低</strong></li>
 <li><strong>即时编译（JIT, Just In Time）</strong>：识别高频执行的“热方法”，将其<strong>字节码一次性编译为本地机器码并缓存</strong>，后续<strong>直接执行编译后的机器码</strong>，大幅提升重复执行的性能</li>
+</ul>
+</li>
 </ol>
 <h3 id="162">16.2 核心特性<a class="headerlink" href="#162" title="Permanent link">&para;</a></h3>
 <ul>
@@ -7325,18 +7351,22 @@ Procedure calls/returns 将在下面介绍。</p>
 <h3 id="171-1">17.1 谬误1：更强大的指令 → 更高的性能<a class="headerlink" href="#171-1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>错误认知：复杂的强大指令可以减少程序的总指令数，从而提升性能</li>
-<li>事实真相：</li>
+<li>事实真相：<ol>
 <li><strong>复杂指令的硬件实现难度极高，会拖慢所有指令的执行周期，包括简单指令</strong></li>
 <li>现代编译器非常擅长用简单的RISC指令生成高效的机器码，复杂指令往往难以被编译器有效利用</li>
 <li>手动编写汇编代码不一定能获得更高性能：现代编译器对现代处理器的流水线、缓存特性的优化能力，远超大多数人工编写的汇编代码；更多的汇编代码行数也意味着更高的出错概率与更低的开发效率</li>
+</ol>
+</li>
 </ul>
 <h3 id="172-2">17.2 谬误2：向后兼容性 = 指令集不会改变<a class="headerlink" href="#172-2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>错误认知：为了保证向后兼容，处理器的ISA必须保持不变，不能新增指令</li>
-<li>事实真相：</li>
+<li>事实真相：<ol>
 <li><strong>向后兼容仅要求旧指令的行为保持不变，不限制新增指令</strong></li>
 <li>主流ISA（如x86）在发展过程中持续新增大量扩展指令，从1978年到2012年，x86的指令数量与复杂度持续增长</li>
 <li>新增指令可以在兼容旧程序的同时，为新程序提供更强的功能与更高的性能</li>
+</ol>
+</li>
 </ul>
 
 
