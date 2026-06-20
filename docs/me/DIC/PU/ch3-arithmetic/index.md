@@ -98,9 +98,6 @@ x + \bar{x} &= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black}{(x
 !!! note "Theorem 2."
     计算机中，**加法和减法都可以通过补码的加法实现**
 
-根据课件内容，我为你整理了关于**整数加减法、溢出处理、乘法运算及其电路实现、RISC-V实现**的学习笔记。作为微电子专业的学生，这部分重点关注**硬件实现的演进（从串行到并行加速）**以及**硬件开销的优化**。
-
-
 ## 二、整数加减法与溢出处理
 
 ### 2.1 整数加减法 (Integer Addition & Subtraction)
@@ -136,7 +133,7 @@ x + \bar{x} &= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black}{(x
 ![alt text](image.webp)
 
 ### 3.2 优化后的乘法器电路 (Optimized Multiplier)
-为了减小面积和提升速度，微电子设计中常采用优化电路：
+为了减小面积和提升速度，芯片设计中常采用优化电路：
 
 - **并行化设计**：将**加法和移位步骤并行执行**。
 - **寄存器优化**：乘积寄存器的右半部分最初存放乘数，随着运算进行，乘数被移出，乘积的低位被移入，从而节省空间。
@@ -146,9 +143,9 @@ x + \bar{x} &= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black}{(x
 ### 3.3 高性能“真实”乘法器 (Real Multiplier Structure)
 现代芯片（如GPU/高性能CPU）中使用更复杂的电路结构：
 
-- **布斯编码 (Booth Encoder)**：通过对乘数进行编码，减少产生的**部分积（Partial Products）**数量。
-- **华莱士树 (Wallace Tree)**：采用树状结构的加法器阵列，实现部分积的**并行压缩相加**，大幅降低延迟。
-- **先行进位加法器 (Carry Look-ahead Adder, CLA)**：用于最后的求和阶段，以极快速度处理进位传递。
+- **Booth Recoding**：通过对乘数进行编码，减少产生的**部分积（Partial Products）**数量。
+- **Wallace Tree/Dadda Tree**：采用树状结构的加法器阵列，实现部分积的**并行压缩相加**，大幅降低延迟。
+- **超前进位加法器 (Carry Look-ahead Adder, CLA)**：用于最后的求和阶段（CPA），以极快速度处理进位传递。
 
 ![alt text](image-2.webp)
 
@@ -201,7 +198,7 @@ x + \bar{x} &= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black}{(x
 
 | Method | reminder of cycle $N$ | reminder of cycle $N + 1$ |
 | --- | --- | --- |
-| **Restoring** | $r - d(<0)$ restor to $r$ | $r \times 2 - d$ |
+| **Restoring** | $r - d(<0)$ restore to $r$ | $r \times 2 - d$ |
 | **Non-restoring** | $r - d(<0)$ | $2(r-d) + d$ |
 
 （上面的乘2，原因是在做下一轮减法时，需要将余数左移一位，这样**被除数的下一位才能落在“个位”**，可以联想一下手工除法以作理解）
@@ -226,9 +223,9 @@ Non Restoring 的意思就是：
 
 1. 取被除数和除数的**绝对值**进行**除法**运算。
 2. **调整符号规则**：
-        - 如果操作数异号，则商为负。
-        - **余数的符号必须与被除数一致**。
-        - 这意味着商总是**向零舍入（Rounded toward zero）**。
+    - 如果操作数异号，则商为负。
+    - **余数的符号必须与被除数一致**。
+    - 这意味着商总是**向零舍入（Rounded toward zero）**。
 
 ### 5. RISC-V 除法指令实现
 RISC-V 将商和余数的获取拆分为不同的指令，且区分有符号与无符号：
