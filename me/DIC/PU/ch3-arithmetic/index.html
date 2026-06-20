@@ -5127,23 +5127,31 @@
 从 <span class="arithmatex">\(-2^{n-1}\)</span> 到 <span class="arithmatex">\(+(2^{n-1} - 1)\)</span>。</p>
 <p><strong>(4) 32位系统示例</strong>：<br />
 <strong>范围</strong>：<span class="arithmatex">\(-2,147,483,648\)</span> 到 <span class="arithmatex">\(+2,147,483,647\)</span>。<br />
-<strong>计算示例</strong>：<code>1111...1100₂</code> 对应 <span class="arithmatex">\(-1\times2^{31} + 1\times2^{30} + \dots + 1\times2^2 + 0\times2^1 + 0\times2^0 = -4_{10}\)</span>。</p>
+<strong>计算示例</strong>：<span class="arithmatex">\(1111...1100_2\)</span> 对应 <span class="arithmatex">\(-1\times2^{31} + 1\times2^{30} + \dots + 1\times2^2 + 0\times2^1 + 0\times2^0 = -4_{10}\)</span>。</p>
 <h4 id="_2">补码的关键特性：<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
 <ol>
 <li><strong>非负数一致性</strong>：非负数的补码表示与其无符号表示完全相同。</li>
 <li><strong>特定的重要数值</strong>（<span class="arithmatex">\(N\)</span>位）：<ul>
-<li><strong>0</strong>：<code>0000 0000 ... 0000</code></li>
-<li><strong>-1</strong>：<code>1111 1111 ... 1111</code>（所有位全为1）</li>
-<li><strong>最大正数 (Most-positive)</strong>：<code>0111 1111 ... 1111</code> (<span class="arithmatex">\(2^{N-1}-1\)</span>)</li>
-<li><strong>最小负数 (Most-negative)</strong>：<code>1000 0000 ... 0000</code> (<span class="arithmatex">\(-2^{N-1}\)</span>，其绝对值比最大正数大1)</li>
+<li><strong>0</strong>：<span class="arithmatex">\(0000 0000 ... 0000\)</span></li>
+<li><strong>-1</strong>：<span class="arithmatex">\(1111 1111 ... 1111\)</span>（所有位全为1）</li>
+<li><strong>最大正数 (Most-positive)</strong>：<span class="arithmatex">\(0111 1111 ... 1111\)</span> (<span class="arithmatex">\(2^{N-1}-1\)</span>)</li>
+<li><strong>最小负数 (Most-negative)</strong>：<span class="arithmatex">\(1000 0000 ... 0000\)</span> (<span class="arithmatex">\(-2^{N-1}\)</span>，其绝对值比最大正数大1)</li>
+</ul>
+</li>
+<li><strong>符号位扩展</strong>：同一个数值在不同位宽表示下，<strong>低位数值位完全相同，符号位扩展</strong>。例如，<span class="arithmatex">\(-20\)</span> 的<ul>
+<li><strong>8 位表示</strong>：<span class="arithmatex">\(\textcolor{red}{1110\ 1100}_2\)</span></li>
+<li><strong>16 位表示</strong>：<span class="arithmatex">\(1111\ 1111\ \textcolor{red}{1110\ 1100}_2\)</span></li>
+<li><strong>32 位表示</strong>：<span class="arithmatex">\(1111\ 1111\ 1111\ 1111\ 1111\ 1111\ \textcolor{red}{1110\ 1100}_2\)</span></li>
 </ul>
 </li>
 </ol>
 <h3 id="13-signed-negation">1.3 符号取反操作 (Signed Negation)<a class="headerlink" href="#13-signed-negation" title="Permanent link">&para;</a></h3>
 <p>在<strong>补码</strong>系统中，将一个<strong>数变号</strong>（正数变负数或反之）的捷径是：<strong>求反加一</strong>。</p>
-<p><strong>(1) 操作步骤</strong>：<br />
-1.  <strong>取反 (Complement)</strong>：将所有位翻转（1变0，0变1）。<br />
-2.  <strong>加1</strong>：在最低位加1。</p>
+<p><strong>(1) 操作步骤</strong>：</p>
+<ol>
+<li><strong>取反 (Complement)</strong>：将所有位翻转（1变0，0变1）。</li>
+<li><strong>加1</strong>：在最低位加1。</li>
+</ol>
 <p><strong>(2) 数学原理</strong>：</p>
 <div class="arithmatex">\[\bar{x} + 1 = -x\]</div>
 <p><strong>证明</strong>：<br />
@@ -5212,24 +5220,24 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <p>类似于手工长乘法，通过逐位检查乘数（Multiplier）并对被乘数（Multiplicand）进行<strong>移位和累加</strong>。</p>
 <ul>
 <li><strong>硬件特点</strong>：<strong>乘积的长度是操作数长度之和</strong>（如两个<strong>32位数相乘得到64位积</strong>）。</li>
-<li><strong>初步硬件实现</strong>：包含64位ALU、64位被乘数寄存器（左移）、32位乘数寄存器（右移）及64位乘积寄存器。<strong>缺点</strong>：时钟周期多，硬件利用率低。<br />
-<img alt="alt text" src="image.webp" /></li>
+<li><strong>初步硬件实现</strong>：包含64位ALU、64位被乘数寄存器（左移）、32位乘数寄存器（右移）及64位乘积寄存器。<strong>缺点</strong>：时钟周期多，硬件利用率低。</li>
 </ul>
+<p><img alt="alt text" src="image.webp" /></p>
 <h3 id="32-optimized-multiplier">3.2 优化后的乘法器电路 (Optimized Multiplier)<a class="headerlink" href="#32-optimized-multiplier" title="Permanent link">&para;</a></h3>
 <p>为了减小面积和提升速度，微电子设计中常采用优化电路：</p>
 <ul>
 <li><strong>并行化设计</strong>：将<strong>加法和移位步骤并行执行</strong>。</li>
-<li><strong>寄存器优化</strong>：乘积寄存器的右半部分最初存放乘数，随着运算进行，乘数被移出，乘积的低位被移入，从而节省空间。<br />
-<img alt="alt text" src="image-1.webp" /></li>
+<li><strong>寄存器优化</strong>：乘积寄存器的右半部分最初存放乘数，随着运算进行，乘数被移出，乘积的低位被移入，从而节省空间。</li>
 </ul>
+<p><img alt="alt text" src="image-1.webp" /></p>
 <h3 id="33-real-multiplier-structure">3.3 高性能“真实”乘法器 (Real Multiplier Structure)<a class="headerlink" href="#33-real-multiplier-structure" title="Permanent link">&para;</a></h3>
 <p>现代芯片（如GPU/高性能CPU）中使用更复杂的电路结构：</p>
 <ul>
 <li><strong>布斯编码 (Booth Encoder)</strong>：通过对乘数进行编码，减少产生的<strong>部分积（Partial Products）</strong>数量。</li>
 <li><strong>华莱士树 (Wallace Tree)</strong>：采用树状结构的加法器阵列，实现部分积的<strong>并行压缩相加</strong>，大幅降低延迟。</li>
-<li><strong>先行进位加法器 (Carry Look-ahead Adder, CLA)</strong>：用于最后的求和阶段，以极快速度处理进位传递。<br />
-<img alt="alt text" src="image-2.webp" /></li>
+<li><strong>先行进位加法器 (Carry Look-ahead Adder, CLA)</strong>：用于最后的求和阶段，以极快速度处理进位传递。</li>
 </ul>
+<p><img alt="alt text" src="image-2.webp" /></p>
 <h3 id="34-risc-v">3.4 RISC-V 乘法指令实现<a class="headerlink" href="#34-risc-v" title="Permanent link">&para;</a></h3>
 <p>由于 RISC-V 的标准寄存器（在 32 位架构下）只能存储 32 位数据，因此指令集通过不同的指令来分别获取这 64 位结果的<strong>低 32 位</strong>和<strong>高 32 位</strong>。</p>
 <p><strong>(1) 获取乘积的低位 (Least-significant 32 bits)</strong></p>
@@ -5261,15 +5269,17 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <h3 id="42-division-hardware">4.2 除法器硬件电路实现 (Division Hardware)<a class="headerlink" href="#42-division-hardware" title="Permanent link">&para;</a></h3>
 <p>课件对比了两种硬件结构，重点在于资源优化：</p>
 <ul>
-<li><strong>非优化结构</strong>：使用64位ALU、64位余数寄存器和64位除数寄存器（右移），商寄存器为32位（左移）。<br />
-<img alt="alt text" src="image-3.webp" /></li>
+<li><strong>非优化结构</strong>：使用64位ALU、64位余数寄存器和64位除数寄存器（右移），商寄存器为32位（左移）。</li>
+</ul>
+<p><img alt="alt text" src="image-3.webp" /></p>
+<ul>
 <li><strong>优化后的除法器 (Optimized Divider)</strong>：<ul>
 <li><strong>硬件高度复用</strong>：优化后的除法器结构与乘法器非常相似，通常可以使用<strong>同一套硬件</strong>来实现乘法和除法。</li>
-<li><strong>寄存器配置</strong>：32位ALU；64位余数寄存器初始化时右半部分放被除数，运算结束后左半部分存放余数，右半部分存放商。<br />
-<img alt="alt text" src="image-4.webp" /></li>
+<li><strong>寄存器配置</strong>：32位ALU；64位余数寄存器初始化时右半部分放被除数，运算结束后左半部分存放余数，右半部分存放商。</li>
 </ul>
 </li>
 </ul>
+<p><img alt="alt text" src="image-4.webp" /></p>
 <h3 id="43-faster-division">4.3 除法加速技术 (Faster Division)<a class="headerlink" href="#43-faster-division" title="Permanent link">&para;</a></h3>
 <p>与乘法不同，除法很难使用类似华莱士树的并行硬件来加速。常用的加速手段包括：<br />
 <strong>(1) 不恢复余数法 (Non-restoring Division)</strong>：<br />
@@ -5311,12 +5321,10 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <p>有符号除法的核心原则是“<strong>余数的符号必须与被除数一致</strong>”：</p>
 <ol>
 <li>取被除数和除数的<strong>绝对值</strong>进行<strong>除法</strong>运算。</li>
-<li><strong>调整符号规则</strong>：<ul>
-<li>如果操作数异号，则商为负。</li>
-<li><strong>余数的符号必须与被除数一致</strong>。</li>
-<li>这意味着商总是<strong>向零舍入（Rounded toward zero）</strong>。</li>
-</ul>
-</li>
+<li><strong>调整符号规则</strong>：<br />
+        - 如果操作数异号，则商为负。<br />
+        - <strong>余数的符号必须与被除数一致</strong>。<br />
+        - 这意味着商总是<strong>向零舍入（Rounded toward zero）</strong>。</li>
 </ol>
 <h3 id="5-risc-v">5. RISC-V 除法指令实现<a class="headerlink" href="#5-risc-v" title="Permanent link">&para;</a></h3>
 <p>RISC-V 将商和余数的获取拆分为不同的指令，且区分有符号与无符号：</p>
@@ -5431,9 +5439,9 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
     这是浮点数最容易让人误解的地方。当指数 <span class="arithmatex">\(E\)</span> 增加 1 时，该区间的数值跨度翻倍，因此 <strong>ULP 也翻倍</strong>。</p>
 <ul>
 <li>在区间 <span class="arithmatex">\([2^0, 2^1)\)</span>，即 <span class="arithmatex">\(E=127\)</span> 时，ULP 为 <span class="arithmatex">\(2^{-23}\)</span>。</li>
-<li>在区间 <span class="arithmatex">\([2^1, 2^2)\)</span>，即 <span class="arithmatex">\(E=128\)</span> 时，ULP 为 <span class="arithmatex">\(2^{1-23} = 2^{-22}\)</span>。<br />
-<strong>结论：数值越大，绝对误差越大，但相对精度（精度与数值的比值）保持不变。</strong></li>
+<li>在区间 <span class="arithmatex">\([2^1, 2^2)\)</span>，即 <span class="arithmatex">\(E=128\)</span> 时，ULP 为 <span class="arithmatex">\(2^{1-23} = 2^{-22}\)</span>。</li>
 </ul>
+<p><strong>结论：数值越大，绝对误差越大，但相对精度（精度与数值的比值）保持不变。</strong></p>
 </li>
 </ul>
 <h3 id="55">5.5 非规格化浮点数<a class="headerlink" href="#55" title="Permanent link">&para;</a></h3>
@@ -5445,10 +5453,14 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <p>这是一个<strong>极度聪明的工程妥协</strong>，目的是为了与“最小的规格化数”实现<strong>无缝的平滑衔接</strong>。</p>
 <p>我们来看看这中间的过渡：</p>
 <ul>
-<li><strong>最小的正规格化数</strong>（<span class="arithmatex">\(E=1, M=00...0\)</span>）：<br />
-    数值 <span class="arithmatex">\(= 1.0 \times 2^{1-127} = 1.0 \times 2^{-126}\)</span></li>
-<li><strong>最大的非规格化数</strong>（<span class="arithmatex">\(E=0, M=11...1\)</span>）：<br />
-    数值 <span class="arithmatex">\(= 0.111...1_2 \times 2^{-126}\)</span> （注意这里使用的是 <span class="arithmatex">\(-126\)</span>）</li>
+<li>
+<p><strong>最小的正规格化数</strong>（<span class="arithmatex">\(E=1, M=00...0\)</span>）：<br />
+    数值 <span class="arithmatex">\(= 1.0 \times 2^{1-127} = 1.0 \times 2^{-126}\)</span></p>
+</li>
+<li>
+<p><strong>最大的非规格化数</strong>（<span class="arithmatex">\(E=0, M=11...1\)</span>）：<br />
+    数值 <span class="arithmatex">\(= 0.111...1_2 \times 2^{-126}\)</span> （注意这里使用的是 <span class="arithmatex">\(-126\)</span>）</p>
+</li>
 </ul>
 <p>如果我们将非规格化数的指数设定为 <span class="arithmatex">\(-126\)</span>，那么从最大的非规格化数加 1 个 ULP（也就是加 <span class="arithmatex">\(0.000...1_2 \times 2^{-126}\)</span>），刚好就等于 <span class="arithmatex">\(1.0 \times 2^{-126}\)</span>，完美过渡到了最小规格化数！<br />
 如果使用 <span class="arithmatex">\(-127\)</span>，这两者之间就会出现断层。因此，<strong>IEEE 754 规定非规格化数的实际指数“冻结”在最小规格化数的指数上（即 <span class="arithmatex">\(-126\)</span>），仅仅将隐含位从 1 变成了 0。</strong></p>
@@ -5626,10 +5638,10 @@ x + \bar{x} &amp;= \color{red}{(-x_{n-1} - \bar{x}_{n-1})2^{n-1}} + \color{black
 <li><code>flt.s rd, fs1, fs2</code>：Less Than (小于)。</li>
 <li><code>fle.s rd, fs1, fs2</code>：Less or Equal (小于等于)。</li>
 </ul>
-<p><strong>代码示例</strong>：判断 <code>f1</code> 和 <code>f2</code> 是否相等，如果不等则跳转到 <code>Label</code><br />
+<p><strong>代码示例</strong>：判断 <code>f1</code> 和 <code>f2</code> 是否相等，如果不等则跳转到 <code>Label</code></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>feq.s x5, f1, f2    # 如果 f1 == f2，将整数 1 存入 x5；否则存 0
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>beq   x5, x0, Label # 如果 x5 等于 0 (即比较结果为假)，则跳转到 Label
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><strong>(4) 浮点与整数的转换 (Conversion)</strong><br />
 用于在浮点寄存器和整数寄存器之间转换数据格式。</p>
 <ul>
