@@ -5076,16 +5076,18 @@
 </ul>
 <p><img alt="alt text" src="image-2.webp" /></p>
 <h3 id="15-branch-instructions">1.5 分支指令数据通路 (Branch Instructions)<a class="headerlink" href="#15-branch-instructions" title="Permanent link">&para;</a></h3>
-<p>以 <code>beq</code> (Branch if Equal) 为例，分支指令，例如：<br />
+<p>以 <code>beq</code> (Branch if Equal) 为例，分支指令，例如：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>beq x20, x21, L # branch to L
-</span></code></pre></div><br />
-需要完成<strong>比较和目标地址计算</strong>两件事：</p>
+</span></code></pre></div>
+<p>需要完成<strong>比较和目标地址计算</strong>两件事：</p>
 <ol>
 <li><strong>比较操作数</strong>：读取两个源寄存器，送入 ALU 进行<strong>减法 (subtract)</strong> 运算。如果两个值相等，ALU 的 <code>Zero</code> 标志位会输出 1。</li>
-<li><strong>计算目标地址</strong>：</li>
+<li><strong>计算目标地址</strong>：<ul>
 <li>将指令中的位移量（立即数）进行符号扩展。</li>
 <li><strong>左移 1 位 (Left shift by 1)</strong>：因为 RISC-V 的指令以<strong>半字（2字节）或字（4字节）对齐</strong>，最低位必定是0，所以指令中省略了最低位的0以扩大寻址范围，此处需要左移还原真实偏移量。</li>
 <li>将偏移量与当前 PC 值相加，得到跳转目标地址。</li>
+</ul>
+</li>
 </ol>
 <p><img alt="alt text" src="image-3.webp" /></p>
 <h3 id="16">1.6 整合：完整的单周期数据通路<a class="headerlink" href="#16" title="Permanent link">&para;</a></h3>
@@ -5114,19 +5116,17 @@
 <h3 id="22">2.2 不同指令的控制路径图解<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
 <p>不同的指令在执行时，控制单元会激活数据通路上的特定路径。课件中展示了三种典型指令激活的路径：</p>
 <ul>
-<li>
-<p><strong>R型指令 (如 add, sub)</strong>：控制单元让 MUX 选择第二个寄存器的值进入 ALU，并且选择 ALU 的计算结果写回寄存器，同时禁用数据内存的读写。<br />
-<img alt="" src="image-7.webp" /></p>
-</li>
-<li>
-<p><strong>Load 指令 (I-Type，如 lw)</strong>：控制信号控制 MUX，将符号扩展后的立即数送入 ALU（用于计算地址），激活 <code>MemRead</code> 读内存，并控制最后的 MUX 将内存读出的数据（Data of store）写回目标寄存器。<br />
-<img alt="" src="image-8.webp" /></p>
-</li>
-<li>
-<p><strong>分支指令 (SB-Type，如 beq)</strong>：ALU 执行减法来比较寄存器是否相等。如果相等（ALU 输出 <code>Zero = 1</code>），且控制信号 <code>Branch</code> 有效，两者经过一个 AND 门，控制位于 PC 前面的 MUX，选择目标跳转地址作为下一个 PC 值。同时不需要写回寄存器或内存。<br />
-<img alt="" src="image-9.webp" /></p>
-</li>
+<li><strong>R型指令 (如 add, sub)</strong>：控制单元让 MUX 选择第二个寄存器的值进入 ALU，并且选择 ALU 的计算结果写回寄存器，同时禁用数据内存的读写。</li>
 </ul>
+<p><img alt="" src="image-7.webp" /></p>
+<ul>
+<li><strong>Load 指令 (I-Type，如 lw)</strong>：控制信号控制 MUX，将符号扩展后的立即数送入 ALU（用于计算地址），激活 <code>MemRead</code> 读内存，并控制最后的 MUX 将内存读出的数据（Data of store）写回目标寄存器。</li>
+</ul>
+<p><img alt="" src="image-8.webp" /></p>
+<ul>
+<li><strong>分支指令 (SB-Type，如 beq)</strong>：ALU 执行减法来比较寄存器是否相等。如果相等（ALU 输出 <code>Zero = 1</code>），且控制信号 <code>Branch</code> 有效，两者经过一个 AND 门，控制位于 PC 前面的 MUX，选择目标跳转地址作为下一个 PC 值。同时不需要写回寄存器或内存。</li>
+</ul>
+<p><img alt="" src="image-9.webp" /></p>
 <h3 id="23-alu-alu-control">2.3 ALU 的多级解码控制 (ALU Control)<a class="headerlink" href="#23-alu-alu-control" title="Permanent link">&para;</a></h3>
 <p>为了降低主控制单元的复杂性，RISC-V 采用了<strong>多级解码 (Multiple levels of decoding)</strong> 的组合逻辑设计：将控制分摊给主控制单元和 ALU 控制单元。</p>
 <ol>
@@ -5160,9 +5160,9 @@
 <ul>
 <li><strong>木桶效应</strong>：单周期处理器的时钟周期必须足以容纳<strong>耗时最长的那条指令</strong>（即关键路径）。</li>
 <li><strong>关键路径 (Critical Path)</strong>：<strong>通常是 <code>Load</code> 指令</strong>。其路径覆盖了几乎所有组件：<strong>指令内存 <span class="arithmatex">\(\Rightarrow\)</span> 寄存器文件读取 <span class="arithmatex">\(\Rightarrow\)</span> ALU 运算 <span class="arithmatex">\(\Rightarrow\)</span> 数据内存读取 <span class="arithmatex">\(\Rightarrow\)</span> 寄存器文件写回</strong>。（课件示例中，Ld 指令耗时 800ps，导致时钟周期必须设定为 800ps）。</li>
-<li>这种设计导致执行其他简单指令（如耗时仅 500ps 的分支指令）时，大量的时间和硬件资源处于闲置等待状态。<br />
-<img alt="alt text" src="image-13.webp" /></li>
+<li>这种设计导致执行其他简单指令（如耗时仅 500ps 的分支指令）时，大量的时间和硬件资源处于闲置等待状态。</li>
 </ul>
+<p><img alt="alt text" src="image-13.webp" /></p>
 <h3 id="32">3.2 流水线的核心思想<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
 <p>流水线借鉴了工业流水线（如课件中的“洗衣服”类比）的思想，通过<strong>重叠执行 (overlapping execution)</strong> 来实现<strong>时间上的并行性 (Temporal parallelism)</strong>。</p>
 <ul>
@@ -5190,8 +5190,8 @@
 <div class="arithmatex">\[\text{Time between instructions}_{\text{pipelined}} = \frac{\text{Time between instructions}_{\text{non-pipelined}}}{\text{Number of pipeline stages}}\]</div>
 <div class="arithmatex">\[ 理想加速比 = \frac{单周期指令耗时}{流水线单阶段耗时} = 流水线级数 \]</div>
 <p><strong>(2) 为什么不能无限增加级数？</strong><br />
-  * 阶段划分不能无限细（各个阶段耗时难以绝对均衡）。<br />
-  * 流水线阶段之间需要插入<strong>流水线寄存器</strong>（Pipeline Registers），这会带来额外的<strong>硬件开销和时间延迟</strong>。</p>
+    * 阶段划分不能无限细（各个阶段耗时难以绝对均衡）。<br />
+    * 流水线阶段之间需要插入<strong>流水线寄存器</strong>（Pipeline Registers），这会带来额外的<strong>硬件开销和时间延迟</strong>。</p>
 <h3 id="35-pipelining-and-isa-design">3.5 面向流水线设计的指令集架构 (Pipelining and ISA Design)<a class="headerlink" href="#35-pipelining-and-isa-design" title="Permanent link">&para;</a></h3>
 <p>RISC-V 指令集天生就是为流水线量身定制的，其优秀的 ISA 特性让流水线实现变得非常简单：</p>
 <ul>
@@ -5293,13 +5293,13 @@
 <ol>
 <li>Structure hazards: a required resource is busy.</li>
 <li>Data hazards: need to wait for <strong>previous instruction</strong> to <strong>complete its data read/write</strong>.</li>
-<li>Control hazards: deciding on control action depends on previous instruction.<blockquote>
+<li>Control hazards: deciding on control action depends on previous instruction.</li>
+</ol>
+<blockquote>
 <p>结构冒险：所需资源正在被占用。<br />
 数据冒险：需要等待<strong>前一条指令</strong>完成其数据读/写。<br />
 控制冒险：控制动作的决定<strong>依赖于前一条指令</strong>。</p>
 </blockquote>
-</li>
-</ol>
 <h3 id="61-structural-hazards">6.1 结构冒险 (Structural Hazards)<a class="headerlink" href="#61-structural-hazards" title="Permanent link">&para;</a></h3>
 <p>Conflict for use of a resource</p>
 <p>In RISC-V pipeline with a single memory</p>
@@ -5312,10 +5312,10 @@
 <h3 id="62-data-hazards">6.2 数据冒险 (Data Hazards)<a class="headerlink" href="#62-data-hazards" title="Permanent link">&para;</a></h3>
 <h4 id="621">6.2.1 数据冒险<a class="headerlink" href="#621" title="Permanent link">&para;</a></h4>
 <p>一条指令的执行依赖于前一条指令完成数据访问。<br />
-例如：<br />
+例如：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>add x1, x2, x3
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sub x4, x1, x5
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>第一条指令要在 <code>WB</code> 阶段才会将结果写回寄存器 x1，而第二条指令在 ID 阶段就需要读取 x1 的值，这时就会发生数据冒险。<br />
 一种办法就是第二条指令间隔两个周期再发送：</p>
 <p><img alt="alt text" src="image-23.webp" /></p>
@@ -5323,11 +5323,11 @@
 <p><img alt="alt text" src="image-24.webp" /></p>
 <ol>
 <li><strong>对于 R 型指令</strong>，最早能够拿到数据的时机是 <code>EXE</code> 阶段，因此第二条指令下一个周期可以正常发送；</li>
-<li><strong>对于 Load 指令</strong>，最早能够拿到数据的时机是 <code>MEM</code> 阶段，因此第二条指令需要间隔一个周期再发送。因此中间还是会有一个气泡，如图：<br />
-<img alt="alt text" src="image-25.webp" /></li>
+<li><strong>对于 Load 指令</strong>，最早能够拿到数据的时机是 <code>MEM</code> 阶段，因此第二条指令需要间隔一个周期再发送。因此中间还是会有一个气泡，如图：</li>
 </ol>
+<p><img alt="alt text" src="image-25.webp" /></p>
 <p>我们也可以从 Code 层面尽量避免这种冒险发生：</p>
-<p>比如这里的第 2, 3 行和第 5, 6 行的数据冒险可以通过调整指令顺序解决（或者说在空 cycle 中插入其他指令）<br />
+<p>比如这里的第 2, 3 行和第 5, 6 行的数据冒险可以通过调整指令顺序解决（或者说在空 cycle 中插入其他指令）</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>1: lw x1, 0(x31)
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>2: lw x2, 4(x31)
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>3: add x3, x1, x2
@@ -5335,7 +5335,7 @@
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>5: lw x4, 8(x31)
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>6: add x5, x1, x4
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>7: sw x5, 16(x31)
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><span class="arithmatex">\(Rightarrow\)</span></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>1: lw x1, 0(x31)
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>2: lw x2, 4(x31)
@@ -5392,11 +5392,11 @@
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="n">ForwardB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">01</span>
 </span></code></pre></div>
 <p><strong>Double Data Hazard</strong></p>
-<p>对于如下指令<br />
+<p>对于如下指令</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>I1: add x1,x1,x2 # in MEM/WB
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>I2: add x1,x1,x3 # in EX/MEM
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>I3: add x1,x1,x4 # in ID/EX
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><code>x1</code> 是 I3 的源寄存器，同时也是 I1 和 I2 的目的寄存器。如果我们使用之前的 forwarding 机制，I3 会同时满足两个条件：</p>
 <ul>
 <li>I2 的目的寄存器 <code>Rd</code> 与 I3 的源寄存器 <code>Rs1</code> 相同，且 I2 会写回寄存器文件，因此会触发 <span style="color:green">EX hazard</span> 。</li>
@@ -5445,11 +5445,11 @@
 <h3 id="63-control-hazard">6.3 Control Hazard<a class="headerlink" href="#63-control-hazard" title="Permanent link">&para;</a></h3>
 <h4 id="631-control-hazard">6.3.1 Control Hazard<a class="headerlink" href="#631-control-hazard" title="Permanent link">&para;</a></h4>
 <p>这一种冒险主要来自分支指令，体现为这类指令对后续指令会有影响，具有这种控制依赖性。</p>
-<p>案例：<br />
+<p>案例：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>I1: add x4, x5, x6
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>I2: beq x1, x0, 40
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>I3: or x7, x8, x9
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><img alt="alt text" src="image-34.webp" /></p>
 <p>在上面的指令序列中, 分支跳转指令 <code>I2</code> 会影响后续指令的执行。例如 <code>I3</code> 指令本应该在下一个周期继续发送，但是由于 <code>I2</code> 可能会执行跳转，因此 <code>I3</code> 就有可能被冲刷掉(Flush)，导致性能下降。</p>
 <p>假设分支跳转指令可以<strong>在 <code>ID</code> 阶段就得出结果</strong>，即 <code>ID</code> 阶段要完成：</p>
@@ -5485,11 +5485,11 @@
 <p>我们当然可以把 branch prediction 提前到 <code>EX</code> 阶段组合逻辑的末尾，从而将 flush 的周期减少到 2。但是这又会带来另一个问题：<code>EX</code> 阶段延迟的延长，如果这是<strong>关键路径</strong>，那么就会<strong>降低整体的时钟频率</strong>。</p>
 <p>Branch Prediction 的<strong>实现方式</strong>：</p>
 <p><img alt="alt text" src="image-37.webp" /></p>
-<p>以如下指令为例：<br />
+<p>以如下指令为例：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sub x10, x4, x8
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>beq x1, x3, 16
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>add x11, x5, x6
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>总的来说有如果如下工作要做：（我们假设 branch 指令 PC = 40）</p>
 <ol>
 <li>branch 指令的 <code>ID</code> 阶段：比较寄存器 <code>x1</code> 和 <code>x3</code> 的值(紫色线条)，计算跳转目标地址 <code>PC + 16 &lt;&lt; 1 = 72</code>。</li>
@@ -5498,11 +5498,11 @@
 <h4 id="634-data-hazards-for-branch">6.3.4 Data Hazards for Branch<a class="headerlink" href="#634-data-hazards-for-branch" title="Permanent link">&para;</a></h4>
 <p>如图：</p>
 <p><img alt="alt text" src="image-38.webp" /></p>
-<p>我们面对的指令为：<br />
+<p>我们面对的指令为：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>add x1, x2, x3
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>add x4, x5, x6
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>beq x1, x4, target
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>branch 指令需要用到的寄存器是前面两条 R 型指令的目的寄存器。为了满足要求，我们必须插入一个Bubble，分别从 <code>EX/MEM</code> 和 <code>MEM/WB</code> 获取 <code>x4</code> 和 <code>x1</code> 的值，来进行比较。为此，我们需要要增加一个 fwd 结构，以及<strong>在之前比较寄存器的位置（上图紫色线条）增加 mux 来选择操作数来源</strong>。</p>
 <p>总结来说，如果 branch 指令需要用到前面指令的目的寄存器，并且：</p>
 <ol>
@@ -5542,26 +5542,32 @@ Based on typical branch behavior<br />
 <li>If wrong, <strong>flush pipeline</strong> and <strong>flip prediction in BHT</strong></li>
 </ol>
 <p>简单来说，就是<strong>猜错了更新 BHT，猜对了就不更新</strong>。</p>
-<p>但是这里还是有很多问题值得探讨：<br />
-1. BHT 大小由 PC 可取的值决定（最大 <span class="arithmatex">\(2^{32}\)</span> ），肯定不能直接存 <span class="arithmatex">\(2^{32}\)</span> 个条目，开销太大，所以直接取一部分长度<br />
-2. 只取一部分长度，那这一部分长度对应 PC 的那一段呢？</p>
+<p>但是这里还是有很多问题值得探讨：</p>
+<ol>
+<li>BHT 大小由 PC 可取的值决定（最大 <span class="arithmatex">\(2^{32}\)</span> ），肯定不能直接存 <span class="arithmatex">\(2^{32}\)</span> 个条目，开销太大，所以直接取一部分长度</li>
+<li>只取一部分长度，那这一部分长度对应 PC 的那一段呢？</li>
+</ol>
 <p><strong>(1) 1-Bit Predictor: Shortcoming</strong></p>
 <p>Inner loop branches mispredicted twice!</p>
-<p>来到内层循环的最后一次：<br />
-1. 当前 BHT 为 T，决定跳转；<br />
-2. 实际上不该跳转，BHT 更新为 N.<br />
-3. 然后来到外层循环，下一次进入内层循环，需要跳转时，<br />
-4. 当前 BHT 为 N，决定不跳转；<br />
-5. 实际上应该跳转，BHT 更新为 T.</p>
+<p>来到内层循环的最后一次：</p>
+<ol>
+<li>当前 BHT 为 T，决定跳转；</li>
+<li>实际上不该跳转，BHT 更新为 N.</li>
+<li>然后来到外层循环，下一次进入内层循环，需要跳转时，</li>
+<li>当前 BHT 为 N，决定不跳转；</li>
+<li>实际上应该跳转，BHT 更新为 T.</li>
+</ol>
 <p>所以这里会连续错两次</p>
 <p><img alt="alt text" src="image-40.webp" /></p>
 <p><strong>(2) 2-Bit Predictor</strong></p>
 <p>2 Bit BHT 可以解决上面那种虽然结构很规律但还是会连续误判的情况。<br />
-BHT 本质上就是一个状态机，有四个状态：<br />
-1. Strongly Taken (T)<br />
-2. Weakly Taken (t)<br />
-3. Weakly Not Taken (n)<br />
-4. Strongly Not Taken (N)</p>
+BHT 本质上就是一个状态机，有四个状态：</p>
+<ol>
+<li>Strongly Taken (T)</li>
+<li>Weakly Taken (t)</li>
+<li>Weakly Not Taken (n)</li>
+<li>Strongly Not Taken (N)</li>
+</ol>
 <p>状态转移图为：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>stateDiagram-v2
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>direction LR
