@@ -4503,7 +4503,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-dlp-data-level-parallelism">(2) 数据级并行 (DLP: Data-Level Parallelism)**<a class="headerlink" href="#2-dlp-data-level-parallelism" title="Permanent link">&para;</a></h4>
+<h4 id="2-dlp-data-level-parallelism">(2) 数据级并行 (DLP: Data-Level Parallelism)<a class="headerlink" href="#2-dlp-data-level-parallelism" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>概念</strong>：对于<strong>同一组操作（指令）</strong>，同时应用到<strong>大批量的不同数据</strong>上。</li>
 <li><strong>关联背景</strong>：这和“展开（Unroll）”非常像！比如想把两个各有100个元素的数组相加。在 SISD（单指令单数据）CPU里要循环100次；在 DLP 架构下，我们直接把硬件 ALU 复制 16 份、32 份，一条指令下去，同时算出 16 个或 32 个结果。</li>
@@ -4563,13 +4563,17 @@
 </li>
 <li>显著降低 <strong>instruction-fetch bandwidth</strong>（指令取指带宽）</li>
 </ul>
-<p>示例：MIPS 的 <strong>Vector</strong> 扩展<br />
-    - 32 × 64-element 寄存器（元素为 64-bit）<br />
-    - <strong>Vector</strong> 指令<br />
-        - <code>lv</code>、<code>sv</code>：load/store vector（<strong>向量加载/存储</strong>）<br />
-        - <code>addv.d</code>：add vectors of double（双精度浮点数<strong>向量加法</strong>）<br />
-        - <code>addvs.d</code>：add scalar to each element of vector of double（<strong>标量与双精度浮点数向量</strong>的每个元素相加）<br />
-    - pipeline 设计与 SISD 完全一致，只是处理硬件资源的数量增加了，可以同时处理多条数据 </p>
+<p>示例：MIPS 的 <strong>Vector</strong> 扩展</p>
+<ul>
+<li>32 × 64-element 寄存器（元素为 64-bit）</li>
+<li><strong>Vector</strong> 指令<ul>
+<li><code>lv</code>、<code>sv</code>：load/store vector（<strong>向量加载/存储</strong>）</li>
+<li><code>addv.d</code>：add vectors of double（双精度浮点数<strong>向量加法</strong>）</li>
+<li><code>addvs.d</code>：add scalar to each element of vector of double（<strong>标量与双精度浮点数向量</strong>的每个元素相加）</li>
+</ul>
+</li>
+<li>pipeline 设计与 SISD 完全一致，只是处理硬件资源的数量增加了，可以同时处理多条数据 </li>
+</ul>
 <p><img alt="alt text" src="image.webp" /></p>
 <p>同时包含：</p>
 <ul>
