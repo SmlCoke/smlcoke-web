@@ -299,6 +299,7 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 !!! note "例子分析"
     64 Blocks, 16 Bytes/block 的直接映射 Cache
     假设 CPU 访问十进制地址 `1200`（二进制 `1 001011 0000`）：
+    
     * Offset：16 Bytes 需要 4 bit，所以低 4 位 `0000` 是 Offset。
     * Index：64 个 Block 需要 6 bit，所以紧接着的 `001011`（十进制 11）是 Index。
     * Tag：剩余的高位 `1` 是 Tag。
