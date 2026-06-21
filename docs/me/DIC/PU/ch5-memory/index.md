@@ -1034,6 +1034,7 @@ $$\mathbf{[Index\ 方式]\ I\ [Tag\ 方式]\ T}$$
                  比对两端的物理 Tag (Physically Tagged)
     ```
 
+
 *   **为什么快？**：TLB 翻译和 Cache 索引**在硬件上是完全并行的**。
 *   **为什么没有同名异义（Homonym）问题？**：因为虽然我们用了虚拟 Index，但我们最后比对的是**物理 Tag（Physically Tagged）**。如果两个进程的虚拟地址撞车，<span style="color: red;">但因为它们翻译出来的 PPN 绝不相同</span>，比对 Tag 时瞬间就会发现不匹配，从而完美避开歧义。
 
