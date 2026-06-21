@@ -4487,8 +4487,8 @@
 只不过，相比于纯硬件电路的“暴力复制”，处理器的并行具有<strong>更强的通用性、更复杂的控制逻辑，并且需要软硬件（指令集与微架构）的协同</strong>。</p>
 <p>处理器领域的并行一般分为两个大维度：<strong>时间上的并行</strong>和<strong>空间上的并行</strong>。</p>
 <ul>
-<li><strong>时间并行（Temporal Parallelism）</strong>：你已经学过的<strong>流水线（Pipelining）</strong>就是典型代表。一条指令没有执行完，下一条指令就开始了，时间上重叠。</li>
-<li><strong>空间并行（Spatial Parallelism）</strong>：这就是即将学习的核心，增加多套执行单元（ALU、FPU等），在同一个时钟周期内同时处理多条指令或多份数据。</li>
+<li><strong>时间并行（Temporal Parallelism）</strong>：<strong>流水线（Pipelining）</strong>是典型代表。一条指令没有执行完，下一条指令就开始了，时间上重叠。</li>
+<li><strong>空间并行（Spatial Parallelism）</strong>：增加多套执行单元（ALU、FPU等），在同一个时钟周期内同时处理多条指令或多份数据。</li>
 </ul>
 <h3 id="12">1.2 处理器中常用的并行分类（经典架构视角）<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
 <p>在现代计算机体系结构中，我们通常将并行按照<strong>“粒度”</strong>划分为三个主要层次。</p>
@@ -4497,16 +4497,16 @@
 <li><strong>概念</strong>：在<strong>单线程</strong>中，寻找可以同时执行的、没有相互依赖的机器指令，让它们并行执行。</li>
 <li><strong>特点</strong>：通常由<strong>硬件</strong>（CPU的微架构）动态挖掘，对程序员是透明的（程序员不需要改代码）。</li>
 <li><strong>常见技术</strong>：<ul>
-<li><strong>流水线（Pipelining）</strong>：你已经学过的 RISC-V 五级流水。</li>
+<li><strong>流水线（Pipelining）</strong></li>
 <li><strong>多发射/超标量（Superscalar）</strong>：不仅流水线，我还在 CPU 里放好几个 ALU。每个周期从指令缓存里取多条指令，只要它们没冲突，就同时塞给不同的 ALU 执行。</li>
 <li><strong>乱序执行（Out-of-Order Execution, OoO）</strong>：打破指令的原有顺序，谁的数据准备好了谁先执行，榨干硬件的每一个周期。</li>
 </ul>
 </li>
 </ul>
-<h4 id="2-dlp-data-level-parallelism">(2) 数据级并行 (DLP: Data-Level Parallelism) —— <strong>你接下来的学习重点！</strong><a class="headerlink" href="#2-dlp-data-level-parallelism" title="Permanent link">&para;</a></h4>
+<h4 id="2-dlp-data-level-parallelism">(2) 数据级并行 (DLP: Data-Level Parallelism)**<a class="headerlink" href="#2-dlp-data-level-parallelism" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>概念</strong>：对于<strong>同一组操作（指令）</strong>，同时应用到<strong>大批量的不同数据</strong>上。</li>
-<li><strong>关联背景</strong>：这和你熟悉的 VLSI 中的“展开（Unroll）”非常像！比如你想把两个各有100个元素的数组相加。在 SISD（单指令单数据）CPU里要循环100次；在 DLP 架构下，我们直接把硬件 ALU 复制 16 份、32 份，一条指令下去，同时算出 16 个或 32 个结果。</li>
+<li><strong>关联背景</strong>：这和“展开（Unroll）”非常像！比如想把两个各有100个元素的数组相加。在 SISD（单指令单数据）CPU里要循环100次；在 DLP 架构下，我们直接把硬件 ALU 复制 16 份、32 份，一条指令下去，同时算出 16 个或 32 个结果。</li>
 <li><strong>常见技术（即将学习的章节）</strong>：<ul>
 <li><strong>Vector Processor（向量处理器）</strong>：RISC-V 里的 RVV 扩展就是这个，用超长的向量寄存器，一条指令处理整个数组。</li>
 <li><strong>SIMD（单指令多数据流）</strong>：Intel x86 的 SSE/AVX，或者 ARM 的 Neon，属于稍微短一点的向量处理。</li>
@@ -4556,18 +4556,20 @@
 <ul>
 <li>传统形式的 <strong>SIMD</strong></li>
 <li>深度流水线化的功能单元，用于开发 <strong>DLP</strong></li>
-<li>数据在 vector registers 与功能单元之间流式传输</li>
+<li>数据在 vector registers 与功能单元之间流式传输<ul>
 <li>数据从内存中收集到寄存器（vector registers）中</li>
 <li>计算结果从寄存器写回内存</li>
+</ul>
+</li>
 <li>显著降低 <strong>instruction-fetch bandwidth</strong>（指令取指带宽）</li>
 </ul>
 <p>示例：MIPS 的 <strong>Vector</strong> 扩展<br />
-   - 32 × 64-element 寄存器（元素为 64-bit）<br />
-   - <strong>Vector</strong> 指令<br />
-      - <code>lv</code>、<code>sv</code>：load/store vector（<strong>向量加载/存储</strong>）<br />
-      - <code>addv.d</code>：add vectors of double（双精度浮点数<strong>向量加法</strong>）<br />
-      - <code>addvs.d</code>：add scalar to each element of vector of double（<strong>标量与双精度浮点数向量</strong>的每个元素相加）<br />
-   - pipeline 设计与 SISD 完全一致，只是处理硬件资源的数量增加了，可以同时处理多条数据 </p>
+    - 32 × 64-element 寄存器（元素为 64-bit）<br />
+    - <strong>Vector</strong> 指令<br />
+        - <code>lv</code>、<code>sv</code>：load/store vector（<strong>向量加载/存储</strong>）<br />
+        - <code>addv.d</code>：add vectors of double（双精度浮点数<strong>向量加法</strong>）<br />
+        - <code>addvs.d</code>：add scalar to each element of vector of double（<strong>标量与双精度浮点数向量</strong>的每个元素相加）<br />
+    - pipeline 设计与 SISD 完全一致，只是处理硬件资源的数量增加了，可以同时处理多条数据 </p>
 <p><img alt="alt text" src="image.webp" /></p>
 <p>同时包含：</p>
 <ul>
@@ -4577,7 +4579,7 @@
 <li>scalar functional units（标量功能单元）</li>
 </ul>
 <h4 id="212-example-daxpy-y-a-x-y">2.1.2 Example: DAXPY (Y = a * X + Y)<a class="headerlink" href="#212-example-daxpy-y-a-x-y" title="Permanent link">&para;</a></h4>
-<p><strong>(1) 常规 MIPS 代码</strong><br />
+<p><strong>(1) 常规 MIPS 代码</strong></p>
 <div class="language-asm highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">l.d</span><span class="w">     </span><span class="no">$f0</span><span class="p">,</span><span class="no">a</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w">      </span><span class="c1">; load scalar a</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nf">addiu</span><span class="w">   </span><span class="no">r4</span><span class="p">,</span><span class="no">$s0</span><span class="p">,</span><span class="mi">#512</span><span class="w">     </span><span class="c1">; upper bound of what to load</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nl">loop:</span>
@@ -4590,15 +4592,15 @@
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nf">addiu</span><span class="w">   </span><span class="no">$s1</span><span class="p">,</span><span class="no">$s1</span><span class="p">,</span><span class="mi">#8</span><span class="w">  </span><span class="c1">; increment index to y</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nf">subu</span><span class="w">    </span><span class="no">$t0</span><span class="p">,</span><span class="no">r4</span><span class="p">,</span><span class="no">$s0</span><span class="w">  </span><span class="c1">; compute bound</span>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nf">bne</span><span class="w">     </span><span class="no">$t0</span><span class="p">,</span><span class="no">$zero</span><span class="p">,</span><span class="no">loop</span><span class="w"> </span><span class="c1">; check if done</span>
-</span></code></pre></div></p>
-<p><strong>(2) Vector MIPS 代码</strong><br />
+</span></code></pre></div>
+<p><strong>(2) Vector MIPS 代码</strong></p>
 <div class="language-asm highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nf">l.d</span><span class="w">       </span><span class="no">$f0</span><span class="p">,</span><span class="no">a</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w">      </span><span class="c1">; load scalar a</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nf">lv</span><span class="w">        </span><span class="no">$v1</span><span class="p">,</span><span class="mi">0</span><span class="p">(</span><span class="no">$s0</span><span class="p">)</span><span class="w">      </span><span class="c1">; load vector x</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nf">mulvs.d</span><span class="w">   </span><span class="no">$v2</span><span class="p">,</span><span class="no">$v1</span><span class="p">,</span><span class="no">$f0</span><span class="w">     </span><span class="c1">; vector-scalar multiply</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nf">lv</span><span class="w">        </span><span class="no">$v3</span><span class="p">,</span><span class="mi">0</span><span class="p">(</span><span class="no">$s1</span><span class="p">)</span><span class="w">      </span><span class="c1">; load vector y</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nf">addv.d</span><span class="w">    </span><span class="no">$v4</span><span class="p">,</span><span class="no">$v2</span><span class="p">,</span><span class="no">$v3</span><span class="w">     </span><span class="c1">; add y to product</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nf">sv</span><span class="w">        </span><span class="no">$v4</span><span class="p">,</span><span class="mi">0</span><span class="p">(</span><span class="no">$s1</span><span class="p">)</span><span class="w">      </span><span class="c1">; store the result</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>Vector MIPS 代码中，<code>lv</code> 指令一次性<strong>加载了整个向量</strong>（比如 64 个元素），<code>mulvs.d</code> 指令一次性对<strong>整个向量与一个标量</strong>进行乘法操作，<code>addv.d</code> 指令一次性<strong>对两个向量进行加法操作</strong>，最后 <code>sv</code> 指令一次性将结果存回内存。相比于常规 MIPS 代码需要循环处理每个元素，<strong>Vector MIPS 代码大大简化了指令数量</strong>，并且利用了数据级并行的优势。 </p>
 <p><strong>但是，向量寄存器可能一次只能存 4 个元素，但是要处理的向量有 128 或者 512 个元素</strong>：</p>
 <p>我们极端一点，假设向量寄存器的长度直接就是 1 个元素，那么就会出现如下情况：</p>
@@ -4613,13 +4615,19 @@
 <p><span style="color: green;">核心：一条指令控制多个处理单元，处理多份数据。</span></p>
 <p>案例：</p>
 <ul>
-<li>Intel MMX (1996)</li>
+<li>Intel MMX (1996)<ul>
 <li>8个8-bit integer ops 或 4个16-bit integer ops</li>
-<li>Streaming SIMD Extensions (SSE) (1999)</li>
+</ul>
+</li>
+<li>Streaming SIMD Extensions (SSE) (1999)<ul>
 <li>8个16-bit integer ops</li>
 <li>4个32-bit integer/fp ops 或 2个64-bit integer/fp ops</li>
-<li>Advanced Vector eXtensions (AVX) (2010)</li>
+</ul>
+</li>
+<li>Advanced Vector eXtensions (AVX) (2010)<ul>
 <li>4个64-bit integer/fp ops</li>
+</ul>
+</li>
 </ul>
 <p><strong>Example: DAXPY (Y = a * X + Y)</strong></p>
 <p>with 256-b SIMD <strong>with suffix "4D" for 4</strong> double-float operands</p>
@@ -4650,7 +4658,7 @@
 SIMD 加速的方式：在原来的数据宽度的基础上，拆成更小的数据块都，例如 256 拆分成 4 个 64-bit 的数据块，<strong>功能单元和寄存器不需要向量化，还是用原来的标量 Datapath，缺点就是要定义新的指令（.4D, .4S, .16D, .16S...），指令集的膨胀非常快</strong>。</p>
 <h4 id="232-vector-vs-scalar">2.3.2 Vector VS Scalar<a class="headerlink" href="#232-vector-vs-scalar" title="Permanent link">&para;</a></h4>
 <ul>
-<li>Vector architectures and compilers</li>
+<li>Vector architectures and compilers<ul>
 <li><strong>简化 data-parallel programming</strong>（数据并行编程）</li>
 <li>显式声明不存在 loop-carried dependences（循环携带依赖）<ul>
 <li>减少硬件层面的检查</li>
@@ -4659,8 +4667,12 @@ SIMD 加速的方式：在原来的数据宽度的基础上，拆成更小的数
 <li>Regular access patterns（规则访问模式）可受益于 interleaved and burst memory（交错与突发内存访问）</li>
 <li>通过避免 loops（循环）来避免 control hazards（控制冒险）</li>
 <li>相较于 scalar architecture（标量架构），在 power and energy（<strong>功耗与能效</strong>）方面更具优势</li>
-<li>比 ad-hoc media extensions（专用媒体扩展，如 MMX、SSE）更通用</li>
+</ul>
+</li>
+<li>比 ad-hoc media extensions（专用媒体扩展，如 MMX、SSE）更通用<ul>
 <li>与编译器技术的适配性更好</li>
+</ul>
+</li>
 </ul>
 <h3 id="24-misd-example-systolic-array">2.4 MISD Example: Systolic Array<a class="headerlink" href="#24-misd-example-systolic-array" title="Permanent link">&para;</a></h3>
 <p>核心：访问存储器的代价很大，因此：</p>
