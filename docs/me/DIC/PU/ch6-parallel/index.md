@@ -26,7 +26,7 @@
     *   **多发射/超标量（Superscalar）**：不仅流水线，我还在 CPU 里放好几个 ALU。每个周期从指令缓存里取多条指令，只要它们没冲突，就同时塞给不同的 ALU 执行。
     *   **乱序执行（Out-of-Order Execution, OoO）**：打破指令的原有顺序，谁的数据准备好了谁先执行，榨干硬件的每一个周期。
 
-#### (2) 数据级并行 (DLP: Data-Level Parallelism)**
+#### (2) 数据级并行 (DLP: Data-Level Parallelism)
 
 *   **概念**：对于**同一组操作（指令）**，同时应用到**大批量的不同数据**上。
 *   **关联背景**：这和“展开（Unroll）”非常像！比如想把两个各有100个元素的数组相加。在 SISD（单指令单数据）CPU里要循环100次；在 DLP 架构下，我们直接把硬件 ALU 复制 16 份、32 份，一条指令下去，同时算出 16 个或 32 个结果。
@@ -80,12 +80,13 @@
 
 
 示例：MIPS 的 **Vector** 扩展
-    - 32 × 64-element 寄存器（元素为 64-bit）
-    - **Vector** 指令
-        - `lv`、`sv`：load/store vector（**向量加载/存储**）
-        - `addv.d`：add vectors of double（双精度浮点数**向量加法**）
-        - `addvs.d`：add scalar to each element of vector of double（**标量与双精度浮点数向量**的每个元素相加）
-    - pipeline 设计与 SISD 完全一致，只是处理硬件资源的数量增加了，可以同时处理多条数据 
+
+- 32 × 64-element 寄存器（元素为 64-bit）
+- **Vector** 指令
+    - `lv`、`sv`：load/store vector（**向量加载/存储**）
+    - `addv.d`：add vectors of double（双精度浮点数**向量加法**）
+    - `addvs.d`：add scalar to each element of vector of double（**标量与双精度浮点数向量**的每个元素相加）
+- pipeline 设计与 SISD 完全一致，只是处理硬件资源的数量增加了，可以同时处理多条数据 
 
 ![alt text](image.webp)
 
