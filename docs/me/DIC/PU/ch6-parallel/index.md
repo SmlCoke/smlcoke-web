@@ -10,30 +10,33 @@
 
 处理器领域的并行一般分为两个大维度：**时间上的并行**和**空间上的并行**。
 
-*   **时间并行（Temporal Parallelism）**：你已经学过的**流水线（Pipelining）**就是典型代表。一条指令没有执行完，下一条指令就开始了，时间上重叠。
-*   **空间并行（Spatial Parallelism）**：这就是即将学习的核心，增加多套执行单元（ALU、FPU等），在同一个时钟周期内同时处理多条指令或多份数据。
+*   **时间并行（Temporal Parallelism）**：**流水线（Pipelining）**是典型代表。一条指令没有执行完，下一条指令就开始了，时间上重叠。
+*   **空间并行（Spatial Parallelism）**：增加多套执行单元（ALU、FPU等），在同一个时钟周期内同时处理多条指令或多份数据。
 
 ### 1.2 处理器中常用的并行分类（经典架构视角）
 
 在现代计算机体系结构中，我们通常将并行按照**“粒度”**划分为三个主要层次。
 
 #### (1) 指令级并行 (ILP: Instruction-Level Parallelism)
+
 *   **概念**：在**单线程**中，寻找可以同时执行的、没有相互依赖的机器指令，让它们并行执行。
 *   **特点**：通常由**硬件**（CPU的微架构）动态挖掘，对程序员是透明的（程序员不需要改代码）。
 *   **常见技术**：
-    *   **流水线（Pipelining）**：你已经学过的 RISC-V 五级流水。
+    *   **流水线（Pipelining）**
     *   **多发射/超标量（Superscalar）**：不仅流水线，我还在 CPU 里放好几个 ALU。每个周期从指令缓存里取多条指令，只要它们没冲突，就同时塞给不同的 ALU 执行。
     *   **乱序执行（Out-of-Order Execution, OoO）**：打破指令的原有顺序，谁的数据准备好了谁先执行，榨干硬件的每一个周期。
 
-#### (2) 数据级并行 (DLP: Data-Level Parallelism) —— **你接下来的学习重点！**
+#### (2) 数据级并行 (DLP: Data-Level Parallelism)**
+
 *   **概念**：对于**同一组操作（指令）**，同时应用到**大批量的不同数据**上。
-*   **关联背景**：这和你熟悉的 VLSI 中的“展开（Unroll）”非常像！比如你想把两个各有100个元素的数组相加。在 SISD（单指令单数据）CPU里要循环100次；在 DLP 架构下，我们直接把硬件 ALU 复制 16 份、32 份，一条指令下去，同时算出 16 个或 32 个结果。
+*   **关联背景**：这和“展开（Unroll）”非常像！比如想把两个各有100个元素的数组相加。在 SISD（单指令单数据）CPU里要循环100次；在 DLP 架构下，我们直接把硬件 ALU 复制 16 份、32 份，一条指令下去，同时算出 16 个或 32 个结果。
 *   **常见技术（即将学习的章节）**：
     *   **Vector Processor（向量处理器）**：RISC-V 里的 RVV 扩展就是这个，用超长的向量寄存器，一条指令处理整个数组。
     *   **SIMD（单指令多数据流）**：Intel x86 的 SSE/AVX，或者 ARM 的 Neon，属于稍微短一点的向量处理。
     *   **GPGPU（通用图形处理器）**：这是 DLP 的极致形态。NVIDIA 显卡里动辄成千上万个计算核心（CUDA Core），本质上就是把数据级并行发挥到了极点。
 
 #### (3) 线程级并行 (TLP: Thread-Level Parallelism)
+
 *   **概念**：当 ILP（指令级并行）遇到瓶颈，DLP（数据级并行）又要求特定应用场景时，人们开始让处理器同时运行**多个相对独立的线程或任务**。
 *   **常见技术**：
     *   **多核处理器（Multi-core）**：把多个 CPU 核心塞进一个芯片（SoC）。
@@ -71,18 +74,18 @@
 - 传统形式的 **SIMD**
 - 深度流水线化的功能单元，用于开发 **DLP**
 - 数据在 vector registers 与功能单元之间流式传输
-   - 数据从内存中收集到寄存器（vector registers）中
-   - 计算结果从寄存器写回内存
+    - 数据从内存中收集到寄存器（vector registers）中
+    - 计算结果从寄存器写回内存
 - 显著降低 **instruction-fetch bandwidth**（指令取指带宽）
 
 
 示例：MIPS 的 **Vector** 扩展
-   - 32 × 64-element 寄存器（元素为 64-bit）
-   - **Vector** 指令
-      - `lv`、`sv`：load/store vector（**向量加载/存储**）
-      - `addv.d`：add vectors of double（双精度浮点数**向量加法**）
-      - `addvs.d`：add scalar to each element of vector of double（**标量与双精度浮点数向量**的每个元素相加）
-   - pipeline 设计与 SISD 完全一致，只是处理硬件资源的数量增加了，可以同时处理多条数据 
+    - 32 × 64-element 寄存器（元素为 64-bit）
+    - **Vector** 指令
+        - `lv`、`sv`：load/store vector（**向量加载/存储**）
+        - `addv.d`：add vectors of double（双精度浮点数**向量加法**）
+        - `addvs.d`：add scalar to each element of vector of double（**标量与双精度浮点数向量**的每个元素相加）
+    - pipeline 设计与 SISD 完全一致，只是处理硬件资源的数量增加了，可以同时处理多条数据 
 
 ![alt text](image.webp)
 
@@ -96,6 +99,7 @@
 #### 2.1.2 Example: DAXPY (Y = a * X + Y)
 
 **(1) 常规 MIPS 代码**
+
 ```asm
 l.d     $f0,a($sp)      ; load scalar a
 addiu   r4,$s0,#512     ; upper bound of what to load
@@ -113,6 +117,7 @@ loop:
 
 
 **(2) Vector MIPS 代码**
+
 ```asm
 l.d       $f0,a($sp)      ; load scalar a
 lv        $v1,0($s0)      ; load vector x
@@ -150,12 +155,12 @@ No structural hazard ! I1 每处理一个元素，I2 就会在下一个周期处
 案例：
 
 - Intel MMX (1996)
-  - 8个8-bit integer ops 或 4个16-bit integer ops
+    - 8个8-bit integer ops 或 4个16-bit integer ops
 - Streaming SIMD Extensions (SSE) (1999)
-  - 8个16-bit integer ops
-  - 4个32-bit integer/fp ops 或 2个64-bit integer/fp ops
+    - 8个16-bit integer ops
+    - 4个32-bit integer/fp ops 或 2个64-bit integer/fp ops
 - Advanced Vector eXtensions (AVX) (2010)
-  - 4个64-bit integer/fp ops
+    - 4个64-bit integer/fp ops
 
 **Example: DAXPY (Y = a * X + Y)**
 
@@ -194,14 +199,14 @@ SIMD 加速的方式：在原来的数据宽度的基础上，拆成更小的数
 #### 2.3.2 Vector VS Scalar
 
 - Vector architectures and compilers
-   - **简化 data-parallel programming**（数据并行编程）
-   - 显式声明不存在 loop-carried dependences（循环携带依赖）
-      - 减少硬件层面的检查
-   - Regular access patterns（规则访问模式）可受益于 interleaved and burst memory（交错与突发内存访问）
-   - 通过避免 loops（循环）来避免 control hazards（控制冒险）
-   - 相较于 scalar architecture（标量架构），在 power and energy（**功耗与能效**）方面更具优势
+    - **简化 data-parallel programming**（数据并行编程）
+    - 显式声明不存在 loop-carried dependences（循环携带依赖）
+        - 减少硬件层面的检查
+    - Regular access patterns（规则访问模式）可受益于 interleaved and burst memory（交错与突发内存访问）
+    - 通过避免 loops（循环）来避免 control hazards（控制冒险）
+    - 相较于 scalar architecture（标量架构），在 power and energy（**功耗与能效**）方面更具优势
 - 比 ad-hoc media extensions（专用媒体扩展，如 MMX、SSE）更通用
-  - 与编译器技术的适配性更好
+    - 与编译器技术的适配性更好
 
 ### 2.4 MISD Example: Systolic Array
 
