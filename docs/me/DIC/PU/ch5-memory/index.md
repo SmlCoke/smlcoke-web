@@ -293,13 +293,13 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 当 CPU 发出一个物理地址时，该地址会被硬件划分为三个字段：
 
 *   **Tag（标记位）**：用于和 Cache 内部存储的 Tag 比对。
-*   **Index（索引位）**：用于直接寻址（选中）特定的 Cache 行。它的位宽决定了 Cache 有多少个 Block（例如 6 bit 对应 64 个 Blocks）。
-*   **Offset（偏移位）**：包含 Byte offset 和 Block offset，用于确定所需的数据在当前 Block 的具体哪个字节。它的位宽取决于 Block 的大小（例如 **16 bytes/block** 需要 **4 bit** 作为 offset，因为 $2^4 = 16$）。
+*   **Index（索引位）**：用于直接寻址（选中）特定的 Cache 行。它的位宽决定了 Cache 有多少个 Block（例如 6 bit 对应 64 个 Blocks）。假设 Cache 中有 $n$ 个块，则 index 的位宽为 $log_2(n)$。
+*   **Offset（偏移位）**：包含 Byte offset 和 Block offset，用于确定所需的数据在当前 Block 的具体哪个字节。它的位宽取决于 Block 的大小（例如 **16 bytes/block** 需要 **4 bit** 作为 offset，因为 $2^4 = 16$）。假设 Block 包含 $m$ 个字节（其中 $m$ 一般是 2 的幂次方），则 offset 的位宽为 $log_2(m)$。
 
 !!! note "例子分析"
     64 Blocks, 16 Bytes/block 的直接映射 Cache
     假设 CPU 访问十进制地址 `1200`（二进制 `1 001011 0000`）：
-    
+
     * Offset：16 Bytes 需要 4 bit，所以低 4 位 `0000` 是 Offset。
     * Index：64 个 Block 需要 6 bit，所以紧接着的 `001011`（十进制 11）是 Index。
     * Tag：剩余的高位 `1` 是 Tag。
@@ -309,15 +309,17 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 **(1) Hit (命中)**：CPU 去 Cache 中找数据，发现**数据在里面**（硬件判断标准：对应位置的 Valid 位为 1，并且 Cache 里存的 Tag 和 CPU 发出的地址的 Tag 完全一致）。此时 CPU 可以全速继续运行。
 **(2) Miss (缺失)**：CPU 去 Cache 中找数据，发现**数据不在里面**（硬件判断标准：对应位置 Valid 为 0，**或者**虽然 Valid 为 1，但存的 Tag 跟 CPU 请求的 Tag 不一样）。此时 Cache 必须去主存搬运数据，CPU 必须停顿等待（Stall）。
 
-对于 8 blocks, 1 byte/block 的 Cache
+!!! example "例子分析"
+    对于 8 blocks, 1 byte/block 的 Cache, 考虑 5bit 的地址系统
+    **offset 位有 $log_2(1) = 0$ 位，index 有 $log_2(8) = 3$ 位，tag 有 5 - 1 - 3 = 1 位**
 
-1. 上电前，所有 block 的 **valid** 都是 **N** ；
-2. 写入 $22(10110_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **110** 个 block 写入地址 **22** 的数据；
-3. 写入 $26(11010_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **010** 个 block 写入地址 **26** 的数据；
-4. 写入 $18(10010_2)$ 时（Cold miss），valid = Y，Cache 的第 **010** 个 block 已经存在了地址 **26** 的数据，该数据会被更新为地址 **18** 的数据
-5. 访问 $22(10110_2)$ 时，Cache 的第 **110** 个 block 存在数据，**Valid = Y** 且 **tag 成功匹配**，缓存给命中（hit）
-6. 访问 $26(11010_2)$ 时，Cache 的第 **010** 个 block 存在数据，**Valid = Y** 但 **tag 不匹配**，**miss**。此时会发生**替换**（replacement），将地址 **18** 的数据替换为地址 **26** 的数据。
-7. 访问 $10(01010_2)$ 时，Cache 的第 **010** 个 block 存在数据，**Valid = Y** 但 **tag 不匹配**，**miss**。此时会发生**替换**（replacement），将地址 **26** 的数据替换为地址 **10** 的数据。
+    1. 上电前，所有 block 的 **valid** 都是 **N** ；
+    2. 写入 $22(10110_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **110** 个 block 写入地址 **22** 的数据；
+    3. 写入 $26(11010_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **010** 个 block 写入地址 **26** 的数据；
+    4. 写入 $18(10010_2)$ 时（Cold miss），valid = Y，Cache 的第 **010** 个 block 已经存在了地址 **26** 的数据，该数据会被更新为地址 **18** 的数据
+    5. 访问 $22(10110_2)$ 时，Cache 的第 **110** 个 block 存在数据，**Valid = Y** 且 **tag 成功匹配**，缓存给命中（hit）
+    6. 访问 $26(11010_2)$ 时，Cache 的第 **010** 个 block 存在数据，**Valid = Y** 但 **tag 不匹配**，**miss**。此时会发生**替换**（replacement），将地址 **18** 的数据替换为地址 **26** 的数据。
+    7. 访问 $10(01010_2)$ 时，Cache 的第 **010** 个 block 存在数据，**Valid = Y** 但 **tag 不匹配**，**miss**。此时会发生**替换**（replacement），将地址 **26** 的数据替换为地址 **10** 的数据。
 
 
 #### 5.1.5 Cache Block Size（块大小的权衡）
