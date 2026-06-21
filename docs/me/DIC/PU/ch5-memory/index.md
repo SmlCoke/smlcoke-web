@@ -518,15 +518,17 @@ Simulation of a system with 64KB D-cache, 16-word blocks, SPEC2000
 ### 5.4 Sources of Miss
 
 - **Compulsory misses (aka cold start misses) （强制性缺失/冷缺失）**
-    - 首次访问某数据块时发生
-    - 当然，如果 block 是多个 word 的话，再次访问同一 block 内的其他 word 时就不会了，因为可以一开始就 load 整个 block 进 cache
+    - **定义**：第一次访问某个 cache line 时发生的 miss，因为 cache 里从未加载过该数据。
+    - 当然，如果 block 是多个 word 的话，**再次访问同一 block 内的其他 word 时就不会了**，因为可以一开始就 load 整个 block 进 cache
 - **Capacity misses**
-    - 由**缓存容量有限**导致，典型就是 Fully Associative Cache 满了 
-    - 被替换出的数据块后续再次被访问
+    - **定义**：cache 容量不够，导致之前**加载过的数据被挤出，再次访问时 miss**。
+    - 原因：由**缓存容量有限**导致，典型就是 Fully Associative Cache 满了，而被替换出的数据块后续再次被访问
 - **Conflict misses (aka collision misses)**
-    - 发生在**非Fully Associative**中
-    - 由**set 内 entry 竞争引发**
-    - 在总容量相同的Fully Associative中不会出现
+    - **定义**：即使 cache 总容量够，但因为 **映射方式限制（set/way）导致互相挤掉**。
+    - 一般在 set-associative 和 direct-mapped cache 中发生
+    - 原因：**多个地址映射到同一个 set**
+
+> 第四种： **Coherence Misses（一致性缺失）**：在多核处理器中，由于**多个核心共享同一内存地址**，当一个核心修改了某个数据块并将**其标记为脏数据（Dirty）**，其他核心如果访问这个数据块时就会发生**一致性缺失（Coherence Miss）**，需要等待数据被写回**主存或从修改的核心获取最新数据**。
 
 ### 5.5 Cache 性能量化分析 (Measuring Cache Performance)
 
