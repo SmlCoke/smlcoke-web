@@ -7,17 +7,17 @@
 - GPU: Graphics Processing Unit: 图形处理器，是专门为图形渲染和并行计算设计的处理器。
 - GPGPU: General-Purpose Graphics Processing Units: 通用图形处理器，起源于GPU，专为并行计算而生
 - Flynn terminology
-  - SISD, SIMD, MISD, MIMD
+    - SISD, SIMD, MISD, MIMD
 - Parallelism
-  - ILP, DLP, TLP
+    - ILP, DLP, TLP
 - Parallel architecture
-  - Multi-core, cluster, WSE
+    - Multi-core, cluster, WSE
 
 ### 1.2 CPU vs. GPU
 
 - **Multi-core**: relative **a small number of cores**, each one is a full-flesh processor
 - **Many-core**: a large number of cores, each one is **much smaller and simpler**
-  - Transistors are **devoted to compute-intensive processing**, not caching and control
+    - Transistors are **devoted to compute-intensive processing**, not caching and control
 
 CPU 每一个核功能完整，包含计算、控制、缓存等功能；GPU 每一个核功能简化，主要用于计算，控制和缓存功能较弱。GPU 把更多的资源留给了计算，因此在处理计算任务时表现更好。
 
@@ -85,6 +85,7 @@ GPU 市场分为两类：
 Fermi (2011) → Kepler (2012) → Maxwell (2014) → Pascal (2016) → Volta (2017) → Turing (2018) → Ampere (2020)
 
 #### 🚀 关键性能指标爆发的节点：
+
 *   **Pascal (P100)：** 首次搭载 **HBM2** 显存（显存接口从 384-bit GDDR5 提升到 4096-bit HBM2），显存带宽发生质变。
 *   **Volta (V100)：** 首次引入 **Tensor Cores**（张量核心），专门为 AI 深度学习矩阵运算加速。此时 FP64 双精度浮点性能也大幅提升。
 *   **Turing (T4)：** **极高能效比的 AI 推理卡**。相比 V100 动辄 300W 的功耗，T4 仅有 70W，非常适合云推理。
