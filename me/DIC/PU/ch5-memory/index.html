@@ -5400,7 +5400,7 @@
 <tr>
 <td>exclusive</td>
 <td>exclusive</td>
-<td>上层存储中的数据<strong>不一定存在于下层存储中</strong>，例如 Cache 中的数据不一定存在于 DRAM 中</td>
+<td>上层存储中的数据<strong>一定不存在于下层存储中</strong>，例如 Cache 中的数据一定不存在于 DRAM 中</td>
 </tr>
 </tbody>
 </table>
@@ -5497,16 +5497,24 @@
 <p>DRAM 内部的比特位同样被组织成<strong>矩形阵列（Rectangular array）</strong>，核心访问逻辑是分两步走：先<strong>选中整行</strong>，<strong>再挑出特定的列</strong>。</p>
 <ul>
 <li><strong>行级访问</strong>：DRAM 每次访问（Access）都会激活一整个 Row，并将其放入行缓冲区（Column latches / Row buffer）中。</li>
-<li><strong>Burst mode (突发模式)</strong>：既然一整行的数据已经被读出到了缓冲区中，如果后续请求的地址是连续的，就可以直接从缓冲区中<strong>以极低的延迟连续提供后续字（Supply successive words with reduced latency）</strong>，而无需再次进行缓慢的内部行读取。<br />
-    &gt; <strong>更好的方式</strong>是尽量做到一行中存放想要的数据，这样就不需要多次切换不同行的访问。因为每次访问完一行，电容上的电荷都会损失，需要重新充电（Recharged），这会带来额外的访问延迟。</li>
-<li><strong>DDR (Double Data Rate) DRAM</strong>：通过在时钟信号的<strong>上升沿和下降沿</strong>同时传输数据，使得数据传输速率翻倍。</li>
+<li>
+<p><strong>Burst mode (突发模式)</strong>：既然一整行的数据已经被读出到了缓冲区中，如果后续请求的地址是连续的，就可以直接从缓冲区中<strong>以极低的延迟连续提供后续字（Supply successive words with reduced latency）</strong>，而无需再次进行缓慢的内部行读取。</p>
+<blockquote>
+<p><strong>更好的方式</strong>是尽量做到一行中存放想要的数据，这样就不需要多次切换不同行的访问。因为每次访问完一行，电容上的电荷都会损失，需要重新充电（Recharged），这会带来额外的访问延迟。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>DDR (Double Data Rate) DRAM</strong>：通过在时钟信号的<strong>上升沿和下降沿</strong>同时传输数据，使得数据传输速率翻倍。</p>
+</li>
 </ul>
 <p><img alt="alt text" src="image-7.webp" /></p>
 <h3 id="53-dram">5.3 决定 DRAM 性能的核心因素<a class="headerlink" href="#53-dram" title="Permanent link">&para;</a></h3>
-<p>现代存储系统通过以下三大核心技术来榨干/提升 DRAM 的性能（特别是提升带宽）：<br />
-1.  <strong>Row buffer (行缓冲区)</strong>：允许<strong>并行读取</strong>和刷新多个字，是实现<strong>Burst mode</strong>的物理基础。<br />
-2.  <strong>Synchronous DRAM (SDRAM, 同步DRAM)</strong>：配合系统时钟，允许连续的<strong>突发访问</strong>（Consecutive accesses in bursts），<strong>无需为每个字单独发送地址（Without needing to send each address）</strong>，大幅提升了总线<strong>带宽（Bandwidth）</strong>。<br />
-3.  <strong>DRAM banking (多体交叉/多Bank结构)</strong>：允许同时（Simultaneous access）访问多个不同的 DRAM Bank，通过并行流水线操作掩盖单一 Bank 漫长的内部访问延迟，成倍提升吞吐量。</p>
+<p>现代存储系统通过以下三大核心技术来榨干/提升 DRAM 的性能（特别是提升带宽）：</p>
+<ol>
+<li><strong>Row buffer (行缓冲区)</strong>：允许<strong>并行读取</strong>和刷新多个字，是实现<strong>Burst mode</strong>的物理基础。</li>
+<li><strong>Synchronous DRAM (SDRAM, 同步DRAM)</strong>：配合系统时钟，允许连续的<strong>突发访问</strong>（Consecutive accesses in bursts），<strong>无需为每个字单独发送地址（Without needing to send each address）</strong>，大幅提升了总线<strong>带宽（Bandwidth）</strong>。</li>
+<li><strong>DRAM banking (多体交叉/多Bank结构)</strong>：允许同时（Simultaneous access）访问多个不同的 DRAM Bank，通过并行流水线操作掩盖单一 Bank 漫长的内部访问延迟，成倍提升吞吐量。</li>
+</ol>
 <h3 id="54-increasing-memory-bandwidth">5.4 Increasing Memory Bandwidth 提升内存带宽的系统架构设计<a class="headerlink" href="#54-increasing-memory-bandwidth" title="Permanent link">&para;</a></h3>
 <p>为了缓解「内存墙」问题，系统架构师需要优化 CPU 与主存之间的互连架构。以下通过一个经典的计算模型，对比三种内存组织架构的 <strong>Miss penalty（缺失代价）</strong> 和 <strong>Bandwidth（带宽）</strong>。</p>
 <div class="admonition note">
@@ -5561,11 +5569,13 @@
 <strong>HBM (High Bandwidth Memory)</strong>：采用 3D 硅穿孔封装技术的现代高端显卡/AI加速器超高带宽显存。</p>
 <h2 id="vi-cache-technology">VI. Cache Technology<a class="headerlink" href="#vi-cache-technology" title="Permanent link">&para;</a></h2>
 <h3 id="51-cache-cache-basics-direct-mapped-cache">5.1 Cache 基础概念与直接映射机制 (Cache Basics &amp; Direct Mapped Cache)<a class="headerlink" href="#51-cache-cache-basics-direct-mapped-cache" title="Permanent link">&para;</a></h3>
-<p>作为距离 CPU 最近的存储层级，Cache 的核心目标是利用<strong>程序的局部性（Locality）</strong>来弥合 CPU 计算速度与主存（DRAM）读取速度之间的巨大鸿沟。在任何层级的存储器体系中，都需要解决以下四个核心问题：<br />
-1. <strong>Block placement（块放置）</strong>：数据块应该放在 Cache 的什么位置？<br />
-2. <strong>Finding a block（查找块）</strong>：如何判断数据块是否在 Cache 中？<br />
-3. <strong>Replacement on a miss（缺失替换）</strong>：当 Cache 满了且发生 Miss 时，替换掉哪个块？<br />
-4. <strong>Write policy（写策略）</strong>：发生写操作时，如何保证 Cache 与<strong>主存</strong>的数据一致性？</p>
+<p>作为距离 CPU 最近的存储层级，Cache 的核心目标是利用<strong>程序的局部性（Locality）</strong>来弥合 CPU 计算速度与主存（DRAM）读取速度之间的巨大鸿沟。在任何层级的存储器体系中，都需要解决以下四个核心问题：</p>
+<ol>
+<li><strong>Block placement（块放置）</strong>：数据块应该放在 Cache 的什么位置？</li>
+<li><strong>Finding a block（查找块）</strong>：如何判断数据块是否在 Cache 中？</li>
+<li><strong>Replacement on a miss（缺失替换）</strong>：当 Cache 满了且发生 Miss 时，替换掉哪个块？</li>
+<li><strong>Write policy（写策略）</strong>：发生写操作时，如何保证 Cache 与<strong>主存</strong>的数据一致性？</li>
+</ol>
 <h4 id="511-direct-mapped-cache">5.1.1 直接映射缓存 (Direct Mapped Cache)<a class="headerlink" href="#511-direct-mapped-cache" title="Permanent link">&para;</a></h4>
 <p>直接映射是<strong>块放置（Block placement）</strong>策略中最简单的一种：主存中的每一个数据块，在 Cache 中都有且仅有一个确定的位置可以放置（Only one choice）。</p>
 <ul>
@@ -6136,11 +6146,15 @@
 <ul>
 <li>每个进程都拥有独立的 <strong>private virtual address space</strong>，用于存放其常用代码和数据（活跃部分）</li>
 <li>向每个程序，也向程序员，提供了虚拟内存容量无限的假象</li>
-<li>简化了程序的<strong>加载执行</strong>（reallocation）<blockquote>
+<li>
+<p>简化了程序的<strong>加载执行</strong>（reallocation）</p>
+<blockquote>
 <p>例如启动时将程序从硬盘搬到内存时，如果内存碎片化非常严重，<strong>很难找到一段连续的空间</strong>，但是虚拟内存技术掩盖了这个问题。如果没有虚拟内存技术的话，会<strong>将其他程序的内存空间数据进行搬移</strong>，导致加载时间很长。</p>
 </blockquote>
 </li>
-<li>受到其他程序的保护（注：结合上下文，此处指进程内存空间被保护，不受其他程序干扰）</li>
+<li>
+<p>受到其他程序的保护（注：结合上下文，此处指进程内存空间被保护，不受其他程序干扰）</p>
+</li>
 </ul>
 <h3 id="62-va-pa-and-translation">6.2 VA, PA and Translation<a class="headerlink" href="#62-va-pa-and-translation" title="Permanent link">&para;</a></h3>
 <h4 id="621-va-pa-and-page">6.2.1 VA, PA, and Page<a class="headerlink" href="#621-va-pa-and-page" title="Permanent link">&para;</a></h4>
@@ -6163,11 +6177,15 @@
 <p>现代计算机通常规定 <strong>1 个 Page 的大小是 4KB（即 <span class="arithmatex">\(4096 = 2^{12}\)</span> 字节）</strong>。</p>
 <p>因此，地址的切割方式：</p>
 <ol>
-<li><strong>Page Offset（页内偏移）</strong>：<br />
+<li>
+<p><strong>Page Offset（页内偏移）</strong>：<br />
     既然一页有 4096 个字节，为了在这 4096 个字节中精准定位到某一个字节，我们需要 <strong>12 bit</strong>。<br />
-<strong>极其重要的一点：在虚拟地址转换为物理地址的过程中，Page Offset 是绝对不变的！</strong></li>
-<li><strong>Page Number（页号）</strong>：<br />
-    地址除掉低 12 位的 Offset 后，剩下的高位（<span class="arithmatex">\(32-12=20\)</span>位）统统叫做页号。<ul>
+<strong>极其重要的一点：在虚拟地址转换为物理地址的过程中，Page Offset 是绝对不变的！</strong></p>
+</li>
+<li>
+<p><strong>Page Number（页号）</strong>：<br />
+    地址除掉低 12 位的 Offset 后，剩下的高位（<span class="arithmatex">\(32-12=20\)</span>位）统统叫做页号。</p>
+<ul>
 <li>虚拟地址的高位叫 <strong>VPN (Virtual Page Number，虚拟页号)</strong>。</li>
 <li>物理地址的高位叫 <strong>PPN (Physical Page Number，物理页号)</strong>。</li>
 </ul>
@@ -6227,10 +6245,12 @@
 <p>⚠️ 注意：整个过程需要数百万个时钟周期，耗时极长，因此有两种解决思路：</p>
 <ol>
 <li>switch to another process（切换到另一个进程）来利用 CPU 时间，这一种策略在之后讲解 GPU 设计的章节中会有更详细的介绍</li>
-<li>降低 <code>page fault rate</code>（页错误率）主要手段包括：</li>
+<li>降低 <code>page fault rate</code>（页错误率）主要手段包括：<ul>
 <li><strong>采用 <code>Fully associative placement</code>（全相联放置策略）</strong>，提高页的命中率</li>
 <li><strong>使用 <code>Smart replacement algorithms</code>（智能替换算法）</strong>，优化页替换策略<ul>
 <li>即使考虑 <code>page fault penalty</code>，这类算法依然有效，能显著降低页错误率</li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
@@ -6299,11 +6319,15 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <p>TLB 的每个 Entry 包含：</p>
 <ul>
 <li><strong>data: PPN</strong>，核心数据，用于拼接地址</li>
-<li><strong>Tag: VPN</strong>，索引数据，用于查表。此外，由于 TLB 必须具有高命中率，因此通常采用<strong>Fully Associative</strong>的结构设计，即每个 Entry 都需要一个 VPN Tag 来进行比较。<blockquote>
+<li>
+<p><strong>Tag: VPN</strong>，索引数据，用于查表。此外，由于 TLB 必须具有高命中率，因此通常采用<strong>Fully Associative</strong>的结构设计，即每个 Entry 都需要一个 VPN Tag 来进行比较。</p>
+<blockquote>
 <p>这也就是说 <strong>TLB 大小不能太大</strong>，否则比较电路的复杂度和延迟都会大幅增加。</p>
 </blockquote>
 </li>
-<li><strong>Ref bit</strong>: 用于记录该条目是否被访问过，通常在替换算法中使用。</li>
+<li>
+<p><strong>Ref bit</strong>: 用于记录该条目是否被访问过，通常在替换算法中使用。</p>
+</li>
 <li><strong>Dirty bit</strong>: <span style='color:green'>与 Page Table 的 dirty bit 含义相同</span>，标记该 page <strong>是否被修改过但还没有写回磁盘。</strong></li>
 <li><strong>Valid bit</strong>: 标记该条目是否有效，即是否包含一个合法的 VPN 到 PPN 的映射。这一个状态位与 Page Table 中的 valid bit 是<span style='color:red'>不同</span>的，指标是 Cache 空了，<strong>不代表物理内存里没这一页</strong></li>
 </ul>
@@ -6459,7 +6483,9 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <li>在 Cache Hit 的黄金路径上，TLB 完全是透明的，没有任何翻译开销。</li>
 </ul>
 </li>
-<li><strong>缺点（著名的“别名/歧义”两大绝症）</strong>：<ol>
+<li>
+<p><strong>缺点（著名的“别名/歧义”两大绝症）</strong>：</p>
+<ol>
 <li><strong>同名异义（Homonyms）</strong>：<br />
     微信说“我的虚拟地址 <code>0x1000</code> 存着聊天记录”，游戏说“我的虚拟地址 <code>0x1000</code> 存着玩家血量”。因为 VIVT 只看虚拟地址，如果不做处理，微信就会读到游戏的血量。<ul>
 <li><em>解决办法</em>：每次进程切换，操作系统必须痛苦地把整个 L1 Cache 全部 <strong>Flush（清空）</strong>，性能损耗极大。在比对时，我们需要<strong>同时比对虚拟地址和进程 ID</strong>，才能确保拿到正确的数据。</li>
@@ -6470,7 +6496,9 @@ CPU 执行代码的流程，准确来说应该是：</p>
     在 VIVT 中，这会导致同一个物理数据，在 Cache 的两个不同虚拟位置上各存了一份。微信改了它的那份，游戏读它的那份却没更新，<strong>导致严重的缓存不一致</strong>！</li>
 </ol>
 </li>
-<li><strong>现状</strong>：因为这两个绝症太难治，现代通用 CPU（如 Intel、AMD、ARM、MIPS）已经<strong>基本淘汰了 L1 Cache 的 VIVT 设计</strong>。</li>
+<li>
+<p><strong>现状</strong>：因为这两个绝症太难治，现代通用 CPU（如 Intel、AMD、ARM、MIPS）已经<strong>基本淘汰了 L1 Cache 的 VIVT 设计</strong>。</p>
+</li>
 <li></li>
 </ul>
 <h4 id="663-vipt">6.6.3 VIPT<a class="headerlink" href="#663-vipt" title="Permanent link">&para;</a></h4>
@@ -6490,25 +6518,27 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <li><strong>MMU 把翻译出来的物理 PPN（Tag）跟 Cache 吐出的物理 Tag 进行比对</strong>。</li>
 </ul>
 </li>
-<li>比对成功，数据拿走。</li>
-</ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>               CPU 发出虚拟地址 (VA)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>                       │
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>          ┌────────────┴────────────┐
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>       高位 VPN                  低位 Offset (≤12 bit)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>          │                         │
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      送往 TLB 翻译             直接作为虚拟 Index
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>          │                         │
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>     吐出物理 PPN              选通并读取 Cache 行
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>          │                         │
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>          └────────────┬────────────┘
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                       ▼
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>                 比对两端的物理 Tag (Physically Tagged)
+<li>
+<p>比对成功，数据拿走。</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>           CPU 发出虚拟地址 (VA)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>                   │
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>      ┌────────────┴────────────┐
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>   高位 VPN                  低位 Offset (≤12 bit)
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>      │                         │
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  送往 TLB 翻译             直接作为虚拟 Index
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>      │                         │
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a> 吐出物理 PPN              选通并读取 Cache 行
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>      │                         │
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>      └────────────┬────────────┘
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                   ▼
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>             比对两端的物理 Tag (Physically Tagged)
 </span></code></pre></div>
-<ul>
-<li><strong>为什么快？</strong>：TLB 翻译和 Cache 索引<strong>在硬件上是完全并行的</strong>。</li>
+</li>
+<li>
+<p><strong>为什么快？</strong>：TLB 翻译和 Cache 索引<strong>在硬件上是完全并行的</strong>。</p>
+</li>
 <li><strong>为什么没有同名异义（Homonym）问题？</strong>：因为虽然我们用了虚拟 Index，但我们最后比对的是<strong>物理 Tag（Physically Tagged）</strong>。如果两个进程的虚拟地址撞车，<span style="color: red;">但因为它们翻译出来的 PPN 绝不相同</span>，比对 Tag 时瞬间就会发现不匹配，从而完美避开歧义。</li>
-</ul>
+</ol>
 <p><strong>缺点</strong>：</p>
 <p>VIPT 看起来如此完美，但它在物理上有一个致命的<strong>约束条件</strong>：</p>
 <blockquote>
