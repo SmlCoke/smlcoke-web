@@ -616,6 +616,8 @@ $$\text{AMAT} = \text{Hit\ time} + \text{Miss\ rate} \times \text{Miss\ penalty}
 
 **结论**：仅仅加入了一个延迟为 5ns 的 L2 Cache，就让整个 CPU 的性能提升了 **2.6 倍 (9.0 / 3.4)**！这就是多级 Cache 的威力。
 
+> 多级缓存的 Miss Penalty 和 CPI 计算方法详见：[多级缓存的性能计算](./multilevel_cache_performance.md)
+
 #### 5.6.3 架构设计探讨 (Considerations)
 基于多级体系，微架构师还需要决定：
 
