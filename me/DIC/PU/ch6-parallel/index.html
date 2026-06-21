@@ -4659,7 +4659,7 @@
 <h3 id="23-vector-processor-vs-simd">2.3 Vector Processor vs SIMD<a class="headerlink" href="#23-vector-processor-vs-simd" title="Permanent link">&para;</a></h3>
 <h4 id="231">2.3.1 加速方式的对比<a class="headerlink" href="#231" title="Permanent link">&para;</a></h4>
 <p>Vector Processor 加速的方式：将底层整个单元向量化，例如功能单元和寄存器都要向量化<br />
-SIMD 加速的方式：在原来的数据宽度的基础上，拆成更小的数据块都，例如 256 拆分成 4 个 64-bit 的数据块，<strong>功能单元和寄存器不需要向量化，还是用原来的标量 Datapath，缺点就是要定义新的指令（.4D, .4S, .16D, .16S...），指令集的膨胀非常快</strong>。</p>
+SIMD 加速的方式：在原来的数据宽度的基础上，拆成更小的数据宽度，例如 256 拆分成 4 个 64-bit 的数据块，<strong>功能单元和寄存器不需要向量化，还是用原来的标量 Datapath，缺点就是要定义新的指令（.4D, .4S, .16D, .16S...），指令集的膨胀非常快</strong>。</p>
 <h4 id="232-vector-vs-scalar">2.3.2 Vector VS Scalar<a class="headerlink" href="#232-vector-vs-scalar" title="Permanent link">&para;</a></h4>
 <ul>
 <li>Vector architectures and compilers<ul>
