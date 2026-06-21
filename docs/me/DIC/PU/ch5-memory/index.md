@@ -311,7 +311,7 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 
 !!! example "例子分析"
     对于 8 blocks, 1 byte/block 的 Cache, 考虑 5bit 的地址系统
-    **offset 位有 $log_2(1) = 0$ 位，index 有 $log_2(8) = 3$ 位，tag 有 5 - 1 - 3 = 1 位**
+    **offset 位有 $log_2(1) = 0$ 位，index 有 $log_2(8) = 3$ 位，tag 有 5 - 0 - 3 = 2 位**
 
     1. 上电前，所有 block 的 **valid** 都是 **N** ；
     2. 写入 $22(10110_2)$ 时（冷启动缺失，Cold miss），将 Cache 的第 **110** 个 block 写入地址 **22** 的数据；
