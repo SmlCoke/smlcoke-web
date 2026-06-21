@@ -4680,7 +4680,7 @@
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// A = B * C, 8192 = 16 * 512</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">vect_mult</span><span class="o">&lt;&lt;&lt;</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">512</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
 </span></code></pre></div>
-<p>这里的含义是：把 8192 个元素划分成 16 个 thread block，每个 thread block 有 512 个 thread。也可以换成其他满足总线程数需求的配置（例如手写标注中写到的 <code>8 x 1024</code>），但实际可行的 <code>dimBlock</code> 会受硬件最大线程数、寄存器、shared memory 等资源限制。</p>
+<p>这里的含义是：把 8192 个元素划分成 16 个 thread block，每个 thread block 有 512 个 thread。也可以换成其他满足总线程数需求的配置（例如 <code>8 x 1024</code>），但实际可行的 <code>dimBlock</code> 会受硬件最大线程数、寄存器、shared memory 等资源限制。</p>
 <h3 id="22-thread-model">2.2 Thread Model<a class="headerlink" href="#22-thread-model" title="Permanent link">&para;</a></h3>
 <h4 id="221-thread-hierarchy">2.2.1 Thread Hierarchy<a class="headerlink" href="#221-thread-hierarchy" title="Permanent link">&para;</a></h4>
 <p>CUDA 的线程层级是：</p>

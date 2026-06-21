@@ -4441,18 +4441,26 @@
 <ul>
 <li>GPU: Graphics Processing Unit: 图形处理器，是专门为图形渲染和并行计算设计的处理器。</li>
 <li>GPGPU: General-Purpose Graphics Processing Units: 通用图形处理器，起源于GPU，专为并行计算而生</li>
-<li>Flynn terminology</li>
+<li>Flynn terminology<ul>
 <li>SISD, SIMD, MISD, MIMD</li>
-<li>Parallelism</li>
+</ul>
+</li>
+<li>Parallelism<ul>
 <li>ILP, DLP, TLP</li>
-<li>Parallel architecture</li>
+</ul>
+</li>
+<li>Parallel architecture<ul>
 <li>Multi-core, cluster, WSE</li>
+</ul>
+</li>
 </ul>
 <h3 id="12-cpu-vs-gpu">1.2 CPU vs. GPU<a class="headerlink" href="#12-cpu-vs-gpu" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Multi-core</strong>: relative <strong>a small number of cores</strong>, each one is a full-flesh processor</li>
-<li><strong>Many-core</strong>: a large number of cores, each one is <strong>much smaller and simpler</strong></li>
+<li><strong>Many-core</strong>: a large number of cores, each one is <strong>much smaller and simpler</strong><ul>
 <li>Transistors are <strong>devoted to compute-intensive processing</strong>, not caching and control</li>
+</ul>
+</li>
 </ul>
 <p>CPU 每一个核功能完整，包含计算、控制、缓存等功能；GPU 每一个核功能简化，主要用于计算，控制和缓存功能较弱。GPU 把更多的资源留给了计算，因此在处理计算任务时表现更好。</p>
 <p><img alt="alt text" src="image.webp" /></p>
