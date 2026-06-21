@@ -482,7 +482,7 @@ Address Seq: 0, 8, 0, 6, 8
 | --- | --- | --- | --- | --- | --- | --- |
 | 0 | 0 | Miss | <span style="color: red;">Mem[0]</span> |   |   |   |
 | 8 | 2 | Miss | <span style="color: red;">Mem[8]</span> |   |  |   |
-| 0 | 0 | Hit | <span style="color: red;">Mem[0]</span> |   |  |   |
+| 0 | 0 | Miss | <span style="color: red;">Mem[0]</span> |   |  |   |
 | 6 | 1 | Miss | Mem[0] | | Mem[6] |   |
 | 8 | 2 | Hit | <span style="color: red;">Mem[8]</span> | |  Mem[6] |   |
 
@@ -494,7 +494,7 @@ Address Seq: 0, 8, 0, 6, 8
 | 8 | 2 | Miss | Mem[0] | <span style="color: red;">Mem[8]</span> |  |   |
 | 0 | 0 | Hit | <span style="color: green;">Mem[0]</span> | Mem[8] |  |   |
 | 6 | 1 | Miss | Mem[0] | <span style="color: red;">Mem[6]</span> |  |   |
-| 8 | 2 | Miss | <span style="color: red;">Mem[8]</span> | |  Mem[6] |   |
+| 8 | 2 | Miss | <span style="color: red;">Mem[8]</span> | Mem[6] | |   |
 
 **Fully Associative**
 
@@ -517,13 +517,13 @@ Simulation of a system with 64KB D-cache, 16-word blocks, SPEC2000
 
 ### 5.4 Sources of Miss
 
-- Compulsory misses (aka cold start misses) （强制性缺失/冷缺失）
+- **Compulsory misses (aka cold start misses) （强制性缺失/冷缺失）**
     - 首次访问某数据块时发生
     - 当然，如果 block 是多个 word 的话，再次访问同一 block 内的其他 word 时就不会了，因为可以一开始就 load 整个 block 进 cache
-- Capacity misses
+- **Capacity misses**
     - 由**缓存容量有限**导致，典型就是 Fully Associative Cache 满了 
     - 被替换出的数据块后续再次被访问
-- Conflict misses (aka collision misses)
+- **Conflict misses (aka collision misses)**
     - 发生在**非Fully Associative**中
     - 由**set 内 entry 竞争引发**
     - 在总容量相同的Fully Associative中不会出现
