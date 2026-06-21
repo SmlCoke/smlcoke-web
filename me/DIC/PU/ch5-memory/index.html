@@ -5599,10 +5599,12 @@
 <div class="admonition note">
 <p class="admonition-title">例子分析</p>
 <p>64 Blocks, 16 Bytes/block 的直接映射 Cache<br />
-假设 CPU 访问十进制地址 <code>1200</code>（二进制 <code>1 001011 0000</code>）：<br />
-* Offset：16 Bytes 需要 4 bit，所以低 4 位 <code>0000</code> 是 Offset。<br />
-* Index：64 个 Block 需要 6 bit，所以紧接着的 <code>001011</code>（十进制 11）是 Index。<br />
-* Tag：剩余的高位 <code>1</code> 是 Tag。</p>
+假设 CPU 访问十进制地址 <code>1200</code>（二进制 <code>1 001011 0000</code>）：</p>
+<ul>
+<li>Offset：16 Bytes 需要 4 bit，所以低 4 位 <code>0000</code> 是 Offset。</li>
+<li>Index：64 个 Block 需要 6 bit，所以紧接着的 <code>001011</code>（十进制 11）是 Index。</li>
+<li>Tag：剩余的高位 <code>1</code> 是 Tag。</li>
+</ul>
 </div>
 <h4 id="514-miss-and-hit">5.1.4 Miss and Hit<a class="headerlink" href="#514-miss-and-hit" title="Permanent link">&para;</a></h4>
 <p><strong>(1) Hit (命中)</strong>：CPU 去 Cache 中找数据，发现<strong>数据在里面</strong>（硬件判断标准：对应位置的 Valid 位为 1，并且 Cache 里存的 Tag 和 CPU 发出的地址的 Tag 完全一致）。此时 CPU 可以全速继续运行。<br />
