@@ -5813,7 +5813,7 @@
 <tr>
 <td>0</td>
 <td>0</td>
-<td>Hit</td>
+<td>Miss</td>
 <td><span style="color: red;">Mem[0]</span></td>
 <td></td>
 <td></td>
@@ -5894,8 +5894,8 @@
 <td>2</td>
 <td>Miss</td>
 <td><span style="color: red;">Mem[8]</span></td>
-<td></td>
 <td>Mem[6]</td>
+<td></td>
 <td></td>
 </tr>
 </tbody>
@@ -5971,17 +5971,17 @@
 </ul>
 <h3 id="54-sources-of-miss">5.4 Sources of Miss<a class="headerlink" href="#54-sources-of-miss" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Compulsory misses (aka cold start misses) （强制性缺失/冷缺失）<ul>
+<li><strong>Compulsory misses (aka cold start misses) （强制性缺失/冷缺失）</strong><ul>
 <li>首次访问某数据块时发生</li>
 <li>当然，如果 block 是多个 word 的话，再次访问同一 block 内的其他 word 时就不会了，因为可以一开始就 load 整个 block 进 cache</li>
 </ul>
 </li>
-<li>Capacity misses<ul>
+<li><strong>Capacity misses</strong><ul>
 <li>由<strong>缓存容量有限</strong>导致，典型就是 Fully Associative Cache 满了 </li>
 <li>被替换出的数据块后续再次被访问</li>
 </ul>
 </li>
-<li>Conflict misses (aka collision misses)<ul>
+<li><strong>Conflict misses (aka collision misses)</strong><ul>
 <li>发生在<strong>非Fully Associative</strong>中</li>
 <li>由<strong>set 内 entry 竞争引发</strong></li>
 <li>在总容量相同的Fully Associative中不会出现</li>
