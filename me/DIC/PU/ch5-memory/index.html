@@ -5593,8 +5593,8 @@
 <p>当 CPU 发出一个物理地址时，该地址会被硬件划分为三个字段：</p>
 <ul>
 <li><strong>Tag（标记位）</strong>：用于和 Cache 内部存储的 Tag 比对。</li>
-<li><strong>Index（索引位）</strong>：用于直接寻址（选中）特定的 Cache 行。它的位宽决定了 Cache 有多少个 Block（例如 6 bit 对应 64 个 Blocks）。</li>
-<li><strong>Offset（偏移位）</strong>：包含 Byte offset 和 Block offset，用于确定所需的数据在当前 Block 的具体哪个字节。它的位宽取决于 Block 的大小（例如 <strong>16 bytes/block</strong> 需要 <strong>4 bit</strong> 作为 offset，因为 <span class="arithmatex">\(2^4 = 16\)</span>）。</li>
+<li><strong>Index（索引位）</strong>：用于直接寻址（选中）特定的 Cache 行。它的位宽决定了 Cache 有多少个 Block（例如 6 bit 对应 64 个 Blocks）。假设 Cache 中有 <span class="arithmatex">\(n\)</span> 个块，则 index 的位宽为 <span class="arithmatex">\(log_2(n)\)</span>。</li>
+<li><strong>Offset（偏移位）</strong>：包含 Byte offset 和 Block offset，用于确定所需的数据在当前 Block 的具体哪个字节。它的位宽取决于 Block 的大小（例如 <strong>16 bytes/block</strong> 需要 <strong>4 bit</strong> 作为 offset，因为 <span class="arithmatex">\(2^4 = 16\)</span>）。假设 Block 包含 <span class="arithmatex">\(m\)</span> 个字节（其中 <span class="arithmatex">\(m\)</span> 一般是 2 的幂次方），则 offset 的位宽为 <span class="arithmatex">\(log_2(m)\)</span>。</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">例子分析</p>
@@ -5609,7 +5609,10 @@
 <h4 id="514-miss-and-hit">5.1.4 Miss and Hit<a class="headerlink" href="#514-miss-and-hit" title="Permanent link">&para;</a></h4>
 <p><strong>(1) Hit (命中)</strong>：CPU 去 Cache 中找数据，发现<strong>数据在里面</strong>（硬件判断标准：对应位置的 Valid 位为 1，并且 Cache 里存的 Tag 和 CPU 发出的地址的 Tag 完全一致）。此时 CPU 可以全速继续运行。<br />
 <strong>(2) Miss (缺失)</strong>：CPU 去 Cache 中找数据，发现<strong>数据不在里面</strong>（硬件判断标准：对应位置 Valid 为 0，<strong>或者</strong>虽然 Valid 为 1，但存的 Tag 跟 CPU 请求的 Tag 不一样）。此时 Cache 必须去主存搬运数据，CPU 必须停顿等待（Stall）。</p>
-<p>对于 8 blocks, 1 byte/block 的 Cache</p>
+<div class="admonition example">
+<p class="admonition-title">例子分析</p>
+<p>对于 8 blocks, 1 byte/block 的 Cache, 考虑 5bit 的地址系统<br />
+<strong>offset 位有 <span class="arithmatex">\(log_2(1) = 0\)</span> 位，index 有 <span class="arithmatex">\(log_2(8) = 3\)</span> 位，tag 有 5 - 1 - 3 = 1 位</strong></p>
 <ol>
 <li>上电前，所有 block 的 <strong>valid</strong> 都是 <strong>N</strong> ；</li>
 <li>写入 <span class="arithmatex">\(22(10110_2)\)</span> 时（冷启动缺失，Cold miss），将 Cache 的第 <strong>110</strong> 个 block 写入地址 <strong>22</strong> 的数据；</li>
@@ -5619,6 +5622,7 @@
 <li>访问 <span class="arithmatex">\(26(11010_2)\)</span> 时，Cache 的第 <strong>010</strong> 个 block 存在数据，<strong>Valid = Y</strong> 但 <strong>tag 不匹配</strong>，<strong>miss</strong>。此时会发生<strong>替换</strong>（replacement），将地址 <strong>18</strong> 的数据替换为地址 <strong>26</strong> 的数据。</li>
 <li>访问 <span class="arithmatex">\(10(01010_2)\)</span> 时，Cache 的第 <strong>010</strong> 个 block 存在数据，<strong>Valid = Y</strong> 但 <strong>tag 不匹配</strong>，<strong>miss</strong>。此时会发生<strong>替换</strong>（replacement），将地址 <strong>26</strong> 的数据替换为地址 <strong>10</strong> 的数据。</li>
 </ol>
+</div>
 <h4 id="515-cache-block-size">5.1.5 Cache Block Size（块大小的权衡）<a class="headerlink" href="#515-cache-block-size" title="Permanent link">&para;</a></h4>
 <p>改变每个 Cache Block 的大小会对性能（Miss rate）产生显著影响，这是一个经典的体系结构 Trade-off：</p>
 <ul>
