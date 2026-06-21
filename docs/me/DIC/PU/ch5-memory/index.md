@@ -46,6 +46,7 @@
 - 典型场景：循环体中的指令、循环计数的归纳变量、被频繁调用的函数、高频访问的全局变量
 
 #### 2.1.2 空间局部性（Spatial locality）
+
 - 核心定义：**被访问内容的相邻地址数据，在不久的将来大概率会被访问**
 - 典型场景：顺序执行的指令流、**数组元素**的连续遍历、结构体成员的批量访问
 
@@ -72,7 +73,7 @@
 | 缺失率 | Miss ratio | 缺失访问次数 / 总访问次数 = 1 - 命中率 |
 | **缺失代价** | **Miss penalty** | 处理**一次缺失的总耗时**，包括从**下层存储替换数据块、向上层传输数据**的完整时间 |
 | inclusive | exclusive | 上层存储中的数据**一定存在于下层存储中**，例如 Register File 中的数据一定存在于 SRAM -> DRAM -> Disk 中 |
-| exclusive | exclusive | 上层存储中的数据**不一定存在于下层存储中**，例如 Cache 中的数据不一定存在于 DRAM 中 |
+| exclusive | exclusive | 上层存储中的数据**一定不存在于下层存储中**，例如 Cache 中的数据一定不存在于 DRAM 中 |
 
 **exclusive 的策略比较少，后续情况我们默认考虑 inclusive 情况**
 
@@ -88,11 +89,13 @@
 
 
 ### 3.1 核心结构与特性
+
 - 典型配置：RISC-V架构标准为32个32位通用整数寄存器
 - 读写端口：标准配置为**2个读端口、1个写端口（2R1W）**，支持单周期内同时读取2个寄存器、写入1个寄存器，完美匹配五级流水线的指令执行需求
 - 访问特性：寄存器访问延迟为1个时钟周期，无访问缺失，是CPU指令执行的核心数据载体
 
 ### 3.2 寄存器堆的Verilog实现示例
+
 ```verilog
 module registerfile (
     Read1, Read2, WriteReg, WriteData, RegWrite,
@@ -188,13 +191,16 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 
 *   **行级访问**：DRAM 每次访问（Access）都会激活一整个 Row，并将其放入行缓冲区（Column latches / Row buffer）中。
 *   **Burst mode (突发模式)**：既然一整行的数据已经被读出到了缓冲区中，如果后续请求的地址是连续的，就可以直接从缓冲区中**以极低的延迟连续提供后续字（Supply successive words with reduced latency）**，而无需再次进行缓慢的内部行读取。
+
     > **更好的方式**是尽量做到一行中存放想要的数据，这样就不需要多次切换不同行的访问。因为每次访问完一行，电容上的电荷都会损失，需要重新充电（Recharged），这会带来额外的访问延迟。
+
 *   **DDR (Double Data Rate) DRAM**：通过在时钟信号的**上升沿和下降沿**同时传输数据，使得数据传输速率翻倍。
 
 ![alt text](image-7.webp)
 
 ### 5.3 决定 DRAM 性能的核心因素
 现代存储系统通过以下三大核心技术来榨干/提升 DRAM 的性能（特别是提升带宽）：
+
 1.  **Row buffer (行缓冲区)**：允许**并行读取**和刷新多个字，是实现**Burst mode**的物理基础。
 2.  **Synchronous DRAM (SDRAM, 同步DRAM)**：配合系统时钟，允许连续的**突发访问**（Consecutive accesses in bursts），**无需为每个字单独发送地址（Without needing to send each address）**，大幅提升了总线**带宽（Bandwidth）**。
 3.  **DRAM banking (多体交叉/多Bank结构)**：允许同时（Simultaneous access）访问多个不同的 DRAM Bank，通过并行流水线操作掩盖单一 Bank 漫长的内部访问延迟，成倍提升吞吐量。
@@ -264,6 +270,7 @@ DRAM 内部的比特位同样被组织成**矩形阵列（Rectangular array）**
 ### 5.1 Cache 基础概念与直接映射机制 (Cache Basics & Direct Mapped Cache)
 
 作为距离 CPU 最近的存储层级，Cache 的核心目标是利用**程序的局部性（Locality）**来弥合 CPU 计算速度与主存（DRAM）读取速度之间的巨大鸿沟。在任何层级的存储器体系中，都需要解决以下四个核心问题：
+
 1. **Block placement（块放置）**：数据块应该放在 Cache 的什么位置？
 2. **Finding a block（查找块）**：如何判断数据块是否在 Cache 中？
 3. **Replacement on a miss（缺失替换）**：当 Cache 满了且发生 Miss 时，替换掉哪个块？
@@ -687,7 +694,9 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 - 每个进程都拥有独立的 **private virtual address space**，用于存放其常用代码和数据（活跃部分）
 - 向每个程序，也向程序员，提供了虚拟内存容量无限的假象
 - 简化了程序的**加载执行**（reallocation）
-  > 例如启动时将程序从硬盘搬到内存时，如果内存碎片化非常严重，**很难找到一段连续的空间**，但是虚拟内存技术掩盖了这个问题。如果没有虚拟内存技术的话，会**将其他程序的内存空间数据进行搬移**，导致加载时间很长。
+
+    > 例如启动时将程序从硬盘搬到内存时，如果内存碎片化非常严重，**很难找到一段连续的空间**，但是虚拟内存技术掩盖了这个问题。如果没有虚拟内存技术的话，会**将其他程序的内存空间数据进行搬移**，导致加载时间很长。
+
 - 受到其他程序的保护（注：结合上下文，此处指进程内存空间被保护，不受其他程序干扰）
 
 
@@ -721,6 +730,7 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 1.  **Page Offset（页内偏移）**：
     既然一页有 4096 个字节，为了在这 4096 个字节中精准定位到某一个字节，我们需要 **12 bit**。
     **极其重要的一点：在虚拟地址转换为物理地址的过程中，Page Offset 是绝对不变的！**
+
 2.  **Page Number（页号）**：
     地址除掉低 12 位的 Offset 后，剩下的高位（$32-12=20$位）统统叫做页号。
     *   虚拟地址的高位叫 **VPN (Virtual Page Number，虚拟页号)**。
@@ -778,9 +788,9 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 
 1. switch to another process（切换到另一个进程）来利用 CPU 时间，这一种策略在之后讲解 GPU 设计的章节中会有更详细的介绍
 2. 降低 `page fault rate`（页错误率）主要手段包括：
-   - **采用 `Fully associative placement`（全相联放置策略）**，提高页的命中率
-   - **使用 `Smart replacement algorithms`（智能替换算法）**，优化页替换策略
-       - 即使考虑 `page fault penalty`，这类算法依然有效，能显著降低页错误率
+    - **采用 `Fully associative placement`（全相联放置策略）**，提高页的命中率
+    - **使用 `Smart replacement algorithms`（智能替换算法）**，优化页替换策略
+        - 即使考虑 `page fault penalty`，这类算法依然有效，能显著降低页错误率
 
 
 #### 6.3.3 Page Fault Handler
@@ -845,7 +855,9 @@ TLB 的每个 Entry 包含：
 
 - **data: PPN**，核心数据，用于拼接地址
 - **Tag: VPN**，索引数据，用于查表。此外，由于 TLB 必须具有高命中率，因此通常采用**Fully Associative**的结构设计，即每个 Entry 都需要一个 VPN Tag 来进行比较。
-  > 这也就是说 **TLB 大小不能太大**，否则比较电路的复杂度和延迟都会大幅增加。
+
+    > 这也就是说 **TLB 大小不能太大**，否则比较电路的复杂度和延迟都会大幅增加。
+
 - **Ref bit**: 用于记录该条目是否被访问过，通常在替换算法中使用。
 - **Dirty bit**: <span style='color:green'>与 Page Table 的 dirty bit 含义相同</span>，标记该 page **是否被修改过但还没有写回磁盘。**
 - **Valid bit**: 标记该条目是否有效，即是否包含一个合法的 VPN 到 PPN 的映射。这一个状态位与 Page Table 中的 valid bit 是<span style='color:red'>不同</span>的，指标是 Cache 空了，**不代表物理内存里没这一页**
@@ -880,6 +892,7 @@ TLB 的每个 Entry 包含：
 硬件首先将虚拟地址拆分为：**VPN (虚拟页号) + Page Offset (页内偏移)**。
 
 ##### 1. TLB 查找（闪电战，绝大多数情况）
+
 *   **【TLB 命中 (TLB Hit)】**：
     *   太好了！直接在 TLB 中找到了对应的 **PPN (物理页号)** 。
     *   硬件直接将 **PPN + Page Offset** 拼接，瞬间合成出**物理地址 (PA)** 。
@@ -889,6 +902,7 @@ TLB 的每个 Entry 包含：
     *   **前往第 2 步**。
 
 ##### 2. Page Table 查找（常规通道）
+
 *   MMU 顺着 **PTBR（页表基址寄存器）** 的导航，去物理内存（DRAM）中查该程序的 **Page Table（页表）** 。
 *   **【页表命中 (PTE Valid = 1)】**：
     *   找到了！数据其实在内存里，只是刚才没缓存进 TLB 。
@@ -900,6 +914,7 @@ TLB 的每个 Entry 包含：
     *   **前往第 3 步** 。
 
 ##### 3. 缺页处理（操作系统介入，最慢通道）
+
 *   CPU 触发 **Page Fault 异常**，暂停当前程序，操作系统（OS）接管 CPU 。
 *   OS 去**硬盘 (Disk)** 中定位该页的数据。
 *   OS 查看物理内存（DRAM）是否还有空闲位置：
@@ -916,6 +931,7 @@ TLB 的每个 Entry 包含：
 硬件将物理地址拆分为：**Tag (标记) + Index (索引) + Block Offset (块内偏移)**。
 
 ##### 4. Cache 查找（高速通道）
+
 *   硬件根据 Index 找到对应的 Cache Set（组），并在该组内比对 Tag。
 *   **【Cache 命中 (Cache Hit)】**：
     *   狂喜！数据就在 Cache 里。
@@ -926,6 +942,7 @@ TLB 的每个 Entry 包含：
     *   **前往第 5 步**。
 
 ##### 5. DRAM 访问（最终存储）
+
 *   系统总线向**物理内存 (DRAM)** 发出读请求，读取包含该物理地址的**整个数据块 (Block)**。
 *   **Cache 替换（踢人环节）**：
     *   Cache 必须挑一个 Block 踢走以容纳新块。
@@ -974,6 +991,7 @@ $$\mathbf{[Index\ 方式]\ I\ [Tag\ 方式]\ T}$$
     2.  **同义异名（Synonyms）**：
         微信和游戏共享了一块物理内存（比如物理地址 `0x8000`）。但微信通过虚拟地址 `0x1000` 访问，游戏通过虚拟地址 `0x4000` 访问。
         在 VIVT 中，这会导致同一个物理数据，在 Cache 的两个不同虚拟位置上各存了一份。微信改了它的那份，游戏读它的那份却没更新，**导致严重的缓存不一致**！
+
 *   **现状**：因为这两个绝症太难治，现代通用 CPU（如 Intel、AMD、ARM、MIPS）已经**基本淘汰了 L1 Cache 的 VIVT 设计**。
 *   
 
@@ -994,7 +1012,7 @@ $$\mathbf{[Index\ 方式]\ I\ [Tag\ 方式]\ T}$$
     *   **MMU 把翻译出来的物理 PPN（Tag）跟 Cache 吐出的物理 Tag 进行比对**。
 4.  比对成功，数据拿走。
 
-```text
+    ```text
                CPU 发出虚拟地址 (VA)
                        │
           ┌────────────┴────────────┐
@@ -1007,7 +1025,7 @@ $$\mathbf{[Index\ 方式]\ I\ [Tag\ 方式]\ T}$$
           └────────────┬────────────┘
                        ▼
                  比对两端的物理 Tag (Physically Tagged)
-```
+    ```
 
 *   **为什么快？**：TLB 翻译和 Cache 索引**在硬件上是完全并行的**。
 *   **为什么没有同名异义（Homonym）问题？**：因为虽然我们用了虚拟 Index，但我们最后比对的是**物理 Tag（Physically Tagged）**。如果两个进程的虚拟地址撞车，<span style="color: red;">但因为它们翻译出来的 PPN 绝不相同</span>，比对 Tag 时瞬间就会发现不匹配，从而完美避开歧义。
@@ -1037,6 +1055,7 @@ For a memory hierarchy, **possible events** in the TLB, virtual memory and cache
 在多任务操作系统中，多个并发运行的进程（Tasks）共享物理内存，甚至可以共享部分虚拟地址空间（如共享库、进程间通信映射）。为了防止程序因错误指针引发的误访问（Errant Access）或恶意攻击，硬件和操作系统必须协同实现强力的**内存保护机制**。
 
 #### 1. 内存保护的基本原理 (Memory Protection Principles)
+
 *   **防止恶意修改**：将页表（Page Tables）放置在操作系统（OS）专属的受保护地址空间（内核空间）中。用户进程无法直接读写页表，只有 OS 可以修改页表映射。这确保了用户进程只能访问 OS 分配给它的合法内存。
 *   **防止跨进程读取**：硬件机制确保一个进程无法读取或写入另一个进程的数据。
 
@@ -1065,6 +1084,7 @@ For a memory hierarchy, **possible events** in the TLB, virtual memory and cache
 当操作系统决定将当前运行的进程从 $P_1$ 切换到 $P_2$ 时，必须确保 $P_2$ 无法访问 $P_1$ 的内存空间。
 
 #### 1 无 TLB 的情况
+
 *   **机制**：由于每次访存都直接查内存中的页表，OS 只需要在切换时，将 CPU 内部的**页表基址寄存器（PTR / PTBR）**修改为指向 $P_2$ 的页表物理首地址。
 *   **结果**：切换完成后，CPU 发出的虚拟地址会自动映射到 $P_2$ 对应的页表中，天然实现了空间隔离。
 
@@ -1086,6 +1106,7 @@ For a memory hierarchy, **possible events** in the TLB, virtual memory and cache
 虚拟化技术通过在单一物理硬件平台上模拟出多个独立的完整计算机系统，实现了计算资源的深度共享与安全隔离。
 
 ### 8.1 虚拟机概述 (Overview of Virtual Machines)
+
 *   **角色定义**：
     *   **Host (宿主机)**：提供底层实际物理硬件资源的计算机系统。
     *   **Guest (客户机)**：运行在虚拟环境中的操作系统（Guest OS）及其实际应用程序。
