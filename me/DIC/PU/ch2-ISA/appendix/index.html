@@ -4255,7 +4255,7 @@
 <td>内存存储操作</td>
 </tr>
 <tr>
-<td>SB-type</td>
+<td>B-type</td>
 <td>Branch</td>
 <td>条件分支操作</td>
 </tr>
@@ -4265,7 +4265,7 @@
 <td>高位立即数加载，构建32位常数</td>
 </tr>
 <tr>
-<td>UJ-type</td>
+<td>J-type</td>
 <td>Jump</td>
 <td>无条件跳转操作</td>
 </tr>
@@ -4333,6 +4333,31 @@
 </tr>
 </tbody>
 </table>
+<p>(<code>addi/lw/jalr</code>等)</p>
+<p>或者：</p>
+<table>
+<thead>
+<tr>
+<th>funct7</th>
+<th>immediate[4:0]</th>
+<th>rs1</th>
+<th>funct3</th>
+<th>rd</th>
+<th>opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7位</td>
+<td>5位</td>
+<td>5位</td>
+<td>3位</td>
+<td>5位</td>
+<td>7位</td>
+</tr>
+</tbody>
+</table>
+<p>()(<code>slli/srli/srai</code>等)</p>
 <ul>
 <li>核心opcode：<ul>
 <li>立即数<strong>算术</strong>：<code>0010011</code>（<code>addi/xori/ori/andi</code>等）</li>
@@ -4371,7 +4396,7 @@
 <li>核心指令：<code>sb/sh/sw/sd</code></li>
 <li>特点：12位立即数拆分为两段，保持rs1/rs2/funct3字段位置与R/I型对齐</li>
 </ul>
-<h4 id="124-sb-typeb-type">1.2.4 SB-type（条件分支型，B-type）<a class="headerlink" href="#124-sb-typeb-type" title="Permanent link">&para;</a></h4>
+<h4 id="124-b-typeb-type">1.2.4 B-type（条件分支型，B-type）<a class="headerlink" href="#124-b-typeb-type" title="Permanent link">&para;</a></h4>
 <p><strong>字段结构</strong>：</p>
 <table>
 <thead>
@@ -4419,7 +4444,7 @@
 </tbody>
 </table>
 <ul>
-<li>固定opcode：<code>0110111</code>（<code>lui</code>）</li>
+<li>固定opcode：<code>0010111</code>(<code>auipc</code>), <code>0110111</code>（<code>lui</code>）</li>
 <li>核心指令：<code>lui</code>（Load Upper Immediate），将20位立即数加载到寄存器高20位，低12位清0</li>
 <li>
 <p>典型用法：配合<code>addi</code>构建32位常数</p>
@@ -4428,7 +4453,7 @@
 </span></code></pre></div>
 </li>
 </ul>
-<h4 id="126-uj-typej-type">1.2.6 UJ-type（无条件跳转型，J-type）<a class="headerlink" href="#126-uj-typej-type" title="Permanent link">&para;</a></h4>
+<h4 id="126-j-typej-type">1.2.6 J-type（无条件跳转型，J-type）<a class="headerlink" href="#126-j-typej-type" title="Permanent link">&para;</a></h4>
 <p><strong>字段结构</strong>：</p>
 <table>
 <thead>
@@ -4548,14 +4573,14 @@
 <td>-</td>
 </tr>
 <tr>
-<td>SB-type</td>
+<td>B-type</td>
 <td>beq</td>
 <td>1100011</td>
 <td>000</td>
 <td>-</td>
 </tr>
 <tr>
-<td>SB-type</td>
+<td>B-type</td>
 <td>bne</td>
 <td>1100011</td>
 <td>001</td>
@@ -4569,7 +4594,7 @@
 <td>-</td>
 </tr>
 <tr>
-<td>UJ-type</td>
+<td>J-type</td>
 <td>jal</td>
 <td>1101111</td>
 <td>-</td>
