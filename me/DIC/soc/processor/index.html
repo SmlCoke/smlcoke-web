@@ -4736,9 +4736,11 @@
 <h2 id="iv-soc-processor-selection">IV. SoC Processor Selection<a class="headerlink" href="#iv-soc-processor-selection" title="Permanent link">&para;</a></h2>
 <p>在 SoC 系统设计初期，最重要的架构决策之一就是处理器的选型。这直接关系到芯片最终的性能、功耗、面积（PPA）以及能否满足实时性要求。</p>
 <h3 id="31">3.1 核心决策与需求分析<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
-<p>在选型时，SoC 架构师必须首先决定以下两个核心问题：<br />
-1. <strong>处理器类型 (What type of processor?)</strong>：选择哪种架构和特点的核？<br />
-2. <strong>处理器数量 (How many processors?)</strong>：单核、同构多核，还是异构多核？</p>
+<p>在选型时，SoC 架构师必须首先决定以下两个核心问题：</p>
+<ol>
+<li><strong>处理器类型 (What type of processor?)</strong>：选择哪种架构和特点的核？</li>
+<li><strong>处理器数量 (How many processors?)</strong>：单核、同构多核，还是异构多核？</li>
+</ol>
 <p>为了做出上述决策，需要对系统的<strong>硬件需求 (Requirements)</strong> 进行严格评估：</p>
 <ul>
 <li><strong>应用类型需求 (Type of applications)</strong>：<ul>
@@ -4766,9 +4768,11 @@
 <li><strong>参数化与定制</strong>：根据计算需求对专用核心进行参数化配置（Parameterize/customize）。</li>
 <li><strong>选择 GPP</strong>：在此基础上，再选择合适的<strong>通用处理器（GPP）</strong>以及配套的系统软件，用于处理上层控制逻辑。</li>
 <li><strong>系统级评估</strong>：评估软硬件协同系统是否满足所有的实时约束。</li>
-<li><strong>迭代反馈</strong>：</li>
+<li><strong>迭代反馈</strong>：<ul>
 <li><em>满足条件 (Yes)</em> <span class="arithmatex">\(\rightarrow\)</span> 选型通过。</li>
 <li><em>不满足 (No)</em> <span class="arithmatex">\(\rightarrow\)</span> <strong>增加更多的核心 (Add another core) 或重新进行参数化配置 (Reparameterize)</strong>，返回第3步重新迭代。</li>
+</ul>
+</li>
 </ol>
 <h4 id="b-other-limitations">路径 B：常规/其他限制驱动 (Other Limitations)<a class="headerlink" href="#b-other-limitations" title="Permanent link">&para;</a></h4>
 <p>当系统<strong>不算极度吃算力，更多受限于功耗、成本、通用互联等常规约束时</strong>（如普通的 IoT 设备），主要围绕通用处理器展开：</p>
@@ -4777,9 +4781,11 @@
 <li><strong>选择 GPP</strong>：直接选择满足初步算力需求的通用处理器核心及其系统软件。</li>
 <li><strong>参数化与定制</strong>：对该 GPP 及其缓存、总线接口等进行参数化配置。</li>
 <li><strong>评估约束</strong>：评估系统是否满足功耗、面积等各类综合限制条件。</li>
-<li><strong>迭代反馈</strong>：</li>
+<li><strong>迭代反馈</strong>：<ul>
 <li><em>满足条件 (Yes)</em> <span class="arithmatex">\(\rightarrow\)</span> 选型通过。</li>
 <li><em>不满足 (No)</em> <span class="arithmatex">\(\rightarrow\)</span> <strong>重新考虑核心选型 (Reconsider core) 或重新进行参数化配置 (Reparameterize)</strong>，返回第2步重新迭代。</li>
+</ul>
+</li>
 </ol>
 <p><img alt="" src="image.webp" /></p>
 <h2 id="v-system-performance-evaluation">V. 系统性能评估与测量 (System Performance Evaluation)<a class="headerlink" href="#v-system-performance-evaluation" title="Permanent link">&para;</a></h2>
@@ -4790,10 +4796,9 @@
 <strong>性能 (Performance) 的定义</strong>：性能与执行时间成反比。</p>
 <div class="arithmatex">\[\text{Performance} = \frac{1}{\text{Execution Time}}\]</div>
 <p><strong>时间维度的分解</strong>：</p>
-<ul>
-<li><strong>消逝/运行时间 (Elapsed / Execution time)</strong>：<span class="arithmatex">\(\text{CPU time} + \text{other time}\)</span>。这是总响应时间，包含了<strong>处理、I/O 等待、操作系统开销、空闲</strong>等所有时间。</li>
-<li><strong>CPU 时间 (CPU time)</strong>：CPU <strong>纯粹花在处理该特定任务上</strong>的时间（扣除了 I/O 等待和其他任务抢占的份额）。</li>
-</ul>
+<div class="language-text highlight"><pre><span></span><code>- **消逝/运行时间 (Elapsed / Execution time)**：$\text{CPU time} + \text{other time}$。这是总响应时间，包含了**处理、I/O 等待、操作系统开销、空闲**等所有时间。
+-  **CPU 时间 (CPU time)**：CPU **纯粹花在处理该特定任务上**的时间（扣除了 I/O 等待和其他任务抢占的份额）。
+</code></pre></div>
 <h3 id="52-cpu-the-iron-law">5.2 CPU 性能铁律 (The Iron Law) —— 核心必考<a class="headerlink" href="#52-cpu-the-iron-law" title="Permanent link">&para;</a></h3>
 <p>要降低 CPU 时间，必须从时钟周期数和时钟频率入手。SoC 架构师必须熟练掌握以下推导和公式：</p>
 <ol>
@@ -4809,11 +4814,13 @@
 <li>CPI is affected by: CPU 硬件设计、<strong>指令组合</strong>（Instruction Mix，受程序、编译器优化影响）。</li>
 <li>CT is affected by: CPU 硬件设计、ISA 等。</li>
 </ul>
-<p>在进行 SoC 优化时，我们需要清楚改变系统的哪个部分会影响公式中的哪个因子：<br />
-*   <strong>算法 (Algorithm)</strong> <span class="arithmatex">\(\rightarrow\)</span> 决定了执行指令的总数 (IC)，也可能影响指令组合 (CPI)。<br />
-*   <strong>编程语言 (Programming language)</strong> <span class="arithmatex">\(\rightarrow\)</span> 影响生成的指令数 (IC) 和平均周期 (CPI)。<br />
-*   <strong>编译器 (Compiler)</strong> <span class="arithmatex">\(\rightarrow\)</span> 通过<strong>优化指令组合</strong>，极大地影响 IC 和 CPI。<br />
-*   <strong>指令集架构 (ISA)</strong> <span class="arithmatex">\(\rightarrow\)</span> <strong>决定了硬件的实现难度</strong>，因此<strong>同时影响 IC, CPI 和 时钟周期长短 (<span class="arithmatex">\(T_c\)</span> / CT)</strong>。</p>
+<p>在进行 SoC 优化时，我们需要清楚改变系统的哪个部分会影响公式中的哪个因子：</p>
+<ul>
+<li><strong>算法 (Algorithm)</strong> <span class="arithmatex">\(\rightarrow\)</span> 决定了执行指令的总数 (IC)，也可能影响指令组合 (CPI)。</li>
+<li><strong>编程语言 (Programming language)</strong> <span class="arithmatex">\(\rightarrow\)</span> 影响生成的指令数 (IC) 和平均周期 (CPI)。</li>
+<li><strong>编译器 (Compiler)</strong> <span class="arithmatex">\(\rightarrow\)</span> 通过<strong>优化指令组合</strong>，极大地影响 IC 和 CPI。</li>
+<li><strong>指令集架构 (ISA)</strong> <span class="arithmatex">\(\rightarrow\)</span> <strong>决定了硬件的实现难度</strong>，因此<strong>同时影响 IC, CPI 和 时钟周期长短 (<span class="arithmatex">\(T_c\)</span> / CT)</strong>。</li>
+</ul>
 <h3 id="53-mips-million-instructions-per-second">5.3 MIPS (Million Instructions per Second) 指标<a class="headerlink" href="#53-mips-million-instructions-per-second" title="Permanent link">&para;</a></h3>
 <p><strong>定义</strong>：<strong>每秒执行的百万条指令数</strong>。<br />
 <strong>计算公式</strong>：</p>
@@ -4823,11 +4830,10 @@
 <p><strong>Benchmark (基准测试程序)</strong>：是一套专门设计用来压榨系统性能极限、模拟真实工作负载的测试代码集。</p>
 <p><strong>SPEC 工业标准 (Standard Performance Evaluation Corporation)</strong>：如 SPEC CPU2006，专门用于评估 CPU 性能（忽略 I/O 等其他部件影响）。</p>
 <p><strong>几何平均数评估法 (Geometric Mean, GM)</strong>：</p>
-<ul>
-<li>SPEC 会选取一个老设备（如 Sun UltraSparc II）作为基准（Baseline）。</li>
-<li>计算各个测试子项的性能比率：<span class="arithmatex">\(\text{SPECRatio}_i = \frac{\text{SPEC}_{\text{baseline}} \text{ Time}}{\text{SPEC}_{\text{CPU}} \text{ Time}}\)</span></li>
-<li>通过对所有 <span class="arithmatex">\(n\)</span> 个子项目的比率求<strong>几何平均值</strong>，得出最终的系统跑分：</li>
-</ul>
+<div class="language-text highlight"><pre><span></span><code>- SPEC 会选取一个老设备（如 Sun UltraSparc II）作为基准（Baseline）。
+- 计算各个测试子项的性能比率：$\text{SPECRatio}_i = \frac{\text{SPEC}_{\text{baseline}} \text{ Time}}{\text{SPEC}_{\text{CPU}} \text{ Time}}$
+- 通过对所有 $n$ 个子项目的比率求**几何平均值**，得出最终的系统跑分：
+</code></pre></div>
 <div class="arithmatex">\[\text{GM} = \sqrt[n]{\prod_{i=1}^{n} \text{SPECRatio}_i}\]</div>
 <h3 id="55-amdahls-law">5.5 阿姆达尔定律 (Amdahl's Law) 与系统优化极限<a class="headerlink" href="#55-amdahls-law" title="Permanent link">&para;</a></h3>
 <p><strong>核心准则</strong>：让系统中<strong>最耗时的部分变快</strong> (make the most time-consuming case fast)。<br />
