@@ -209,9 +209,9 @@ $$\text{T}_{\text{improved}} = \frac{\text{T}_{\text{affected}}}{\text{improveme
     **解题步骤**：
 
     1. **分解时间占比**：
-       *   不受访存优化影响的部分 ($\text{T}_{\text{unaffected1}}$) = 100% - 30% = 0.7
-       *   访存中没有被 Cache 命中的部分 ($\text{T}_{\text{unaffected2}}$) = 30% × (1 - 80%) = 0.3 × 0.2 = 0.06
-       *   真正受到 4 倍加速影响的部分 ($\text{T}_{\text{affected}}$) = 30% × 80% = 0.3 × 0.8 = 0.24
+        *   不受访存优化影响的部分 ($\text{T}_{\text{unaffected1}}$) = 100% - 30% = 0.7
+        *   访存中没有被 Cache 命中的部分 ($\text{T}_{\text{unaffected2}}$) = 30% × (1 - 80%) = 0.3 × 0.2 = 0.06
+        *   真正受到 4 倍加速影响的部分 ($\text{T}_{\text{affected}}$) = 30% × 80% = 0.3 × 0.8 = 0.24
     2. **代入 Amdahl 定律公式计算改进后的总时间**：
 
        $$ \text{T}_{\text{improved}} = \frac{0.3 \times 0.8}{4} + (0.3 \times 0.2) + 0.7 = 0.06 + 0.06 + 0.7 = 0.82 $$
