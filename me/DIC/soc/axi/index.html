@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://smlcoke.com/me/DIC/soc/axi/">
       
       
-        <link rel="prev" href="../processor/">
+        <link rel="prev" href="handshake/">
       
       
-        <link rel="next" href="../apb/">
+        <link rel="next" href="../arithmetics/compression/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>AXI Handshake - SmlCoke Home</title>
+        <title>AXI Protocol - SmlCoke Home</title>
       
     
     
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AXI Handshake
+              AXI Protocol
             
           </span>
         </div>
@@ -2051,6 +2051,8 @@
       
         
       
+        
+      
     
     
     
@@ -2163,474 +2165,6 @@
                 
   
   
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    AXI Handshake
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    AXI Handshake
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#i-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        I. AXI 为什么要用握手协议？
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ii-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        II. AXI 握手的最基本规则
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iii" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        III. 最重要的握手时序规则
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="III. 最重要的握手时序规则">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-valid-ready" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 规则一：发送方 VALID 不能依赖接收方的 READY
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-ready-valid" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 规则二：接收方 READY 可以依赖 VALID，也可以提前准备好
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-valid-1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 规则三：VALID 拉高后，在握手完成前必须保持为 1
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-valid1-ready0-payload" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 规则四：VALID=1 &amp;&amp; READY=0 时，payload 必须保持不变
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-valid-ready-1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 规则五：只有 VALID &amp;&amp; READY 同时为 1 的那个时钟沿才算传输成功
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iv-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IV. AXI 的五个独立通道
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#v" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        V. 写事务的握手过程
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="V. 写事务的握手过程">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#51-aw" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.1 写地址通道 AW
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#52-w" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.2 写数据通道 W
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#53-b" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.3 写响应通道 B
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        VI. 写地址和写数据谁先到？
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="VI. 写地址和写数据谁先到？">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61-aw-w" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.1 情况一：AW 先于 W
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-w-aw" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.2 情况二：W 先于 AW
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-aw-w" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.3 情况三：AW 和 W 同时发生
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vii-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        VII. 一个完整 AXI 写事务例子
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#viii" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        VIII. 读事务的握手过程
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="VIII. 读事务的握手过程">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#81-ar" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.1 读地址通道 AR
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#82-r" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.2 读数据通道 R
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ix-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IX. 一个完整 AXI 读事务例子
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#x-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        X. AXI 握手与流水线的关系
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xi-axi-master-slave" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XI. AXI 中 Master 和 Slave 的职责
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xii-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XII. AXI 握手中的常见错误
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="XII. AXI 握手中的常见错误">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#121-valid-ready" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.1 错误一：VALID 等待 READY
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#122-valid1-ready0" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.2 错误二：VALID=1 &amp;&amp; READY=0 时改变数据
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#123-last" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.3 错误三：忘记处理 LAST
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#124-aw-w" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.4 错误四：认为 AW 和 W 必须同时握手
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xiii-axi-apbahb" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XIII. AXI 握手协议和 APB/AHB 的区别
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xiv-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XIV. 用一句话理解 AXI 握手
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xv-rtl" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XV. RTL 设计中推荐的思维模板
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xvi-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XVI. AXI 握手最核心的总结
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
   
   
     <li class="md-nav__item">
@@ -2678,6 +2212,430 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="handshake/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AXI Handshake
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AXI Protocol
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AXI Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. 先建立直觉
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. AXI 想解决什么问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. AXI 的五个主通道
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. AXI 的通道独立性
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. AXI 的通道独立性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 读写独立
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 地址和数据独立
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 响应独立
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-validready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. VALID/READY 握手
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. VALID/READY 握手">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-source-destination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Source 和 destination 是相对通道而言的
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 握手过程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 防死锁规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-transactiontransferburst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Transaction、Transfer、Burst 的区别
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. AXI 单次写事务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. AXI 单次写事务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 地址握手
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 数据握手
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 写响应握手
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-axi-beat-wlast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. AXI 多 beat 写与 WLAST
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. AXI 读事务
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-outstanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Outstanding、并发与乱序完成
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Outstanding、并发与乱序完成">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-outstanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 为什么 outstanding 能提升性能
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 乱序完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-interleaved-out-of-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Interleaved out-of-order
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-axi-apbahb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. AXI 与 APB/AHB 的学习对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-amba-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. AMBA 规格族中的 AXI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 初学者如何读 AXI 波形
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 常考判断题与填空抓手
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. 考前最短版
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -4642,10 +4600,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#i-axi" class="md-nav__link">
+  <a href="#0" class="md-nav__link">
     <span class="md-ellipsis">
       
-        I. AXI 为什么要用握手协议？
+        0. 先建立直觉
       
     </span>
   </a>
@@ -4653,10 +4611,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ii-axi" class="md-nav__link">
+  <a href="#1-axi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        II. AXI 握手的最基本规则
+        1. AXI 想解决什么问题
       
     </span>
   </a>
@@ -4664,22 +4622,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iii" class="md-nav__link">
+  <a href="#2-axi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        III. 最重要的握手时序规则
+        2. AXI 的五个主通道
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="III. 最重要的握手时序规则">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. AXI 的通道独立性
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. AXI 的通道独立性">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-valid-ready" class="md-nav__link">
+  <a href="#31" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 规则一：发送方 VALID 不能依赖接收方的 READY
+        3.1 读写独立
       
     </span>
   </a>
@@ -4687,10 +4656,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-ready-valid" class="md-nav__link">
+  <a href="#32" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.2 规则二：接收方 READY 可以依赖 VALID，也可以提前准备好
+        3.2 地址和数据独立
       
     </span>
   </a>
@@ -4698,32 +4667,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-valid-1" class="md-nav__link">
+  <a href="#33" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.3 规则三：VALID 拉高后，在握手完成前必须保持为 1
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-valid1-ready0-payload" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 规则四：VALID=1 &amp;&amp; READY=0 时，payload 必须保持不变
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-valid-ready-1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 规则五：只有 VALID &amp;&amp; READY 同时为 1 的那个时钟沿才算传输成功
+        3.3 响应独立
       
     </span>
   </a>
@@ -4736,33 +4683,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#iv-axi" class="md-nav__link">
+  <a href="#4-validready" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IV. AXI 的五个独立通道
+        4. VALID/READY 握手
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#v" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        V. 写事务的握手过程
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="V. 写事务的握手过程">
+    <nav class="md-nav" aria-label="4. VALID/READY 握手">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#51-aw" class="md-nav__link">
+  <a href="#41-source-destination" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.1 写地址通道 AW
+        4.1 Source 和 destination 是相对通道而言的
       
     </span>
   </a>
@@ -4770,10 +4706,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#52-w" class="md-nav__link">
+  <a href="#42" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.2 写数据通道 W
+        4.2 握手过程
       
     </span>
   </a>
@@ -4781,10 +4717,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#53-b" class="md-nav__link">
+  <a href="#43" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.3 写响应通道 B
+        4.3 防死锁规则
       
     </span>
   </a>
@@ -4797,22 +4733,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vi" class="md-nav__link">
+  <a href="#5-transactiontransferburst" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VI. 写地址和写数据谁先到？
+        5. Transaction、Transfer、Burst 的区别
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="VI. 写地址和写数据谁先到？">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-axi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. AXI 单次写事务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. AXI 单次写事务">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#61-aw-w" class="md-nav__link">
+  <a href="#61" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.1 情况一：AW 先于 W
+        6.1 地址握手
       
     </span>
   </a>
@@ -4820,10 +4767,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#62-w-aw" class="md-nav__link">
+  <a href="#62" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2 情况二：W 先于 AW
+        6.2 数据握手
       
     </span>
   </a>
@@ -4831,10 +4778,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#63-aw-w" class="md-nav__link">
+  <a href="#63" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.3 情况三：AW 和 W 同时发生
+        6.3 写响应握手
       
     </span>
   </a>
@@ -4847,10 +4794,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vii-axi" class="md-nav__link">
+  <a href="#7-axi-beat-wlast" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VII. 一个完整 AXI 写事务例子
+        7. AXI 多 beat 写与 WLAST
       
     </span>
   </a>
@@ -4858,22 +4805,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#viii" class="md-nav__link">
+  <a href="#8-axi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VIII. 读事务的握手过程
+        8. AXI 读事务
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="VIII. 读事务的握手过程">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-outstanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Outstanding、并发与乱序完成
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Outstanding、并发与乱序完成">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#81-ar" class="md-nav__link">
+  <a href="#91-outstanding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.1 读地址通道 AR
+        9.1 为什么 outstanding 能提升性能
       
     </span>
   </a>
@@ -4881,10 +4839,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#82-r" class="md-nav__link">
+  <a href="#92" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.2 读数据通道 R
+        9.2 乱序完成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-interleaved-out-of-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Interleaved out-of-order
       
     </span>
   </a>
@@ -4897,10 +4866,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ix-axi" class="md-nav__link">
+  <a href="#10-axi-apbahb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IX. 一个完整 AXI 读事务例子
+        10. AXI 与 APB/AHB 的学习对比
       
     </span>
   </a>
@@ -4908,10 +4877,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#x-axi" class="md-nav__link">
+  <a href="#11-amba-axi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        X. AXI 握手与流水线的关系
+        11. AMBA 规格族中的 AXI
       
     </span>
   </a>
@@ -4919,10 +4888,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#xi-axi-master-slave" class="md-nav__link">
+  <a href="#12-axi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        XI. AXI 中 Master 和 Slave 的职责
+        12. 初学者如何读 AXI 波形
       
     </span>
   </a>
@@ -4930,71 +4899,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#xii-axi" class="md-nav__link">
+  <a href="#13" class="md-nav__link">
     <span class="md-ellipsis">
       
-        XII. AXI 握手中的常见错误
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="XII. AXI 握手中的常见错误">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#121-valid-ready" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.1 错误一：VALID 等待 READY
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#122-valid1-ready0" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.2 错误二：VALID=1 &amp;&amp; READY=0 时改变数据
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#123-last" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.3 错误三：忘记处理 LAST
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#124-aw-w" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.4 错误四：认为 AW 和 W 必须同时握手
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xiii-axi-apbahb" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XIII. AXI 握手协议和 APB/AHB 的区别
+        13. 常考判断题与填空抓手
       
     </span>
   </a>
@@ -5002,32 +4910,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#xiv-axi" class="md-nav__link">
+  <a href="#14" class="md-nav__link">
     <span class="md-ellipsis">
       
-        XIV. 用一句话理解 AXI 握手
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xv-rtl" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XV. RTL 设计中推荐的思维模板
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xvi-axi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        XVI. AXI 握手最核心的总结
+        14. 考前最短版
       
     </span>
   </a>
@@ -5051,756 +4937,644 @@
 
 
 
-<h1 id="axi">AXI 握手协议详解<a class="headerlink" href="#axi" title="Permanent link">&para;</a></h1>
-<p>AXI 的握手协议本质上是一个非常经典的 <strong>valid-ready 双向握手机制</strong>。</p>
-<p>它的核心思想是：</p>
+<h1 id="axi">AXI 总线入门与复习笔记<a class="headerlink" href="#axi" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>发送方用 <code>VALID</code> 表示"我这里有有效信息"；<br />
-接收方用 <code>READY</code> 表示"我现在可以接收"；<br />
-当 <code>VALID &amp;&amp; READY</code> 在同一个时钟上升沿同时为 1 时，传输真正发生。</p>
+<p>来源范围：<code>bus_part2.pdf</code> 中 AXI 相关内容，主要对应 PDF p.26-p.34（课件页脚 64-72）。PDF p.35-p.36 是章节总结和结束页。<br />
+这份笔记不按课件页序机械整理，而是按“为什么需要 AXI -&gt; AXI 怎么拆通道 -&gt; 每个通道怎么握手 -&gt; 事务如何并发/乱序 -&gt; AMBA 规格族”的学习顺序组织。</p>
 </blockquote>
-<p>这个规则贯穿 AXI 的所有通道。</p>
-<hr />
-<h2 id="i-axi">I. AXI 为什么要用握手协议？<a class="headerlink" href="#i-axi" title="Permanent link">&para;</a></h2>
-<p>AXI 是 AMBA 总线协议族中的高性能总线协议，常用于 CPU、DMA、GPU、NPU、Memory Controller、片上互联 NoC/Interconnect 等模块之间的数据传输。</p>
-<p>在 SoC 中，不同模块的速度可能不同：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>CPU 可能很快
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Memory Controller 可能较慢
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>DMA 可能突发传输
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Interconnect 可能有仲裁和拥塞
+<h2 id="0">0. 先建立直觉<a class="headerlink" href="#0" title="Permanent link">&para;</a></h2>
+<p>AXI 可以先理解成：<strong>一种面向高性能 SoC IP 互连的接口规范</strong>。</p>
+<p>它和 APB 的气质完全不同：</p>
+<ul>
+<li>APB 像“简单外设寄存器访问”：慢、简单、两阶段。</li>
+<li>AHB 像“高性能共享总线”：有流水、burst、多个 master。</li>
+<li>AXI 更像“多条独立通道组成的事务系统”：<strong>读写分离</strong>、<strong>地址和数据分离</strong>、<strong>允许 outstanding</strong>、<strong>支持乱序完成</strong>。</li>
+</ul>
+<p>AXI 的核心不是“背很多信号名”，而是先抓住三件事：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>1. 五个独立通道：AW, W, B, AR, R
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>2. 每个通道都用 VALID/READY 握手
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>3. 地址、数据、响应可以解耦，因此能并发、outstanding、乱序
 </span></code></pre></div>
-<p>如果没有握手机制，发送方一旦发数据，接收方必须立刻接住，这会让系统非常脆弱。</p>
-<p>AXI 用 <code>VALID/READY</code> 解决这个问题：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>发送方准备好数据 → 拉高 VALID
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>接收方能接收数据 → 拉高 READY
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>两者同时为 1 → 当前拍完成传输
-</span></code></pre></div>
-<p>所以 AXI 天然支持 <strong>背压 back-pressure</strong>。</p>
-<hr />
-<h2 id="ii-axi">II. AXI 握手的最基本规则<a class="headerlink" href="#ii-axi" title="Permanent link">&para;</a></h2>
-<p>AXI 的每个通道都有一组类似的握手信号：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">VALID</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">READY</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">payload</span>
-</span></code></pre></div>
-<p>例如写地址通道：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">AWVALID</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">AWREADY</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">AWADDR</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">AWLEN</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">AWSIZE</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">AWBURST</span>
-</span></code></pre></div>
-<p>写数据通道：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">WVALID</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">WREADY</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">WDATA</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">WSTRB</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">WLAST</span>
-</span></code></pre></div>
-<p>读数据通道：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">RVALID</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">RREADY</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">RDATA</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">RRESP</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">RLAST</span>
-</span></code></pre></div>
-<p>其中：</p>
+<h2 id="1-axi">1. AXI 想解决什么问题<a class="headerlink" href="#1-axi" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.26（页脚 64）</p>
+</blockquote>
+<p>课件先从“提升 AHB 性能”引出 AXI。高性能总线希望具备这些能力：</p>
 <table>
 <thead>
 <tr>
-<th>信号</th>
-<th>方向</th>
+<th>能力</th>
 <th>含义</th>
+<th>为什么有用</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>VALID</code></td>
-<td>发送方向接收方</td>
-<td>当前通道上的信息有效</td>
+<td>Independent read and write channels</td>
+<td><strong>读和写有独立通道</strong></td>
+<td>读写可以同时发生</td>
 </tr>
 <tr>
-<td><code>READY</code></td>
-<td>接收方向发送方</td>
-<td>当前通道可以接收</td>
+<td>Simultaneous reads and writes</td>
+<td><strong>同时读写</strong></td>
+<td>提高并行度和吞吐</td>
 </tr>
 <tr>
-<td><code>payload</code></td>
-<td>发送方向接收方</td>
-<td>地址、数据、控制信息等</td>
+<td>Multiple outstanding addresses</td>
+<td>master 可以发出多个尚未完成的事务</td>
+<td><strong>不必等前一个事务完成再发下一个</strong></td>
+</tr>
+<tr>
+<td>Out-of-order transaction completion</td>
+<td><strong>后发出的事务可以先完成</strong></td>
+<td><strong>快 slave 不必被慢 slave 拖住</strong></td>
+</tr>
+<tr>
+<td>Independent address and data operations</td>
+<td><strong>地址和数据操作没有严格固定时间关系</strong></td>
+<td>地址阶段和数据阶段可以分离，调度更灵活</td>
 </tr>
 </tbody>
 </table>
-<p>传输发生的条件永远是：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">fire</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">READY</span><span class="p">;</span>
-</span></code></pre></div>
-<p>也常写成：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">handshake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xVALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">xREADY</span><span class="p">;</span>
-</span></code></pre></div>
-<hr />
-<h2 id="iii">III. 最重要的握手时序规则<a class="headerlink" href="#iii" title="Permanent link">&para;</a></h2>
-<h3 id="31-valid-ready">3.1 规则一：发送方 <code>VALID</code> 不能依赖接收方的 <code>READY</code><a class="headerlink" href="#31-valid-ready" title="Permanent link">&para;</a></h3>
-<p>这是 AXI 握手中最重要的一条。</p>
-<p>发送方如果有数据要发，就应该拉高 <code>VALID</code>，不能等到看到 <code>READY</code> 之后才拉高 <code>VALID</code>。</p>
-<p>错误写法类似：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ready</span><span class="p">)</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
-</span></code></pre></div>
-<p>这很危险，因为接收方也可能在等 <code>VALID</code> 才拉高 <code>READY</code>，于是双方互相等待，产生死锁。</p>
-<p>正确思路是：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">has_data</span><span class="p">)</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
-</span></code></pre></div>
+<p>这些能力正是 AXI 要支持的方向。<br />
+所以学习 AXI 时，应该把它放在“更高并发、更高吞吐、更松耦合”的背景下理解。</p>
+<p>一个很重要的定义：</p>
+<p><strong>AXI 是 interface specification，定义 IP block 的接口，而不是 interconnect itself。</strong></p>
 <p>也就是说：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>VALID 表示“我有东西要给你”
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>READY 表示“我能接收”
-</span></code></pre></div>
-<p>发送方不能说：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>你先 READY，我才 VALID
-</span></code></pre></div>
-<p>否则可能死锁。</p>
-<hr />
-<h3 id="32-ready-valid">3.2 规则二：接收方 <code>READY</code> 可以依赖 <code>VALID</code>，也可以提前准备好<a class="headerlink" href="#32-ready-valid" title="Permanent link">&para;</a></h3>
-<p>接收方是否拉高 <code>READY</code>，可以根据自己的状态决定。</p>
-<p>例如：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">assign</span><span class="w"> </span><span class="n">ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fifo_not_full</span><span class="p">;</span>
-</span></code></pre></div>
-<p>或者：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">assign</span><span class="w"> </span><span class="n">ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valid</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">buffer_available</span><span class="p">;</span>
-</span></code></pre></div>
-<p>这通常是允许的。</p>
-<p>也就是说：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>发送方 VALID 不能等 READY
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>接收方 READY 可以等 VALID，也可以提前准备好
-</span></code></pre></div>
-<p>原因是 AXI 要保证只要发送方有东西，就会主动表达出来；接收方可以根据是否真的有人发送，再决定是否接收。</p>
-<hr />
-<h3 id="33-valid-1">3.3 规则三：<code>VALID</code> 拉高后，在握手完成前必须保持为 1<a class="headerlink" href="#33-valid-1" title="Permanent link">&para;</a></h3>
-<p>假设发送方某一拍拉高了 <code>VALID</code>，但是接收方 <code>READY = 0</code>，这说明接收方暂时无法接收。</p>
-<p>此时发送方不能随便撤掉 <code>VALID</code>。</p>
-<p>必须保持：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>VALID = 1
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>payload 保持稳定
-</span></code></pre></div>
-<p>直到某个时钟上升沿出现：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">VALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">READY</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">1</span>
-</span></code></pre></div>
-<p>传输完成后，发送方才可以撤掉 <code>VALID</code> 或者切换到下一笔传输。</p>
-<hr />
-<h3 id="34-valid1-ready0-payload">3.4 规则四：<code>VALID=1 &amp;&amp; READY=0</code> 时，payload 必须保持不变<a class="headerlink" href="#34-valid1-ready0-payload" title="Permanent link">&para;</a></h3>
-<p>这条非常重要。</p>
-<p>例如写数据通道：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>WVALID = 1
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>WREADY = 0
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>WDATA  = 0x1234
-</span></code></pre></div>
-<p>如果下一拍 <code>WREADY</code> 仍然为 0，那么 <code>WDATA</code> 必须仍然是 <code>0x1234</code>。</p>
-<p>不能变成：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>WDATA = 0x5678
-</span></code></pre></div>
-<p>因为接收方还没有接收上一笔数据。</p>
-<p>所以当：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">VALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">READY</span>
-</span></code></pre></div>
-<p>时，发送方必须保持所有 payload 信号稳定。</p>
-<hr />
-<h3 id="35-valid-ready-1">3.5 规则五：只有 <code>VALID &amp;&amp; READY</code> 同时为 1 的那个时钟沿才算传输成功<a class="headerlink" href="#35-valid-ready-1" title="Permanent link">&para;</a></h3>
-<p>比如：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Cycle 1: VALID=1, READY=0  → 没传输
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>Cycle 2: VALID=1, READY=0  → 没传输
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>Cycle 3: VALID=1, READY=1  → 传输发生
-</span></code></pre></div>
-<p>只有 Cycle 3 的时钟上升沿，接收方才真正采样 payload。</p>
-<hr />
-<h2 id="iv-axi">IV. AXI 的五个独立通道<a class="headerlink" href="#iv-axi" title="Permanent link">&para;</a></h2>
-<p>AXI 最经典的特点是：<strong>读写分离，地址和数据分离，响应独立</strong>。</p>
-<p>AXI4 Full 有五个通道：</p>
+<ul>
+<li>AXI 规定 master、slave、interconnect 之间的接口信号和握手规则。</li>
+<li>具体片上 interconnect 怎么实现，可以有不同结构。</li>
+<li><strong>不要把 AXI 简单理解成一条物理共享总线</strong>。</li>
+</ul>
+<h2 id="2-axi">2. AXI 的五个主通道<a class="headerlink" href="#2-axi" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.27-p.28（页脚 65-66）</p>
+</blockquote>
+<p>AXI 使用五个 main channels 通信：</p>
 <table>
 <thead>
 <tr>
 <th>通道</th>
-<th>名称</th>
+<th>全称</th>
 <th>方向</th>
-<th>作用</th>
+<th>主要传什么</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>AW</td>
-<td>Write Address Channel</td>
-<td>Master → Slave</td>
-<td>写地址</td>
+<td>Write Address</td>
+<td>master -&gt; slave</td>
+<td>写地址和控制信息</td>
 </tr>
 <tr>
 <td>W</td>
-<td>Write Data Channel</td>
-<td>Master → Slave</td>
+<td>Write Data</td>
+<td>master -&gt; slave</td>
 <td>写数据</td>
 </tr>
 <tr>
 <td>B</td>
-<td>Write Response Channel</td>
-<td>Slave → Master</td>
+<td>Write Response</td>
+<td><strong>slave -&gt; master</strong></td>
 <td>写响应</td>
 </tr>
 <tr>
 <td>AR</td>
-<td>Read Address Channel</td>
-<td>Master → Slave</td>
-<td>读地址</td>
+<td>Read Address</td>
+<td>master -&gt; slave</td>
+<td>读地址和控制信息</td>
 </tr>
 <tr>
 <td>R</td>
-<td>Read Data Channel</td>
-<td>Slave → Master</td>
+<td>Read Data</td>
+<td><strong>slave -&gt; master</strong></td>
 <td>读数据和读响应</td>
 </tr>
 </tbody>
 </table>
-<p>每个通道都有自己的 <code>VALID/READY</code> 握手。</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>AW: AWVALID / AWREADY
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>W : WVALID  / WREADY
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>B : BVALID  / BREADY
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>AR: ARVALID / ARREADY
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>R : RVALID  / RREADY
+<p>读写结构可以记成：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>写事务：AW + W + B
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>读事务：AR + R
 </span></code></pre></div>
-<p>这五个通道相互独立，可以并行工作。</p>
-<hr />
-<h2 id="v">V. 写事务的握手过程<a class="headerlink" href="#v" title="Permanent link">&para;</a></h2>
-<p>AXI 写事务涉及三个通道：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>AW 通道：发送写地址
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>W  通道：发送写数据
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>B  通道：返回写响应
+<p>为什么写需要三个通道？</p>
+<ul>
+<li><code>AW</code> 负责告诉 slave：我要写哪里、怎么写。</li>
+<li><code>W</code> 负责真正传写数据，可以有多个 data beat。</li>
+<li><code>B</code> 负责 slave 返回写结果，例如是否成功。</li>
+</ul>
+<p>为什么读只需要两个通道？</p>
+<ul>
+<li><code>AR</code> 负责告诉 slave：我要读哪里、怎么读。</li>
+<li><code>R</code> 负责返回读数据。</li>
+<li><strong>Read Response 不单独占一个通道，而是作为 Read Data 的一部分返回</strong>。</li>
+</ul>
+<p>这就是课件中的一句话：<strong>Read Response is passed as part of Read Data.</strong></p>
+<h2 id="3-axi">3. AXI 的通道独立性<a class="headerlink" href="#3-axi" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.27-p.28, p.32（页脚 65-66, 70）</p>
+</blockquote>
+<p>AXI 的五个通道彼此相对独立，这是理解 AXI 的关键。</p>
+<h3 id="31">3.1 读写独立<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>读事务使用：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>AR channel + R channel
 </span></code></pre></div>
-<p>整体流程如下：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Master                  Slave
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>  |                       |
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>  | ---- AWADDR --------&gt; |  写地址
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>  | ---- WDATA ---------&gt; |  写数据
-</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>  | &lt;---- BRESP --------- |  写响应
-</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>  |                       |
+<p>写事务使用：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>AW channel + W channel + B channel
 </span></code></pre></div>
-<p>但是在 AXI 中，写地址和写数据是两个独立通道，它们的握手可以独立发生。</p>
-<hr />
-<h3 id="51-aw">5.1 写地址通道 AW<a class="headerlink" href="#51-aw" title="Permanent link">&para;</a></h3>
-<p>AW 通道负责传输写地址和控制信息，例如：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">AWADDR</span><span class="w">   </span><span class="c1">// 写起始地址</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">AWLEN</span><span class="w">    </span><span class="c1">// burst 长度</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="n">AWSIZE</span><span class="w">   </span><span class="c1">// 每拍传输字节数</span>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="n">AWBURST</span><span class="w">  </span><span class="c1">// burst 类型</span>
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="n">AWVALID</span>
-</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="n">AWREADY</span>
+<p>读和写走不同通道，因此可以 simultaneous read/write。</p>
+<h3 id="32">3.2 地址和数据独立<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p>写地址 <code>AW</code> 和写数据 <code>W</code> 是不同通道，不要求严格固定先后间隔。</p>
+<p>课件里强调：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Independent address and data operations
 </span></code></pre></div>
-<p>握手条件：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">AWVALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">AWREADY</span>
+<p>这意味着<strong>只要协议依赖关系满足，地址和数据操作可以在时间上分离</strong>。<br />
+这就是 AXI 比传统“地址阶段紧贴数据阶段”的总线更灵活的地方。</p>
+<h3 id="33">3.3 响应独立<a class="headerlink" href="#33" title="Permanent link">&para;</a></h3>
+<p>写响应 <code>B</code> 是 slave 给 master 的单独通道。<br />
+写事务不是“W 数据送出去就结束”，而是<strong>要等写响应握手完成，才算 slave 正式返回结果</strong>。</p>
+<p>读响应则在 <code>R</code> 通道中和读数据一起返回。</p>
+<h2 id="4-validready">4. VALID/READY 握手<a class="headerlink" href="#4-validready" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.29-p.30（页脚 67-68）</p>
+</blockquote>
+<p><strong>AXI 每个通道都有一对握手信号</strong>：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>VALID：source 发出，表示源端信息有效
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>READY：destination 发出，表示目的端准备好接收
 </span></code></pre></div>
-<p>当握手成功时，Slave 接收写地址信息。</p>
-<p>示意：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>Cycle:    1   2   3   4
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>AWVALID:  1   1   1   0
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>AWREADY:  0   0   1   x
-</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>AWADDR:   A   A   A   x
-</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>                 ↑
-</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>            地址在这里被接收
+<p>在某个通道上：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>VALID = 1 且 READY = 1
 </span></code></pre></div>
-<p>在 Cycle 1 和 Cycle 2 中，因为 <code>AWREADY=0</code>，所以地址不能变化。</p>
-<hr />
-<h3 id="52-w">5.2 写数据通道 W<a class="headerlink" href="#52-w" title="Permanent link">&para;</a></h3>
-<p>W 通道负责传输写数据：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">WDATA</span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="n">WSTRB</span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="n">WLAST</span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="n">WVALID</span>
-</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="n">WREADY</span>
-</span></code></pre></div>
-<p>握手条件：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">WVALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">WREADY</span>
-</span></code></pre></div>
-<p>如果是 burst 写传输，W 通道可能有多拍数据。</p>
-<p>例如 <code>AWLEN = 3</code> 表示总共 4 拍数据，因为 AXI 中：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>burst beat 数量 = AWLEN + 1
-</span></code></pre></div>
-<p>假设一次 4-beat burst 写：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Beat 0
-</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Beat 1
-</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>Beat 2
-</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>Beat 3, WLAST=1
-</span></code></pre></div>
-<p>时序可能是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Cycle:    1   2   3   4   5   6
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>WVALID:   1   1   1   1   1   1
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>WREADY:   1   0   1   1   0   1
-</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>WDATA:    D0  D1  D1  D2  D3  D3
-</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>WLAST:    0   0   0   0   1   1
-</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>          ↑       ↑   ↑       ↑
-</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>        Beat0   Beat1 Beat2  Beat3
-</span></code></pre></div>
-<p>注意：</p>
-<p>在 Cycle 2，<code>WVALID=1</code> 但 <code>WREADY=0</code>，所以 <code>D1</code> 没有被接收。</p>
-<p>因此 Cycle 3 仍然必须保持 <code>D1</code>。</p>
-<p>同理，Cycle 5 中 <code>D3</code> 也没有被接收，所以 Cycle 6 仍然保持 <code>D3</code> 和 <code>WLAST=1</code>。</p>
-<hr />
-<h3 id="53-b">5.3 写响应通道 B<a class="headerlink" href="#53-b" title="Permanent link">&para;</a></h3>
-<p>当 Slave 完成写操作后，会通过 B 通道返回响应：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">BRESP</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="n">BVALID</span>
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="n">BREADY</span>
-</span></code></pre></div>
-<p>其中 <code>BRESP</code> 常见取值有：</p>
-<table>
-<thead>
-<tr>
-<th>BRESP</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>OKAY</code></td>
-<td>正常完成</td>
-</tr>
-<tr>
-<td><code>EXOKAY</code></td>
-<td>独占访问成功，AXI4 一般较少用</td>
-</tr>
-<tr>
-<td><code>SLVERR</code></td>
-<td>Slave 错误</td>
-</tr>
-<tr>
-<td><code>DECERR</code></td>
-<td>Decode error，地址译码错误</td>
-</tr>
-</tbody>
-</table>
-<p>B 通道方向是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Slave → Master
-</span></code></pre></div>
-<p>所以：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Slave 拉高 BVALID
-</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>Master 拉高 BREADY
-</span></code></pre></div>
-<p>握手条件：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="n">BVALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">BREADY</span>
-</span></code></pre></div>
-<p>写事务只有在 B 通道响应握手完成后，才算完整结束。</p>
-<hr />
-<h2 id="vi">VI. 写地址和写数据谁先到？<a class="headerlink" href="#vi" title="Permanent link">&para;</a></h2>
-<p>这是 AXI 中很容易混淆的一点。</p>
-<p>AXI 允许：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>AW 先到，W 后到
-</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>W 先到，AW 后到
-</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>AW 和 W 同时到
-</span></code></pre></div>
-<p>因为 AW 和 W 是独立通道。</p>
-<p>例如：</p>
-<h3 id="61-aw-w">6.1 情况一：AW 先于 W<a class="headerlink" href="#61-aw-w" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>Cycle:     1   2   3   4
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>AW fire:   1
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>W fire:            1   1 ...
-</span></code></pre></div>
-<p>Slave 先收到写地址，再收到写数据。</p>
-<hr />
-<h3 id="62-w-aw">6.2 情况二：W 先于 AW<a class="headerlink" href="#62-w-aw" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>Cycle:     1   2   3   4
-</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>W fire:    1   1
-</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>AW fire:           1
-</span></code></pre></div>
-<p>Slave 先收到写数据，再收到写地址。</p>
-<p>这意味着 Slave 或 Interconnect 可能需要 buffer 来暂存先到的数据。</p>
-<hr />
-<h3 id="63-aw-w">6.3 情况三：AW 和 W 同时发生<a class="headerlink" href="#63-aw-w" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>Cycle:     1   2   3
-</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>AW fire:   1
-</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>W fire:    1   1   ...
-</span></code></pre></div>
-<p>这种情况性能最好。</p>
-<hr />
-<h2 id="vii-axi">VII. 一个完整 AXI 写事务例子<a class="headerlink" href="#vii-axi" title="Permanent link">&para;</a></h2>
-<p>假设 Master 要写 4 个 beat：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>地址：0x1000
-</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>每 beat：32 bit
-</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>burst 长度：4 beat
-</span></code></pre></div>
-<p>那么 AW 通道：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>AWADDR  = 0x1000
-</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>AWLEN   = 3
-</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>AWSIZE  = 2
-</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>AWBURST = INCR
-</span></code></pre></div>
-<p>其中：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>AWSIZE = 2 表示每 beat 传输 2^2 = 4 bytes
-</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>AWLEN = 3 表示 3 + 1 = 4 beats
-</span></code></pre></div>
-<p>写数据：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>WDATA beat0
-</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>WDATA beat1
-</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>WDATA beat2
-</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>WDATA beat3, WLAST=1
-</span></code></pre></div>
-<p>完整事务：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>Master                                 Slave
-</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>
-</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>AWVALID=1, AWADDR=0x1000  ----------&gt;
-</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>                    AWREADY=1 &lt;------
-</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>AW 握手完成
-</span><span id="__span-44-6"><a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a>
-</span><span id="__span-44-7"><a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a>WVALID=1, WDATA=D0        ----------&gt;
-</span><span id="__span-44-8"><a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a>                    WREADY=1 &lt;------
-</span><span id="__span-44-9"><a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a>Beat 0 完成
-</span><span id="__span-44-10"><a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a>
-</span><span id="__span-44-11"><a id="__codelineno-44-11" name="__codelineno-44-11" href="#__codelineno-44-11"></a>WVALID=1, WDATA=D1        ----------&gt;
-</span><span id="__span-44-12"><a id="__codelineno-44-12" name="__codelineno-44-12" href="#__codelineno-44-12"></a>                    WREADY=1 &lt;------
-</span><span id="__span-44-13"><a id="__codelineno-44-13" name="__codelineno-44-13" href="#__codelineno-44-13"></a>Beat 1 完成
-</span><span id="__span-44-14"><a id="__codelineno-44-14" name="__codelineno-44-14" href="#__codelineno-44-14"></a>
-</span><span id="__span-44-15"><a id="__codelineno-44-15" name="__codelineno-44-15" href="#__codelineno-44-15"></a>WVALID=1, WDATA=D2        ----------&gt;
-</span><span id="__span-44-16"><a id="__codelineno-44-16" name="__codelineno-44-16" href="#__codelineno-44-16"></a>                    WREADY=1 &lt;------
-</span><span id="__span-44-17"><a id="__codelineno-44-17" name="__codelineno-44-17" href="#__codelineno-44-17"></a>Beat 2 完成
-</span><span id="__span-44-18"><a id="__codelineno-44-18" name="__codelineno-44-18" href="#__codelineno-44-18"></a>
-</span><span id="__span-44-19"><a id="__codelineno-44-19" name="__codelineno-44-19" href="#__codelineno-44-19"></a>WVALID=1, WDATA=D3,
-</span><span id="__span-44-20"><a id="__codelineno-44-20" name="__codelineno-44-20" href="#__codelineno-44-20"></a>WLAST=1                  ----------&gt;
-</span><span id="__span-44-21"><a id="__codelineno-44-21" name="__codelineno-44-21" href="#__codelineno-44-21"></a>                    WREADY=1 &lt;------
-</span><span id="__span-44-22"><a id="__codelineno-44-22" name="__codelineno-44-22" href="#__codelineno-44-22"></a>Beat 3 完成
-</span><span id="__span-44-23"><a id="__codelineno-44-23" name="__codelineno-44-23" href="#__codelineno-44-23"></a>
-</span><span id="__span-44-24"><a id="__codelineno-44-24" name="__codelineno-44-24" href="#__codelineno-44-24"></a>                    BVALID=1,
-</span><span id="__span-44-25"><a id="__codelineno-44-25" name="__codelineno-44-25" href="#__codelineno-44-25"></a>                    BRESP=OKAY &lt;----
-</span><span id="__span-44-26"><a id="__codelineno-44-26" name="__codelineno-44-26" href="#__codelineno-44-26"></a>BREADY=1                 ----------&gt;
-</span><span id="__span-44-27"><a id="__codelineno-44-27" name="__codelineno-44-27" href="#__codelineno-44-27"></a>B 握手完成，写事务结束
-</span></code></pre></div>
-<hr />
-<h2 id="viii">VIII. 读事务的握手过程<a class="headerlink" href="#viii" title="Permanent link">&para;</a></h2>
-<p>AXI 读事务涉及两个通道：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>AR 通道：发送读地址
-</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>R  通道：返回读数据和读响应
-</span></code></pre></div>
-<p>整体流程：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>Master                  Slave
-</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>  |                       |
-</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>  | ---- ARADDR --------&gt; |  读地址
-</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a>  | &lt;---- RDATA --------- |  读数据
-</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a>  |                       |
-</span></code></pre></div>
-<hr />
-<h3 id="81-ar">8.1 读地址通道 AR<a class="headerlink" href="#81-ar" title="Permanent link">&para;</a></h3>
-<p>AR 通道类似 AW 通道，负责传输读地址和控制信息：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="n">ARADDR</span>
-</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="n">ARLEN</span>
-</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="n">ARSIZE</span>
-</span><span id="__span-47-4"><a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="n">ARBURST</span>
-</span><span id="__span-47-5"><a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a><span class="n">ARVALID</span>
-</span><span id="__span-47-6"><a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a><span class="n">ARREADY</span>
-</span></code></pre></div>
-<p>握手条件：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">ARVALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ARREADY</span>
-</span></code></pre></div>
-<p>当握手成功后，Slave 接收读请求。</p>
-<hr />
-<h3 id="82-r">8.2 读数据通道 R<a class="headerlink" href="#82-r" title="Permanent link">&para;</a></h3>
-<p>Slave 根据 AR 请求返回数据：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="n">RDATA</span>
-</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="n">RRESP</span>
-</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="n">RLAST</span>
-</span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="n">RVALID</span>
-</span><span id="__span-49-5"><a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a><span class="n">RREADY</span>
-</span></code></pre></div>
-<p>方向是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>Slave → Master
-</span></code></pre></div>
-<p>所以：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>Slave 拉高 RVALID
-</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>Master 拉高 RREADY
-</span></code></pre></div>
-<p>握手条件：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="n">RVALID</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">RREADY</span>
-</span></code></pre></div>
-<p>如果是 burst 读，R 通道也会返回多拍数据。</p>
-<p>最后一拍通过 <code>RLAST=1</code> 标记。</p>
-<hr />
-<h2 id="ix-axi">IX. 一个完整 AXI 读事务例子<a class="headerlink" href="#ix-axi" title="Permanent link">&para;</a></h2>
-<p>假设 Master 从地址 <code>0x2000</code> 读取 4 个 beat：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>ARADDR  = 0x2000
-</span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>ARLEN   = 3
-</span><span id="__span-53-3"><a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>ARSIZE  = 2
-</span><span id="__span-53-4"><a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a>ARBURST = INCR
-</span></code></pre></div>
-<p>事务如下：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>Master                                 Slave
-</span><span id="__span-54-2"><a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>
-</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>ARVALID=1, ARADDR=0x2000  ----------&gt;
-</span><span id="__span-54-4"><a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>                    ARREADY=1 &lt;------
-</span><span id="__span-54-5"><a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a>AR 握手完成
-</span><span id="__span-54-6"><a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a>
-</span><span id="__span-54-7"><a id="__codelineno-54-7" name="__codelineno-54-7" href="#__codelineno-54-7"></a>                    RVALID=1,
-</span><span id="__span-54-8"><a id="__codelineno-54-8" name="__codelineno-54-8" href="#__codelineno-54-8"></a>                    RDATA=D0,
-</span><span id="__span-54-9"><a id="__codelineno-54-9" name="__codelineno-54-9" href="#__codelineno-54-9"></a>                    RLAST=0 &lt;--------
-</span><span id="__span-54-10"><a id="__codelineno-54-10" name="__codelineno-54-10" href="#__codelineno-54-10"></a>RREADY=1                  ----------&gt;
-</span><span id="__span-54-11"><a id="__codelineno-54-11" name="__codelineno-54-11" href="#__codelineno-54-11"></a>Beat 0 完成
-</span><span id="__span-54-12"><a id="__codelineno-54-12" name="__codelineno-54-12" href="#__codelineno-54-12"></a>
-</span><span id="__span-54-13"><a id="__codelineno-54-13" name="__codelineno-54-13" href="#__codelineno-54-13"></a>                    RVALID=1,
-</span><span id="__span-54-14"><a id="__codelineno-54-14" name="__codelineno-54-14" href="#__codelineno-54-14"></a>                    RDATA=D1,
-</span><span id="__span-54-15"><a id="__codelineno-54-15" name="__codelineno-54-15" href="#__codelineno-54-15"></a>                    RLAST=0 &lt;--------
-</span><span id="__span-54-16"><a id="__codelineno-54-16" name="__codelineno-54-16" href="#__codelineno-54-16"></a>RREADY=1                  ----------&gt;
-</span><span id="__span-54-17"><a id="__codelineno-54-17" name="__codelineno-54-17" href="#__codelineno-54-17"></a>Beat 1 完成
-</span><span id="__span-54-18"><a id="__codelineno-54-18" name="__codelineno-54-18" href="#__codelineno-54-18"></a>
-</span><span id="__span-54-19"><a id="__codelineno-54-19" name="__codelineno-54-19" href="#__codelineno-54-19"></a>                    RVALID=1,
-</span><span id="__span-54-20"><a id="__codelineno-54-20" name="__codelineno-54-20" href="#__codelineno-54-20"></a>                    RDATA=D2,
-</span><span id="__span-54-21"><a id="__codelineno-54-21" name="__codelineno-54-21" href="#__codelineno-54-21"></a>                    RLAST=0 &lt;--------
-</span><span id="__span-54-22"><a id="__codelineno-54-22" name="__codelineno-54-22" href="#__codelineno-54-22"></a>RREADY=1                  ----------&gt;
-</span><span id="__span-54-23"><a id="__codelineno-54-23" name="__codelineno-54-23" href="#__codelineno-54-23"></a>Beat 2 完成
-</span><span id="__span-54-24"><a id="__codelineno-54-24" name="__codelineno-54-24" href="#__codelineno-54-24"></a>
-</span><span id="__span-54-25"><a id="__codelineno-54-25" name="__codelineno-54-25" href="#__codelineno-54-25"></a>                    RVALID=1,
-</span><span id="__span-54-26"><a id="__codelineno-54-26" name="__codelineno-54-26" href="#__codelineno-54-26"></a>                    RDATA=D3,
-</span><span id="__span-54-27"><a id="__codelineno-54-27" name="__codelineno-54-27" href="#__codelineno-54-27"></a>                    RLAST=1 &lt;--------
-</span><span id="__span-54-28"><a id="__codelineno-54-28" name="__codelineno-54-28" href="#__codelineno-54-28"></a>RREADY=1                  ----------&gt;
-</span><span id="__span-54-29"><a id="__codelineno-54-29" name="__codelineno-54-29" href="#__codelineno-54-29"></a>Beat 3 完成，读事务结束
-</span></code></pre></div>
-<p>读事务没有单独的响应通道，读响应 <code>RRESP</code> 和读数据 <code>RDATA</code> 一起返回。</p>
-<hr />
-<h2 id="x-axi">X. AXI 握手与流水线的关系<a class="headerlink" href="#x-axi" title="Permanent link">&para;</a></h2>
-<p>AXI 的 <code>VALID/READY</code> 很适合流水线设计。</p>
-<p>如果接收方一直 <code>READY=1</code>，发送方也一直 <code>VALID=1</code>，那么每个周期都能传输一拍数据。</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>Cycle:   1   2   3   4   5
-</span><span id="__span-55-2"><a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>VALID:   1   1   1   1   1
-</span><span id="__span-55-3"><a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a>READY:   1   1   1   1   1
-</span><span id="__span-55-4"><a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a>DATA:    D0  D1  D2  D3  D4
-</span><span id="__span-55-5"><a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a>         ↑   ↑   ↑   ↑   ↑
-</span><span id="__span-55-6"><a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a>       每周期传输一拍
-</span></code></pre></div>
-<p>这就是满吞吐率：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>1 beat / cycle
-</span></code></pre></div>
-<p>如果中间有 back-pressure：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>Cycle:   1   2   3   4   5
-</span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>VALID:   1   1   1   1   1
-</span><span id="__span-57-3"><a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>READY:   1   0   1   0   1
-</span><span id="__span-57-4"><a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a>DATA:    D0  D1  D1  D2  D2
-</span><span id="__span-57-5"><a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a>         ↑       ↑       ↑
-</span></code></pre></div>
-<p>只有 <code>VALID &amp;&amp; READY</code> 的周期才真正传输。</p>
-<hr />
-<h2 id="xi-axi-master-slave">XI. AXI 中 Master 和 Slave 的职责<a class="headerlink" href="#xi-axi-master-slave" title="Permanent link">&para;</a></h2>
-<p>以写事务为例：</p>
+<p>并在时钟上升沿到来时，<strong>信息从 source 传给 destination，该通道的一次 transfer 完成</strong>。</p>
+<p>后文如果写成 <code>XVALID=1 &amp;&amp; XREADY=1</code>，只表示<strong>该通道握手完成的条件</strong>，不表示两个信号由同一方驱动。永远记住：<code>XVALID</code> 由 source 驱动，<code>XREADY</code> 由 destination 驱动。</p>
+<h3 id="41-source-destination">4.1 Source 和 destination 是相对通道而言的<a class="headerlink" href="#41-source-destination" title="Permanent link">&para;</a></h3>
+<p>同一个 master/slave，在不同通道里的角色可能不同。</p>
 <table>
 <thead>
 <tr>
 <th>通道</th>
-<th>发送方</th>
-<th>接收方</th>
-<th>VALID 谁拉？</th>
-<th>READY 谁拉？</th>
+<th>source</th>
+<th>destination</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>AW</td>
-<td>Master</td>
-<td>Slave</td>
-<td>Master</td>
-<td>Slave</td>
+<td>master</td>
+<td>slave</td>
 </tr>
 <tr>
 <td>W</td>
-<td>Master</td>
-<td>Slave</td>
-<td>Master</td>
-<td>Slave</td>
+<td>master</td>
+<td>slave</td>
 </tr>
 <tr>
 <td>B</td>
-<td>Slave</td>
-<td>Master</td>
-<td>Slave</td>
-<td>Master</td>
+<td>slave</td>
+<td>master</td>
+</tr>
+<tr>
+<td>AR</td>
+<td>master</td>
+<td>slave</td>
+</tr>
+<tr>
+<td>R</td>
+<td>slave</td>
+<td>master</td>
 </tr>
 </tbody>
 </table>
-<p>以读事务为例：</p>
+<p>所以：</p>
+<ul>
+<li>在 <code>AW</code> 通道，master 产生 <code>AWVALID</code>，slave 产生 <code>AWREADY</code>。</li>
+<li>在 <code>W</code> 通道，master 产生 <code>WVALID</code>，slave 产生 <code>WREADY</code>。</li>
+<li>在 <code>B</code> 通道，slave 产生 <code>BVALID</code>，master 产生 <code>BREADY</code>。</li>
+<li>在 <code>AR</code> 通道，master 产生 <code>ARVALID</code>，slave 产生 <code>ARREADY</code>。</li>
+<li>在 <code>R</code> 通道，slave 产生 <code>RVALID</code>，master 产生 <code>RREADY</code>。</li>
+</ul>
+<h3 id="42">4.2 握手过程<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>一个典型握手过程：</p>
+<ol>
+<li>source 的信息准备好，拉高 <code>VALID</code>。</li>
+<li>destination 准备好接收，拉高 <code>READY</code>。</li>
+<li><strong>在 <code>VALID=1 &amp;&amp; READY=1</code> 的时钟上升沿，信息传输完成</strong>。</li>
+<li>若没有新的信息，<code>VALID</code> 可以拉低；<code>READY</code> 也可以根据目的端状态变化。</li>
+</ol>
+<p>课件特别强调：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>VALID remains high until READY rises.
+</span></code></pre></div>
+<p>也就是 <strong>source 一旦声明信息有效，就要保持 <code>VALID=1</code> 和信息稳定，直到出现 <code>VALID=1 &amp;&amp; READY=1</code> 的上升沿并完成握手</strong>。</p>
+<div class="admonition note">
+<p class="admonition-title">READY 信号语义</p>
+<p><code>READY</code> 的协议语义始终是：<strong>destination 当前有能力接收</strong>。真正“已经接收完成”发生在 <code>VALID &amp;&amp; READY</code> 被同一个时钟上升沿采样到之后。</p>
+<p>因此，<code>READY</code> 在不同上下文中会有一点语感差别，但定义不变。</p>
+<p><strong>场景 1：READY 先于 VALID 拉高</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>        T0        T1        T2
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ACLK    ↑         ↑         ↑
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>VALID   0   -&gt;    1   -&gt;    0
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>READY   1   -&gt;    1   -&gt;    1/0
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>DATA    X   -&gt;    D
+</span></code></pre></div>
+<ul>
+<li>在 <code>T0</code> 上升沿：<code>READY=1, VALID=0</code>，没有 transfer 发生。</li>
+<li>此时 <code>READY=1</code> 的语义是：destination 在说“我现在空着，可以接收”。</li>
+<li>在 <code>T0</code> 到 <code>T1</code> 之间，source 准备好数据 <code>D</code>，拉高 <code>VALID</code>，并保持 <code>DATA=D</code> 稳定。</li>
+<li>在 <code>T1</code> 上升沿：<code>VALID=1 &amp;&amp; READY=1</code>，握手完成，destination 在这个边沿接收 <code>D</code>。</li>
+<li><code>T1</code> 之后，如果没有下一笔数据，source 可以拉低 <code>VALID</code>。</li>
+</ul>
+<p>这里 <code>READY</code> 更像 destination 的“空闲接收能力公告”。</p>
+<p><strong>场景 2：VALID 先于 READY 拉高</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>        T0        T1        T2        T3
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>ACLK    ↑         ↑         ↑         ↑
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>VALID   1   -&gt;    1   -&gt;    1   -&gt;    0
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>READY   0   -&gt;    0   -&gt;    1   -&gt;    0/1
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>DATA    D         D         D
+</span></code></pre></div>
+<ul>
+<li>在 <code>T0</code> 上升沿：<code>VALID=1, READY=0</code>，source 已经给出有效数据 <code>D</code>，但 destination 还不能接收，所以没有 transfer。</li>
+<li>从 <code>T0</code> 到 <code>T2</code>，source 必须保持 <code>VALID=1</code>，并保持 <code>DATA=D</code> 稳定。</li>
+<li>在 <code>T2</code> 前，destination 拉高 <code>READY</code>。</li>
+<li>在 <code>T2</code> 上升沿：<code>VALID=1 &amp;&amp; READY=1</code>，握手完成，destination 接收 <code>D</code>。</li>
+<li><code>T2</code> 之后，这笔 transfer 才能说“已经被接收”。</li>
+</ul>
+<p>这里 <code>READY</code> 更像 destination 对已挂起 <code>VALID</code> 的回应：“我现在终于可以接收你一直保持的这笔信息了；在这个上升沿我们完成 transfer。”</p>
+<p>最后可以压缩成三句话：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>READY=1, VALID=0：
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>destination 只是表示“我可以接收”，但没有东西可接收。
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>READY=1, VALID=1，尚未到上升沿：
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>destination 表示“我可以接收这笔有效信息”。
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>READY=1, VALID=1，被上升沿采样：
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>这笔 transfer 完成，信息已经被接收。
+</span></code></pre></div>
+</div>
+<h3 id="43">4.3 防死锁规则<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>对应课件：PDF p.30（页脚 68）</p>
+</blockquote>
+<p>AXI 中有一个很重要的握手约束：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>source cannot wait for READY before asserting VALID
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>destination can wait for VALID before asserting READY
+</span></code></pre></div>
+<p>理解：</p>
+<ul>
+<li><strong>source 不能说“你 READY 了我才 VALID”</strong>。</li>
+<li>destination 可以说“你 VALID 了我再 READY”。</li>
+</ul>
+<p>为什么？<br />
+如果 source 和 destination 都互相等，就会死锁。AXI 规定 source 不能等 <code>READY</code> 才拉 <code>VALID</code>，就是为了避免这种互等。</p>
+<p>判断题抓手：</p>
+<ul>
+<li><code>VALID</code> 来自 source，<code>READY</code> 来自 destination。</li>
+<li>只有在 <code>VALID</code> 和 <code>READY</code> 同时为 1 的时钟上升沿，transfer 才完成。</li>
+<li>destination 可以等待 <code>VALID=1</code> 后再拉高 <code>READY</code>。</li>
+</ul>
+<h2 id="5-transactiontransferburst">5. Transaction、Transfer、Burst 的区别<a class="headerlink" href="#5-transactiontransferburst" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.30-p.32（页脚 68-70）</p>
+</blockquote>
+<p>AXI 容易混淆的几个词：</p>
 <table>
 <thead>
 <tr>
-<th>通道</th>
-<th>发送方</th>
-<th>接收方</th>
-<th>VALID 谁拉？</th>
-<th>READY 谁拉？</th>
+<th>概念</th>
+<th>含义</th>
+<th>例子</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>AR</td>
-<td>Master</td>
-<td>Slave</td>
-<td>Master</td>
-<td>Slave</td>
+<td>Transfer / beat</td>
+<td><strong>某个通道上一次 VALID/READY 握手传输的信息</strong></td>
+<td>W 通道传一个 data beat</td>
 </tr>
 <tr>
-<td>R</td>
-<td>Slave</td>
-<td>Master</td>
-<td>Slave</td>
-<td>Master</td>
+<td>Transaction</td>
+<td><strong>一次完整读或写事务</strong></td>
+<td><strong>写事务 = AW + 若干 W + B</strong></td>
+</tr>
+<tr>
+<td>Burst</td>
+<td>一个地址请求对应多个连续数据 beat</td>
+<td>一次 AW 后跟多个 W beat</td>
+</tr>
+<tr>
+<td>Outstanding</td>
+<td>已发起但尚未完成的事务</td>
+<td>master <strong>发出多个地址，响应还没全部回来</strong></td>
 </tr>
 </tbody>
 </table>
-<p>总结：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>谁提供 payload，谁拉 VALID
-</span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>谁接收 payload，谁拉 READY
+<p>课件说：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>One Address for entire burst
 </span></code></pre></div>
-<p>这是判断 AXI 信号方向的最简单方法。</p>
-<hr />
-<h2 id="xii-axi">XII. AXI 握手中的常见错误<a class="headerlink" href="#xii-axi" title="Permanent link">&para;</a></h2>
-<h3 id="121-valid-ready">12.1 错误一：<code>VALID</code> 等待 <code>READY</code><a class="headerlink" href="#121-valid-ready" title="Permanent link">&para;</a></h3>
-<p>错误：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-59-2"><a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ready</span><span class="p">)</span>
-</span><span id="__span-59-3"><a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a><span class="w">        </span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
-</span><span id="__span-59-4"><a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="k">end</span>
+<p>也就是 burst 不是每个 data beat 都重新发一个地址，而是一次地址请求描述整个 burst，然后数据通道连续传多个 beat。</p>
+<h2 id="6-axi">6. AXI 单次写事务<a class="headerlink" href="#6-axi" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.30（页脚 68）</p>
+</blockquote>
+<p>单次写事务可以拆成三次握手：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>1. AW channel：ADDRESS handshake
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>2. W channel：DATA handshake
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>3. B channel：RESPONSE handshake
 </span></code></pre></div>
-<p>问题是如果接收方也在等待 <code>valid</code>，系统会死锁。</p>
-<p>正确：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-60-2"><a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reset</span><span class="p">)</span>
-</span><span id="__span-60-3"><a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a><span class="w">        </span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
-</span><span id="__span-60-4"><a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">has_data</span><span class="p">)</span>
-</span><span id="__span-60-5"><a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a><span class="w">        </span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
-</span><span id="__span-60-6"><a id="__codelineno-60-6" name="__codelineno-60-6" href="#__codelineno-60-6"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">valid</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ready</span><span class="p">)</span>
-</span><span id="__span-60-7"><a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="w">        </span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
-</span><span id="__span-60-8"><a id="__codelineno-60-8" name="__codelineno-60-8" href="#__codelineno-60-8"></a><span class="k">end</span>
+<p><img alt="AXI Single Write" src="assets_axi/axi_single_write.png" /></p>
+<h3 id="61">6.1 地址握手<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<p>master 在 <code>AW</code> 通道驱动写地址和控制信息，并拉高 <code>AWVALID</code>。slave 或下游 interconnect 作为 destination，<strong>在可以接收地址时拉高 <code>AWREADY</code></strong>。</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>master/source        : AWVALID = 1，并保持 AWADDR/AW control 有效
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>slave/destination   : AWREADY = 1，表示可以接收
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>握手完成条件          : AWVALID = 1 &amp;&amp; AWREADY = 1 的时钟上升沿
 </span></code></pre></div>
-<hr />
-<h3 id="122-valid1-ready0">12.2 错误二：<code>VALID=1 &amp;&amp; READY=0</code> 时改变数据<a class="headerlink" href="#122-valid1-ready0" title="Permanent link">&para;</a></h3>
-<p>错误：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>Cycle 1: VALID=1, READY=0, DATA=D0
-</span><span id="__span-61-2"><a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>Cycle 2: VALID=1, READY=0, DATA=D1
+<p>注意：<code>AWREADY</code> 不是 master 给的，<strong>它来自 <code>AW</code> 通道的 destination</strong>。</p>
+<h3 id="62">6.2 数据握手<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<p>master 在 <code>W</code> 通道驱动写数据，并拉高 <code>WVALID</code>。slave 或下游 interconnect 作为 destination，<strong>在可以接收写数据时拉高 <code>WREADY</code></strong>。</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>master/source        : WVALID = 1，并保持 WDATA 有效
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>slave/destination   : WREADY = 1，表示可以接收
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>握手完成条件          : WVALID = 1 &amp;&amp; WREADY = 1 的时钟上升沿
 </span></code></pre></div>
-<p>这是错误的，因为 D0 还没有被接收。</p>
-<p>正确：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>Cycle 1: VALID=1, READY=0, DATA=D0
-</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>Cycle 2: VALID=1, READY=0, DATA=D0
-</span><span id="__span-62-3"><a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>Cycle 3: VALID=1, READY=1, DATA=D0  → 传输完成
+<p>这里的每一次握手完成一个写数据 beat。</p>
+<h3 id="63">6.3 写响应握手<a class="headerlink" href="#63" title="Permanent link">&para;</a></h3>
+<p>slave 在 <code>B</code> 通道驱动写响应，并拉高 <code>BVALID</code>。master 作为 destination，<strong>在可以接收响应时拉高 <code>BREADY</code></strong>。</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>slave/source         : BVALID = 1，并保持 BRESP 有效
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>master/destination  : BREADY = 1，表示可以接收
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>握手完成条件          : BVALID = 1 &amp;&amp; BREADY = 1 的时钟上升沿
 </span></code></pre></div>
-<hr />
-<h3 id="123-last">12.3 错误三：忘记处理 <code>LAST</code><a class="headerlink" href="#123-last" title="Permanent link">&para;</a></h3>
-<p>对于 burst 传输，最后一拍必须标记：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>写数据最后一拍：WLAST = 1
-</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>读数据最后一拍：RLAST = 1
+<p>这里 source 是 slave，destination 是 master。<br />
+课件特别写了：<strong>Slave is the source.</strong></p>
+<p>单次写可以这样背：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>写地址从 master 到 slave
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>写数据从 master 到 slave
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>写响应从 slave 到 master
 </span></code></pre></div>
-<p>否则接收方不知道 burst 什么时候结束。</p>
-<hr />
-<h3 id="124-aw-w">12.4 错误四：认为 AW 和 W 必须同时握手<a class="headerlink" href="#124-aw-w" title="Permanent link">&para;</a></h3>
-<p>AXI 中 AW 和 W 是独立通道。</p>
-<p>所以不能写出这种强绑定逻辑：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="n">AWREADY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WREADY</span><span class="p">;</span>
-</span><span id="__span-64-2"><a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a><span class="n">WREADY</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">AWREADY</span><span class="p">;</span>
+<h2 id="7-axi-beat-wlast">7. AXI 多 beat 写与 WLAST<a class="headerlink" href="#7-axi-beat-wlast" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.31（页脚 69）</p>
+</blockquote>
+<p><img alt="AXI Multiple Write" src="assets_axi/axi_multiple_write.png" /></p>
+<p>多 beat 写，也就是 burst write，大致过程：</p>
+<ol>
+<li><code>AW</code> 通道<strong>完成一次 address handshake</strong>。</li>
+<li><code>W</code> 通道<strong>连续传多个 data beat</strong>。</li>
+<li>burst 期间 <code>WVALID</code> <strong>可以持续为 1</strong>。</li>
+<li>如果中间暂停，<code>WVALID</code> <strong>可以拉低，表示当前没有有效写数据 beat</strong>。</li>
+<li><strong>最后一个写数据 beat 由 <code>WLAST</code> 标记</strong>。</li>
+<li>所有写数据完成后，slave 在 <code>B</code> 通道驱动 <code>BVALID/BRESP</code> 返回 response，master 用 <code>BREADY</code> 接收。</li>
+</ol>
+<p><code>WLAST</code> 的作用：</p>
+<p><code>WLAST = 1</code> 表示<strong>当前 W beat 是本次 burst 的最后一个数据 beat</strong>。</p>
+<p>不要把 <code>WLAST</code> 理解成“写事务已经完全结束”。<br />
+更准确地说，它表示 <strong>写数据部分的最后一个 beat</strong>。写事务整体还需要 <code>B</code> 通道的响应握手。</p>
+<p>判断题抓手：</p>
+<ul>
+<li>Burst write 中，一个地址可以对应多个写数据 beat。正确。</li>
+<li><code>WLAST</code> 标记最后一个写数据 beat。正确。</li>
+<li>写响应通道的 source 是 slave。正确。</li>
+</ul>
+<h2 id="8-axi">8. AXI 读事务<a class="headerlink" href="#8-axi" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.27-p.28, p.32（页脚 65-66, 70）</p>
+</blockquote>
+<p>课件没有像写事务那样单独展开读时序图，但五通道图已经给出了读事务结构。</p>
+<p>一次读事务包含：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>1. AR channel：Read Address handshake
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>2. R channel：Read Data handshake
 </span></code></pre></div>
-<p>这类逻辑容易造成性能下降甚至死锁。</p>
-<p>正确设计中，AW 和 W 通道应尽量独立处理，必要时通过 FIFO 或 buffer 对齐地址和数据。</p>
-<hr />
-<h2 id="xiii-axi-apbahb">XIII. AXI 握手协议和 APB/AHB 的区别<a class="headerlink" href="#xiii-axi-apbahb" title="Permanent link">&para;</a></h2>
-<p>你前面已经学习了 APB、AHB，可以这样对比：</p>
+<p>读地址阶段：</p>
+<ul>
+<li>master 通过 <code>AR</code> 通道<strong>发出读地址和控制信息</strong>，并驱动 <code>ARVALID</code>。</li>
+<li>slave 或下游 interconnect 作为 destination，<strong>驱动 <code>ARREADY</code></strong>。</li>
+<li><code>ARVALID=1 &amp;&amp; ARREADY=1</code> 的<strong>时钟上升沿完成读地址握手</strong>。</li>
+</ul>
+<p>读数据阶段：</p>
+<ul>
+<li>slave 通过 <code>R</code> <strong>通道返回读数据和读响应</strong>，并驱动 <code>RVALID</code>。</li>
+<li>master 作为 destination，<strong>驱动 <code>RREADY</code></strong>。</li>
+<li><strong><code>RVALID=1 &amp;&amp; RREADY=1</code> 的时钟上升沿完成一个读数据 beat</strong>。</li>
+<li><span style="color:red;">read response 在 <code>R</code> 通道中和读数据一起返回。</span></li>
+</ul>
+<p>如果是 burst read：</p>
+<ul>
+<li>一次 <code>AR</code> 地址请求可以对应多个 <code>R</code> data beat。</li>
+<li>最后一个读数据 beat 通常由读数据通道中的 last 类信号标记。</li>
+<li>课件重点不在具体信号名，而在“读地址和读数据分通道，读响应随读数据返回”。</li>
+</ul>
+<h2 id="9-outstanding">9. Outstanding、并发与乱序完成<a class="headerlink" href="#9-outstanding" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.26, p.32（页脚 64, 70）</p>
+</blockquote>
+<p><strong>AXI 支持多个 outstanding transactions</strong>。<br />
+含义是：</p>
+<p><strong>master 可以在前一个事务完成前，继续发起新的事务</strong>。</p>
+<p>这和 APB 的“做完一笔再下一笔”完全不同。</p>
+<h3 id="91-outstanding">9.1 为什么 outstanding 能提升性能<a class="headerlink" href="#91-outstanding" title="Permanent link">&para;</a></h3>
+<p>如果访问慢 slave 或慢存储器，等待响应会浪费很多周期。  </p>
+<p><strong>AXI 允许 master 先把多个请求发出去，让系统内部并行处理。</strong></p>
+<p>即：<strong>master 可以在前一个事务完成前，继续发起新的事务</strong>。</p>
+<p>这样：</p>
+<ul>
+<li><strong>快 slave 可以先返回数据</strong>。</li>
+<li>慢 slave 慢慢处理。</li>
+<li>master/interconnect 不必被一个慢请求完全卡住。</li>
+</ul>
+<h3 id="92">9.2 乱序完成<a class="headerlink" href="#92" title="Permanent link">&para;</a></h3>
+<p>课件中说：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>A later transaction can complete before a previously launched one.
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>Fast slaves may return data ahead of slow slaves.
+</span></code></pre></div>
+<p>这就是 out-of-order transaction completion。</p>
+<p>注意：乱序不是“协议乱了”，而是<strong>协议允许响应顺序和发起顺序不同</strong>。为了保证 master 能识别响应属于哪一笔事务，实际 AXI 协议会使用 <strong>ID 等机制跟踪事务</strong>。课件这里不展开 ID 信号，但理解乱序时必须知道“要能对得上事务”。</p>
+<h3 id="93-interleaved-out-of-order">9.3 Interleaved out-of-order<a class="headerlink" href="#93-interleaved-out-of-order" title="Permanent link">&para;</a></h3>
+<p>课件写到：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>AXI supports interleaved out-of-order transactions
+</span></code></pre></div>
+<p>可以理解为：</p>
+<ul>
+<li><strong>多个事务可以在时间上交错进行</strong>。</li>
+<li><strong>读事务和写事务可以同时存在</strong>。</li>
+<li><strong>地址、数据、响应这些通道活动可以在时间上交错</strong>。</li>
+<li>快路径响应可以先回来。</li>
+</ul>
+<p>更细的“写数据 beat 能否在不同 burst 之间任意交织”会受到具体 AXI 版本和实现约束影响；本课件层面只需要掌握 AXI 支持 interleaved/out-of-order 的高层含义。</p>
+<p>这部分和 <code>bus_part1</code> 中的 out-of-order transfer 概念直接相连。</p>
+<h2 id="10-axi-apbahb">10. AXI 与 APB/AHB 的学习对比<a class="headerlink" href="#10-axi-apbahb" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.26-p.28, p.33（页脚 64-66, 71）</p>
+</blockquote>
 <table>
 <thead>
 <tr>
-<th>协议</th>
-<th>特点</th>
+<th>项目</th>
+<th>APB</th>
+<th>AHB</th>
+<th>AXI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主要定位</td>
+<td>低速外设寄存器访问</td>
+<td>高性能系统总线</td>
+<td>高性能 IP 接口规范</td>
+</tr>
+<tr>
+<td>结构直觉</td>
+<td>两阶段简单访问</td>
+<td>地址/数据流水总线</td>
+<td>多独立通道事务系统</td>
+</tr>
+<tr>
+<td>读写关系</td>
+<td>简单读/写方向控制</td>
+<td>可流水，但通道独立性有限</td>
+<td>读写通道独立，可同时读写</td>
+</tr>
+<tr>
+<td>outstanding</td>
+<td>基础 APB 不强调</td>
+<td>有限</td>
+<td>重点能力</td>
+</tr>
+<tr>
+<td>乱序完成</td>
+<td>不强调</td>
+<td>不作为核心</td>
+<td><strong>支持 interleaved out-of-order</strong></td>
+</tr>
+<tr>
+<td>burst</td>
+<td>基础 APB 不强调</td>
+<td>支持 burst</td>
+<td><strong>支持 burst，且一个地址描述整个 burst</strong></td>
+</tr>
+<tr>
+<td>典型使用</td>
+<td>UART、Timer、PIO</td>
+<td>CPU/DMA/Memory 系统侧</td>
+<td>CPU cluster、DMA、accelerator、memory system、interconnect</td>
+</tr>
+</tbody>
+</table>
+<p>一句话：<br />
+APB 追求简单，AHB 追求系统侧高性能，AXI 追求更强并发和更灵活的事务调度。</p>
+<h2 id="11-amba-axi">11. AMBA 规格族中的 AXI<a class="headerlink" href="#11-amba-axi" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.33-p.34（页脚 71-72）</p>
+</blockquote>
+<p>课件的 Key AMBA Specifications 图把 AMBA 家族放在一起：</p>
+<table>
+<thead>
+<tr>
+<th>规格</th>
+<th>课件中给出的定位</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>APB</td>
-<td>简单、低速、非流水，适合寄存器访问</td>
+<td>Advanced Peripheral Bus，low bandwidth peripherals 的系统总线</td>
 </tr>
 <tr>
 <td>AHB</td>
-<td>单地址通道，流水化地址和数据阶段</td>
+<td>Advanced High-performance Bus，支持 64/128 bit，多 manager；AHB-Lite 面向 single manager</td>
 </tr>
 <tr>
 <td>AXI</td>
-<td>多独立通道，读写分离，支持乱序和高吞吐</td>
+<td>Advanced eXtensible Interface，支持 separate address/data phases、bursts、multiple outstanding addresses、out-of-order responses</td>
+</tr>
+<tr>
+<td>ACE</td>
+<td>AXI Coherency Extensions，AXI 的超集，用于多核集群间系统级一致性</td>
+</tr>
+<tr>
+<td>CHI</td>
+<td>Coherent Hub Interface，用于一致性协议和可扩展分层架构</td>
 </tr>
 </tbody>
 </table>
-<p>AXI 的握手比 APB/AHB 更灵活。</p>
-<p>APB 更像：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>一次访问一步步完成
-</span><span id="__span-65-2"><a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>setup phase → enable phase
+<p>图中还出现了：</p>
+<ul>
+<li><code>AXI3</code></li>
+<li><code>AXI4</code></li>
+<li><code>AXI4-Lite</code></li>
+<li><code>AXI4-Stream</code></li>
+<li><code>AXI5</code></li>
+<li><code>ACE + Lite</code></li>
+<li><code>ACE5 + Lite</code></li>
+<li><code>CHI</code></li>
+</ul>
+<p>这里不需要把每个版本展开背。期末复习层面建议记：</p>
+<ul>
+<li>AXI 这一层的关键词是 <code>separate address/data phases</code>、<code>bursts</code>、<code>multiple outstanding addresses</code>、<code>out-of-order responses</code>。</li>
+<li>AXI4-Lite 常用于简化的寄存器映射访问。</li>
+<li>AXI4-Stream 用于流式数据传输。</li>
+<li>ACE/CHI 与 cache coherence / coherent interconnect 更相关。</li>
+</ul>
+<p>课件 SoC 示例中能看到：</p>
+<ul>
+<li>CPU cluster 通过 <code>CHI</code> 接 coherent interconnect。</li>
+<li>non-coherent interconnect、DMA、PCIe controller、HW accelerator 等可以使用 <code>AXI</code>。</li>
+<li>系统中仍可能存在 <code>APB</code>，用于低速外设侧。</li>
+<li>同一个 SoC 内可以同时存在 AXI、AXI-Stream、CHI、ACE5-Lite、APB 等接口。</li>
+</ul>
+<h2 id="12-axi">12. 初学者如何读 AXI 波形<a class="headerlink" href="#12-axi" title="Permanent link">&para;</a></h2>
+<p>虽然课件没有要求你画完整 AXI 波形，但读图时可以按这个顺序：</p>
+<ol>
+<li>先看是哪一个通道：<code>AW/W/B/AR/R</code>。</li>
+<li>找 source 和 destination。</li>
+<li>找该通道的 <code>VALID</code> 和 <code>READY</code>。</li>
+<li>找 <code>VALID &amp;&amp; READY</code> 同时为 1 的上升沿。</li>
+<li>这个上升沿就是该通道一次 transfer 完成的位置。</li>
+<li>如果是写事务，再检查 <code>AW</code>、<code>W</code>、<code>B</code> 三条链是否都完成。</li>
+<li>如果是 burst 写，检查最后一个 <code>W</code> beat 上是否有 <code>WLAST</code>。</li>
+<li>如果是读事务，检查 <code>AR</code> 请求和 <code>R</code> 数据返回。</li>
+</ol>
+<p>一个小口诀：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>看 AXI，先分通道；
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>看通道，找 VALID/READY；
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>写看 AW-W-B，读看 AR-R；
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>burst 看 last，乱序看事务归属。
 </span></code></pre></div>
-<p>AHB 更像：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-66-1"><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>地址阶段和数据阶段流水重叠
+<h2 id="13">13. 常考判断题与填空抓手<a class="headerlink" href="#13" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>对应课件：PDF p.26-p.34（页脚 64-72）</p>
+</blockquote>
+<ol>
+<li>AXI 是 Advanced eXtensible Interface。正确。</li>
+<li>AXI 定义的是 IP block 的接口，而不是 interconnect 本身。正确。</li>
+<li>AXI 支持 multiple masters 和 multiple slaves。正确。</li>
+<li>AXI 使用五个主通道：AW、W、B、AR、R。正确。</li>
+<li>AXI 的写事务使用 AW、W、B 三个通道。正确。</li>
+<li>AXI 的读事务使用 AR、R 两个通道。正确。</li>
+<li>Read Response 在 AXI 中作为 Read Data 的一部分返回。正确。</li>
+<li>AXI 所有通道都有 VALID 和 READY 握手信号。正确。</li>
+<li>VALID 来自 destination，READY 来自 source。错误，正好相反。</li>
+<li>VALID 拉高后应保持到 <code>VALID &amp;&amp; READY</code> 的上升沿握手完成。正确。</li>
+<li>AXI 握手只看 VALID 和 READY 的组合，不需要时钟边沿。错误，需要时钟上升沿完成。</li>
+<li>Source 可以等待 READY 后再拉 VALID。错误。</li>
+<li>Destination 可以等待 VALID 后再拉 READY。正确。</li>
+<li>写响应 B 通道中，slave 是 source。正确。</li>
+<li><code>AWREADY</code>、<code>WREADY</code> 由写地址/写数据通道的 destination 给出，不是 master 给出。正确。</li>
+<li><code>BREADY</code> 由 master 给出，因为 B 通道的 destination 是 master。正确。</li>
+<li>Burst write 中 <code>WLAST</code> 表示最后一个写数据 beat。正确。</li>
+<li><code>WLAST</code> 表示写事务完全结束且不需要响应。错误。</li>
+<li>AXI 支持 simultaneous read/write transactions。正确。</li>
+<li>AXI 支持 multiple outstanding addresses。正确。</li>
+<li>AXI 支持 out-of-order transaction completion。正确。</li>
+<li>一个 burst 需要每个 data beat 都重新发送完整地址。错误，课件强调 one address for entire burst。</li>
+<li>快 slave 可以比慢 slave 更早返回数据，即使请求发起顺序更晚。正确。</li>
+<li>AXI4-Stream 更偏向流式数据传输，APB 更偏向低带宽外设。正确。</li>
+</ol>
+<h2 id="14">14. 考前最短版<a class="headerlink" href="#14" title="Permanent link">&para;</a></h2>
+<p>AXI 是 AMBA 中面向高性能 SoC 的接口规范，定义 IP block 的接口而不是 interconnect 本身。它支持 multiple masters、multiple slaves、读写独立、地址和数据独立、multiple outstanding、burst、乱序完成。</p>
+<p>AXI 有五个主通道：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>写：AW 写地址，W 写数据，B 写响应
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>读：AR 读地址，R 读数据/读响应
 </span></code></pre></div>
-<p>AXI 更像：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-67-1"><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>地址、数据、响应全部拆成独立通道
-</span><span id="__span-67-2"><a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a>每个通道都有自己的 valid-ready 握手
-</span></code></pre></div>
-<p>所以 AXI 更适合高性能 SoC。</p>
-<hr />
-<h2 id="xiv-axi">XIV. 用一句话理解 AXI 握手<a class="headerlink" href="#xiv-axi" title="Permanent link">&para;</a></h2>
-<p>可以把 AXI 握手想象成两个人递东西：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-68-1"><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>VALID：我手上有东西，伸出来了
-</span><span id="__span-68-2"><a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a>READY：我准备好接了
-</span><span id="__span-68-3"><a id="__codelineno-68-3" name="__codelineno-68-3" href="#__codelineno-68-3"></a>VALID &amp;&amp; READY：东西交接成功
-</span></code></pre></div>
-<p>如果对方还没准备好：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-69-1"><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>VALID=1, READY=0
-</span></code></pre></div>
-<p>那发送方必须一直拿着同一个东西，不能换。</p>
-<p>如果自己还没有东西：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-70-1"><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>VALID=0
-</span></code></pre></div>
-<p>就不能让对方误以为当前数据有效。</p>
-<hr />
-<h2 id="xv-rtl">XV. RTL 设计中推荐的思维模板<a class="headerlink" href="#xv-rtl" title="Permanent link">&para;</a></h2>
-<p>你写 AXI 相关 RTL 时，建议每个通道都先抽象成这种结构：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-71-1"><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="kt">wire</span><span class="w"> </span><span class="n">fire</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valid</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ready</span><span class="p">;</span>
-</span></code></pre></div>
-<p>然后所有状态更新都围绕 <code>fire</code> 进行。</p>
-<p>例如发送端：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a><span class="k">always_ff</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-72-2"><a id="__codelineno-72-2" name="__codelineno-72-2" href="#__codelineno-72-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rst</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-72-3"><a id="__codelineno-72-3" name="__codelineno-72-3" href="#__codelineno-72-3"></a><span class="w">        </span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
-</span><span id="__span-72-4"><a id="__codelineno-72-4" name="__codelineno-72-4" href="#__codelineno-72-4"></a><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-72-5"><a id="__codelineno-72-5" name="__codelineno-72-5" href="#__codelineno-72-5"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">valid</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ready</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-72-6"><a id="__codelineno-72-6" name="__codelineno-72-6" href="#__codelineno-72-6"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">has_next_payload</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-72-7"><a id="__codelineno-72-7" name="__codelineno-72-7" href="#__codelineno-72-7"></a><span class="w">                </span><span class="n">valid</span><span class="w">   </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
-</span><span id="__span-72-8"><a id="__codelineno-72-8" name="__codelineno-72-8" href="#__codelineno-72-8"></a><span class="w">                </span><span class="n">payload</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next_payload</span><span class="p">;</span>
-</span><span id="__span-72-9"><a id="__codelineno-72-9" name="__codelineno-72-9" href="#__codelineno-72-9"></a><span class="w">            </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-72-10"><a id="__codelineno-72-10" name="__codelineno-72-10" href="#__codelineno-72-10"></a><span class="w">                </span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
-</span><span id="__span-72-11"><a id="__codelineno-72-11" name="__codelineno-72-11" href="#__codelineno-72-11"></a><span class="w">            </span><span class="k">end</span>
-</span><span id="__span-72-12"><a id="__codelineno-72-12" name="__codelineno-72-12" href="#__codelineno-72-12"></a><span class="w">        </span><span class="k">end</span>
-</span><span id="__span-72-13"><a id="__codelineno-72-13" name="__codelineno-72-13" href="#__codelineno-72-13"></a><span class="w">    </span><span class="k">end</span>
-</span><span id="__span-72-14"><a id="__codelineno-72-14" name="__codelineno-72-14" href="#__codelineno-72-14"></a><span class="k">end</span>
-</span></code></pre></div>
-<p>这段逻辑的关键是：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">valid</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ready</span><span class="p">)</span>
-</span></code></pre></div>
-<p>它的含义是：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-74-1"><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a>当前没有未完成传输，或者当前传输已经被接收
-</span></code></pre></div>
-<p>只有这时才允许更新 payload。</p>
-<p>如果：</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a><span class="n">valid</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">ready</span>
-</span></code></pre></div>
-<p>说明当前 payload 还没被接收，必须保持不变。</p>
-<hr />
-<h2 id="xvi-axi">XVI. AXI 握手最核心的总结<a class="headerlink" href="#xvi-axi" title="Permanent link">&para;</a></h2>
-<p>你只需要牢牢记住以下几条：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a>1. VALID 表示发送方有有效信息。
-</span><span id="__span-76-2"><a id="__codelineno-76-2" name="__codelineno-76-2" href="#__codelineno-76-2"></a>2. READY 表示接收方可以接收信息。
-</span><span id="__span-76-3"><a id="__codelineno-76-3" name="__codelineno-76-3" href="#__codelineno-76-3"></a>3. VALID &amp;&amp; READY 同时为 1 的时钟沿，传输发生。
-</span><span id="__span-76-4"><a id="__codelineno-76-4" name="__codelineno-76-4" href="#__codelineno-76-4"></a>4. VALID 一旦拉高，在握手前不能随便撤销。
-</span><span id="__span-76-5"><a id="__codelineno-76-5" name="__codelineno-76-5" href="#__codelineno-76-5"></a>5. VALID=1 且 READY=0 时，payload 必须保持稳定。
-</span><span id="__span-76-6"><a id="__codelineno-76-6" name="__codelineno-76-6" href="#__codelineno-76-6"></a>6. VALID 不能依赖 READY，否则可能死锁。
-</span><span id="__span-76-7"><a id="__codelineno-76-7" name="__codelineno-76-7" href="#__codelineno-76-7"></a>7. READY 可以依赖 VALID。
-</span><span id="__span-76-8"><a id="__codelineno-76-8" name="__codelineno-76-8" href="#__codelineno-76-8"></a>8. AXI 的五个通道各自独立握手。
-</span><span id="__span-76-9"><a id="__codelineno-76-9" name="__codelineno-76-9" href="#__codelineno-76-9"></a>9. 写事务：AW + W + B。
-</span><span id="__span-76-10"><a id="__codelineno-76-10" name="__codelineno-76-10" href="#__codelineno-76-10"></a>10. 读事务：AR + R。
-</span></code></pre></div>
-<p>对于 AXI，真正重要的不是死记信号，而是形成这个模型：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a>每一个 AXI 通道都是一个独立的 valid-ready 流接口。
-</span><span id="__span-77-2"><a id="__codelineno-77-2" name="__codelineno-77-2" href="#__codelineno-77-2"></a>地址是一条流，写数据是一条流，写响应是一条流，读地址是一条流，读数据也是一条流。
-</span></code></pre></div>
-<p>掌握了这一点，后面理解 AXI burst、outstanding transaction、ID、乱序返回、interconnect、DMA 设计都会顺畅很多。</p>
+<p>所有通道都用 <code>VALID/READY</code> 握手：<code>VALID</code> 来自 source，<code>READY</code> 来自 destination；当 <code>VALID=1 &amp;&amp; READY=1</code> 时，在时钟上升沿完成一次 transfer。<code>VALID</code> 拉高后要保持到握手完成。source 不能等 READY 才拉 VALID，destination 可以等 VALID 才拉 READY。</p>
+<p>AXI 写事务要完成三条链：<code>AW</code> 地址握手、<code>W</code> 数据握手、<code>B</code> 响应握手。burst 写中一个地址对应多个数据 beat，<code>WLAST</code> 标记最后一个写数据 beat。AXI 读事务由 <code>AR</code> 请求和 <code>R</code> 返回组成，读响应随 <code>R</code> 通道返回。</p>
+<p>AXI 最能体现高性能的地方是：读写可并发，多个事务可 outstanding，事务完成可 out-of-order，快 slave 可以先返回，慢 slave 不必阻塞整个系统。</p>
 
 
 
