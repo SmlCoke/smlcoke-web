@@ -34,6 +34,12 @@ hide:
 	<p class="card-desc">Valid-Ready 双向握手与 AXI 通道机制</p>
 </a>
 
+<a class="note-card blue" href="apb/">
+	<span class="card-icon">🔗</span>
+	<div class="card-title">APB 总线协议详解</div>
+	<p class="card-desc">Advanced Peripheral Bus 协议与 wait state 机制</p>
+</a>
+
 <a class="note-card blue" href="ahb/">
 	<span class="card-icon">🔗</span>
 	<div class="card-title">AHB 总线协议详解</div>
