@@ -138,8 +138,8 @@ $$\text{Performance} = \frac{1}{\text{Execution Time}}$$
 
 **时间维度的分解**：
    
-    - **消逝/运行时间 (Elapsed / Execution time)**：$\text{CPU time} + \text{other time}$。这是总响应时间，包含了**处理、I/O 等待、操作系统开销、空闲**等所有时间。
-    -  **CPU 时间 (CPU time)**：CPU **纯粹花在处理该特定任务上**的时间（扣除了 I/O 等待和其他任务抢占的份额）。
+- **消逝/运行时间 (Elapsed / Execution time)**：$\text{CPU time} + \text{other time}$。这是总响应时间，包含了**处理、I/O 等待、操作系统开销、空闲**等所有时间。
+-  **CPU 时间 (CPU time)**：CPU **纯粹花在处理该特定任务上**的时间（扣除了 I/O 等待和其他任务抢占的份额）。
 
 ### 5.2 CPU 性能铁律 (The Iron Law) —— 核心必考
 
@@ -185,9 +185,9 @@ $$\boxed{\text{MIPS} = \frac{\text{IC}}{\text{Execution Time} \times 10^6} = \fr
 
 **几何平均数评估法 (Geometric Mean, GM)**：
    
-    - SPEC 会选取一个老设备（如 Sun UltraSparc II）作为基准（Baseline）。
-    - 计算各个测试子项的性能比率：$\text{SPECRatio}_i = \frac{\text{SPEC}_{\text{baseline}} \text{ Time}}{\text{SPEC}_{\text{CPU}} \text{ Time}}$
-    - 通过对所有 $n$ 个子项目的比率求**几何平均值**，得出最终的系统跑分：
+- SPEC 会选取一个老设备（如 Sun UltraSparc II）作为基准（Baseline）。
+- 计算各个测试子项的性能比率：$\text{SPECRatio}_i = \frac{\text{SPEC}_{\text{baseline}} \text{ Time}}{\text{SPEC}_{\text{CPU}} \text{ Time}}$
+- 通过对所有 $n$ 个子项目的比率求**几何平均值**，得出最终的系统跑分：
 
 $$\text{GM} = \sqrt[n]{\prod_{i=1}^{n} \text{SPECRatio}_i}$$
 
@@ -202,18 +202,22 @@ $$\text{T}_{\text{improved}} = \frac{\text{T}_{\text{affected}}}{\text{improveme
 
 *(改进后的总时间 = 受优化影响的时间 / 提升倍数 + 不受优化影响的时间)*
 
-> **📝 典型考试计算题解析：添加 Cache 带来的总体加速比**
-> 
-> **题目背景**：某 CPU 的访存（Memory）操作占总执行时间的 30%。现在我们为它增加一级 Cache，使得这 30% 访存操作中的 80% 获得了 4 倍的加速（4x speedup）。求这颗 SoC 最终的总体加速比（Overall speedup）是多少？
-> 
-> **解题步骤**：
-> 1.  **分解时间占比**：
->     *   不受访存优化影响的部分 ($\text{T}_{\text{unaffected1}}$) = 100% - 30% = 0.7
->     *   访存中没有被 Cache 命中的部分 ($\text{T}_{\text{unaffected2}}$) = 30% × (1 - 80%) = 0.3 × 0.2 = 0.06
->     *   真正受到 4 倍加速影响的部分 ($\text{T}_{\text{affected}}$) = 30% × 80% = 0.3 × 0.8 = 0.24
-> 2.  **代入 Amdahl 定律公式计算改进后的总时间**：
->     $$ \text{T}_{\text{improved}} = \frac{0.3 \times 0.8}{4} + (0.3 \times 0.2) + 0.7 = 0.06 + 0.06 + 0.7 = 0.82 $$
-> 3.  **计算总体加速比**：
->     $$ \text{Overall Speedup} = \frac{1}{\text{T}_{\text{improved}}} = \frac{1}{0.82} \approx 1.22x $$
-> 
-> **结论**：虽然局部获得了 4 倍的性能提升，但受到阿姆达尔定律的限制，系统的整体性能仅提升了约 22%。且随着局部优化的进行，“系统中最耗时的部分”会发生转移。
+!!! example "典型考试计算题解析：添加 Cache 带来的总体加速比"
+ 
+    **题目背景**：某 CPU 的访存（Memory）操作占总执行时间的 30%。现在我们为它增加一级 Cache，使得这 30% 访存操作中的 80% 获得了 4 倍的加速（4x speedup）。求这颗 SoC 最终的总体加速比（Overall speedup）是多少？
+   
+    **解题步骤**：
+
+    1. **分解时间占比**：
+       *   不受访存优化影响的部分 ($\text{T}_{\text{unaffected1}}$) = 100% - 30% = 0.7
+       *   访存中没有被 Cache 命中的部分 ($\text{T}_{\text{unaffected2}}$) = 30% × (1 - 80%) = 0.3 × 0.2 = 0.06
+       *   真正受到 4 倍加速影响的部分 ($\text{T}_{\text{affected}}$) = 30% × 80% = 0.3 × 0.8 = 0.24
+    2. **代入 Amdahl 定律公式计算改进后的总时间**：
+
+       $$ \text{T}_{\text{improved}} = \frac{0.3 \times 0.8}{4} + (0.3 \times 0.2) + 0.7 = 0.06 + 0.06 + 0.7 = 0.82 $$
+
+    3. **计算总体加速比**：
+
+       $$ \text{Overall Speedup} = \frac{1}{\text{T}_{\text{improved}}} = \frac{1}{0.82} \approx 1.22x $$
+   
+    **结论**：虽然局部获得了 4 倍的性能提升，但受到阿姆达尔定律的限制，系统的整体性能仅提升了约 22%。且随着局部优化的进行，“系统中最耗时的部分”会发生转移。
