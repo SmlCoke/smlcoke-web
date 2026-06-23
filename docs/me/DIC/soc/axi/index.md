@@ -296,7 +296,7 @@ One Address for entire burst
 3. B channel：RESPONSE handshake
 ```
 
-![AXI Single Write](./assets_axi/axi_single_write.png)
+![AXI Single Write](./assets_axi/axi_single_write.webp)
 
 ### 6.1 地址握手
 
@@ -347,7 +347,7 @@ master/destination  : BREADY = 1，表示可以接收
 
 > 对应课件：PDF p.31（页脚 69）
 
-![AXI Multiple Write](./assets_axi/axi_multiple_write.png)
+![AXI Multiple Write](./assets_axi/axi_multiple_write.webp)
 
 多 beat 写，也就是 burst write，大致过程：
 
