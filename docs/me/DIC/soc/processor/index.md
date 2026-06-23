@@ -214,10 +214,10 @@ $$\text{T}_{\text{improved}} = \frac{\text{T}_{\text{affected}}}{\text{improveme
        *   真正受到 4 倍加速影响的部分 ($\text{T}_{\text{affected}}$) = 30% × 80% = 0.3 × 0.8 = 0.24
     2. **代入 Amdahl 定律公式计算改进后的总时间**：
 
-       $$\text{T}_{\text{improved}} = \frac{0.3 \times 0.8}{4} + (0.3 \times 0.2) + 0.7 = 0.06 + 0.06 + 0.7 = 0.82$$
+       $$ \text{T}_{\text{improved}} = \frac{0.3 \times 0.8}{4} + (0.3 \times 0.2) + 0.7 = 0.06 + 0.06 + 0.7 = 0.82 $$
 
     3. **计算总体加速比**：
 
-       $$\text{Overall Speedup} = \frac{1}{\text{T}_{\text{improved}}} = \frac{1}{0.82} \approx 1.22\text{x}$$
+       $$ \text{Overall Speedup} = \frac{1}{\text{T}_{\text{improved}}} = \frac{1}{0.82} \approx 1.22\text{x} $$
    
     **结论**：虽然局部获得了 4 倍的性能提升，但受到阿姆达尔定律的限制，系统的整体性能仅提升了约 22%。且随着局部优化的进行，“系统中最耗时的部分”会发生转移。
