@@ -6857,9 +6857,10 @@ AHB 没有每个通道的 valid-ready 握手，而是主要靠：</p>
 <li>对于 <code>WRAPN</code> 计算传输的总字节个数：<span class="arithmatex">\(W=n \times 2^{\text{HSIZE}}\)</span>，这里的 <span class="arithmatex">\(n\)</span> 一般为: <span class="arithmatex">\(4,8,16\)</span></li>
 <li>计算地址下界：<span class="arithmatex">\(\text{lower}=\lfloor{\frac{\text{addr}}{W}\rfloor}\times W\)</span>，事实上，由于 <span class="arithmatex">\(W\)</span> 往往是 2 的次幂，因此，计算方式可以由如下简化：<ul>
 <li>由于<strong>每个地址对应一个字节</strong>，因此计算 <span class="arithmatex">\(l=\log_2(W)\)</span>，将给定的地址 addr 逻<strong>辑右移 <span class="arithmatex">\(l\)</span> 位后再左移 <span class="arithmatex">\(l\)</span> 位即可得到下边界</strong>。</li>
+<li>以上，<strong>其实等价于</strong>：<strong>将低 <span class="arithmatex">\(l\)</span> 位直接清零</strong>。</li>
 </ul>
 </li>
-<li>计算地址上界：<span class="arithmatex">\(\text{upper}=\text{lower}+W-1\)</span>，也就是下边界 + 总字节数 - 1。 </li>
+<li>计算地址上界：<span class="arithmatex">\(\text{upper}=\text{lower}+W\)</span>，也就是下边界 + 总字节数。 </li>
 </ol>
 <p>因此回绕的地址范围为：</p>
 <div class="arithmatex">\[[\text{lower}, \text{upper})\]</div>
@@ -6872,7 +6873,7 @@ AHB 没有每个通道的 valid-ready 握手，而是主要靠：</p>
 <li>移位宽度：<span class="arithmatex">\(l=\log_2(W)=\log_2(32)=5\)</span></li>
 <li>计算下边界：</li>
 <li><code>0x1014</code> 先逻辑右移 5 位得到 <code>0b0000_0000_1000_0000</code></li>
-<li>再左移 5 位得到 <code>0b1000_0000_0000_0000</code>，也就是 <code>0x1000</code></li>
+<li>再左移 5 位得到 <code>0b0001_0000_0000_0000</code>，也就是 <code>0x1000</code></li>
 <li>计算上边界：<code>0x1000 + 32 - 1 = 0x101F</code></li>
 </ol>
 <p>因此，burst 传输的 8 个地址为：<br />
