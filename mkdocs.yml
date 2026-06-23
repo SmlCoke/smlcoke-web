@@ -140,6 +140,7 @@ nav:
           - AHB Protocol: me/DIC/soc/ahb/index.md
           - AXI Handshake: me/DIC/soc/axi/handshake/index.md
           - AXI Protocol: me/DIC/soc/axi/index.md
+          - AXI Beyond: me/DIC/soc/axi/beyond_handshake/index.md
           - Compression: me/DIC/soc/arithmetics/compression/index.md
           - CPA: me/DIC/soc/arithmetics/cpa/index.md
     - Verilog HDL Basics: me/verilog/index.md

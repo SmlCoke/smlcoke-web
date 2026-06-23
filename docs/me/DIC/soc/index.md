@@ -52,6 +52,12 @@ hide:
 	<p class="card-desc">Advanced eXtensible Interface 协议</p>
 </a>
 
+<a class="note-card blue" href="axi/beyond_handshake/">
+	<span class="card-icon">🔗</span>
+	<div class="card-title">AXI Beyond Handshake</div>
+	<p class="card-desc">AXI 协议中握手协议外的关键点</p>
+</a>
+
 <a class="note-card blue" href="arithmetics/compression/">
 	<span class="card-icon">🔗</span>
 	<div class="card-title">乘法器的部分和压缩</div>
