@@ -5280,7 +5280,7 @@
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>2. W channel：DATA handshake
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>3. B channel：RESPONSE handshake
 </span></code></pre></div>
-<p><img alt="AXI Single Write" src="assets_axi/axi_single_write.png" /></p>
+<p><img alt="AXI Single Write" src="assets_axi/axi_single_write.webp" /></p>
 <h3 id="61">6.1 地址握手<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
 <p>master 在 <code>AW</code> 通道驱动写地址和控制信息，并拉高 <code>AWVALID</code>。slave 或下游 interconnect 作为 destination，<strong>在可以接收地址时拉高 <code>AWREADY</code></strong>。</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>master/source        : AWVALID = 1，并保持 AWADDR/AW control 有效
@@ -5312,7 +5312,7 @@
 <blockquote>
 <p>对应课件：PDF p.31（页脚 69）</p>
 </blockquote>
-<p><img alt="AXI Multiple Write" src="assets_axi/axi_multiple_write.png" /></p>
+<p><img alt="AXI Multiple Write" src="assets_axi/axi_multiple_write.webp" /></p>
 <p>多 beat 写，也就是 burst write，大致过程：</p>
 <ol>
 <li><code>AW</code> 通道<strong>完成一次 address handshake</strong>。</li>
