@@ -481,23 +481,57 @@ HSIZE = word
 | `110`  | WRAP16 | 16-beat wrapping burst  |
 | `111`  | INCR16 | 16-beat increment burst |
 
-初学重点掌握：
+- SINGLE: 单次传输
+- INCR: 线性递增
+- WRAP: 递增+回绕
+
+假设给定地址 HADDR = addr, HSIZE，那么每次传输的字节数为：$2^{\text{HSIZE}}$
+
+### SINGLE
+
+传输单次，地址：addr
+
+### INCR
+
+以 INCR4 为例，这里的 "4" 代表**传输 4 次**（即 4-beat），也就是总共传输 $4 \times 2^{\text{HSIZE}}$ 字节。
+假设 `addr = 0x1000`, `HSIZE=3'b010` (word)，那么 4-beat INCR 地址序列为：
 
 ```text
-SINGLE
-INCR4
-INCR8
-INCR16
+0x1000
+0x1004
+0x1008
+0x100C
 ```
 
-以及理解：
+同样：
 
-```text
-INCR：地址递增
-WRAP：地址递增到边界后回绕
-```
+- INCR8: 代表**传输 8 次**
+- INCR16: 代表**传输 16 次**
 
-大多数基础例子会用 `SINGLE` 或 `INCR4`。
+而 **INCR没有指定传输多少次**，具体什么时候截至由其他因素决定，比如：
+
+- master 不再给出：`HTRANS=SEQ`，而是给出 `HTRANS=NONSEQ`，即 master 主动打断
+- AHB Arbiter 决定打断，burst 传输被迫中断
+
+### WRAP 
+
+我们同样以 `WRAP4` 为例，它也代表传输 4 次，只不过跟 `INCR4` 不一样，**WRAP 是有回绕的**。
+
+也就是说，`WRAP4` 会在**一定地址边界范围内循环传输 4 次**，这个**边界的确定方法**为：
+
+1. 计算一次传输的字节数：$2^{\text{HSIZE}}$
+2. 对于 `WRAPN` 计算传输的总字节个数：$W=n \times 2^{\text{HSIZE}}$，这里的 $n$ 一般为: $4,8,16$
+3. 计算地址下界：$\text{lower}=\lfloor{\frac{\text{addr}}{W}\rfloor}\times W$，事实上，由于 $W$ 往往是 2 的次幂，因此，计算方式可以由如下简化：
+    - 由于**每个地址对应一个字节**，因此计算 $l=\log_2(W)$，将给定的地址 addr 逻**辑右移 $l$ 位后再左移 $l$ 位即可得到下边界**。
+4. 计算地址上界：$\text{upper}=\text{lower}+W-1$，也就是下边界 + 总字节数 - 1。 
+
+因此回绕的地址范围为：
+
+$$[\text{lower}, \text{upper})$$
+
+或者：
+
+$$[\text{lower}, \text{upper}-1]$$
 
 ---
 
