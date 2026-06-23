@@ -3,7 +3,7 @@ hide:
   - toc
 ---
 
-<div class="section-rero ai-rero">
+<div class="section-hero ai-hero">
 	<h1>🔧 片上系统 (SoC) 设计</h1>
 	<p>从 IP 到系统: 片上总线、处理器核与外设互联</p>
 	<div class="section-stats">
@@ -28,22 +28,28 @@ hide:
 	<p class="card-desc">CISC vs RISC 架构对比及主流 ISA 生态</p>
 </a>
 
-<a class="note-card blue" href="axi/">
-	<span class="card-icon">🔗</span>
-	<div class="card-title">AXI 握手协议详解</div>
-	<p class="card-desc">Valid-Ready 双向握手与 AXI 通道机制</p>
-</a>
-
 <a class="note-card blue" href="apb/">
 	<span class="card-icon">🔗</span>
 	<div class="card-title">APB 总线协议详解</div>
-	<p class="card-desc">Advanced Peripheral Bus 协议与 wait state 机制</p>
+	<p class="card-desc">Advanced Peripheral Bus 协议</p>
 </a>
 
 <a class="note-card blue" href="ahb/">
 	<span class="card-icon">🔗</span>
 	<div class="card-title">AHB 总线协议详解</div>
-	<p class="card-desc">Advanced High-performance Bus 协议与 wait state 机制</p>
+	<p class="card-desc">Advanced High-performance Bus 协议</p>
+</a>
+
+<a class="note-card blue" href="axi/handshake/">
+	<span class="card-icon">🔗</span>
+	<div class="card-title">AXI 握手协议详解</div>
+	<p class="card-desc">Valid-Ready 双向握手与 AXI 通道机制</p>
+</a>
+
+<a class="note-card blue" href="axi/">
+	<span class="card-icon">🔗</span>
+	<div class="card-title">AXI 总线协议详解</div>
+	<p class="card-desc">Advanced eXtensible Interface 协议</p>
 </a>
 
 <a class="note-card blue" href="arithmetics/compression/">

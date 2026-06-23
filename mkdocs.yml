@@ -136,9 +136,10 @@ nav:
           - me/DIC/soc/index.md
           - Introduction: me/DIC/soc/intro/index.md
           - SoC Processor: me/DIC/soc/processor/index.md
-          - AXI Handshake: me/DIC/soc/axi/index.md
           - APB Protocol: me/DIC/soc/apb/index.md
           - AHB Protocol: me/DIC/soc/ahb/index.md
+          - AXI Handshake: me/DIC/soc/axi/handshake/index.md
+          - AXI Protocol: me/DIC/soc/axi/index.md
           - Compression: me/DIC/soc/arithmetics/compression/index.md
           - CPA: me/DIC/soc/arithmetics/cpa/index.md
     - Verilog HDL Basics: me/verilog/index.md
