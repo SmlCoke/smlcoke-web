@@ -76,6 +76,11 @@ hide:
   <p class="card-desc">CPU 以及 GPU 硬件架构与电路实现</p>
 </a>
 
+<a class="note-card purple" href="DIC/soc/">
+  <span class="card-icon">🔧</span>
+  <div class="card-title">SoC</div>
+  <p class="card-desc">片上系统、总线与运算电路设计</p>
+</a>
 
 </div>
 

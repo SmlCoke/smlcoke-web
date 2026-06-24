@@ -41,7 +41,7 @@ hide:
 <a class="note-card purple" href="soc/">
   <span class="card-icon">🔧</span>
   <div class="card-title">SoC</div>
-  <p class="card-desc">片上系统、总线与处理器核设计</p>
+  <p class="card-desc">片上系统、总线与运算电路设计</p>
 </a>
 
 </div>
