@@ -614,13 +614,13 @@ target 2
 
 ### 6.3 Dadda Tree 的压缩规则
 
-对某一级 target height \(d\)，目标是让该级输出的每一列高度不超过 \(d\)。
+对某一级 target height \(d\)，目**标是让该级输出的每一列高度不超过** \(d\)。
 
-对 column k：
+对 column $k$：
 
 - 如果本列输出高度会超过 \(d\)，就放 FA 或 HA。
-- FA 让本列输出高度减少 2，并向 column k+1 输出一个 carry。
-- HA 让本列输出高度减少 1，并向 column k+1 输出一个 carry。
+- FA 让本列**输出高度减少 $2$**，并向 column $k+1$ 输出一个 carry。
+- HA 让本列**输出高度减少 $1$**，并向 column $k+1$ 输出一个 carry。
 - Dadda Tree 倾向于使用刚好够用的 FA/HA，而不是像 Wallace Tree 那样尽量压。
 
 常用直觉规则：
