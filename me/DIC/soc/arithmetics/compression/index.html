@@ -6042,12 +6042,12 @@ d_{k+1} = \left\lfloor \frac{3}{2} d_k \right\rfloor
 </span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>target 2
 </span></code></pre></div>
 <h3 id="63-dadda-tree">6.3 Dadda Tree 的压缩规则<a class="headerlink" href="#63-dadda-tree" title="Permanent link">&para;</a></h3>
-<p>对某一级 target height <span class="arithmatex">\(d\)</span>，目标是让该级输出的每一列高度不超过 <span class="arithmatex">\(d\)</span>。</p>
-<p>对 column k：</p>
+<p>对某一级 target height <span class="arithmatex">\(d\)</span>，目<strong>标是让该级输出的每一列高度不超过</strong> <span class="arithmatex">\(d\)</span>。</p>
+<p>对 column <span class="arithmatex">\(k\)</span>：</p>
 <ul>
 <li>如果本列输出高度会超过 <span class="arithmatex">\(d\)</span>，就放 FA 或 HA。</li>
-<li>FA 让本列输出高度减少 2，并向 column k+1 输出一个 carry。</li>
-<li>HA 让本列输出高度减少 1，并向 column k+1 输出一个 carry。</li>
+<li>FA 让本列<strong>输出高度减少 <span class="arithmatex">\(2\)</span></strong>，并向 column <span class="arithmatex">\(k+1\)</span> 输出一个 carry。</li>
+<li>HA 让本列<strong>输出高度减少 <span class="arithmatex">\(1\)</span></strong>，并向 column <span class="arithmatex">\(k+1\)</span> 输出一个 carry。</li>
 <li>Dadda Tree 倾向于使用刚好够用的 FA/HA，而不是像 Wallace Tree 那样尽量压。</li>
 </ul>
 <p>常用直觉规则：</p>
