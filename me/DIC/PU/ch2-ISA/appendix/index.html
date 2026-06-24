@@ -4397,9 +4397,7 @@
 <ul>
 <li>固定opcode：<code>0110011</code></li>
 <li>核心指令：<code>add/sub/sll/srl/sra/or/and/xor</code></li>
-<li>编码示例：<code>add x9, x20, x21</code><br />
-  二进制：<code>0000000 10101 10100 000 01001 0110011</code><br />
-  十六进制：<code>0x015A04B3</code></li>
+<li>指令格式：<code>add rd, rs1, rs2</code></li>
 </ul>
 <h4 id="122-i-type">1.2.2 I-type（立即数/加载型）<a class="headerlink" href="#122-i-type" title="Permanent link">&para;</a></h4>
 <p><strong>字段结构</strong>：</p>
@@ -4455,6 +4453,12 @@
 <li><strong>寄存器跳转</strong>：<code>1100111</code>（<code>jalr</code>）</li>
 </ul>
 </li>
+<li>指令格式：<ul>
+<li>立即数算术：<code>addi rd, rs1, immediate</code></li>
+<li>内存加载：<code>lw rd, offset(rs1)</code></li>
+<li>寄存器跳转：<code>jalr rd, offset(rs1)</code> </li>
+</ul>
+</li>
 <li>特点：<strong>12位有符号立即数</strong>，支持符号扩展，12位有符号立即数范围为<span class="arithmatex">\(-2048\sim 2047\)</span></li>
 </ul>
 <h4 id="123-s-type">1.2.3 S-type（存储型）<a class="headerlink" href="#123-s-type" title="Permanent link">&para;</a></h4>
@@ -4484,6 +4488,7 @@
 <ul>
 <li>固定opcode：<code>0100011</code></li>
 <li>核心指令：<code>sb/sh/sw/sd</code></li>
+<li>指令格式：<code>sw rs2, offset(rs1)</code></li>
 <li>特点：12位立即数拆分为两段，保持rs1/rs2/funct3字段位置与R/I型对齐</li>
 </ul>
 <h4 id="124-b-typeb-type">1.2.4 B-type（条件分支型，B-type）<a class="headerlink" href="#124-b-typeb-type" title="Permanent link">&para;</a></h4>
@@ -4513,6 +4518,7 @@
 <ul>
 <li>固定opcode：<code>1100011</code></li>
 <li>核心指令：<code>beq/bne/blt/bge/bltu/bgeu</code></li>
+<li>指令格式：<code>beq rs1, rs2, offset</code></li>
 <li>特点：13位PC相对偏移（最低位固定为0），跳转范围±4KiB，按2字节对齐</li>
 </ul>
 <h4 id="125-u-type">1.2.5 U-type（高位立即数型）<a class="headerlink" href="#125-u-type" title="Permanent link">&para;</a></h4>
@@ -4535,11 +4541,17 @@
 </table>
 <ul>
 <li>固定opcode：<code>0010111</code>(<code>auipc</code>), <code>0110111</code>（<code>lui</code>）</li>
-<li>核心指令：<code>lui</code>（Load Upper Immediate），将20位立即数加载到寄存器高20位，低12位清0</li>
+<li>核心指令：<ul>
+<li><code>lui</code>（Load Upper Immediate），将20位立即数加载到寄存器高20位，低12位清0</li>
+<li><code>auipc</code>（Add Upper Immediate to PC），将20位立即数左移12位后加到PC，常用于构建PC相对地址</li>
+</ul>
+</li>
+<li>指令格式：<code>lui rd, immediate</code>, <code>auipc rd, immediate</code></li>
 <li>
 <p>典型用法：配合<code>addi</code>构建32位常数</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>lui x9, 0x3D        # x9 = 0x0003D000
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>addi x9, x9, 0x900  # x9 = 0x0003D900
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># 等价于：li x9, 0x12345678
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>lui x9, 0x12345     # x9 = 0x12345000
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>addi x9, x9, 0x678  # x9 = 0x12345678
 </span></code></pre></div>
 </li>
 </ul>
@@ -4564,6 +4576,7 @@
 <ul>
 <li>固定opcode：<code>1101111</code></li>
 <li>核心指令：<code>jal</code>（Jump and Link）</li>
+<li>指令格式：<code>jal rd, offset</code></li>
 <li>特点：21位PC相对偏移（最低位固定为0），跳转范围±1MiB，按2字节对齐；执行时将PC+4（下一条指令地址）存入rd，用于函数调用保存返回地址</li>
 </ul>
 <h3 id="13">1.3 核心指令编码速查表<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
