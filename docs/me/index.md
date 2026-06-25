@@ -136,5 +136,11 @@ hide:
   <p class="card-desc">Modelsim使用基础</p>
 </a>
 
+<a class="note-card gray" href="EDA/vivado/">
+  <span class="card-icon">📶</span>
+  <div class="card-title">Vivado</div>
+  <p class="card-desc">Vivado使用基础</p>
+</a>
+
 </div>
 
