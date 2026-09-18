@@ -1,0 +1,268 @@
+site_name: SmlCoke Home # 改成你的
+site_url: https://smlcoke.com
+site_author: SmlCoke
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: zh
+  font:
+    text: false
+    code: false
+  palette:
+    - scheme: default
+      primary: white
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - scheme: slate
+      primary: black
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
+  features:
+    - navigation.tabs # 将左侧导航栏变为顶部标签页
+    - navigation.tabs.sticky # 顶部标签页滚动时保持可见
+    - navigation.top # 添加返回顶部按钮
+    - navigation.instant # 页面切换更顺滑
+    - navigation.instant.progress # 页面切换时显示进度条
+    - navigation.tracking # 右侧目录随滚动高亮
+    - navigation.indexes # 允许 index.md 作为分区首页
+    - toc.follow # 右侧目录跟随滚动
+    - search.suggest # 搜索建议
+    - search.highlight # 搜索高亮
+    - header.autohide # 页面向下滚动时自动隐藏导航栏
+    - content.code.annotate # 启用代码注释标记
+    - content.tabs.link # 同名标签页联动切换
+
+# 配置插件（启用搜索和博客功能）
+plugins:
+  - search
+  - blog
+
+# 配置 Markdown 扩展（启用数学公式支持）
+markdown_extensions:
+  - admonition # 极其漂亮的提示/警告框！
+  - attr_list # 允许给图片加 class、宽度等样式
+  - def_list # 定义列表，适合术语解释
+  - footnotes # 脚注支持
+  - md_in_html # 允许在 HTML 容器中混写 Markdown
+  - nl2br # 将换行符转换为 <br> 标签，启用单回车换行支持
+  - tables # 表格支持
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details # 允许折叠提示框
+  - pymdownx.highlight: # 代码高亮美化
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.keys # 按键提示样式
+  - pymdownx.inlinehilite # 行内代码高亮
+  - pymdownx.mark # 允许使用 ==高亮文字==
+  - pymdownx.superfences # 高级代码块
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde # 允许使用 ~~删除线~~
+
+# 引入自定义 CSS（用于背景动画和按钮）
+extra_css:
+  - stylesheets/extra.css?v=20260918-1 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
+  - https://unpkg.com/katex@0/dist/katex.min.css # 添加 KaTeX CSS
+
+extra_javascript:
+  - javascripts/extra.js?v=20260604-2
+  - javascripts/crypto.js?v=20260917-1
+  - https://unpkg.com/katex@0/dist/katex.min.js # 先引入 KaTeX 核心
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js # 引入 KaTeX 自动渲染插件
+  - javascripts/katex.js # 最后引入初始化脚本
+  
+# 临时旧 URL 兼容层：外部链接清理完成后按 dev/runbooks/redirect-cleanup.md 移除。
+hooks:
+  - scripts/phase1_redirects.py
+
+use_directory_urls: true
+
+nav:
+- 首页: index.md
+- 微电子:
+  - microelectronics/index.md
+  - Signal and Systems:
+    - microelectronics/signals-systems/index.md
+    - 线性微分方程:
+      - microelectronics/signals-systems/differential-equations/index.md
+      - Homogeneous: microelectronics/signals-systems/differential-equations/homogeneous/index.md
+      - Particular: microelectronics/signals-systems/differential-equations/particular/index.md
+      - Impulse_Balance: microelectronics/signals-systems/differential-equations/impulse-balance/index.md
+    - 傅里叶变换:
+      - microelectronics/signals-systems/fourier-transform/index.md
+      - CFT-1: microelectronics/signals-systems/fourier-transform/cft-1/index.md
+      - CFT-2: microelectronics/signals-systems/fourier-transform/cft-2/index.md
+  - Digital Integrated Circuits:
+    - microelectronics/digital-circuits/index.md
+    - Glossary: microelectronics/digital-circuits/glossary/index.md
+    - Course Design:
+      - microelectronics/digital-circuits/course-design/index.md
+      - Init: microelectronics/digital-circuits/course-design/setup/index.md
+      - Introduction: microelectronics/digital-circuits/course-design/introduction/index.md
+      - Specification: microelectronics/digital-circuits/course-design/specifications/index.md
+      - Re-quantization: microelectronics/digital-circuits/course-design/requantization/index.md
+    - VLSI:
+      - microelectronics/digital-circuits/vlsi/index.md
+      - Ch1. Basics: microelectronics/digital-circuits/vlsi/introduction/index.md
+      - Ch2. Modulation and Demodulation:
+        - microelectronics/digital-circuits/vlsi/modulation/index.md
+        - 高斯白噪声进阶: microelectronics/digital-circuits/vlsi/modulation/gaussian-noise-explained/index.md
+        - 匹配滤波器: microelectronics/digital-circuits/vlsi/modulation/matched-filter/index.md
+        - 噪声基础: microelectronics/digital-circuits/vlsi/modulation/noise/index.md
+      - Ch3. Iteration Bound:
+        - microelectronics/digital-circuits/vlsi/iteration-bound/index.md
+        - 迭代边界: microelectronics/digital-circuits/vlsi/iteration-bound/iteration-bound-explained/index.md
+        - 采样、时钟与迭代周期: microelectronics/digital-circuits/vlsi/iteration-bound/sampling-clock-iteration-periods/index.md
+      - Ch4. Parallel and Pipeline: microelectronics/digital-circuits/vlsi/parallel-pipeline/index.md
+      - Ch5. Retiming: microelectronics/digital-circuits/vlsi/retiming/index.md
+      - Ch6. Unfolding: microelectronics/digital-circuits/vlsi/unfolding/index.md
+      - Ch7. Folding: microelectronics/digital-circuits/vlsi/folding/index.md
+      - Ch8. Systolic Array:
+        - microelectronics/digital-circuits/vlsi/systolic-array/index.md
+        - CNN 与脉动阵列: microelectronics/digital-circuits/vlsi/systolic-array/cnn/index.md
+      - Ch9. Fading Channel: microelectronics/digital-circuits/vlsi/fading-channel/index.md
+      - Ch10. Bandpass Modulation: microelectronics/digital-circuits/vlsi/bandpass-modulation/index.md
+      - Ch11. MQAM:
+        - microelectronics/digital-circuits/vlsi/mqam/index.md
+        - MQAM 补充笔记: microelectronics/digital-circuits/vlsi/mqam/mqam/index.md
+      - Ch11. OFDM:
+        - microelectronics/digital-circuits/vlsi/ofdm/index.md
+        - OFDM 流程示例: microelectronics/digital-circuits/vlsi/ofdm/ofdm/index.md
+      - Ch12. Channel code and decode: microelectronics/digital-circuits/vlsi/channel-coding/index.md
+  - Processors:
+    - microelectronics/processors/index.md
+    - Ch1. Introduction: microelectronics/processors/hardware-software-interface/index.md
+    - Ch2. ISA:
+      - microelectronics/processors/isa/index.md
+      - 指令集附录: microelectronics/processors/isa/appendix/index.md
+    - Ch3. Arithmetic:
+      - microelectronics/processors/arithmetic/index.md
+      - 非规格化数: microelectronics/processors/arithmetic/denormal/index.md
+      - GRS 舍入位: microelectronics/processors/arithmetic/grs/index.md
+      - Infinity 与 NaN: microelectronics/processors/arithmetic/infinity-nan/index.md
+      - 恢复除法: microelectronics/processors/arithmetic/restoring-division/index.md
+    - Ch4. Processor: microelectronics/processors/processor/index.md
+    - Ch4. Processor (Part 2): microelectronics/processors/processor-p2/index.md
+    - Ch5. Memory:
+      - microelectronics/processors/memory/index.md
+      - 存储层次访问流程: microelectronics/processors/memory/memory-hierarchy-flow/index.md
+      - 多字节缓存块: microelectronics/processors/memory/multi-bytes-block/index.md
+      - 多级缓存性能: microelectronics/processors/memory/multilevel-cache-performance/index.md
+    - Ch6. Parallel Processing: microelectronics/processors/parallel/index.md
+    - GPGPU:
+      - microelectronics/processors/gpgpu/index.md
+      - GPGPU Architecture Overview: microelectronics/processors/gpgpu/overview/index.md
+      - GPGPU Programming Model: microelectronics/processors/gpgpu/programming-model/index.md
+  - SoC:
+    - microelectronics/soc/index.md
+    - Introduction: microelectronics/soc/introduction/index.md
+    - SoC Processor: microelectronics/soc/processor/index.md
+    - APB Protocol: microelectronics/soc/apb/index.md
+    - AHB Protocol: microelectronics/soc/ahb/index.md
+    - AXI Protocol:
+      - microelectronics/soc/axi/index.md
+      - AXI Handshake: microelectronics/soc/axi/handshake/index.md
+      - AXI Beyond: microelectronics/soc/axi/beyond-handshake/index.md
+    - 运算电路:
+      - microelectronics/soc/arithmetic/index.md
+      - Compression: microelectronics/soc/arithmetic/compression/index.md
+      - CPA: microelectronics/soc/arithmetic/cpa/index.md
+  - HDL:
+    - microelectronics/hdl/index.md
+    - Verilog HDL Basics: microelectronics/hdl/verilog/index.md
+  - EDA Tools:
+    - microelectronics/eda/index.md
+    - VS Code + Verilog: microelectronics/eda/vscode/index.md
+    - Testbench: microelectronics/eda/testbench/index.md
+    - MobaXterm + Linux: microelectronics/eda/mobaxterm/index.md
+    - OSS CAD Suite: microelectronics/eda/oss-cad-suite/index.md
+    - Tcl: microelectronics/eda/tcl/index.md
+    - Report: microelectronics/eda/report/index.md
+    - ModelSim: microelectronics/eda/modelsim/index.md
+    - Vivado: microelectronics/eda/vivado/index.md
+    - Yosys: microelectronics/eda/yosys/index.md
+    - SymbiYosys: microelectronics/eda/symbiyosys/index.md
+- 机器学习:
+  - machine-learning/index.md
+  - 基础:
+    - machine-learning/fundamentals/index.md
+    - 全连接神经网络: machine-learning/fundamentals/fully-connected-networks/index.md
+    - 优化: machine-learning/fundamentals/optimization/index.md
+    - CNN: machine-learning/fundamentals/cnn/index.md
+    - Self-Attention: machine-learning/fundamentals/self-attention/index.md
+    - Transformer: machine-learning/fundamentals/transformer/index.md
+  - 计算机视觉:
+    - machine-learning/computer-vision/index.md
+    - ResNet: machine-learning/computer-vision/resnet/index.md
+    - DenseNet: machine-learning/computer-vision/densenet/index.md
+    - YOLO:
+      - machine-learning/computer-vision/yolo/index.md
+      - YOLO v1: machine-learning/computer-vision/yolo/v1/index.md
+      - YOLO v2: machine-learning/computer-vision/yolo/v2/index.md
+      - YOLO v3: machine-learning/computer-vision/yolo/v3/index.md
+    - ViT: machine-learning/computer-vision/vit/index.md
+    - PFLD: machine-learning/computer-vision/pfld/index.md
+    - MobileOne: machine-learning/computer-vision/mobileone/index.md
+    - MSKA:
+      - machine-learning/computer-vision/mska/index.md
+      - MSKA Computing: machine-learning/computer-vision/mska/computing/index.md
+    - TSCM: machine-learning/computer-vision/tscm/index.md
+    - TSRNet: machine-learning/computer-vision/tsrnet/index.md
+    - PFLD-GhostOne:
+      - machine-learning/computer-vision/pfld-ghostone/index.md
+      - Code Notes: machine-learning/computer-vision/pfld-ghostone/code-notes/index.md
+      - Loss: machine-learning/computer-vision/pfld-ghostone/loss/index.md
+      - PyTorch2onnx: machine-learning/computer-vision/pfld-ghostone/pytorch-to-onnx/index.md
+      - DA: machine-learning/computer-vision/pfld-ghostone/data-augmentation/index.md
+- 编程:
+  - programming/index.md
+  - Rust:
+    - programming/rust/index.md
+    - Rust 学习笔记: programming/rust/study/index.md
+    - Rust 环境配置: programming/rust/setup/index.md
+  - Python:
+    - programming/python/index.md
+    - 环境管理:
+      - programming/python/environments/index.md
+      - venv: programming/python/environments/venv/index.md
+      - Conda: programming/python/environments/conda/index.md
+- 工具:
+  - tools/index.md
+  - AI 工具:
+    - tools/ai/index.md
+    - Claude Code: tools/ai/claude-code/index.md
+    - MCP Server: tools/ai/mcp/index.md
+    - OpenRouter: tools/ai/openrouter/index.md
+    - OpenCode: tools/ai/opencode/index.md
+    - Aider: tools/ai/aider/index.md
+  - Docker: tools/docker/index.md
+  - Git & GitHub: tools/git/index.md
+  - WSL2:
+    - tools/wsl/index.md
+    - WSL 代理: tools/wsl/proxy/index.md
+  - 写作:
+    - tools/writing/index.md
+    - Markdown 写作规范: tools/writing/style-guide/index.md
+    - 站点开发笔记: tools/writing/mkdocs/index.md
+  - Chocolatey 使用指南: tools/chocolatey/index.md
+  - Linux:
+    - tools/linux/index.md
+    - 基础命令: tools/linux/commands/index.md
+    - 文件系统: tools/linux/filesystem/index.md
+- 博客: blog/index.md
+- 应用:
+  - lab/index.md
+  - 加密与解密: lab/crypto/index.md
+- 留言板: comments/index.md
