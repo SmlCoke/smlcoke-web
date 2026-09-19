@@ -83,10 +83,6 @@ extra_javascript:
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js # 引入 KaTeX 自动渲染插件
   - javascripts/katex.js # 最后引入初始化脚本
   
-# 临时旧 URL 兼容层：外部链接清理完成后按 dev/runbooks/redirect-cleanup.md 移除。
-hooks:
-  - scripts/phase1_redirects.py
-
 use_directory_urls: true
 
 nav:

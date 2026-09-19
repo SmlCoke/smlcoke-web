@@ -1,34 +1,52 @@
-# SmlCoke Web
+<p align="center">
+  <a href="https://smlcoke.com/">
+    <img src="docs/assets/branding/options/02-paper-geometry.svg" alt="SmlCoke" width="100%" />
+  </a>
+</p>
 
-[English](README.md) | [中文](README.zh-CN.md)
+<p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
 
-Personal knowledge website and blog powered by MkDocs.
+<p align="center">
+  <a href="https://smlcoke.com/">Visit the website</a> ·
+  <a href="https://smlcoke.com/blog/">Read the blog</a> ·
+  <a href="https://smlcoke.com/lab/">Explore apps</a> ·
+  <a href="https://smlcoke.com/comments/">Leave a message</a>
+</p>
 
-- Homepage: <https://smlcoke.com>
+---
 
-## About
+## A place to learn, build, and remember
 
-This repository maintains the source content, custom theme overrides, and static output for my personal website.
+This is the source repository for **[SmlCoke's personal website](https://smlcoke.com/)**: a growing collection of course notes, engineering experiments, practical guides, and everyday thoughts. Built with MkDocs and Material for MkDocs, written mostly in Chinese.
 
-## Website Content
+## Explore
 
-The site focuses on learning notes, technical writing, and personal records, including:
+| Section | What you'll find |
+| :--- | :--- |
+| [Microelectronics](https://smlcoke.com/microelectronics/) | Signals and systems, digital circuits, processors, SoC, HDL, and EDA |
+| [Machine learning](https://smlcoke.com/machine-learning/) | Neural network fundamentals, computer vision, and model reading notes |
+| [Programming](https://smlcoke.com/programming/) | Rust study notes and Python environments |
+| [Tools](https://smlcoke.com/tools/) | AI tools, Git, Docker, Linux, WSL, and technical writing |
+| [Blog](https://smlcoke.com/blog/) | Work logs, personal records, and ideas along the way |
+| [Apps](https://smlcoke.com/lab/) | Small browser tools, including Rust-powered WebAssembly cryptography |
 
-- Tools and AI tools (Git, WSL, Aider, Claude Code, etc.)
-- Machine learning notes (basic deep learning, optimization, CNN, self-attention, Transformer)
-- Computer vision notes (ResNet, DenseNet, YOLO, ViT, PFLD)
-- Digital integrated circuit course notes (base, verilog, VLSI, processor, etc.)
-- Rust-related cryptography and study notes
-- Blog posts (work logs, random thoughts, and personal diary)
+## Inside the repository
 
-## Author
+```text
+docs/          Articles, images, styles, scripts, and app assets
+overrides/     Custom Material templates
+scripts/       Content maintenance utilities
+mkdocs.yml     Site configuration and navigation
+```
 
-- Nickname: **SmlCoke**
-- Email: <j.feng.st05@gmail.com>
-- Email (SJTU): <e2.71828@sjtu.edu.cn>
-- GitHub: <https://github.com/SmlCoke>
-- Hugging Face: <https://huggingface.co/SmlCoke>
+The `main` branch holds the source; `gh-pages` holds the published site. Local build output (`site/`) and personal development notes (`dev/`) are excluded from the source branch.
 
-## License
+Regular notes use `<topic>/index.md`, with images and attachments in a nearby `assets/` directory. Blog posts keep their own dated publishing structure.
 
-This project is licensed under the terms in `LICENSE`.
+## Say hello
+
+**SmlCoke / Jun Feng** · [GitHub](https://github.com/SmlCoke) · [Hugging Face](https://huggingface.co/SmlCoke) · [Email](mailto:j.feng.st05@gmail.com)
+
+Found a broken link or an error in a note? [Open an issue](https://github.com/SmlCoke/smlcoke-web/issues) or stop by the [guestbook](https://smlcoke.com/comments/).
+
+Licensed under the [MIT License](LICENSE).
