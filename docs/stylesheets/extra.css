@@ -1245,6 +1245,18 @@ body.reader-sidebar-resizing .reader-sidebar-resizer {
     linear-gradient(125deg, #08101d, #12355b 45%, #0f766e);
 }
 
+.section-hero.sc-hero {
+  background: radial-gradient(circle at 20% 20%, #f472b6, #7c3aed 45%, #111827 80%);
+}
+
+.section-hero.sc-ic-hero {
+  background: linear-gradient(120deg, #f7e7ce, #d4af37, #8b6f2b);
+}
+
+.section-hero.sc-paper-hero {
+  background: linear-gradient(45deg, #00f5d4, #00bbf9, #9b5de5);
+}
+
 .section-hero.orange {
   background: linear-gradient(135deg, #2a1806, #9a3412 56%, #f59e0b);
 }
