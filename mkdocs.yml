@@ -260,6 +260,10 @@ nav:
     - tools/linux/index.md
     - 基础命令: tools/linux/commands/index.md
     - 文件系统: tools/linux/filesystem/index.md
+- Self-Cultivation:
+  - self-cultivation/index.md
+  - Digital IC: self-cultivation/digital-ic/index.md
+  - Paper Reading: self-cultivation/papers/index.md
 - 博客: blog/index.md
 - 应用:
   - lab/index.md
