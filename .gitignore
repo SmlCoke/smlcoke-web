@@ -1,0 +1,54 @@
+# main 分支不必同步 site/ 目录，因为它是由 docs/ 目录通过 MkDocs 构建生成的，且通常不需要手动编辑。我们只需要在 main 分支中维护 docs/ 目录的内容，构建后生成的 site/ 目录会自动更新并部署到 GitHub Pages 上。
+site/
+
+# 位图仅保存在本地 docs 并随站点发布，不进入源码分支。
+# SVG 矢量图和 ICO 图标继续跟踪；扩展名匹配不区分大小写。
+*.[wW][eE][bB][pP]
+*.[pP][nN][gG]
+*.[jJ][pP][gG]
+*.[jJ][pP][eE][gG]
+*.[jJ][fF][iI][fF]
+*.[jJ][pP][eE]
+*.[gG][iI][fF]
+*.[aA][vV][iI][fF]
+*.[aA][pP][nN][gG]
+*.[bB][mM][pP]
+*.[tT][iI][fF]
+*.[tT][iI][fF][fF]
+*.[hH][eE][iI][cC]
+*.[hH][eE][iI][fF]
+*.[jJ][xX][lL]
+*.[jJ][pP]2
+*.[jJ]2[kK]
+*.[jJ][pP][xX]
+*.[pP][sS][dD]
+*.[dD][nN][gG]
+*.[rR][aA][wW]
+*.[tT][gG][aA]
+*.[pP][pP][mM]
+*.[pP][gG][mM]
+*.[pP][bB][mM]
+*.[pP][nN][mM]
+
+# 开发笔记
+dev/
+
+# 隐私文档
+*-full.md
+*_full.md
+
+# 配置
+.vscode/
+
+# 临时文件
+*temp*
+
+# pdf 等重型文档
+*.pdf
+*.pptx
+*.docx
+*.xlsx
+
+# Python 构建钩子的可再生缓存
+__pycache__/
+*.py[cod]
