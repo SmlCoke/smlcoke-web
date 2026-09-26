@@ -21,7 +21,7 @@ hide:
 <div class="section-subtitle">AI Accelerator 综述</div>
 
 <div class="card-grid">
-<a class="note-card blue" href="ai-accelerator/general/isscc_2020_tutorial/">
+<a class="note-card blue" href="ai-accelerator/overview/isscc_2020_tutorial/">
   <span class="card-icon" aria-hidden="true">📗</span>
   <div class="card-title">ISSCC 2020 Tutorial</div>
   <p class="card-desc">How to Evaluate Deep Neural Network Processors</p>
