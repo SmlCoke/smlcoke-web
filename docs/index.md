@@ -47,6 +47,12 @@ hide:
   <p class="card-desc">开发、系统、AI 与 Markdown 写作工具的使用指南。</p>
 </a>
 
+<a class="note-card pink" href="self-cultivation/">
+  <span class="card-icon" aria-hidden="true">🧘🏻</span>
+  <div class="card-title">修炼</div>
+  <p class="card-desc">Self-Cultivation Travel of SmlCoke</p>
+</a>
+
 <a class="note-card cyan" href="blog/">
   <span class="card-icon" aria-hidden="true">📝</span>
   <div class="card-title">博客</div>
