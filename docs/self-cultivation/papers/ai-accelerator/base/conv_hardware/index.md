@@ -549,7 +549,7 @@ $$T_{\text{full}}
 
 这是一个超大规模的稀疏矩阵。
 
-## 2.4 由 Toeplitz 矩阵分析卷积层特性
+### 2.4 由 Toeplitz 矩阵分析卷积层特性
 
 仔细看 Toeplitz 卷积矩阵，会发现三个明显特征。
 
@@ -652,3 +652,331 @@ $$\boxed{
 > **既然 Toeplitz 表示如此直接，为什么 CPU/GPU/NPU 不直接构造 \(T(W)\)，然后拿矩阵乘法器算 \(T(W)x\)？**
 
 这个问题会把我们从纯数学表示正式带入**计算量、存储量、数据搬运和硬件利用率**，也正是从 Toeplitz 走向 im2col 的关键一步。
+
+## III. 第二阶段：从 Toeplitz 到 im2col
+
+### 3.1 Toeplitz 展开的严重问题
+
+我们考虑单输入通道（$C_{\text{in}}=1$）、单输出通道（$C_{\text{out}}=1$），Conv2D的情况，并且依旧假设 Stride=1, Padding=0, Dilation=1, 此时 BTTB 矩阵的尺寸为：$H_{\text{out}}W_{\text{out}} \times H_{\text{in}}W_{\text{in}}$。
+
+而非零权重个数等于**输出像素个数乘以卷积核权重个数**（因为每一个输出像素都是一个完整卷积窗口进行 MAC 计算得到的），即：
+
+$$N_{\text{nz}} = H_{\text{out}}W_{\text{out}} \times K_{h}K_{w}$$
+
+因此非零元素密度：
+
+$$\rho=\frac{N_{\text{nz}}}{H_{\text{out}}W_{\text{out}} \times H_{\text{in}}W_{\text{in}}}=\frac{K_{h}K_{w}}{H_{\text{in}}W_{\text{in}}}$$
+
+!!! example "Example"
+    
+    假设输入特征图尺寸为 $H_{\text{in}}=W_{\text{in}}=224$，卷积核尺寸为 $K_{h}=K_{w}=3$，则非零元素密度为：
+
+    $$\rho=\frac{3\times3}{224\times224}\approx 0.000179$$
+
+    也就是说，**Toeplitz 矩阵中只有约 0.018% 的元素是非零的，其余 99.982% 的元素都是零**。
+
+    这意味着，如果我们直接构造 Toeplitz 矩阵并进行矩阵乘法，将会浪费大量的存储空间和计算资源，显然不适合直接用 dense GEMM 进行计算。
+
+稀疏性，是 Toeplitz 矩阵最严重的问题之一。此外，第二个问题是——**权重被疯狂复制**。
+
+由于每个输出像素都需要完整地与卷积核进行点积运算，因此卷积核权重的重复复制次数为：
+
+$$N_{\text{rep}}=H_{\text{out}}W_{\text{out}}$$
+
+!!! Example "Example"
+    例如对于 $224\times 224$ 的特征图，重复复制次数就是：$N_{\text{rep}}=222\times 222=49284$——**接近五万次**！<span style="color:red;">这完全违背了卷积区别于 FC 最有价值的性质之一</span>：**权重共享**
+
+**多通道下，情况更加严重**：
+
+$$T_{\text{full}}\in \mathbb{R}^{(C_{\text{out}}H_{\text{out}}W_{\text{out}}) \times (C_{\text{in}}H_{\text{in}}W_{\text{in}})}$$
+
+有：
+
+- $N_{\text{nz}}=C_{\text{out}}H_{\text{out}}W_{\text{out}}K_{h}K_{w}$
+- $\rho=K_{h}K_{w}/(C_{\text{in}}H_{\text{in}}W_{\text{in}})$
+- $N_{\text{rep}}=C_{\text{out}}H_{\text{out}}W_{\text{out}}$
+
+!!! Example "Example"
+    假设一个典型层：$C_{\text{in}}=64, C_{\text{out}}=128, H_{\text{in}}=W_{\text{in}}=224, K_{h}=K_{w}=3$
+    则非零密度只有：
+
+    $$\rho=\frac{K_{h}K_{w}}{C_{\text{in}}H_{\text{in}}W_{\text{in}}}\approx 2.80\times 10^{-6}=0.00028\%$$
+
+    权重重复复制次数：
+
+    $$N_{\text{rep}}=C_{\text{out}}H_{\text{out}}W_{\text{out}}=6,308,352$$
+
+    空间利用率极低。
+
+    假设权重用 INT8 存储，则原始权重本身只有：
+
+    $$C_{\text{out}}\times C_{\text{in}}\times K_{h}K_{w}=73,728\text{B}=72\text{KB}$$
+
+    然而保存完整 Toeplitz 矩阵需要的存储开销为：
+
+    $$C_{\text{out}}H_{\text{out}}W_{\text{out}}C_{\text{in}}H_{\text{in}}W_{\text{in}}\approx 2.03\times 10^{13}\text{B}\approx 18.5\text{TB}$$
+
+    于是我们得到一个极其荒谬的对比：**存储 $72\text{KB}$ 的原始权重需要 $18.5\text{TB}$ 的存储空间！**
+
+    即便我们忽略**所有零**，只考虑非零权重，也有整整：
+
+    $$18.5\text{TB}\times N_{\text{nz}}\approx 54\text{MB}$$
+
+
+更本质的问题是，**Toeplitz 把卷积层规则的结构丢失了**：
+
+卷积原本包含非常强的结构信息：
+
+$$Y[c_o,h,w]
+=
+\sum_{c_i,k_h,k_w}
+W[c_o,c_i,k_h,k_w]
+X[c_i,h+k_h,w+k_w]$$
+
+这里明确知道：
+
+- 哪些维度是 channel；
+- 哪些维度是 spatial；
+- kernel 在空间上怎么滑；
+- 哪些数据可以复用。
+
+一旦展开为 Toeplitz 矩阵，就变成了一个巨大的 **sparse matrix-vector multiplication(SpMV)**，把很多结构隐藏掉了，这对芯片设计非常不好，因为**芯片设计最关心的就是：reuse**。
+
+事实上，Toeplitz 矩阵形式**更加接近 GEMV/SpMV 而非 GEMM**。因为：
+
+$$y_{\text{vec}}=T(w)x_{\text{vec}}$$
+
+与矩阵 $T(w)$ 相乘的 $x_{\text{vec}}$ 是向量而非矩阵。而 **GEMV 和 GEMM 的区别**在于：
+
+!!! Attention "GEMM vs GEMV"
+    **GEMV 和 GEMM 的区别**：
+
+    - **GEMM**: 对于 $N\times N$ 的方阵乘法，其**浮点 operations** 约为 $2N^3$，而**访存 operations** 约为 $4N^2$。**计算强度(Compution Density) $\eta =N/2$**。随着矩阵尺寸 N 的增大，**计算量呈立方级增长，而访存需求仅呈平方级增长，计算强度呈线性增长**。这意味着数据被加载到缓存和寄存器后，可以被**反复重用以执行大量计算**，性能瓶颈主要在于**处理器的浮点计算能力**。
+    - **GEMV**: 对于 $N\times N$ 矩阵与向量的乘法，其**浮点 operations** 约为 $2N^2$，**访存 operations** 也约为 $N^2$。**计算强度恒为 $\eta=O(1)$量级（约等于 2）**。无论矩阵多大，**每加载一个数据元素，仅能进行常数次计算**。因此，**GEMV 的性能完全受限于内存带宽**，从 Cray-1 时代至今，其优化空间都非常有限。这也是为什么在深度学习中，倾向于将多个 GEMV 操作批处理，从而将其转化为一个更大规模的 GEMM 操作的原因。
+
+### 3.2 关键思路：从展开 Kernal 到展开 Input
+
+Toeplitz 做的是：
+
+> 把同一个 kernel 在每个 spatial position 的作用全部展开。
+
+那么能不能反过来？
+
+既然卷积的每个 output pixel 都是在做：
+
+\[
+\text{kernel}
+\cdot
+\text{input patch}
+\]
+
+那么可以：
+
+1. kernel 只保留一份；
+2. 把所有 input patch 收集起来；
+3. 一次做很多个 dot product。
+
+这就是 **im2col**。
+
+这一步是整个链路中最关键的“视角翻转”。
+
+依旧考虑如下这个案例：
+
+先考虑单输入通道，单输出通道情况，输入：
+
+$$X=
+\begin{bmatrix}
+x_{00}&x_{01}&x_{02}\\
+x_{10}&x_{11}&x_{12}\\
+x_{20}&x_{21}&x_{22}
+\end{bmatrix}$$
+
+kernel：
+
+$$W=\begin{bmatrix}
+a&b\\
+c&d
+\end{bmatrix}$$
+
+stride = 1，padding = 0，输出是一个尺寸为 $2\times 2$的特征图:
+
+$$\begin{bmatrix}y_{00} & y_{01} \\ y_{10} & y_{11}\end{bmatrix}$$
+
+我们要计算 $y0=ax_{00} + bx_{01} + cx_{10} + dx_{11}$，如果将 kernel 展平为：$\begin{bmatrix}a&b&c&d\end{bmatrix}$，需要 receptive field 展平为**一列**:
+
+$$\begin{bmatrix}\color{red}{x_{00}} \\ \color{red}{x_{01}} \\ \color{red}{x_{10}}\\ \color{red}{x_{11}} \end{bmatrix}$$
+
+同理，在计算 $y_{01}, y_{10}, y_{11}$ 时所需要的 input patch 分别为：
+
+$$y_{01} \sim \begin{bmatrix}\color{blue}{x_{01}}\\\color{blue}{x_{02}}\\\color{blue}{x_{11}}\\\color{blue}{x_{12}}\end{bmatrix}, \quad y_{10} \sim \begin{bmatrix}\color{green}{x_{10}}\\\color{green}{x_{11}}\\\color{green}{x_{20}}\\\color{green}{x_{21}}\end{bmatrix}, \quad \quad y_{11} \sim \begin{bmatrix}\color{purple}{x_{11}}\\\color{purple}{x_{12}}\\\color{purple}{x_{21}}\\\color{purple}{x_{22}}\end{bmatrix}$$
+
+因此，原卷积操作可以写作：
+
+$$\begin{bmatrix}y_{00} & y_{01} & y_{10} & y_{11}\end{bmatrix}=
+\begin{bmatrix}a&b&c&d\end{bmatrix}
+\cdot 
+\begin{bmatrix}
+\color{red}{x_{00}} & \color{blue}{x_{01}} & \color{green}{x_{10}} & \color{purple}{x_{11}} \\
+\color{red}{x_{01}} & \color{blue}{x_{02}} & \color{green}{x_{11}} & \color{purple}{x_{12}} \\
+\color{red}{x_{10}} & \color{blue}{x_{11}} & \color{green}{x_{20}} & \color{purple}{x_{21}} \\
+\color{red}{x_{11}} & \color{blue}{x_{12}} & \color{green}{x_{21}} & \color{purple}{x_{22}}
+\end{bmatrix}$$
+
+这就是 **im2col** 的核心思想：**将每一个输出像素对应的 receptive field 展平为一列，从而将卷积操作转化为矩阵乘法**：
+
+$$Y_{\text{row}}=W_{\text{mat}} \cdot X_{\text{col}}$$
+
+!!! Attention "why call im2col"
+    im2col 的含义就是：“**把 image 中每一个 receptive field 展开成一列**”，即构造 $X_{\text{col}}$ 的方法。
+
+!!! Tip "Toeplitz 和 im2col 的关系"
+
+    Toeplitz：
+
+    $$y=T(W)x$$
+
+    是在**复制、平移卷积核权重。**
+
+    im2col：
+
+    $$y=WX_{\text{col}}$$
+
+    是在**复制、收集 input patch**
+
+    两者是**完全相同卷积**的**两种展开方法**。
+
+### 3.3 $X_{\text{col}}$
+
+#### 3.3.1 $X_{\text{col}}$ 的定义与构造
+
+先考虑单输入通道，单输出通道的 Conv2D 操作：
+
+1. **确定维度**：
+    - 假设卷积核尺寸为：$K_h \times K_w$，卷积核被展平（列索引先变）成长度为 $N_{\text{w}} = K_h \times K_w$ 的**一维行向量**，我们记作 $W_{\text{mat}}$。
+    - 我们需要得到的输出特征图尺寸为：$H_{\text{out}} \times W_{\text{out}}$。将其展平为长度为 $N_{\text{out}} = H_{\text{out}} \times W_{\text{out}}$ 的**一维行向量**，我们记作 $Y_{\text{row}}$。
+    - 假设输入特征图的尺寸为：$H_{\text{in}} \times W_{\text{in}}$，则输入特征图被转换为矩阵 $X_{\text{col}}$，**其中每一列都对应一个 receptive field**，同样满足列索引先变，并且**列数等于输出像素个数**，即 $H_{\text{out}} \times W_{\text{out}}$；**行数等于卷积核权重个数**，即 $K_h \times K_w$。
+2. **填充元素**：
+    - 矩阵$X_{\text{col}}$的每一列，**代表与卷积核计算的一个 receptice field**。并且第 $i$ 列计算的是 $\mathbf{Y}$ 的第 $i$ 个元素。
+    - 因此，填充方法是：对于$X_{\text{col}}$的第 $i$ 列，找到卷积核当前**覆盖的输入元素索引**，将**卷积核的权重填入这些索引对应的列**中。
+
+这样构造得到的：
+
+- $W_{\text{mat}}$ 仅包含原始权重，没有复制和零填充。
+- $X_{\text{col}}$ 也是**几乎都是有用的输入数据**，**没有零填充**（**但是有复制**）。
+
+#### 3.3.2 考虑 Input Channel
+
+当输入特征图包含多个输入通道时:
+
+卷积核权重向量变为卷积核权重矩阵，但是仍然保持元素独立无复制：
+
+$$W_{\text{mat}} = \begin{bmatrix} W_0 & W_1 & \cdots & W_{C_{\text{in}}-1} \end{bmatrix}$$
+
+维度为：$1\times C_{\text{in}}K_h K_w$
+
+各通道输入图的 $X_{\text{col}}$ **矩阵在竖直方向上堆叠**，即：
+
+$$X_{\text{col}} = \begin{bmatrix} X_{0,\text{col}} \\ X_{1,\text{col}} \\ \vdots \\ X_{C_{\text{in}-1},\text{col}} \end{bmatrix}$$
+
+维度为：$C_{\text{in}}K_h K_w \times H_{\text{out}}W_{\text{out}}$
+
+#### 3.3.3 考虑 Output Channel
+
+现在：
+
+$$W\in
+\mathbb R^{
+C_{out}\times C_{in}\times K_h\times K_w
+}$$
+
+即我们有 $C_{out}$ 个卷积核，每个卷积核的尺寸都是：$C_{in}\times K_h\times K_w$。
+
+比如：
+
+$$W^{(0)},W^{(1)},\dots,W^{(C_{out}-1)}$$
+
+**每一组都对应一行**：
+
+$$\begin{cases}
+W^{(0)}: \begin{bmatrix} W^{(0)}_0 & W^{(0)}_1 & \cdots & W^{(0)}_{C_{\text{in}}-1} \end{bmatrix} \\
+W^{(1)}: \begin{bmatrix} W^{(1)}_0 & W^{(1)}_1 & \cdots & W^{(1)}_{C_{\text{in}}-1} \end{bmatrix} \\
+\cdots \\
+W^{(C_{\text{out}}-1)}: \begin{bmatrix} W^{(C_{\text{out}}-1)}_0 & W^{(C_{\text{out}}-1)}_1 & \cdots & W^{(C_{\text{out}}-1)}_{C_{\text{in}}-1} \end{bmatrix}
+\end{cases}$$
+
+最后**纵向堆叠**：
+
+$$W_{\text{mat}}=\begin{bmatrix} W^{(0)}_0 & W^{(0)}_1 & \cdots & W^{(0)}_{C_{\text{in}}-1} \\ W^{(1)}_0 & W^{(1)}_1 & \cdots & W^{(1)}_{C_{\text{in}}-1} \\ \vdots & \vdots & \ddots & \vdots \\ W^{(C_{\text{out}}-1)}_0 & W^{(C_{\text{out}}-1)}_1 & \cdots & W^{(C_{\text{out}}-1)}_{C_{\text{in}}-1} \end{bmatrix}$$
+
+最终得到的卷积核矩阵尺寸为：$W_{\text{mat}}  \in \mathbb{R}^{C_{\text{out}} \times C_{\text{in}} K_h K_w}$
+
+**可以发现，有一个很重要的点就是：$C_{\text{out}}>1$时，我们无需再像 Toeplitz 展开一样修改输入特征图对应的矩阵——此时的$X_{\text{col}}$不变——结果就是$X_{\text{col}}$中的数据再次被复用！**
+
+此时有：
+
+$$Y_{\text{row}}=W_{\text{mat}}X_{\text{col}}$$
+
+- $Y_{\text{row}} \in \mathbb{R}^{C_{\text{out}} \times H_{\text{out}}W_{\text{out}}}$
+- $W_{\text{mat}} \in \mathbb{R}^{C_{\text{out}} \times C_{\text{in}}K_hK_w}$
+- $X_{\text{col}} \in \mathbb{R}^{C_{\text{in}}K_hK_w \times H_{\text{out}}W_{\text{out}}}$
+
+这就是**标准的矩阵乘法，标准的 GEMM**，$W_{\text{mat}}$和$X_{\text{col}}$ 都是矩阵而非简单的一维向量。
+
+### 3.4 im2col 与 GEMM
+
+#### 3.4.1 用 GEMM 规范化描述 im2col
+
+现在可以定义标准 GEMM 的 M、N、K
+
+AI Accelerator 领域中，GEMM 的标准定义是：
+
+$$[M\times K][K\times N]$$
+
+对于普通卷积：
+
+$$\boxed{M=C_{out}}$$
+
+$$\boxed{K=C_{in}K_hK_w}$$
+
+$$\boxed{N=H_{out}W_{out}}$$
+
+所以：
+
+$$\boxed{[M\times K]\times[K\times N]=[M\times N]}$$
+
+也就是：
+
+$$W_{\text{mat}}X_{\text{col}}=Y_{\text{mat}}$$
+
+
+#### 3.4.2 从循环角度看 im2col 为什么等价
+
+普通卷积：
+
+
+$$Y[c_o,h,w]=
+\sum_{c_i,k_h,k_w}
+W[c_o,c_i,k_h,k_w]
+X[c_i,h+k_h,w+k_w]$$
+
+- 把：$(c_i,k_h,k_w)$ 合并成 GEMM 的 $k$
+- 把：$(h,w)$ 合并成：$n$
+- 再令：$c_o\rightarrow m$
+
+那么就变成：
+
+
+$$Y[m,n]=\sum_k W[m,k]X_{\text{col}}[k,n]$$
+
+即：
+
+$$\boxed{C_{mn}=\sum_k A_{mk}B_{kn}}$$
+
+这就是标准矩阵乘法。
+
+所以本质上：$\boxed{\text{Conv}\rightarrow\text{GEMM}}$ 主要就是一次维度重组：
+
+
+$$(c_o,c_i,k_h,k_w,h,w) \xrightarrow{\text{重解释为：}} (M,K,N)$$
+
+### 3.5 im2col 的优缺点
