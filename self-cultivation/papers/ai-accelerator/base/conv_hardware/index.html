@@ -10,31 +10,27 @@
         <meta name="author" content="SmlCoke">
       
       
-        <link rel="canonical" href="https://smlcoke.com/self-cultivation/papers/">
+        <link rel="canonical" href="https://smlcoke.com/self-cultivation/papers/ai-accelerator/base/conv_hardware/">
       
       
-        <link rel="prev" href="../digital-ic/">
-      
-      
-        <link rel="next" href="../../blog/">
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
     
     
       
-        <title>论文阅读 - SmlCoke Home</title>
+        <title>Hardware Design for Convolutional Layer - SmlCoke Home</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,11 +49,11 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css?v=20260918-1">
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260918-1">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -81,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#hardware-design-for-convolutional-layer" class="md-skip">
+          跳转至
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -93,7 +94,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -113,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              论文阅读
+              Hardware Design for Convolutional Layer
             
           </span>
         </div>
@@ -208,7 +209,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../../../.." class="md-tabs__link">
         
   
   
@@ -229,7 +230,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../microelectronics/" class="md-tabs__link">
+        <a href="../../../../../microelectronics/" class="md-tabs__link">
           
   
   
@@ -251,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../machine-learning/" class="md-tabs__link">
+        <a href="../../../../../machine-learning/" class="md-tabs__link">
           
   
   
@@ -273,7 +274,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../programming/" class="md-tabs__link">
+        <a href="../../../../../programming/" class="md-tabs__link">
           
   
   
@@ -295,7 +296,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../tools/" class="md-tabs__link">
+        <a href="../../../../../tools/" class="md-tabs__link">
           
   
   
@@ -313,13 +314,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../../../" class="md-tabs__link">
           
   
   
@@ -339,7 +338,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../blog/" class="md-tabs__link">
+      <a href="../../../../../blog/" class="md-tabs__link">
         
   
   
@@ -360,7 +359,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../lab/" class="md-tabs__link">
+        <a href="../../../../../lab/" class="md-tabs__link">
           
   
   
@@ -380,7 +379,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../comments/" class="md-tabs__link">
+      <a href="../../../../../comments/" class="md-tabs__link">
         
   
   
@@ -410,8 +409,6 @@
           
             
               
-                
-              
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -423,7 +420,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+    <a href="../../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -441,7 +438,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   
@@ -503,7 +500,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/" class="md-nav__link ">
               
   
   
@@ -572,7 +569,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/signals-systems/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/signals-systems/" class="md-nav__link ">
               
   
   
@@ -643,7 +640,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/signals-systems/differential-equations/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/signals-systems/differential-equations/" class="md-nav__link ">
               
   
   
@@ -687,7 +684,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/signals-systems/differential-equations/homogeneous/" class="md-nav__link">
+      <a href="../../../../../microelectronics/signals-systems/differential-equations/homogeneous/" class="md-nav__link">
         
   
   
@@ -715,7 +712,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/signals-systems/differential-equations/particular/" class="md-nav__link">
+      <a href="../../../../../microelectronics/signals-systems/differential-equations/particular/" class="md-nav__link">
         
   
   
@@ -743,7 +740,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/signals-systems/differential-equations/impulse-balance/" class="md-nav__link">
+      <a href="../../../../../microelectronics/signals-systems/differential-equations/impulse-balance/" class="md-nav__link">
         
   
   
@@ -804,7 +801,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/signals-systems/fourier-transform/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/signals-systems/fourier-transform/" class="md-nav__link ">
               
   
   
@@ -848,7 +845,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/signals-systems/fourier-transform/cft-1/" class="md-nav__link">
+      <a href="../../../../../microelectronics/signals-systems/fourier-transform/cft-1/" class="md-nav__link">
         
   
   
@@ -876,7 +873,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/signals-systems/fourier-transform/cft-2/" class="md-nav__link">
+      <a href="../../../../../microelectronics/signals-systems/fourier-transform/cft-2/" class="md-nav__link">
         
   
   
@@ -947,7 +944,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/digital-circuits/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/digital-circuits/" class="md-nav__link ">
               
   
   
@@ -991,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/glossary/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/glossary/" class="md-nav__link">
         
   
   
@@ -1048,7 +1045,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/digital-circuits/course-design/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/digital-circuits/course-design/" class="md-nav__link ">
               
   
   
@@ -1092,7 +1089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/course-design/setup/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/course-design/setup/" class="md-nav__link">
         
   
   
@@ -1120,7 +1117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/course-design/introduction/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/course-design/introduction/" class="md-nav__link">
         
   
   
@@ -1148,7 +1145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/course-design/specifications/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/course-design/specifications/" class="md-nav__link">
         
   
   
@@ -1176,7 +1173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/course-design/requantization/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/course-design/requantization/" class="md-nav__link">
         
   
   
@@ -1259,7 +1256,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/digital-circuits/vlsi/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/" class="md-nav__link ">
               
   
   
@@ -1303,7 +1300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/introduction/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/introduction/" class="md-nav__link">
         
   
   
@@ -1358,7 +1355,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/digital-circuits/vlsi/modulation/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/modulation/" class="md-nav__link ">
               
   
   
@@ -1402,7 +1399,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/modulation/gaussian-noise-explained/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/modulation/gaussian-noise-explained/" class="md-nav__link">
         
   
   
@@ -1430,7 +1427,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/modulation/matched-filter/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/modulation/matched-filter/" class="md-nav__link">
         
   
   
@@ -1458,7 +1455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/modulation/noise/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/modulation/noise/" class="md-nav__link">
         
   
   
@@ -1519,7 +1516,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/digital-circuits/vlsi/iteration-bound/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/iteration-bound/" class="md-nav__link ">
               
   
   
@@ -1563,7 +1560,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/iteration-bound/iteration-bound-explained/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/iteration-bound/iteration-bound-explained/" class="md-nav__link">
         
   
   
@@ -1591,7 +1588,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/iteration-bound/sampling-clock-iteration-periods/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/iteration-bound/sampling-clock-iteration-periods/" class="md-nav__link">
         
   
   
@@ -1627,7 +1624,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/parallel-pipeline/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/parallel-pipeline/" class="md-nav__link">
         
   
   
@@ -1655,7 +1652,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/retiming/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/retiming/" class="md-nav__link">
         
   
   
@@ -1683,7 +1680,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/unfolding/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/unfolding/" class="md-nav__link">
         
   
   
@@ -1711,7 +1708,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/folding/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/folding/" class="md-nav__link">
         
   
   
@@ -1762,7 +1759,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/digital-circuits/vlsi/systolic-array/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/systolic-array/" class="md-nav__link ">
               
   
   
@@ -1806,7 +1803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/systolic-array/cnn/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/systolic-array/cnn/" class="md-nav__link">
         
   
   
@@ -1842,7 +1839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/fading-channel/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/fading-channel/" class="md-nav__link">
         
   
   
@@ -1870,7 +1867,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/bandpass-modulation/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/bandpass-modulation/" class="md-nav__link">
         
   
   
@@ -1921,7 +1918,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/digital-circuits/vlsi/mqam/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/mqam/" class="md-nav__link ">
               
   
   
@@ -1965,7 +1962,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/mqam/mqam/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/mqam/mqam/" class="md-nav__link">
         
   
   
@@ -2024,7 +2021,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/digital-circuits/vlsi/ofdm/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/ofdm/" class="md-nav__link ">
               
   
   
@@ -2068,7 +2065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/ofdm/ofdm/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/ofdm/ofdm/" class="md-nav__link">
         
   
   
@@ -2104,7 +2101,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/digital-circuits/vlsi/channel-coding/" class="md-nav__link">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/channel-coding/" class="md-nav__link">
         
   
   
@@ -2185,7 +2182,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/processors/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/processors/" class="md-nav__link ">
               
   
   
@@ -2229,7 +2226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/hardware-software-interface/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/hardware-software-interface/" class="md-nav__link">
         
   
   
@@ -2280,7 +2277,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/processors/isa/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/processors/isa/" class="md-nav__link ">
               
   
   
@@ -2324,7 +2321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/isa/appendix/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/isa/appendix/" class="md-nav__link">
         
   
   
@@ -2389,7 +2386,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/processors/arithmetic/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/processors/arithmetic/" class="md-nav__link ">
               
   
   
@@ -2433,7 +2430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/arithmetic/denormal/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/arithmetic/denormal/" class="md-nav__link">
         
   
   
@@ -2461,7 +2458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/arithmetic/grs/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/arithmetic/grs/" class="md-nav__link">
         
   
   
@@ -2489,7 +2486,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/arithmetic/infinity-nan/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/arithmetic/infinity-nan/" class="md-nav__link">
         
   
   
@@ -2517,7 +2514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/arithmetic/restoring-division/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/arithmetic/restoring-division/" class="md-nav__link">
         
   
   
@@ -2553,7 +2550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/processor/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/processor/" class="md-nav__link">
         
   
   
@@ -2581,7 +2578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/processor-p2/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/processor-p2/" class="md-nav__link">
         
   
   
@@ -2636,7 +2633,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/processors/memory/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/processors/memory/" class="md-nav__link ">
               
   
   
@@ -2680,7 +2677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/memory/memory-hierarchy-flow/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/memory/memory-hierarchy-flow/" class="md-nav__link">
         
   
   
@@ -2708,7 +2705,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/memory/multi-bytes-block/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/memory/multi-bytes-block/" class="md-nav__link">
         
   
   
@@ -2736,7 +2733,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/memory/multilevel-cache-performance/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/memory/multilevel-cache-performance/" class="md-nav__link">
         
   
   
@@ -2772,7 +2769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/parallel/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/parallel/" class="md-nav__link">
         
   
   
@@ -2825,7 +2822,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/processors/gpgpu/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/processors/gpgpu/" class="md-nav__link ">
               
   
   
@@ -2869,7 +2866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/gpgpu/overview/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/gpgpu/overview/" class="md-nav__link">
         
   
   
@@ -2897,7 +2894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/processors/gpgpu/programming-model/" class="md-nav__link">
+      <a href="../../../../../microelectronics/processors/gpgpu/programming-model/" class="md-nav__link">
         
   
   
@@ -2964,7 +2961,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/advanced-computer-architecture/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/advanced-computer-architecture/" class="md-nav__link ">
               
   
   
@@ -3008,7 +3005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/advanced-computer-architecture/fundamentals/" class="md-nav__link">
+      <a href="../../../../../microelectronics/advanced-computer-architecture/fundamentals/" class="md-nav__link">
         
   
   
@@ -3077,7 +3074,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/soc/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/soc/" class="md-nav__link ">
               
   
   
@@ -3121,7 +3118,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/soc/introduction/" class="md-nav__link">
+      <a href="../../../../../microelectronics/soc/introduction/" class="md-nav__link">
         
   
   
@@ -3149,7 +3146,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/soc/processor/" class="md-nav__link">
+      <a href="../../../../../microelectronics/soc/processor/" class="md-nav__link">
         
   
   
@@ -3177,7 +3174,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/soc/apb/" class="md-nav__link">
+      <a href="../../../../../microelectronics/soc/apb/" class="md-nav__link">
         
   
   
@@ -3205,7 +3202,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/soc/ahb/" class="md-nav__link">
+      <a href="../../../../../microelectronics/soc/ahb/" class="md-nav__link">
         
   
   
@@ -3258,7 +3255,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/soc/axi/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/soc/axi/" class="md-nav__link ">
               
   
   
@@ -3302,7 +3299,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/soc/axi/handshake/" class="md-nav__link">
+      <a href="../../../../../microelectronics/soc/axi/handshake/" class="md-nav__link">
         
   
   
@@ -3330,7 +3327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/soc/axi/beyond-handshake/" class="md-nav__link">
+      <a href="../../../../../microelectronics/soc/axi/beyond-handshake/" class="md-nav__link">
         
   
   
@@ -3391,7 +3388,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/soc/arithmetic/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/soc/arithmetic/" class="md-nav__link ">
               
   
   
@@ -3435,7 +3432,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/soc/arithmetic/compression/" class="md-nav__link">
+      <a href="../../../../../microelectronics/soc/arithmetic/compression/" class="md-nav__link">
         
   
   
@@ -3463,7 +3460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/soc/arithmetic/cpa/" class="md-nav__link">
+      <a href="../../../../../microelectronics/soc/arithmetic/cpa/" class="md-nav__link">
         
   
   
@@ -3530,7 +3527,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/hdl/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/hdl/" class="md-nav__link ">
               
   
   
@@ -3574,7 +3571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/hdl/verilog/" class="md-nav__link">
+      <a href="../../../../../microelectronics/hdl/verilog/" class="md-nav__link">
         
   
   
@@ -3651,7 +3648,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../microelectronics/eda/" class="md-nav__link ">
+            <a href="../../../../../microelectronics/eda/" class="md-nav__link ">
               
   
   
@@ -3695,7 +3692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/vscode/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/vscode/" class="md-nav__link">
         
   
   
@@ -3723,7 +3720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/testbench/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/testbench/" class="md-nav__link">
         
   
   
@@ -3751,7 +3748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/mobaxterm/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/mobaxterm/" class="md-nav__link">
         
   
   
@@ -3779,7 +3776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/oss-cad-suite/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/oss-cad-suite/" class="md-nav__link">
         
   
   
@@ -3807,7 +3804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/tcl/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/tcl/" class="md-nav__link">
         
   
   
@@ -3835,7 +3832,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/report/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/report/" class="md-nav__link">
         
   
   
@@ -3863,7 +3860,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/modelsim/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/modelsim/" class="md-nav__link">
         
   
   
@@ -3891,7 +3888,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/vivado/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/vivado/" class="md-nav__link">
         
   
   
@@ -3919,7 +3916,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/yosys/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/yosys/" class="md-nav__link">
         
   
   
@@ -3947,7 +3944,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../microelectronics/eda/symbiyosys/" class="md-nav__link">
+      <a href="../../../../../microelectronics/eda/symbiyosys/" class="md-nav__link">
         
   
   
@@ -4015,7 +4012,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../machine-learning/" class="md-nav__link ">
+            <a href="../../../../../machine-learning/" class="md-nav__link ">
               
   
   
@@ -4090,7 +4087,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../machine-learning/fundamentals/" class="md-nav__link ">
+            <a href="../../../../../machine-learning/fundamentals/" class="md-nav__link ">
               
   
   
@@ -4134,7 +4131,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/fundamentals/fully-connected-networks/" class="md-nav__link">
+      <a href="../../../../../machine-learning/fundamentals/fully-connected-networks/" class="md-nav__link">
         
   
   
@@ -4162,7 +4159,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/fundamentals/optimization/" class="md-nav__link">
+      <a href="../../../../../machine-learning/fundamentals/optimization/" class="md-nav__link">
         
   
   
@@ -4190,7 +4187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/fundamentals/cnn/" class="md-nav__link">
+      <a href="../../../../../machine-learning/fundamentals/cnn/" class="md-nav__link">
         
   
   
@@ -4218,7 +4215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/fundamentals/self-attention/" class="md-nav__link">
+      <a href="../../../../../machine-learning/fundamentals/self-attention/" class="md-nav__link">
         
   
   
@@ -4246,7 +4243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/fundamentals/transformer/" class="md-nav__link">
+      <a href="../../../../../machine-learning/fundamentals/transformer/" class="md-nav__link">
         
   
   
@@ -4323,7 +4320,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../machine-learning/computer-vision/" class="md-nav__link ">
+            <a href="../../../../../machine-learning/computer-vision/" class="md-nav__link ">
               
   
   
@@ -4367,7 +4364,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/resnet/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/resnet/" class="md-nav__link">
         
   
   
@@ -4395,7 +4392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/densenet/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/densenet/" class="md-nav__link">
         
   
   
@@ -4450,7 +4447,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../machine-learning/computer-vision/yolo/" class="md-nav__link ">
+            <a href="../../../../../machine-learning/computer-vision/yolo/" class="md-nav__link ">
               
   
   
@@ -4494,7 +4491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/yolo/v1/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/yolo/v1/" class="md-nav__link">
         
   
   
@@ -4522,7 +4519,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/yolo/v2/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/yolo/v2/" class="md-nav__link">
         
   
   
@@ -4550,7 +4547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/yolo/v3/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/yolo/v3/" class="md-nav__link">
         
   
   
@@ -4586,7 +4583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/vit/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/vit/" class="md-nav__link">
         
   
   
@@ -4614,7 +4611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/pfld/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/pfld/" class="md-nav__link">
         
   
   
@@ -4642,7 +4639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/mobileone/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/mobileone/" class="md-nav__link">
         
   
   
@@ -4693,7 +4690,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../machine-learning/computer-vision/mska/" class="md-nav__link ">
+            <a href="../../../../../machine-learning/computer-vision/mska/" class="md-nav__link ">
               
   
   
@@ -4737,7 +4734,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/mska/computing/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/mska/computing/" class="md-nav__link">
         
   
   
@@ -4773,7 +4770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/tscm/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/tscm/" class="md-nav__link">
         
   
   
@@ -4801,7 +4798,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/tsrnet/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/tsrnet/" class="md-nav__link">
         
   
   
@@ -4858,7 +4855,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../machine-learning/computer-vision/pfld-ghostone/" class="md-nav__link ">
+            <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/" class="md-nav__link ">
               
   
   
@@ -4902,7 +4899,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/pfld-ghostone/code-notes/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/code-notes/" class="md-nav__link">
         
   
   
@@ -4930,7 +4927,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/pfld-ghostone/loss/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/loss/" class="md-nav__link">
         
   
   
@@ -4958,7 +4955,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/pfld-ghostone/pytorch-to-onnx/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/pytorch-to-onnx/" class="md-nav__link">
         
   
   
@@ -4986,7 +4983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../machine-learning/computer-vision/pfld-ghostone/data-augmentation/" class="md-nav__link">
+      <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/data-augmentation/" class="md-nav__link">
         
   
   
@@ -5062,7 +5059,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../programming/" class="md-nav__link ">
+            <a href="../../../../../programming/" class="md-nav__link ">
               
   
   
@@ -5131,7 +5128,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../programming/rust/" class="md-nav__link ">
+            <a href="../../../../../programming/rust/" class="md-nav__link ">
               
   
   
@@ -5175,7 +5172,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../programming/rust/study/" class="md-nav__link">
+      <a href="../../../../../programming/rust/study/" class="md-nav__link">
         
   
   
@@ -5203,7 +5200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../programming/rust/setup/" class="md-nav__link">
+      <a href="../../../../../programming/rust/setup/" class="md-nav__link">
         
   
   
@@ -5262,7 +5259,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../programming/python/" class="md-nav__link ">
+            <a href="../../../../../programming/python/" class="md-nav__link ">
               
   
   
@@ -5331,7 +5328,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../programming/python/environments/" class="md-nav__link ">
+            <a href="../../../../../programming/python/environments/" class="md-nav__link ">
               
   
   
@@ -5375,7 +5372,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../programming/python/environments/venv/" class="md-nav__link">
+      <a href="../../../../../programming/python/environments/venv/" class="md-nav__link">
         
   
   
@@ -5403,7 +5400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../programming/python/environments/conda/" class="md-nav__link">
+      <a href="../../../../../programming/python/environments/conda/" class="md-nav__link">
         
   
   
@@ -5489,7 +5486,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tools/" class="md-nav__link ">
+            <a href="../../../../../tools/" class="md-nav__link ">
               
   
   
@@ -5564,7 +5561,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tools/ai/" class="md-nav__link ">
+            <a href="../../../../../tools/ai/" class="md-nav__link ">
               
   
   
@@ -5608,7 +5605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/ai/claude-code/" class="md-nav__link">
+      <a href="../../../../../tools/ai/claude-code/" class="md-nav__link">
         
   
   
@@ -5636,7 +5633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/ai/mcp/" class="md-nav__link">
+      <a href="../../../../../tools/ai/mcp/" class="md-nav__link">
         
   
   
@@ -5664,7 +5661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/ai/openrouter/" class="md-nav__link">
+      <a href="../../../../../tools/ai/openrouter/" class="md-nav__link">
         
   
   
@@ -5692,7 +5689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/ai/opencode/" class="md-nav__link">
+      <a href="../../../../../tools/ai/opencode/" class="md-nav__link">
         
   
   
@@ -5720,7 +5717,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/ai/aider/" class="md-nav__link">
+      <a href="../../../../../tools/ai/aider/" class="md-nav__link">
         
   
   
@@ -5756,7 +5753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/docker/" class="md-nav__link">
+      <a href="../../../../../tools/docker/" class="md-nav__link">
         
   
   
@@ -5784,7 +5781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/git/" class="md-nav__link">
+      <a href="../../../../../tools/git/" class="md-nav__link">
         
   
   
@@ -5835,7 +5832,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tools/wsl/" class="md-nav__link ">
+            <a href="../../../../../tools/wsl/" class="md-nav__link ">
               
   
   
@@ -5879,7 +5876,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/wsl/proxy/" class="md-nav__link">
+      <a href="../../../../../tools/wsl/proxy/" class="md-nav__link">
         
   
   
@@ -5940,7 +5937,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tools/writing/" class="md-nav__link ">
+            <a href="../../../../../tools/writing/" class="md-nav__link ">
               
   
   
@@ -5984,7 +5981,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/writing/style-guide/" class="md-nav__link">
+      <a href="../../../../../tools/writing/style-guide/" class="md-nav__link">
         
   
   
@@ -6012,7 +6009,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/writing/mkdocs/" class="md-nav__link">
+      <a href="../../../../../tools/writing/mkdocs/" class="md-nav__link">
         
   
   
@@ -6048,7 +6045,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/chocolatey/" class="md-nav__link">
+      <a href="../../../../../tools/chocolatey/" class="md-nav__link">
         
   
   
@@ -6101,7 +6098,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tools/linux/" class="md-nav__link ">
+            <a href="../../../../../tools/linux/" class="md-nav__link ">
               
   
   
@@ -6145,7 +6142,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/linux/commands/" class="md-nav__link">
+      <a href="../../../../../tools/linux/commands/" class="md-nav__link">
         
   
   
@@ -6173,7 +6170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tools/linux/filesystem/" class="md-nav__link">
+      <a href="../../../../../tools/linux/filesystem/" class="md-nav__link">
         
   
   
@@ -6213,8 +6210,6 @@
       
   
   
-    
-  
   
   
     
@@ -6232,21 +6227,18 @@
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../../" class="md-nav__link ">
               
   
   
@@ -6264,13 +6256,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -6290,7 +6282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../digital-ic/" class="md-nav__link">
+      <a href="../../../../digital-ic/" class="md-nav__link">
         
   
   
@@ -6315,17 +6307,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
         
   
   
@@ -6341,7 +6326,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -6363,7 +6347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/" class="md-nav__link">
+      <a href="../../../../../blog/" class="md-nav__link">
         
   
   
@@ -6413,7 +6397,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../lab/" class="md-nav__link ">
+            <a href="../../../../../lab/" class="md-nav__link ">
               
   
   
@@ -6457,7 +6441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../lab/crypto/" class="md-nav__link">
+      <a href="../../../../../lab/crypto/" class="md-nav__link">
         
   
   
@@ -6492,7 +6476,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../comments/" class="md-nav__link">
+      <a href="../../../../../comments/" class="md-nav__link">
         
   
   
@@ -6520,9 +6504,7 @@
             
             
               
-                
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -6531,6 +6513,77 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-toeplitz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. 第一阶段：从卷积到 Toeplitz 卷积矩阵
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. 第一阶段：从卷积到 Toeplitz 卷积矩阵">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-take-conv1d-as-an-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Take Conv1D as an example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-toeplitz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Toeplitz 矩阵
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-conv2d-toeplitz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Conv2D 的 Toeplitz 矩阵
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -6544,58 +6597,210 @@
               <article class="md-content__inner md-typeset">
                 
                   
-  
+
+
+
+<h1 id="hardware-design-for-convolutional-layer">Hardware Design for Convolutional Layer<a class="headerlink" href="#hardware-design-for-convolutional-layer" title="Permanent link">&para;</a></h1>
+<h2 id="i-overview">I. Overview<a class="headerlink" href="#i-overview" title="Permanent link">&para;</a></h2>
+<p>卷积层本质是线性运算，更准确的来说：对张量进行线性变换。根据线性代数，任意线性变换均可以对应到一个矩阵乘法操作。</p>
+<p>但这里有一个很重要的区分：</p>
+<ol>
+<li>Step 1: 从数学上看，可以把卷积核展开成一个巨大的 Toeplitz / Block-Toeplitz 卷积矩阵；</li>
+<li>Step 2: 从实际 CPU/GPU/NPU 实现看，通常不会真的构造这个巨大稀疏 Toeplitz 矩阵；</li>
+<li>Step 3: 最经典的工程方法是 im2col + GEMM：把输入的每个卷积窗口展开成列，然后调用高效矩阵乘法；</li>
+<li>Step 4: 更现代的实现则常进一步做成 implicit GEMM：连 im2col 矩阵都不真正写回内存，而是在数据进入 MAC 阵列时动态产生。</li>
+</ol>
+<p>接下来我们按照：</p>
+<div class="arithmatex">\[\boxed{
+\text{Toeplitz数学表示}
+\rightarrow
+\text{im2col + GEMM}
+\rightarrow
+\text{implicit GEMM / direct convolution}
+}\]</div>
+<p>层层递进的关系，分析卷积层从数学映射到硬件实现流程的基础原理。</p>
+<h2 id="ii-toeplitz">II. 第一阶段：从卷积到 Toeplitz 卷积矩阵<a class="headerlink" href="#ii-toeplitz" title="Permanent link">&para;</a></h2>
+<h3 id="21-take-conv1d-as-an-example">2.1 Take Conv1D as an example<a class="headerlink" href="#21-take-conv1d-as-an-example" title="Permanent link">&para;</a></h3>
+<p>先考虑最简单的一维情况。</p>
+<p>输入</p>
+<div class="arithmatex">\[
+x=
+\begin{bmatrix}
+x_0\\
+x_1\\
+x_2\\
+x_3\\
+x_4
+\end{bmatrix}
+\]</div>
+<p>卷积核长度为 3：</p>
+<div class="arithmatex">\[w=\begin{bmatrix}w_0&amp;w_1&amp;w_2\end{bmatrix}\]</div>
+<p>假设：</p>
+<div class="arithmatex">\[K=3,\qquad S=1,\qquad P=0\]</div>
+<p>那么输出长度为</p>
+<div class="arithmatex">\[L_{\text{out}}=5-3+1=3\]</div>
+<p>分别对应：</p>
+<div class="arithmatex">\[\begin{cases}y_0=w_0x_0+w_1x_1+w_2x_2\\
+y_1= w_0x_1+w_1x_2+w_2x_3\\
+y_2= w_0x_2+w_1x_3+w_2x_4
+\end{cases}\]</div>
+<p>即：</p>
+<div class="arithmatex">\[\begin{bmatrix}
+y_0\\
+y_1\\
+y_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+w_0&amp;w_1&amp;w_2&amp;0&amp;0\\
+0&amp;w_0&amp;w_1&amp;w_2&amp;0\\
+0&amp;0&amp;w_0&amp;w_1&amp;w_2
+\end{bmatrix}
+\begin{bmatrix}
+x_0\\
+x_1\\
+x_2\\
+x_3\\
+x_4
+\end{bmatrix}\]</div>
+<p>其中：</p>
+<div class="arithmatex">\[\boxed{T(w)=\begin{bmatrix}
+w_0&amp;w_1&amp;w_2&amp;0&amp;0\\
+0&amp;w_0&amp;w_1&amp;w_2&amp;0\\
+0&amp;0&amp;w_0&amp;w_1&amp;w_2
+\end{bmatrix}}\]</div>
+<p>就是 <strong>Toeplitz</strong> 矩阵。其核心思想就是将<strong>输入张量和输出张量都展平为一维向量</strong>，将卷积操作转化为：</p>
+<div class="arithmatex">\[\mathbf{Y} = T(w) \cdot \mathbf{X}\]</div>
+<h3 id="22-toeplitz">2.2 Toeplitz 矩阵<a class="headerlink" href="#22-toeplitz" title="Permanent link">&para;</a></h3>
+<h4 id="221">2.2.1 定义与构造<a class="headerlink" href="#221" title="Permanent link">&para;</a></h4>
+<p>Toeplitz 矩阵的定义非常简单：<strong>它是一个主对角线及其平行线上的元素皆相等的矩阵</strong>。即满足：</p>
+<div class="arithmatex">\[A_{i,j}=A_{i-1,j-1}\]</div>
+<p>例如标准 Toeplitz：</p>
+<div class="arithmatex">\[
+\begin{bmatrix}
+a&amp;b&amp;c&amp;d\\
+e&amp;a&amp;b&amp;c\\
+f&amp;e&amp;a&amp;b\\
+g&amp;f&amp;e&amp;a
+\end{bmatrix}
+\]</div>
+<p>在标准 Toeplitz 矩阵中，上下相邻两行满足<strong>平移不变性（0填充）</strong>，由于卷积操作本质上是 <strong>“滑动窗口的乘加运算”</strong> ，这种平移不变性恰好对应了 Toeplitz 矩阵中对角线元素相等的特性。</p>
+<p>构造 Toeplitz 矩阵的通法如下（这里我们只考虑Conv1D和Conv2D）：</p>
+<p>无论是 Conv1D 还是 Conv2D，Toeplitz 矩阵的核心思想都是：<strong>将输入特征图<span class="arithmatex">\(\mathbf{X}\)</span>展平为一维列向量，并将卷积核展开成一个巨大的 Toeplitz 矩阵。</strong></p>
+<ol>
+<li><strong>确定维度</strong>：<ul>
+<li>假设输入特征图的尺寸为：<span class="arithmatex">\(H_{\text{in}} \times W_{\text{in}}\)</span>，则输入特征图将被展平为长度为 <span class="arithmatex">\(N_{\text{in}} = H_{\text{in}} \times W_{\text{in}}\)</span> 的<strong>一维列向量</strong>。</li>
+<li>由输入特征图尺寸和卷积核尺寸确定输出特征图尺寸为：<span class="arithmatex">\(H_{\text{out}} \times W_{\text{out}}\)</span>，则输出特征图将被展平为长度为 <span class="arithmatex">\(N_{\text{out}} = H_{\text{out}} \times W_{\text{out}}\)</span> 的<strong>一维列向量</strong>。</li>
+<li>由此可以确定 Toeplitz 矩阵<span class="arithmatex">\(T(w)\)</span>的维度为：<span class="arithmatex">\(N_{\text{out}} \times N_{\text{in}}\)</span>。</li>
+</ul>
+</li>
+<li><strong>填充元素</strong>：<ul>
+<li>矩阵<span class="arithmatex">\(T(w)\)</span>的每一行，<strong>代表卷积核在输入特征图上的一次特定位置的滑动</strong>。并且第 <span class="arithmatex">\(i\)</span> 行计算的是 <span class="arithmatex">\(\mathbf{Y}\)</span> 的第 <span class="arithmatex">\(i\)</span> 个元素。</li>
+<li>因此，填充方法是：对于<span class="arithmatex">\(T(w)\)</span>的第 <span class="arithmatex">\(i\)</span> 行，找到卷积核当前<strong>覆盖的输入元素索引</strong>，将<strong>卷积核的权重填入这些索引对应的列</strong>中，<strong>其余列置零</strong>。</li>
+</ul>
+</li>
+</ol>
+<h4 id="22-conv1d-toeplitz">2.2 详解 Conv1D 的 Toeplitz 矩阵<a class="headerlink" href="#22-conv1d-toeplitz" title="Permanent link">&para;</a></h4>
+<p>我们依然考虑：</p>
+<div class="arithmatex">\[w=\begin{bmatrix}w_0&amp;w_1&amp;w_2\end{bmatrix}, \qquad \begin{bmatrix}
+y_0\\
+y_1\\
+y_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+w_0&amp;w_1&amp;w_2&amp;0&amp;0\\
+0&amp;w_0&amp;w_1&amp;w_2&amp;0\\
+0&amp;0&amp;w_0&amp;w_1&amp;w_2
+\end{bmatrix}
+\begin{bmatrix}
+x_0\\
+x_1\\
+x_2\\
+x_3\\
+x_4
+\end{bmatrix}\]</div>
+<p><span class="arithmatex">\(K=3, L_{\text{in}}=5, L_{\text{out}}=3\)</span>，并且 padding = 0, stride = 1。</p>
+<p>这一次，我们用索引形式表达卷积操作：</p>
+<div class="arithmatex">\[y[i]=\sum_{k=0}^{K-1}w[k]x[i+k], \quad i=0,1,\cdots,L_{\text{out}}-1\]</div>
+<p>更一般化：</p>
+<div class="arithmatex">\[y[i]=\sum_{j=0}^{L_{\text{in}}-1}T_{ij}x[j]\]</div>
+<p>显然我们要求 <span class="arithmatex">\(T[i, i:i+K-1] = w\)</span> 且其他元素为0。</p>
+<p>因此，我们得到了 <span class="arithmatex">\(T_{ij}\)</span> 的定义：</p>
+<div class="arithmatex">\[\boxed{T_{ij}
+=
+\begin{cases}
+w[j-i], &amp; 0\le j-i&lt;K\\
+0,&amp;\text{otherwise}
+\end{cases}}\]</div>
+<p>显然，从该式可以看出 <span class="arithmatex">\(T_{ij}\)</span> 只依赖于 <span class="arithmatex">\(j-i\)</span>，而不依赖于特定的 <span class="arithmatex">\(i\)</span> 和 <span class="arithmatex">\(j\)</span>。</p>
+<p>接下来我们看：</p>
+<p><strong>(1) Stride 会发生什么？</strong></p>
+<p>依旧对于原来的例子，这一次我们令 <span class="arithmatex">\(S=2\)</span>，则此时 <span class="arithmatex">\(L_{\text{out}}=2\)</span>。而：</p>
+<div class="arithmatex">\[T(w)=\begin{bmatrix}
+w_0&amp;w_1&amp;w_2&amp;0&amp;0\\
+0&amp;0&amp;w_0&amp;w_1&amp;w_2
+\end{bmatrix}\]</div>
+<p>因此 <strong>stride = 2 相当于在 stride=1 的卷积矩阵中，每隔一行取一行</strong>。此时的<span class="arithmatex">\(T(w)\)</span>并非严格的 Toeplitz 矩阵。</p>
+<p>从矩阵观点看：</p>
+<div class="arithmatex">\[
+\boxed{\text{stride 本质上是对 Toeplitz 输出行的降采样}}
+\]</div>
+<p><strong>(2) Padding 会发生什么？</strong></p>
+<p>依旧对于原来的例子，这一次我们令 <span class="arithmatex">\(P=1\)</span>，即<strong>保持输入输出形状不变</strong>，此时我们有：</p>
+<div class="arithmatex">\[w=\begin{bmatrix}w_0&amp;w_1&amp;w_2\end{bmatrix}, \qquad \begin{bmatrix}
+y_0\\
+y_1\\
+y_2\\
+y_3\\
+y_4
+\end{bmatrix}
+=
+\begin{bmatrix}
+w_1&amp;w_2&amp;0&amp;0&amp;0\\
+w_0&amp;w_1&amp;w_2&amp;0&amp;0\\
+0&amp;w_0&amp;w_1&amp;w_2&amp;0\\
+0&amp;0&amp;w_0&amp;w_1&amp;w_2\\
+0&amp;0&amp;0&amp;w_0&amp;w_1
+\end{bmatrix}
+\begin{bmatrix}
+x_0\\
+x_1\\
+x_2\\
+x_3\\
+x_4
+\end{bmatrix}\]</div>
+<p>在这种情况下，<span class="arithmatex">\(T(w)\)</span>仍然是<strong>非常标准的 Toeplitz 矩阵，并且是方阵，卷积核中心元素位于主对角线。</strong></p>
+<p><strong>(3) Dilation 会发生什么？</strong></p>
+<p>依旧对于原来的例子，这一次我们假设 <span class="arithmatex">\(D=2\)</span>，即<strong>膨胀卷积</strong>，此时我们有：</p>
+<div class="arithmatex">\[\begin{bmatrix}
+y_0
+\end{bmatrix}
+=
+\begin{bmatrix}
+w_0&amp;0&amp;w_1&amp;0&amp;w_2
+\end{bmatrix}
+\begin{bmatrix}
+x_0\\
+x_1\\
+x_2\\
+x_3\\
+x_4
+\end{bmatrix}\]</div>
+<p>也就是说：</p>
+<div class="arithmatex">\[
+\boxed{\text{dilation 相当于在 kernel tap 之间插入结构性的 0}}
+\]</div>
+<h3 id="23-conv2d-toeplitz">2.3 Conv2D 的 Toeplitz 矩阵<a class="headerlink" href="#23-conv2d-toeplitz" title="Permanent link">&para;</a></h3>
 
 
 
 
-<div class="section-hero sc-paper-hero">
-  <h1>🔬 论文阅读</h1>
-  <p>From AI general base to advanced hardware design</p>
-  <div class="section-stats">
-    <span class="stat-item">⚖️ 理论基础</span>
-    <span class="stat-item">🧬 前沿架构</span>
-  </div>
-</div>
-
-<div class="section-subtitle">AI 理论基础</div>
-
-<div class="card-grid">
-</div>
-
-<div class="section-subtitle">AI Accelerator 综述</div>
-
-<div class="card-grid">
-<a class="note-card blue" href="ai-accelerator/overview/isscc_2020_tutorial/">
-  <span class="card-icon" aria-hidden="true">📗</span>
-  <div class="card-title">ISSCC 2020 Tutorial</div>
-  <p class="card-desc">How to Evaluate Deep Neural Network Processors</p>
-</a>
-
-<div class="section-subtitle">AI Accelerator 基础</div>
-
-<div class="card-grid">
-<a class="note-card blue" href="ai-accelerator/base/conv_hardware/">
-  <span class="card-icon" aria-hidden="true">🏁</span>
-  <div class="card-title">Hardware Design for Conv</div>
-  <p class="card-desc">From Toeplitz to modern convolution architectures</p>
-</a>
-</div>
-</div>
 
 
 
 
 
-
-
-  
-  
-
-
-
-
-  
 
 
 
@@ -6646,20 +6851,20 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../javascripts/extra.js?v=20260604-2"></script>
+        <script src="../../../../../javascripts/extra.js?v=20260604-2"></script>
       
-        <script src="../../javascripts/crypto.js?v=20260917-1"></script>
+        <script src="../../../../../javascripts/crypto.js?v=20260917-1"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
       
-        <script src="../../javascripts/katex.js"></script>
+        <script src="../../../../../javascripts/katex.js"></script>
       
     
   </body>
