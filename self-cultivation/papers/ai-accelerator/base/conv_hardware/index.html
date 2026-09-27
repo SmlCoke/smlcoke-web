@@ -6583,6 +6583,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#24-toeplitz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 由 Toeplitz 矩阵分析卷积层特性
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -6619,6 +6630,7 @@
 \text{implicit GEMM / direct convolution}
 }\]</div>
 <p>层层递进的关系，分析卷积层从数学映射到硬件实现流程的基础原理。</p>
+<hr />
 <h2 id="ii-toeplitz">II. 第一阶段：从卷积到 Toeplitz 卷积矩阵<a class="headerlink" href="#ii-toeplitz" title="Permanent link">&para;</a></h2>
 <h3 id="21-take-conv1d-as-an-example">2.1 Take Conv1D as an example<a class="headerlink" href="#21-take-conv1d-as-an-example" title="Permanent link">&para;</a></h3>
 <p>先考虑最简单的一维情况。</p>
@@ -6792,7 +6804,282 @@ x_4
 \boxed{\text{dilation 相当于在 kernel tap 之间插入结构性的 0}}
 \]</div>
 <h3 id="23-conv2d-toeplitz">2.3 Conv2D 的 Toeplitz 矩阵<a class="headerlink" href="#23-conv2d-toeplitz" title="Permanent link">&para;</a></h3>
+<h4 id="231-conv2d-toeplitz">2.3.1 Conv2D 的 "Toeplitz" 矩阵的定义与构造<a class="headerlink" href="#231-conv2d-toeplitz" title="Permanent link">&para;</a></h4>
 <p>Conv2D 卷积中，Toeplitz 矩阵的构造方式仍然遵循上述原则，但<strong>此时需要考虑两个维度上的平移不变性</strong>，最终的 Toeplitz 矩阵也并非严格意义的 Toeplitz 矩阵。</p>
+<p>我们依旧从案例入手，考虑：</p>
+<p>输入：</p>
+<div class="arithmatex">\[X=
+\begin{bmatrix}
+x_{00}&amp;x_{01}&amp;x_{02}\\
+x_{10}&amp;x_{11}&amp;x_{12}\\
+x_{20}&amp;x_{21}&amp;x_{22}
+\end{bmatrix}\]</div>
+<p>kernel：</p>
+<div class="arithmatex">\[W=\begin{bmatrix}
+a&amp;b\\
+c&amp;d
+\end{bmatrix}\]</div>
+<p>stride = 1，padding = 0，此时输出为一个 <span class="arithmatex">\(2\times2\)</span> 特征图：</p>
+<div class="arithmatex">\[Y=\begin{bmatrix}
+y_{00}&amp;y_{01}\\
+y_{10}&amp;y_{11}
+\end{bmatrix}\]</div>
+<p>我们将输入和输出特征图展开为一维向量</p>
+<div class="arithmatex">\[x_{\text{vec}}
+=
+\begin{bmatrix}
+x_{00}\\
+x_{01}\\
+x_{02}\\
+x_{10}\\
+x_{11}\\
+x_{12}\\
+x_{20}\\
+x_{21}\\
+x_{22}
+\end{bmatrix}
+, \qquad
+y_{\text{vec}}
+=
+\begin{bmatrix}
+y_{00}\\
+y_{01}\\
+y_{10}\\
+y_{11}
+\end{bmatrix}\]</div>
+<p>满足 <span class="arithmatex">\(y_{\text{vec}} = T(w) x_{\text{vec}}\)</span> 的矩阵 <span class="arithmatex">\(T(w)\)</span> 即为：</p>
+<div class="arithmatex">\[\boxed{T(W)=
+\begin{bmatrix}
+a&amp;b&amp;0&amp;c&amp;d&amp;0&amp;0&amp;0&amp;0\\
+0&amp;a&amp;b&amp;0&amp;c&amp;d&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;a&amp;b&amp;0&amp;c&amp;d&amp;0\\
+0&amp;0&amp;0&amp;0&amp;a&amp;b&amp;0&amp;c&amp;d
+\end{bmatrix}}\]</div>
+<p>这个 "Toeplitz" 矩阵比较有意思，我们延续上述:</p>
+<div class="arithmatex">\[\boxed{\text{矩阵}T(w)\text{的每一行，代表卷积核在输入特征图上的一次特定位置的滑动}}\]</div>
+<p>的理解：</p>
+<p>从<span class="arithmatex">\(T(w)\)</span><br />
+第 <span class="arithmatex">\(i=1\)</span> 行：<span class="arithmatex">\(\begin{bmatrix}a&amp;b&amp;0&amp;c&amp;d&amp;0&amp;0&amp;0&amp;0\end{bmatrix}\)</span> 到<br />
+第 <span class="arithmatex">\(i=2\)</span> 行：<span class="arithmatex">\(\begin{bmatrix}0&amp;a&amp;b&amp;0&amp;c&amp;d&amp;0&amp;0&amp;0\end{bmatrix}\)</span> 对应着：<strong>卷积核在输入特征图上的第一个水平滑道的一次水平滑动</strong></p>
+<p>同理，</p>
+<p>从<span class="arithmatex">\(T(w)\)</span><br />
+第 <span class="arithmatex">\(i=3\)</span> 行：<span class="arithmatex">\(\begin{bmatrix}0&amp;0&amp;0&amp;a&amp;b&amp;0&amp;c&amp;d&amp;0\end{bmatrix}\)</span> 到<br />
+第 <span class="arithmatex">\(i=4\)</span> 行：<span class="arithmatex">\(\begin{bmatrix}0&amp;0&amp;0&amp;0&amp;a&amp;b&amp;0&amp;c&amp;d\end{bmatrix}\)</span> 对应着：<strong>卷积核在输入特征图上的第二个水平滑道的一次水平滑动</strong></p>
+<p>而：</p>
+<p>从<span class="arithmatex">\(T(w)\)</span><br />
+<strong>第 <span class="arithmatex">\(i=1,2\)</span> 行整体</strong>：<span class="arithmatex">\(\begin{bmatrix}a&amp;b&amp;0&amp;c&amp;d&amp;0&amp;0&amp;0&amp;0\\ 0&amp;a&amp;b&amp;0&amp;c&amp;d&amp;0&amp;0&amp;0\end{bmatrix}\)</span> 到：<br />
+<strong>第 <span class="arithmatex">\(i=3,4\)</span> 行整体</strong>：<span class="arithmatex">\(\begin{bmatrix}0&amp;0&amp;0&amp;a&amp;b&amp;0&amp;c&amp;d&amp;0\\ 0&amp;0&amp;0&amp;0&amp;a&amp;b&amp;0&amp;c&amp;d\end{bmatrix}\)</span> 对应着：</p>
+<p><strong>卷积核由第一个水平滑倒切换到第二个水平滑倒的竖直滑动</strong></p>
+<p>因此，事实上 Conv2D 的 "Toeplitz" 矩阵可以用<strong>分块的方式</strong>来看:</p>
+<div class="arithmatex">\[T(w)=
+\begin{bmatrix}
+A&amp;B&amp;0\\
+0&amp;A&amp;B
+\end{bmatrix}\]</div>
+<p>其中：</p>
+<p><span class="arithmatex">\(\begin{bmatrix}A&amp;B&amp;0\end{bmatrix}\)</span>代表<strong>第 <span class="arithmatex">\(i=1,2\)</span> 行整体</strong><br />
+<span class="arithmatex">\(\begin{bmatrix}0&amp;A&amp;B\end{bmatrix}\)</span>代表<strong>第 <span class="arithmatex">\(i=3,4\)</span> 行整体</strong></p>
+<p>完整的卷积操作（矩阵乘法）可以表示为：</p>
+<div class="arithmatex">\[\begin{bmatrix}
+\color{red}{y_{00}}\\
+\color{red}{y_{01}}\\
+\color{green}{y_{10}}\\
+\color{green}{y_{11}}
+\end{bmatrix} = \begin{bmatrix}
+\color{red}{A}&amp;\color{red}{B}&amp;\color{red}{0}\\
+\color{green}{0}&amp;\color{green}{A}&amp;\color{green}{B}
+\end{bmatrix} \begin{bmatrix}
+x_{00}\\
+x_{01}\\
+x_{02}\\
+x_{10}\\
+x_{11}\\
+x_{12}\\
+x_{20}\\
+x_{21}\\
+x_{22}
+\end{bmatrix}\]</div>
+<p>而具体到分块内部，有：</p>
+<div class="arithmatex">\[A = \begin{bmatrix}
+a&amp;b&amp;0\\
+0&amp;a&amp;b
+\end{bmatrix}, \qquad B = \begin{bmatrix}
+c&amp;d&amp;0\\
+0&amp;c&amp;d
+\end{bmatrix}\]</div>
+<p>这里的 <span class="arithmatex">\(A\)</span> 和 <span class="arithmatex">\(B\)</span> <strong>也很有意思</strong>：</p>
+<ul>
+<li><span class="arithmatex">\(A\)</span> 对应着卷积核 <span class="arithmatex">\(w\)</span> 在水平/竖直滑道上滑动过程中，<strong>第一行<span class="arithmatex">\(\begin{bmatrix}a&amp;b\end{bmatrix}\)</span>的贡献</strong>。且 <strong><span class="arithmatex">\(A\)</span> 的第 <span class="arithmatex">\(i=1\)</span> 行到 <span class="arithmatex">\(i=2\)</span> 行表示着 <span class="arithmatex">\(\begin{bmatrix}a&amp;b\end{bmatrix}\)</span> 的水平滑动</strong></li>
+<li><span class="arithmatex">\(B\)</span> 对应着卷积核 <span class="arithmatex">\(w\)</span> 在水平/竖直滑道上滑动过程中，<strong>第二行<span class="arithmatex">\(\begin{bmatrix}c&amp;d\end{bmatrix}\)</span>的贡献</strong>。且 <strong><span class="arithmatex">\(B\)</span> 的第 <span class="arithmatex">\(i=1\)</span> 行到 <span class="arithmatex">\(i=2\)</span> 行表示着 <span class="arithmatex">\(\begin{bmatrix}c&amp;d\end{bmatrix}\)</span> 的水平滑动</strong></li>
+<li>整体 <span class="arithmatex">\(\begin{bmatrix}A&amp;B&amp;0\end{bmatrix}\)</span> 到整体<span class="arithmatex">\(\begin{bmatrix}0&amp;A&amp;B\end{bmatrix}\)</span>代表着<strong>卷积核由第一个水平滑倒切换到第二个水平滑倒的竖直滑动</strong></li>
+</ul>
+<p>并且：</p>
+<ul>
+<li><span class="arithmatex">\(A\)</span> 是<strong>卷积核子核</strong><span class="arithmatex">\(\begin{bmatrix}a&amp;b\end{bmatrix}\)</span>的<strong>标准 Toeplitz 矩阵</strong></li>
+<li><span class="arithmatex">\(B\)</span> 是<strong>卷积核子核</strong><span class="arithmatex">\(\begin{bmatrix}c&amp;d\end{bmatrix}\)</span>的<strong>标准 Toeplitz 矩阵</strong></li>
+<li>完整 <span class="arithmatex">\(T(w)\)</span> 是 <span class="arithmatex">\(\begin{bmatrix}A\\ B\end{bmatrix}\)</span>的<strong>标准 Toeplitz 矩阵</strong></li>
+</ul>
+<p>因此，这种矩阵事实上称作：<strong>双重块 Toeplitz 矩阵（Block Toeplitz with Toeplitz Blocks, BTTB）</strong>：</p>
+<p>二维卷积有<strong>两个滑动方向</strong>：<span class="arithmatex">\(W\)</span> 方向和 <span class="arithmatex">\(H\)</span> 方向</p>
+<p>水平方向移动一次：<span class="arithmatex">\([a,b,0]\rightarrow[0,a,b]\)</span><br />
+这产生了<strong>block 内部的 Toeplitz</strong>。</p>
+<p>垂直方向移动一次：这使<strong>整个 block <span class="arithmatex">\([A,B,0]\)</span> 变成 <span class="arithmatex">\([0,A,B]\)</span></strong><br />
+这产生了<strong>block 级别的 Toeplitz</strong>。</p>
+<p>因此：</p>
+<div class="arithmatex">\[
+\boxed{
+\text{二维空间滑动}
+\Longleftrightarrow
+\text{two-level Toeplitz structure}
+}
+\]</div>
+<h4 id="232-input-channel-bttb">2.3.2 考虑 Input Channel 后的 BTTB<a class="headerlink" href="#232-input-channel-bttb" title="Permanent link">&para;</a></h4>
+<p>真正 CNN 输入一般是：</p>
+<div class="arithmatex">\[X\in
+\mathbb R^{C_{in}\times H_{in}\times W_{in}}\]</div>
+<p><strong>先考虑只有一个 output channel</strong>。</p>
+<p>kernel：</p>
+<div class="arithmatex">\[W\in
+\mathbb R^{C_{in}\times K_h\times K_w}\]</div>
+<p>依旧只考虑 <strong>Strid=1, Padding=0, Dilation=1</strong> 时的卷积结果：</p>
+<div class="arithmatex">\[Y\in
+\mathbb R^{H_{out}\times W_{out}}\]</div>
+<p>按照<strong>索引方式展开</strong>输出特征图：</p>
+<div class="arithmatex">\[Y[h,w]
+=
+\sum_{c=0}^{C_{in}-1}
+\sum_{k_h}
+\sum_{k_w}
+W[c,k_h,k_w]
+X[c,h+k_h,w+k_w]\]</div>
+<p>把整个输入展开（顺序：<strong>先变列索引，再变行索引，最后变通道索引</strong>）：</p>
+<div class="arithmatex">\[x_{\text{vec}}
+\in
+\mathbb R^{C_{in}H_{in}W_{in}}\]</div>
+<p>那么仍然存在一个矩阵：</p>
+<div class="arithmatex">\[T(W)
+\in
+\mathbb R^{
+(H_{out}W_{out})
+\times
+(C_{in}H_{in}W_{in})
+}\]</div>
+<p>满足：</p>
+<div class="arithmatex">\[y_{\text{vec}}=T(W)x_{\text{vec}}\]</div>
+<p>这个矩阵可以理解成：</p>
+<div class="arithmatex">\[\boxed{T(W)
+=
+\begin{bmatrix}
+T(W_0)&amp;T(W_1)&amp;\cdots&amp;T(W_{C_{in}-1})
+\end{bmatrix}}\]</div>
+<p>其中每个：<span class="arithmatex">\(T(W_c)\)</span> 负责一个输入通道。</p>
+<p>这很好理解，因为：</p>
+<div class="arithmatex">\[Y
+=
+X_0*W_0
++
+X_1*W_1
++\cdots\]</div>
+<p>输出的一个通道等于输入和卷积核每个通道的卷积结果累加和，所以矩阵形式就是把<strong>每个通道对应的卷积矩阵在水平方向上拼接</strong>，恰好对应<strong>输入特征图最后变动通道索引的展开顺序</strong>。</p>
+<h4 id="233-output-channel-bttb">2.3.3 考虑 Output Channel 后的 BTTB<a class="headerlink" href="#233-output-channel-bttb" title="Permanent link">&para;</a></h4>
+<p>现在：</p>
+<div class="arithmatex">\[W\in
+\mathbb R^{
+C_{out}\times C_{in}\times K_h\times K_w
+}\]</div>
+<p>即我们有 <span class="arithmatex">\(C_{out}\)</span> 个卷积核，每个卷积核的尺寸都是：<span class="arithmatex">\(C_{in}\times K_h\times K_w\)</span>。</p>
+<p>比如：</p>
+<div class="arithmatex">\[W^{(0)},W^{(1)},\dots,W^{(C_{out}-1)}\]</div>
+<p><strong>每一组都对应一个卷积矩阵</strong>：</p>
+<div class="arithmatex">\[\begin{cases}
+T(W^{(0)}) = \begin{bmatrix}
+T(W^{(0)}_0)&amp;T(W^{(0)}_1)&amp;\cdots&amp;T(W^{(0)}_{C_{in}-1})\end{bmatrix} \\
+T(W^{(1)}) = \begin{bmatrix}
+T(W^{(1)}_0)&amp;T(W^{(1)}_1)&amp;\cdots&amp;T(W^{(1)}_{C_{in}-1}) \end{bmatrix} \\
+\cdots \\
+T(W^{(C_{out}-1)}) = \begin{bmatrix}
+T(W^{(C_{out}-1)}_0)&amp;T(W^{(C_{out}-1)}_1)&amp;\cdots&amp;T(W^{(C_{out}-1)}_{C_{in}-1}) \end{bmatrix} \\
+\end{cases}\]</div>
+<p>最后<strong>纵向堆叠</strong>：</p>
+<div class="arithmatex">\[\boxed{
+T_{\text{full}}
+=
+\begin{bmatrix}
+T(W^{(0)}_0)&amp;T(W^{(0)}_1)&amp;\cdots&amp;T(W^{(0)}_{C_{in}-1}) \\
+T(W^{(1)}_0)&amp;T(W^{(1)}_1)&amp;\cdots&amp;T(W^{(1)}_{C_{in}-1}) \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+T(W^{(C_{out}-1)}_0)&amp;T(W^{(C_{out}-1)}_1)&amp;\cdots&amp;T(W^{(C_{out}-1)}_{C_{in}-1})
+\end{bmatrix}}\]</div>
+<p>于是：</p>
+<div class="arithmatex">\[y_{\text{vec}}=T_{\text{full}}x_{\text{vec}}\]</div>
+<p>矩阵尺寸为：</p>
+<div class="arithmatex">\[T_{\text{full}}
+\in
+\mathbb R^{
+(C_{out}H_{out}W_{out})
+\times
+(C_{in}H_{in}W_{in})
+}\]</div>
+<p>这是一个超大规模的稀疏矩阵。</p>
+<h2 id="24-toeplitz">2.4 由 Toeplitz 矩阵分析卷积层特性<a class="headerlink" href="#24-toeplitz" title="Permanent link">&para;</a></h2>
+<p>仔细看 Toeplitz 卷积矩阵，会发现三个明显特征。</p>
+<p><strong>(1) 高度稀疏(sparse)</strong>。</p>
+<p>例如二维案例：</p>
+<div class="arithmatex">\[T(W)=
+\begin{bmatrix}
+a&amp;b&amp;0&amp;c&amp;d&amp;0&amp;0&amp;0&amp;0\\
+0&amp;a&amp;b&amp;0&amp;c&amp;d&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;a&amp;b&amp;0&amp;c&amp;d&amp;0\\
+0&amp;0&amp;0&amp;0&amp;a&amp;b&amp;0&amp;c&amp;d
+\end{bmatrix}\]</div>
+<p>只有 kernel 覆盖的位置非零。</p>
+<p>如果 <span class="arithmatex">\(K_hK_w\ll H_{in}W_{in}\)</span>，那么<strong>绝大多数位置都是 0</strong>。</p>
+<p><strong>(2) 大量重复权重(repeated)</strong>，例如 <span class="arithmatex">\(a,b,c,d\)</span> 会不断重复出现。</p>
+<p><strong>(3) 非零元素分布高度规则(structured)</strong>。</p>
+<p>它们不是随机稀疏，而是由于滑动窗口产生的规则结构。</p>
+<hr />
+<p>Toeplitz 矩阵不只是一个“计算技巧”，它<strong>揭示了很多数学事实</strong>。</p>
+<p>例如卷积是线性的：</p>
+<div class="arithmatex">\[T(W)(\alpha x_1+\beta x_2)=
+\alpha T(W)x_1+\beta T(W)x_2\]</div>
+<p>因为：</p>
+<div class="arithmatex">\[\boxed{\text{卷积运算}\Leftrightarrow \text{矩阵乘法} \Leftrightarrow \text{线性变换}}\]</div>
+<p>它还揭示了：<strong>local connectivity</strong>，因为矩阵每一行只有少量非零元素。</p>
+<p>又揭示了：<strong>weight sharing</strong>，因为相同 kernel 参数在矩阵中反复出现。</p>
+<p>普通全连接层：</p>
+<div class="arithmatex">\[
+y=Wx
+\]</div>
+<p>其中 <span class="arithmatex">\(W\)</span> 的每个元素通常都是独立参数。</p>
+<p>而卷积：</p>
+<div class="arithmatex">\[
+y=T(w)x
+\]</div>
+<p>虽然看起来矩阵很大，但整个矩阵实际上只由很少的参数：<span class="arithmatex">\(w_0,w_1,\dots\)</span> 生成。</p>
+<p>因此可以把卷积理解成：<strong>一个受到强结构约束的大型线性层</strong>，这个观点非常重要。</p>
+<hr />
+<p>此外，理解 Toeplitz 矩阵对理解转置卷积（ConvTranspose）也有重要意义，</p>
+<p>对于卷积运算：</p>
+<div class="arithmatex">\[y_{1}=T(W)x_1\]</div>
+<p>其中 <span class="arithmatex">\(y_1 \in \mathbb{R}^{C_{out}H_{out}W_{out}}\)</span>，<span class="arithmatex">\(x_1 \in \mathbb{R}^{C_{in}H_{in}W_{in}}\)</span>，</p>
+<div class="arithmatex">\[T(W) \in \mathbb{R}^{(C_{out}H_{out}W_{out}) \times (C_{in}H_{in}W_{in})}\]</div>
+<p>那么这个线性算子的转置就是：</p>
+<div class="arithmatex">\[y_2=T(W)^T x_2\]</div>
+<p>其中 <span class="arithmatex">\(y_2 \in \mathbb{R}^{C_{in}H_{in}W_{in}}\)</span>，<span class="arithmatex">\(x_2 \in \mathbb{R}^{C_{out}H_{out}W_{out}}\)</span>，</p>
+<div class="arithmatex">\[T(W)^T \in \mathbb{R}^{(C_{in}H_{in}W_{in}) \times (C_{out}H_{out}W_{out})}\]</div>
+<p>这正是 <strong>transposed convolution</strong> 名称真正的来源。</p>
+<hr />
+<p>如果我们将<strong>普通卷积操作理解为</strong>：kernel 在<strong>输入上滑动</strong> <span class="arithmatex">\(\Rightarrow\)</span> 每个位置做<strong>局部点积</strong> <span class="arithmatex">\(\Rightarrow\)</span> 得到<strong>输出像素</strong></p>
+<p>那么 <strong>Toeplitz 矩阵可以理解为</strong>：把 kernel <em>的</em><em>所有滑动位置提前全部展开</em><em> <span class="arithmatex">\(\Rightarrow\)</span> 每个位置变成矩阵的一行，得到卷积矩阵 <span class="arithmatex">\(T(W)\)</span>  <span class="arithmatex">\(\Rightarrow\)</span> </em><em>通过矩阵乘法实现卷积运算</em>*。</p>
+<p>因此最核心的一句话是：</p>
+<div class="arithmatex">\[\boxed{
+\text{Toeplitz 矩阵就是卷积核“所有空间位置的副本”的静态展开。}
+}\]</div>
+<p>由此，我们容易想到的最自然的问题就是：</p>
+<blockquote>
+<p><strong>既然 Toeplitz 表示如此直接，为什么 CPU/GPU/NPU 不直接构造 <span class="arithmatex">\(T(W)\)</span>，然后拿矩阵乘法器算 <span class="arithmatex">\(T(W)x\)</span>？</strong></p>
+</blockquote>
+<p>这个问题会把我们从纯数学表示正式带入<strong>计算量、存储量、数据搬运和硬件利用率</strong>，也正是从 Toeplitz 走向 im2col 的关键一步。</p>
 
 
 
