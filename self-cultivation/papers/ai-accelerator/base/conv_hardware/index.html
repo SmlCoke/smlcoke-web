@@ -6578,12 +6578,7 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
+          <li class="md-nav__item">
   <a href="#24-toeplitz" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6591,6 +6586,83 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-toeplitz-im2col" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. 第二阶段：从 Toeplitz 到 im2col
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. 第二阶段：从 Toeplitz 到 im2col">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-toeplitz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Toeplitz 展开的严重问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-kernal-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 关键思路：从展开 Kernal 到展开 Input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-x_textcol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 \(X_{\text{col}}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-im2col-gemm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 im2col 与 GEMM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-im2col" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 im2col 的优缺点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -7021,7 +7093,7 @@ T(W^{(C_{out}-1)}_0)&amp;T(W^{(C_{out}-1)}_1)&amp;\cdots&amp;T(W^{(C_{out}-1)}_{
 (C_{in}H_{in}W_{in})
 }\]</div>
 <p>这是一个超大规模的稀疏矩阵。</p>
-<h2 id="24-toeplitz">2.4 由 Toeplitz 矩阵分析卷积层特性<a class="headerlink" href="#24-toeplitz" title="Permanent link">&para;</a></h2>
+<h3 id="24-toeplitz">2.4 由 Toeplitz 矩阵分析卷积层特性<a class="headerlink" href="#24-toeplitz" title="Permanent link">&para;</a></h3>
 <p>仔细看 Toeplitz 卷积矩阵，会发现三个明显特征。</p>
 <p><strong>(1) 高度稀疏(sparse)</strong>。</p>
 <p>例如二维案例：</p>
@@ -7080,6 +7152,231 @@ y=T(w)x
 <p><strong>既然 Toeplitz 表示如此直接，为什么 CPU/GPU/NPU 不直接构造 <span class="arithmatex">\(T(W)\)</span>，然后拿矩阵乘法器算 <span class="arithmatex">\(T(W)x\)</span>？</strong></p>
 </blockquote>
 <p>这个问题会把我们从纯数学表示正式带入<strong>计算量、存储量、数据搬运和硬件利用率</strong>，也正是从 Toeplitz 走向 im2col 的关键一步。</p>
+<h2 id="iii-toeplitz-im2col">III. 第二阶段：从 Toeplitz 到 im2col<a class="headerlink" href="#iii-toeplitz-im2col" title="Permanent link">&para;</a></h2>
+<h3 id="31-toeplitz">3.1 Toeplitz 展开的严重问题<a class="headerlink" href="#31-toeplitz" title="Permanent link">&para;</a></h3>
+<p>我们考虑单输入通道（<span class="arithmatex">\(C_{\text{in}}=1\)</span>）、单输出通道（<span class="arithmatex">\(C_{\text{out}}=1\)</span>），Conv2D的情况，并且依旧假设 Stride=1, Padding=0, Dilation=1, 此时 BTTB 矩阵的尺寸为：<span class="arithmatex">\(H_{\text{out}}W_{\text{out}} \times H_{\text{in}}W_{\text{in}}\)</span>。</p>
+<p>而非零权重个数等于<strong>输出像素个数乘以卷积核权重个数</strong>（因为每一个输出像素都是一个完整卷积窗口进行 MAC 计算得到的），即：</p>
+<div class="arithmatex">\[N_{\text{nz}} = H_{\text{out}}W_{\text{out}} \times K_{h}K_{w}\]</div>
+<p>因此非零元素密度：</p>
+<div class="arithmatex">\[\rho=\frac{N_{\text{nz}}}{H_{\text{out}}W_{\text{out}} \times H_{\text{in}}W_{\text{in}}}=\frac{K_{h}K_{w}}{H_{\text{in}}W_{\text{in}}}\]</div>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>假设输入特征图尺寸为 <span class="arithmatex">\(H_{\text{in}}=W_{\text{in}}=224\)</span>，卷积核尺寸为 <span class="arithmatex">\(K_{h}=K_{w}=3\)</span>，则非零元素密度为：</p>
+<div class="arithmatex">\[\rho=\frac{3\times3}{224\times224}\approx 0.000179\]</div>
+<p>也就是说，<strong>Toeplitz 矩阵中只有约 0.018% 的元素是非零的，其余 99.982% 的元素都是零</strong>。</p>
+<p>这意味着，如果我们直接构造 Toeplitz 矩阵并进行矩阵乘法，将会浪费大量的存储空间和计算资源，显然不适合直接用 dense GEMM 进行计算。</p>
+</div>
+<p>稀疏性，是 Toeplitz 矩阵最严重的问题之一。此外，第二个问题是——<strong>权重被疯狂复制</strong>。</p>
+<p>由于每个输出像素都需要完整地与卷积核进行点积运算，因此卷积核权重的重复复制次数为：</p>
+<div class="arithmatex">\[N_{\text{rep}}=H_{\text{out}}W_{\text{out}}\]</div>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>例如对于 <span class="arithmatex">\(224\times 224\)</span> 的特征图，重复复制次数就是：<span class="arithmatex">\(N_{\text{rep}}=222\times 222=49284\)</span>——<strong>接近五万次</strong>！<span style="color:red;">这完全违背了卷积区别于 FC 最有价值的性质之一</span>：<strong>权重共享</strong></p>
+</div>
+<p><strong>多通道下，情况更加严重</strong>：</p>
+<div class="arithmatex">\[T_{\text{full}}\in \mathbb{R}^{(C_{\text{out}}H_{\text{out}}W_{\text{out}}) \times (C_{\text{in}}H_{\text{in}}W_{\text{in}})}\]</div>
+<p>有：</p>
+<ul>
+<li><span class="arithmatex">\(N_{\text{nz}}=C_{\text{out}}H_{\text{out}}W_{\text{out}}K_{h}K_{w}\)</span></li>
+<li><span class="arithmatex">\(\rho=K_{h}K_{w}/(C_{\text{in}}H_{\text{in}}W_{\text{in}})\)</span></li>
+<li><span class="arithmatex">\(N_{\text{rep}}=C_{\text{out}}H_{\text{out}}W_{\text{out}}\)</span></li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>假设一个典型层：<span class="arithmatex">\(C_{\text{in}}=64, C_{\text{out}}=128, H_{\text{in}}=W_{\text{in}}=224, K_{h}=K_{w}=3\)</span><br />
+则非零密度只有：</p>
+<div class="arithmatex">\[\rho=\frac{K_{h}K_{w}}{C_{\text{in}}H_{\text{in}}W_{\text{in}}}\approx 2.80\times 10^{-6}=0.00028\%\]</div>
+<p>权重重复复制次数：</p>
+<div class="arithmatex">\[N_{\text{rep}}=C_{\text{out}}H_{\text{out}}W_{\text{out}}=6,308,352\]</div>
+<p>空间利用率极低。</p>
+<p>假设权重用 INT8 存储，则原始权重本身只有：</p>
+<div class="arithmatex">\[C_{\text{out}}\times C_{\text{in}}\times K_{h}K_{w}=73,728\text{B}=72\text{KB}\]</div>
+<p>然而保存完整 Toeplitz 矩阵需要的存储开销为：</p>
+<div class="arithmatex">\[C_{\text{out}}H_{\text{out}}W_{\text{out}}C_{\text{in}}H_{\text{in}}W_{\text{in}}\approx 2.03\times 10^{13}\text{B}\approx 18.5\text{TB}\]</div>
+<p>于是我们得到一个极其荒谬的对比：<strong>存储 <span class="arithmatex">\(72\text{KB}\)</span> 的原始权重需要 <span class="arithmatex">\(18.5\text{TB}\)</span> 的存储空间！</strong></p>
+<p>即便我们忽略<strong>所有零</strong>，只考虑非零权重，也有整整：</p>
+<div class="arithmatex">\[18.5\text{TB}\times N_{\text{nz}}\approx 54\text{MB}\]</div>
+</div>
+<p>更本质的问题是，<strong>Toeplitz 把卷积层规则的结构丢失了</strong>：</p>
+<p>卷积原本包含非常强的结构信息：</p>
+<div class="arithmatex">\[Y[c_o,h,w]
+=
+\sum_{c_i,k_h,k_w}
+W[c_o,c_i,k_h,k_w]
+X[c_i,h+k_h,w+k_w]\]</div>
+<p>这里明确知道：</p>
+<ul>
+<li>哪些维度是 channel；</li>
+<li>哪些维度是 spatial；</li>
+<li>kernel 在空间上怎么滑；</li>
+<li>哪些数据可以复用。</li>
+</ul>
+<p>一旦展开为 Toeplitz 矩阵，就变成了一个巨大的 <strong>sparse matrix-vector multiplication(SpMV)</strong>，把很多结构隐藏掉了，这对芯片设计非常不好，因为<strong>芯片设计最关心的就是：reuse</strong>。</p>
+<p>事实上，Toeplitz 矩阵形式<strong>更加接近 GEMV/SpMV 而非 GEMM</strong>。因为：</p>
+<div class="arithmatex">\[y_{\text{vec}}=T(w)x_{\text{vec}}\]</div>
+<p>与矩阵 <span class="arithmatex">\(T(w)\)</span> 相乘的 <span class="arithmatex">\(x_{\text{vec}}\)</span> 是向量而非矩阵。而 <strong>GEMV 和 GEMM 的区别</strong>在于：</p>
+<div class="admonition attention">
+<p class="admonition-title">GEMM vs GEMV</p>
+<p><strong>GEMV 和 GEMM 的区别</strong>：</p>
+<ul>
+<li><strong>GEMM</strong>: 对于 <span class="arithmatex">\(N\times N\)</span> 的方阵乘法，其<strong>浮点 operations</strong> 约为 <span class="arithmatex">\(2N^3\)</span>，而<strong>访存 operations</strong> 约为 <span class="arithmatex">\(4N^2\)</span>。<strong>计算强度(Compution Density) <span class="arithmatex">\(\eta =N/2\)</span></strong>。随着矩阵尺寸 N 的增大，<strong>计算量呈立方级增长，而访存需求仅呈平方级增长，计算强度呈线性增长</strong>。这意味着数据被加载到缓存和寄存器后，可以被<strong>反复重用以执行大量计算</strong>，性能瓶颈主要在于<strong>处理器的浮点计算能力</strong>。</li>
+<li><strong>GEMV</strong>: 对于 <span class="arithmatex">\(N\times N\)</span> 矩阵与向量的乘法，其<strong>浮点 operations</strong> 约为 <span class="arithmatex">\(2N^2\)</span>，<strong>访存 operations</strong> 也约为 <span class="arithmatex">\(N^2\)</span>。<strong>计算强度恒为 <span class="arithmatex">\(\eta=O(1)\)</span>量级（约等于 2）</strong>。无论矩阵多大，<strong>每加载一个数据元素，仅能进行常数次计算</strong>。因此，<strong>GEMV 的性能完全受限于内存带宽</strong>，从 Cray-1 时代至今，其优化空间都非常有限。这也是为什么在深度学习中，倾向于将多个 GEMV 操作批处理，从而将其转化为一个更大规模的 GEMM 操作的原因。</li>
+</ul>
+</div>
+<h3 id="32-kernal-input">3.2 关键思路：从展开 Kernal 到展开 Input<a class="headerlink" href="#32-kernal-input" title="Permanent link">&para;</a></h3>
+<p>Toeplitz 做的是：</p>
+<blockquote>
+<p>把同一个 kernel 在每个 spatial position 的作用全部展开。</p>
+</blockquote>
+<p>那么能不能反过来？</p>
+<p>既然卷积的每个 output pixel 都是在做：</p>
+<div class="arithmatex">\[
+\text{kernel}
+\cdot
+\text{input patch}
+\]</div>
+<p>那么可以：</p>
+<ol>
+<li>kernel 只保留一份；</li>
+<li>把所有 input patch 收集起来；</li>
+<li>一次做很多个 dot product。</li>
+</ol>
+<p>这就是 <strong>im2col</strong>。</p>
+<p>这一步是整个链路中最关键的“视角翻转”。</p>
+<p>依旧考虑如下这个案例：</p>
+<p>先考虑单输入通道，单输出通道情况，输入：</p>
+<div class="arithmatex">\[X=
+\begin{bmatrix}
+x_{00}&amp;x_{01}&amp;x_{02}\\
+x_{10}&amp;x_{11}&amp;x_{12}\\
+x_{20}&amp;x_{21}&amp;x_{22}
+\end{bmatrix}\]</div>
+<p>kernel：</p>
+<div class="arithmatex">\[W=\begin{bmatrix}
+a&amp;b\\
+c&amp;d
+\end{bmatrix}\]</div>
+<p>stride = 1，padding = 0，输出是一个尺寸为 <span class="arithmatex">\(2\times 2\)</span>的特征图:</p>
+<div class="arithmatex">\[\begin{bmatrix}y_{00} &amp; y_{01} \\ y_{10} &amp; y_{11}\end{bmatrix}\]</div>
+<p>我们要计算 <span class="arithmatex">\(y0=ax_{00} + bx_{01} + cx_{10} + dx_{11}\)</span>，如果将 kernel 展平为：<span class="arithmatex">\(\begin{bmatrix}a&amp;b&amp;c&amp;d\end{bmatrix}\)</span>，需要 receptive field 展平为<strong>一列</strong>:</p>
+<div class="arithmatex">\[\begin{bmatrix}\color{red}{x_{00}} \\ \color{red}{x_{01}} \\ \color{red}{x_{10}}\\ \color{red}{x_{11}} \end{bmatrix}\]</div>
+<p>同理，在计算 <span class="arithmatex">\(y_{01}, y_{10}, y_{11}\)</span> 时所需要的 input patch 分别为：</p>
+<div class="arithmatex">\[y_{01} \sim \begin{bmatrix}\color{blue}{x_{01}}\\\color{blue}{x_{02}}\\\color{blue}{x_{11}}\\\color{blue}{x_{12}}\end{bmatrix}, \quad y_{10} \sim \begin{bmatrix}\color{green}{x_{10}}\\\color{green}{x_{11}}\\\color{green}{x_{20}}\\\color{green}{x_{21}}\end{bmatrix}, \quad \quad y_{11} \sim \begin{bmatrix}\color{purple}{x_{11}}\\\color{purple}{x_{12}}\\\color{purple}{x_{21}}\\\color{purple}{x_{22}}\end{bmatrix}\]</div>
+<p>因此，原卷积操作可以写作：</p>
+<div class="arithmatex">\[\begin{bmatrix}y_{00} &amp; y_{01} &amp; y_{10} &amp; y_{11}\end{bmatrix}=
+\begin{bmatrix}a&amp;b&amp;c&amp;d\end{bmatrix}
+\cdot 
+\begin{bmatrix}
+\color{red}{x_{00}} &amp; \color{blue}{x_{01}} &amp; \color{green}{x_{10}} &amp; \color{purple}{x_{11}} \\
+\color{red}{x_{01}} &amp; \color{blue}{x_{02}} &amp; \color{green}{x_{11}} &amp; \color{purple}{x_{12}} \\
+\color{red}{x_{10}} &amp; \color{blue}{x_{11}} &amp; \color{green}{x_{20}} &amp; \color{purple}{x_{21}} \\
+\color{red}{x_{11}} &amp; \color{blue}{x_{12}} &amp; \color{green}{x_{21}} &amp; \color{purple}{x_{22}}
+\end{bmatrix}\]</div>
+<p>这就是 <strong>im2col</strong> 的核心思想：<strong>将每一个输出像素对应的 receptive field 展平为一列，从而将卷积操作转化为矩阵乘法</strong>：</p>
+<div class="arithmatex">\[Y_{\text{row}}=W_{\text{mat}} \cdot X_{\text{col}}\]</div>
+<div class="admonition attention">
+<p class="admonition-title">why call im2col</p>
+<p>im2col 的含义就是：“<strong>把 image 中每一个 receptive field 展开成一列</strong>”，即构造 <span class="arithmatex">\(X_{\text{col}}\)</span> 的方法。</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Toeplitz 和 im2col 的关系</p>
+<p>Toeplitz：</p>
+<div class="arithmatex">\[y=T(W)x\]</div>
+<p>是在<strong>复制、平移卷积核权重。</strong></p>
+<p>im2col：</p>
+<div class="arithmatex">\[y=WX_{\text{col}}\]</div>
+<p>是在<strong>复制、收集 input patch</strong></p>
+<p>两者是<strong>完全相同卷积</strong>的<strong>两种展开方法</strong>。</p>
+</div>
+<h3 id="33-x_textcol">3.3 <span class="arithmatex">\(X_{\text{col}}\)</span><a class="headerlink" href="#33-x_textcol" title="Permanent link">&para;</a></h3>
+<h4 id="331-x_textcol">3.3.1 <span class="arithmatex">\(X_{\text{col}}\)</span> 的定义与构造<a class="headerlink" href="#331-x_textcol" title="Permanent link">&para;</a></h4>
+<p>先考虑单输入通道，单输出通道的 Conv2D 操作：</p>
+<ol>
+<li><strong>确定维度</strong>：<ul>
+<li>假设卷积核尺寸为：<span class="arithmatex">\(K_h \times K_w\)</span>，卷积核被展平（列索引先变）成长度为 <span class="arithmatex">\(N_{\text{w}} = K_h \times K_w\)</span> 的<strong>一维行向量</strong>，我们记作 <span class="arithmatex">\(W_{\text{mat}}\)</span>。</li>
+<li>我们需要得到的输出特征图尺寸为：<span class="arithmatex">\(H_{\text{out}} \times W_{\text{out}}\)</span>。将其展平为长度为 <span class="arithmatex">\(N_{\text{out}} = H_{\text{out}} \times W_{\text{out}}\)</span> 的<strong>一维行向量</strong>，我们记作 <span class="arithmatex">\(Y_{\text{row}}\)</span>。</li>
+<li>假设输入特征图的尺寸为：<span class="arithmatex">\(H_{\text{in}} \times W_{\text{in}}\)</span>，则输入特征图被转换为矩阵 <span class="arithmatex">\(X_{\text{col}}\)</span>，<strong>其中每一列都对应一个 receptive field</strong>，同样满足列索引先变，并且<strong>列数等于输出像素个数</strong>，即 <span class="arithmatex">\(H_{\text{out}} \times W_{\text{out}}\)</span>；<strong>行数等于卷积核权重个数</strong>，即 <span class="arithmatex">\(K_h \times K_w\)</span>。</li>
+</ul>
+</li>
+<li><strong>填充元素</strong>：<ul>
+<li>矩阵<span class="arithmatex">\(X_{\text{col}}\)</span>的每一列，<strong>代表与卷积核计算的一个 receptice field</strong>。并且第 <span class="arithmatex">\(i\)</span> 列计算的是 <span class="arithmatex">\(\mathbf{Y}\)</span> 的第 <span class="arithmatex">\(i\)</span> 个元素。</li>
+<li>因此，填充方法是：对于<span class="arithmatex">\(X_{\text{col}}\)</span>的第 <span class="arithmatex">\(i\)</span> 列，找到卷积核当前<strong>覆盖的输入元素索引</strong>，将<strong>卷积核的权重填入这些索引对应的列</strong>中。</li>
+</ul>
+</li>
+</ol>
+<p>这样构造得到的：</p>
+<ul>
+<li><span class="arithmatex">\(W_{\text{mat}}\)</span> 仅包含原始权重，没有复制和零填充。</li>
+<li><span class="arithmatex">\(X_{\text{col}}\)</span> 也是<strong>几乎都是有用的输入数据</strong>，<strong>没有零填充</strong>（<strong>但是有复制</strong>）。</li>
+</ul>
+<h4 id="332-input-channel">3.3.2 考虑 Input Channel<a class="headerlink" href="#332-input-channel" title="Permanent link">&para;</a></h4>
+<p>当输入特征图包含多个输入通道时:</p>
+<p>卷积核权重向量变为卷积核权重矩阵，但是仍然保持元素独立无复制：</p>
+<div class="arithmatex">\[W_{\text{mat}} = \begin{bmatrix} W_0 &amp; W_1 &amp; \cdots &amp; W_{C_{\text{in}}-1} \end{bmatrix}\]</div>
+<p>维度为：<span class="arithmatex">\(1\times C_{\text{in}}K_h K_w\)</span></p>
+<p>各通道输入图的 <span class="arithmatex">\(X_{\text{col}}\)</span> <strong>矩阵在竖直方向上堆叠</strong>，即：</p>
+<div class="arithmatex">\[X_{\text{col}} = \begin{bmatrix} X_{0,\text{col}} \\ X_{1,\text{col}} \\ \vdots \\ X_{C_{\text{in}-1},\text{col}} \end{bmatrix}\]</div>
+<p>维度为：<span class="arithmatex">\(C_{\text{in}}K_h K_w \times H_{\text{out}}W_{\text{out}}\)</span></p>
+<h4 id="333-output-channel">3.3.3 考虑 Output Channel<a class="headerlink" href="#333-output-channel" title="Permanent link">&para;</a></h4>
+<p>现在：</p>
+<div class="arithmatex">\[W\in
+\mathbb R^{
+C_{out}\times C_{in}\times K_h\times K_w
+}\]</div>
+<p>即我们有 <span class="arithmatex">\(C_{out}\)</span> 个卷积核，每个卷积核的尺寸都是：<span class="arithmatex">\(C_{in}\times K_h\times K_w\)</span>。</p>
+<p>比如：</p>
+<div class="arithmatex">\[W^{(0)},W^{(1)},\dots,W^{(C_{out}-1)}\]</div>
+<p><strong>每一组都对应一行</strong>：</p>
+<div class="arithmatex">\[\begin{cases}
+W^{(0)}: \begin{bmatrix} W^{(0)}_0 &amp; W^{(0)}_1 &amp; \cdots &amp; W^{(0)}_{C_{\text{in}}-1} \end{bmatrix} \\
+W^{(1)}: \begin{bmatrix} W^{(1)}_0 &amp; W^{(1)}_1 &amp; \cdots &amp; W^{(1)}_{C_{\text{in}}-1} \end{bmatrix} \\
+\cdots \\
+W^{(C_{\text{out}}-1)}: \begin{bmatrix} W^{(C_{\text{out}}-1)}_0 &amp; W^{(C_{\text{out}}-1)}_1 &amp; \cdots &amp; W^{(C_{\text{out}}-1)}_{C_{\text{in}}-1} \end{bmatrix}
+\end{cases}\]</div>
+<p>最后<strong>纵向堆叠</strong>：</p>
+<div class="arithmatex">\[W_{\text{mat}}=\begin{bmatrix} W^{(0)}_0 &amp; W^{(0)}_1 &amp; \cdots &amp; W^{(0)}_{C_{\text{in}}-1} \\ W^{(1)}_0 &amp; W^{(1)}_1 &amp; \cdots &amp; W^{(1)}_{C_{\text{in}}-1} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ W^{(C_{\text{out}}-1)}_0 &amp; W^{(C_{\text{out}}-1)}_1 &amp; \cdots &amp; W^{(C_{\text{out}}-1)}_{C_{\text{in}}-1} \end{bmatrix}\]</div>
+<p>最终得到的卷积核矩阵尺寸为：<span class="arithmatex">\(W_{\text{mat}}  \in \mathbb{R}^{C_{\text{out}} \times C_{\text{in}} K_h K_w}\)</span></p>
+<p><strong>可以发现，有一个很重要的点就是：<span class="arithmatex">\(C_{\text{out}}&gt;1\)</span>时，我们无需再像 Toeplitz 展开一样修改输入特征图对应的矩阵——此时的<span class="arithmatex">\(X_{\text{col}}\)</span>不变——结果就是<span class="arithmatex">\(X_{\text{col}}\)</span>中的数据再次被复用！</strong></p>
+<p>此时有：</p>
+<div class="arithmatex">\[Y_{\text{row}}=W_{\text{mat}}X_{\text{col}}\]</div>
+<ul>
+<li><span class="arithmatex">\(Y_{\text{row}} \in \mathbb{R}^{C_{\text{out}} \times H_{\text{out}}W_{\text{out}}}\)</span></li>
+<li><span class="arithmatex">\(W_{\text{mat}} \in \mathbb{R}^{C_{\text{out}} \times C_{\text{in}}K_hK_w}\)</span></li>
+<li><span class="arithmatex">\(X_{\text{col}} \in \mathbb{R}^{C_{\text{in}}K_hK_w \times H_{\text{out}}W_{\text{out}}}\)</span></li>
+</ul>
+<p>这就是<strong>标准的矩阵乘法，标准的 GEMM</strong>，<span class="arithmatex">\(W_{\text{mat}}\)</span>和<span class="arithmatex">\(X_{\text{col}}\)</span> 都是矩阵而非简单的一维向量。</p>
+<h3 id="34-im2col-gemm">3.4 im2col 与 GEMM<a class="headerlink" href="#34-im2col-gemm" title="Permanent link">&para;</a></h3>
+<h4 id="341-gemm-im2col">3.4.1 用 GEMM 规范化描述 im2col<a class="headerlink" href="#341-gemm-im2col" title="Permanent link">&para;</a></h4>
+<p>现在可以定义标准 GEMM 的 M、N、K</p>
+<p>AI Accelerator 领域中，GEMM 的标准定义是：</p>
+<div class="arithmatex">\[[M\times K][K\times N]\]</div>
+<p>对于普通卷积：</p>
+<div class="arithmatex">\[\boxed{M=C_{out}}\]</div>
+<div class="arithmatex">\[\boxed{K=C_{in}K_hK_w}\]</div>
+<div class="arithmatex">\[\boxed{N=H_{out}W_{out}}\]</div>
+<p>所以：</p>
+<div class="arithmatex">\[\boxed{[M\times K]\times[K\times N]=[M\times N]}\]</div>
+<p>也就是：</p>
+<div class="arithmatex">\[W_{\text{mat}}X_{\text{col}}=Y_{\text{mat}}\]</div>
+<h4 id="342-im2col">3.4.2 从循环角度看 im2col 为什么等价<a class="headerlink" href="#342-im2col" title="Permanent link">&para;</a></h4>
+<p>普通卷积：</p>
+<div class="arithmatex">\[Y[c_o,h,w]=
+\sum_{c_i,k_h,k_w}
+W[c_o,c_i,k_h,k_w]
+X[c_i,h+k_h,w+k_w]\]</div>
+<ul>
+<li>把：<span class="arithmatex">\((c_i,k_h,k_w)\)</span> 合并成 GEMM 的 <span class="arithmatex">\(k\)</span></li>
+<li>把：<span class="arithmatex">\((h,w)\)</span> 合并成：<span class="arithmatex">\(n\)</span></li>
+<li>再令：<span class="arithmatex">\(c_o\rightarrow m\)</span></li>
+</ul>
+<p>那么就变成：</p>
+<div class="arithmatex">\[Y[m,n]=\sum_k W[m,k]X_{\text{col}}[k,n]\]</div>
+<p>即：</p>
+<div class="arithmatex">\[\boxed{C_{mn}=\sum_k A_{mk}B_{kn}}\]</div>
+<p>这就是标准矩阵乘法。</p>
+<p>所以本质上：<span class="arithmatex">\(\boxed{\text{Conv}\rightarrow\text{GEMM}}\)</span> 主要就是一次维度重组：</p>
+<div class="arithmatex">\[(c_o,c_i,k_h,k_w,h,w) \xrightarrow{\text{重解释为：}} (M,K,N)\]</div>
+<h3 id="35-im2col">3.5 im2col 的优缺点<a class="headerlink" href="#35-im2col" title="Permanent link">&para;</a></h3>
 
 
 
