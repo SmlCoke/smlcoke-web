@@ -26,6 +26,7 @@ hide:
   <div class="card-title">ISSCC 2020 Tutorial</div>
   <p class="card-desc">How to Evaluate Deep Neural Network Processors</p>
 </a>
+</div>
 
 <div class="section-subtitle">AI Accelerator 基础</div>
 
@@ -36,4 +37,4 @@ hide:
   <p class="card-desc">From Toeplitz to modern convolution architectures</p>
 </a>
 </div>
-</div>
+
