@@ -6792,6 +6792,7 @@ x_4
 \boxed{\text{dilation 相当于在 kernel tap 之间插入结构性的 0}}
 \]</div>
 <h3 id="23-conv2d-toeplitz">2.3 Conv2D 的 Toeplitz 矩阵<a class="headerlink" href="#23-conv2d-toeplitz" title="Permanent link">&para;</a></h3>
+<p>Conv2D 卷积中，Toeplitz 矩阵的构造方式仍然遵循上述原则，但<strong>此时需要考虑两个维度上的平移不变性</strong>，最终的 Toeplitz 矩阵也并非严格意义的 Toeplitz 矩阵。</p>
 
 
 
