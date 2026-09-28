@@ -431,7 +431,7 @@ kernel：
 $$W\in
 \mathbb R^{C_{in}\times K_h\times K_w}$$
 
-依旧只考虑 **Strid=1, Padding=0, Dilation=1** 时的卷积结果：
+依旧只考虑 **Stride=1, Padding=0, Dilation=1** 时的卷积结果：
 
 
 $$Y\in
@@ -980,3 +980,116 @@ $$\boxed{C_{mn}=\sum_k A_{mk}B_{kn}}$$
 $$(c_o,c_i,k_h,k_w,h,w) \xrightarrow{\text{重解释为：}} (M,K,N)$$
 
 ### 3.5 im2col 的优缺点
+
+#### 3.5.1 优点
+
+**（1）计算规则高度统一**
+
+$Y_{\text{row}}=W_{\text{mat}}X_{\text{col}}$ 是真正的 dense GEMM，内部操作是大量的：$c_{ij}+=a_{ik}b_{jk}$，即：MAC 运算。
+
+**（2）权重 reuse**
+
+根据矩阵乘法规则，卷积核矩阵 $W_{\text{mat}}$ 中的一个权重会被重用：$H_{\text{out}}W_{\text{out}}$
+次，因为$W_{\text{mat}}$ 中的每个元素都会与$X_{\text{col}}$ 中**每一列**的对应元素进行乘法。
+
+**（3）激活值 reuse**
+
+同理，根据矩阵乘法规则，激活值矩阵 $X_{\text{col}}$ 中的一个元素会被重用：$C_{\text{out}}$ 次，因为$X_{\text{col}}$ 中的每个元素都会与$W_{\text{mat}}$ 中**每一行**的对应元素进行乘法。
+
+**（4）很容易 tile**
+
+深度学习芯片（如 GPU、TPU）内部的片上高速缓存（SRAM）和寄存器堆（Register File）容量极小，通常只有几十 KB 到几 MB。而实际网络层的矩阵极大。存储器层级：
+
+- **DRAM**: 容量极大（几GB~几十GB），但速度极慢，每次读取都要等很久。
+- **SRAM**: 容量较小（几MB到几十MB），但速度快
+- **RF**: 容量极小（几KB），速度最快，紧贴着运算单元（MAC阵列）。
+
+
+考虑一个真实网络的卷积层：$C_{in}=64, C_{out}=128, H_{in}=W_{in}=224, K=3$。
+
+假设所有权重/激活值用 INT8 存储，经过 im2col 展开后：
+
+- $W_{\text{mat}}$ 的维度为：$128 \times (64 \times 3 \times 3) = \mathbf{128 \times 576}$
+- $X_{\text{col}}$ 的维度为：$576 \times (224 \times 224) = \mathbf{576 \times 50176}$
+  
+这个激活值矩阵大小超过 $28\text{MB}$，根本无法一次性塞入计算核心的寄存器中。但是由于矩阵乘法的特性，我们可以**用分块矩阵乘**的方式，
+
+**什么是 Tiling？**
+
+Tiling 就是将**巨大的矩阵切分为小尺寸的 Block**（例如 $16 \times 16$ 或 $32 \times 32$ 的子矩阵）。这些尺寸恰好匹配了芯片底部运算单元的物理结构，例如：
+
+- NVIDIA 的 Tensor Core 处理 $16 \times 16$
+- Google TPU 的 Systolic Array 处理 $128 \times 128$）。
+
+运算单元分批次地将这些小 Block 加载进来做乘加运算。
+
+**为什么 im2col 让 Tiling 很容易？**
+
+如果不使用 im2col（即采用原生多重 for 循环计算卷积），由于卷积窗口在图像上滑动的特性，导致对内存的读取是**非连续、反复跳跃**的。给这种多维跳跃的访问设计 Tiling 策略极其复杂，缓存命中率很高。
+
+而 im2col 强行将所有内存读取拉平成了完美的二维矩阵。根据线性代数中**分块矩阵乘法**的结合律与分配律：
+
+$$C_{ij} = \sum_{k} A_{ik} B_{kj}$$
+
+我们只需要简单粗暴地将 $W_{\text{mat}}$ 和 $X_{\text{col}}$ 像切网格一样切开，计算核心只需要“按顺序、连续地”从内存中搬运这些二维数据块即可。**这完美契合了硬件架构中以数据流驱动的 Systolic Array。**
+
+### 3.5.2 缺点
+
+im2col 虽然解决了 Toeplitz 展开中高达：
+
+$$N_{\text{rep}}=H_{\text{out}}W_{\text{out}}$$
+
+的卷积核权重复制次数，但是同时也带来了激活值的复制倍数：
+
+$$N_{\text{act, rep}}=\frac{C_{\text{in}}K_h K_w \times H_{\text{out}}W_{\text{out}}}{C_{\text{in}}H_{\text{in}}W_{\text{in}}}$$
+
+对于一般的卷积层（Stride=1, Padding 很小）：
+
+$$H_{\text{out}} \approx H_{\text{in}}, \quad W_{\text{out}} \approx W_{\text{in}}$$
+
+因此：
+
+$$N_{\text{act, rep}} \approx K_h K_w$$
+
+考虑一个典型的卷积层：
+
+- $H_{\text{in}}=W_{\text{in}}=H_{\text{out}}=W_{\text{out}}=224$
+- $K_h = K_w = 3$
+
+虽然：$N_{\text{act, rep}} \approx 3 \times 3 = 9$ 远小于 Toeplitz 展开中的 $N_{\text{rep}}=H_{\text{out}}W_{\text{out}}=224 \times 224 = 50176$
+
+但是**仍然存在高达 9 倍的激活值复制，并且激活值数量本身也很大**。
+
+现代 AI 芯片中最昂贵的往往**不是 MAC 等逻辑运算，而是数据搬运**。
+
+例如：
+
+DRAM $\rightarrow$ load input $\rightarrow$ 构造$X_{\text{col}}$ $\rightarrow$ write $X_{\text{col}}$ $\rightarrow$ read $X_{\text{col}}$ $\rightarrow$ MAC array
+
+这里发生了大量：
+
+- extra write；
+- extra read；
+- SRAM capacity consumption；
+- DRAM bandwidth consumption；
+- address generation；
+- energy consumption。
+
+也就是说为了让计算看起来像漂亮的 GEMM，我们**人为制造了一个巨大的中间矩阵**。这在软件层面很方便，但硬件层面很不理想。
+
+
+### 3.6 总结
+
+可以把 Toeplitz 和 im2col 看成两个“极端”：
+
+| 方法 | 谁被展开/复制 | 优点 | 核心缺点 |
+|---|---|---|---|
+| Toeplitz | Kernel | 数学最直观 | 大量 0、weight 巨量重复 |
+| im2col | Input patch | 变成 dense GEMM | activation 大量重复 |
+| implicit GEMM | 都不显式复制 | 保留 GEMM 友好性 | 地址生成和数据调度复杂 |
+
+下一阶段，我们将正式进入 **explicit im2col → implicit GEMM**。届时最重要的是把下面这个东西讲透：
+
+
+$X_{\text{col}}[k,n]$ 到底如何直接映射回：$X[c_i,h_{in},w_{in}]$。也就是硬件怎样根据 $k,n$ 实时算出原始 activation 地址，并把它送入 GEMM/MAC 阵列。这一步开始，就真正进入 AI 加速器实现层面了。
+
