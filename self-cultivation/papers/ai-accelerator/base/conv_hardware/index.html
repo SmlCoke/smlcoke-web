@@ -6661,6 +6661,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#352" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2 缺点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 总结
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7013,7 +7035,7 @@ c&amp;d&amp;0\\
 <p>kernel：</p>
 <div class="arithmatex">\[W\in
 \mathbb R^{C_{in}\times K_h\times K_w}\]</div>
-<p>依旧只考虑 <strong>Strid=1, Padding=0, Dilation=1</strong> 时的卷积结果：</p>
+<p>依旧只考虑 <strong>Stride=1, Padding=0, Dilation=1</strong> 时的卷积结果：</p>
 <div class="arithmatex">\[Y\in
 \mathbb R^{H_{out}\times W_{out}}\]</div>
 <p>按照<strong>索引方式展开</strong>输出特征图：</p>
@@ -7377,6 +7399,103 @@ X[c_i,h+k_h,w+k_w]\]</div>
 <p>所以本质上：<span class="arithmatex">\(\boxed{\text{Conv}\rightarrow\text{GEMM}}\)</span> 主要就是一次维度重组：</p>
 <div class="arithmatex">\[(c_o,c_i,k_h,k_w,h,w) \xrightarrow{\text{重解释为：}} (M,K,N)\]</div>
 <h3 id="35-im2col">3.5 im2col 的优缺点<a class="headerlink" href="#35-im2col" title="Permanent link">&para;</a></h3>
+<h4 id="351">3.5.1 优点<a class="headerlink" href="#351" title="Permanent link">&para;</a></h4>
+<p><strong>（1）计算规则高度统一</strong></p>
+<p><span class="arithmatex">\(Y_{\text{row}}=W_{\text{mat}}X_{\text{col}}\)</span> 是真正的 dense GEMM，内部操作是大量的：<span class="arithmatex">\(c_{ij}+=a_{ik}b_{jk}\)</span>，即：MAC 运算。</p>
+<p><strong>（2）权重 reuse</strong></p>
+<p>根据矩阵乘法规则，卷积核矩阵 <span class="arithmatex">\(W_{\text{mat}}\)</span> 中的一个权重会被重用：<span class="arithmatex">\(H_{\text{out}}W_{\text{out}}\)</span><br />
+次，因为<span class="arithmatex">\(W_{\text{mat}}\)</span> 中的每个元素都会与<span class="arithmatex">\(X_{\text{col}}\)</span> 中<strong>每一列</strong>的对应元素进行乘法。</p>
+<p><strong>（3）激活值 reuse</strong></p>
+<p>同理，根据矩阵乘法规则，激活值矩阵 <span class="arithmatex">\(X_{\text{col}}\)</span> 中的一个元素会被重用：<span class="arithmatex">\(C_{\text{out}}\)</span> 次，因为<span class="arithmatex">\(X_{\text{col}}\)</span> 中的每个元素都会与<span class="arithmatex">\(W_{\text{mat}}\)</span> 中<strong>每一行</strong>的对应元素进行乘法。</p>
+<p><strong>（4）很容易 tile</strong></p>
+<p>深度学习芯片（如 GPU、TPU）内部的片上高速缓存（SRAM）和寄存器堆（Register File）容量极小，通常只有几十 KB 到几 MB。而实际网络层的矩阵极大。存储器层级：</p>
+<ul>
+<li><strong>DRAM</strong>: 容量极大（几GB~几十GB），但速度极慢，每次读取都要等很久。</li>
+<li><strong>SRAM</strong>: 容量较小（几MB到几十MB），但速度快</li>
+<li><strong>RF</strong>: 容量极小（几KB），速度最快，紧贴着运算单元（MAC阵列）。</li>
+</ul>
+<p>考虑一个真实网络的卷积层：<span class="arithmatex">\(C_{in}=64, C_{out}=128, H_{in}=W_{in}=224, K=3\)</span>。</p>
+<p>假设所有权重/激活值用 INT8 存储，经过 im2col 展开后：</p>
+<ul>
+<li><span class="arithmatex">\(W_{\text{mat}}\)</span> 的维度为：<span class="arithmatex">\(128 \times (64 \times 3 \times 3) = \mathbf{128 \times 576}\)</span></li>
+<li><span class="arithmatex">\(X_{\text{col}}\)</span> 的维度为：<span class="arithmatex">\(576 \times (224 \times 224) = \mathbf{576 \times 50176}\)</span></li>
+</ul>
+<p>这个激活值矩阵大小超过 <span class="arithmatex">\(28\text{MB}\)</span>，根本无法一次性塞入计算核心的寄存器中。但是由于矩阵乘法的特性，我们可以<strong>用分块矩阵乘</strong>的方式，</p>
+<p><strong>什么是 Tiling？</strong></p>
+<p>Tiling 就是将<strong>巨大的矩阵切分为小尺寸的 Block</strong>（例如 <span class="arithmatex">\(16 \times 16\)</span> 或 <span class="arithmatex">\(32 \times 32\)</span> 的子矩阵）。这些尺寸恰好匹配了芯片底部运算单元的物理结构，例如：</p>
+<ul>
+<li>NVIDIA 的 Tensor Core 处理 <span class="arithmatex">\(16 \times 16\)</span></li>
+<li>Google TPU 的 Systolic Array 处理 <span class="arithmatex">\(128 \times 128\)</span>）。</li>
+</ul>
+<p>运算单元分批次地将这些小 Block 加载进来做乘加运算。</p>
+<p><strong>为什么 im2col 让 Tiling 很容易？</strong></p>
+<p>如果不使用 im2col（即采用原生多重 for 循环计算卷积），由于卷积窗口在图像上滑动的特性，导致对内存的读取是<strong>非连续、反复跳跃</strong>的。给这种多维跳跃的访问设计 Tiling 策略极其复杂，缓存命中率很高。</p>
+<p>而 im2col 强行将所有内存读取拉平成了完美的二维矩阵。根据线性代数中<strong>分块矩阵乘法</strong>的结合律与分配律：</p>
+<div class="arithmatex">\[C_{ij} = \sum_{k} A_{ik} B_{kj}\]</div>
+<p>我们只需要简单粗暴地将 <span class="arithmatex">\(W_{\text{mat}}\)</span> 和 <span class="arithmatex">\(X_{\text{col}}\)</span> 像切网格一样切开，计算核心只需要“按顺序、连续地”从内存中搬运这些二维数据块即可。<strong>这完美契合了硬件架构中以数据流驱动的 Systolic Array。</strong></p>
+<h3 id="352">3.5.2 缺点<a class="headerlink" href="#352" title="Permanent link">&para;</a></h3>
+<p>im2col 虽然解决了 Toeplitz 展开中高达：</p>
+<div class="arithmatex">\[N_{\text{rep}}=H_{\text{out}}W_{\text{out}}\]</div>
+<p>的卷积核权重复制次数，但是同时也带来了激活值的复制倍数：</p>
+<div class="arithmatex">\[N_{\text{act, rep}}=\frac{C_{\text{in}}K_h K_w \times H_{\text{out}}W_{\text{out}}}{C_{\text{in}}H_{\text{in}}W_{\text{in}}}\]</div>
+<p>对于一般的卷积层（Stride=1, Padding 很小）：</p>
+<div class="arithmatex">\[H_{\text{out}} \approx H_{\text{in}}, \quad W_{\text{out}} \approx W_{\text{in}}\]</div>
+<p>因此：</p>
+<div class="arithmatex">\[N_{\text{act, rep}} \approx K_h K_w\]</div>
+<p>考虑一个典型的卷积层：</p>
+<ul>
+<li><span class="arithmatex">\(H_{\text{in}}=W_{\text{in}}=H_{\text{out}}=W_{\text{out}}=224\)</span></li>
+<li><span class="arithmatex">\(K_h = K_w = 3\)</span></li>
+</ul>
+<p>虽然：<span class="arithmatex">\(N_{\text{act, rep}} \approx 3 \times 3 = 9\)</span> 远小于 Toeplitz 展开中的 <span class="arithmatex">\(N_{\text{rep}}=H_{\text{out}}W_{\text{out}}=224 \times 224 = 50176\)</span></p>
+<p>但是<strong>仍然存在高达 9 倍的激活值复制，并且激活值数量本身也很大</strong>。</p>
+<p>现代 AI 芯片中最昂贵的往往<strong>不是 MAC 等逻辑运算，而是数据搬运</strong>。</p>
+<p>例如：</p>
+<p>DRAM <span class="arithmatex">\(\rightarrow\)</span> load input <span class="arithmatex">\(\rightarrow\)</span> 构造<span class="arithmatex">\(X_{\text{col}}\)</span> <span class="arithmatex">\(\rightarrow\)</span> write <span class="arithmatex">\(X_{\text{col}}\)</span> <span class="arithmatex">\(\rightarrow\)</span> read <span class="arithmatex">\(X_{\text{col}}\)</span> <span class="arithmatex">\(\rightarrow\)</span> MAC array</p>
+<p>这里发生了大量：</p>
+<ul>
+<li>extra write；</li>
+<li>extra read；</li>
+<li>SRAM capacity consumption；</li>
+<li>DRAM bandwidth consumption；</li>
+<li>address generation；</li>
+<li>energy consumption。</li>
+</ul>
+<p>也就是说为了让计算看起来像漂亮的 GEMM，我们<strong>人为制造了一个巨大的中间矩阵</strong>。这在软件层面很方便，但硬件层面很不理想。</p>
+<h3 id="36">3.6 总结<a class="headerlink" href="#36" title="Permanent link">&para;</a></h3>
+<p>可以把 Toeplitz 和 im2col 看成两个“极端”：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>谁被展开/复制</th>
+<th>优点</th>
+<th>核心缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Toeplitz</td>
+<td>Kernel</td>
+<td>数学最直观</td>
+<td>大量 0、weight 巨量重复</td>
+</tr>
+<tr>
+<td>im2col</td>
+<td>Input patch</td>
+<td>变成 dense GEMM</td>
+<td>activation 大量重复</td>
+</tr>
+<tr>
+<td>implicit GEMM</td>
+<td>都不显式复制</td>
+<td>保留 GEMM 友好性</td>
+<td>地址生成和数据调度复杂</td>
+</tr>
+</tbody>
+</table>
+<p>下一阶段，我们将正式进入 <strong>explicit im2col → implicit GEMM</strong>。届时最重要的是把下面这个东西讲透：</p>
+<p><span class="arithmatex">\(X_{\text{col}}[k,n]\)</span> 到底如何直接映射回：<span class="arithmatex">\(X[c_i,h_{in},w_{in}]\)</span>。也就是硬件怎样根据 <span class="arithmatex">\(k,n\)</span> 实时算出原始 activation 地址，并把它送入 GEMM/MAC 阵列。这一步开始，就真正进入 AI 加速器实现层面了。</p>
 
 
 
