@@ -1,24 +1,24 @@
 ---
-title: 论文阅读
+title: Research
 hide:
   - toc
 ---
 
 <div class="section-hero sc-paper-hero">
-  <h1>🔬 论文阅读</h1>
+  <h1>🔬 Research</h1>
   <p>From AI general base to advanced hardware design</p>
   <div class="section-stats">
-    <span class="stat-item">⚖️ 理论基础</span>
-    <span class="stat-item">🧬 前沿架构</span>
+    <span class="stat-item">⚖️ Theoretical Foundation</span>
+    <span class="stat-item">🧬 Cutting-Edge Architecture</span>
   </div>
 </div>
 
-<div class="section-subtitle">AI 理论基础</div>
+<div class="section-subtitle">AI Theory Base</div>
 
 <div class="card-grid">
 </div>
 
-<div class="section-subtitle">AI Accelerator 综述</div>
+<div class="section-subtitle">AI Accelerator Overview</div>
 
 <div class="card-grid">
 <a class="note-card blue" href="ai-accelerator/overview/isscc_2020_tutorial/">
@@ -28,7 +28,7 @@ hide:
 </a>
 </div>
 
-<div class="section-subtitle">AI Accelerator 基础</div>
+<div class="section-subtitle">AI Accelerator Fundamentals</div>
 
 <div class="card-grid">
 <a class="note-card blue" href="ai-accelerator/base/conv_hardware/">
