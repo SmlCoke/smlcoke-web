@@ -1093,3 +1093,371 @@ DRAM $\rightarrow$ load input $\rightarrow$ 构造$X_{\text{col}}$ $\rightarrow$
 
 $X_{\text{col}}[k,n]$ 到底如何直接映射回：$X[c_i,h_{in},w_{in}]$。也就是硬件怎样根据 $k,n$ 实时算出原始 activation 地址，并把它送入 GEMM/MAC 阵列。这一步开始，就真正进入 AI 加速器实现层面了。
 
+## IV. 第三阶段：Implicit GEMM
+
+### 4.1 Summary of Explicit im2col
+
+普通卷积：
+
+
+$$Y[c_o,h_o,w_o]=\sum_{c_i,k_h,k_w}W[c_o,c_i,k_h,k_w]X[c_i,h_i,w_i]$$
+
+其中:
+
+$$\begin{cases}
+h_i=h_oS_h-P_h+k_hD_h \\
+w_i=w_oS_w-P_w+k_wD_w
+\end{cases}$$
+
+我们把三个 reduction 维度 $(c_i,k_h,k_w)$ （**确定输入像素坐标**）展开成 GEMM 的 $K$ 维，把空间位置 $(h_o,w_o)$ （**确认输出像素坐标**）展开成 GEMM 的 $N$ 维。
+
+于是：
+
+$$Y_{\rm mat}=W_{\rm mat}X_{\rm col}$$
+
+将被转化为：
+
+$$Y_{\rm mat}[m,n]=\sum_kW_{\rm mat}[m,k]X_{\rm col}[k,n]$$
+
+尺寸：
+
+$$[C_{out}\times H_{out}W_{out}]=\underbrace{[C_{out}\times C_{in}K_hK_w]}_{M\times K}\cdot\underbrace{[C_{in}K_hK_w\times H_{out}W_{out}]}_{K\times N}$$
+
+其中 $n \in [0, N-1]$，为**本次需要计算的输出像素在 $Y_{\text{mat}}$ 中的列索引**，同时也是**在 $X_{\text{col}}$ 中的列索引**；$k \in [0, K-1]$ 为计算**该输出像素**所需要的**某个输入像素在 $X_{\text{col}}$ 中的行索引**。并且：
+
+$$\begin{cases}
+M=C_{out}        & \sim \text{输出通道数} \\
+K=C_{in}K_hK_w   & \sim \text{计算每个输出像素所需要的输入像素个数} \\
+N=H_{out}W_{out} & \sim \text{单图输出像素个数}
+\end{cases}$$
+
+Explicit im2col 真正做了从原始输入特征图生成中间矩阵$X_{\text{col}}$，再读取中间矩阵 $X_{\text{col}}$ 进行计算。
+
+Implicit GEMM 则没有实际生成中间矩阵$X_{\text{col}}$，而是直接根据 GEMM 的坐标实时计算出所需的输入数据，然后送入 MAC array。
+
+核心区别就是：**不把这个中间矩阵真正“物化”出来**。
+
+### 4.2 $X_{\text{col}}$ 地址解码方法
+
+#### 4.2.1 解码思路
+
+根据式：
+
+$$Y_{\rm mat}[m,n]=\sum_kW_{\rm mat}[m,k]X_{\rm col}[k,n]$$
+
+我们如果需要计算坐标为：$(m, n)$（**也即$(c_{o}, n)$**）的输出像素值，那么我们需要的数据有：
+
+- 每一个所需的卷积核权重 $W_{\text{mat}}[m,k]$;
+- 每一个所需的输入像素 $X_{\text{col}}[k,n]$；
+
+我们现在假设卷积核权重和输入特征图数据在存储器中的存储方式都是**按照通道、高度、宽度的顺序规则（$[C, H, W]$）存储**，也即：
+
+- **列索引**（$k_w$/$w_i$）先变；
+- **行索引**（$k_h$/$h_i$）再变；
+- **通道索引**（$c_i$）最后变。
+
+那么，如果我们要在存储器中，找到**输入像素**和**卷积核权重**的地址，也就需要获得如下信息：
+
+- **输入像素**在$X$中的索引：$(c_i, h_i, w_i)$
+- **卷积核权重**在$W$中的索引：$(c_o, c_i, k_h, k_w)$
+
+此外，我们可以根据公式：
+
+$$\begin{cases}
+h_i=h_oS_h-P_h+k_hD_h \\
+w_i=w_oS_w-P_w+k_wD_w
+\end{cases}$$
+
+从**卷积核权重索引$(c_o, c_i, k_h, k_w)$**计算出对应的**输入像素索引$(c_i, h_i, w_i)$**；
+
+此外，为了将**输出像素数据正确写回存储器**，我们还需要输出像素在$Y$中的索引：$(c_o, h_o, w_o)$。（这里假设输出特征图数据在存储器中的布局方式也是$CHW$）。
+
+也就是说，我们最终为了计算输出像素$Y_{\text{mat}}[m,n]$，需要从**地址解码器**中解码的**索引信息**只有：
+
+- **卷积核权重**在$W$中的索引：$(c_o, c_i, k_h, k_w)$
+- **输出像素**在$Y$中的索引：$(c_o, h_o, w_o)$
+
+此外，由于$c_o$（通道维度）本身就已经处于 **flatten** 状态，也就是说我们在计算前就已经知道了 $c_o$ 的值（即$m$）。
+
+#### 4.2.2 卷积核权重索引解码方法
+
+我们之前把 $(c_i, k_h, k_w)$ 展平成 $k$，接下来我们需要解码出对应关系：
+
+$$\boxed{k \rightarrow (c_i, k_h, k_w)}$$
+
+考虑到卷积核权重在存储器中的 $[C,H,W]$ 布局，参考下图，我们有：
+
+$$k=(c_i K_h + k_h)K_w + k_w$$
+
+![卷积核权重解码方法](./assets/kernel_index_decode.svg)
+
+现在我们的任务就是利用 $k$ 求解出：
+
+- $c_i$
+- $k_h$
+- $k_w$
+
+考虑到上述所有量都是整数以及：
+
+- $K_h, K_w$ 是已知的常数
+- $c_i \in [0, C_{\text{in}} - 1]$
+- $k_h \in [0, K_h - 1]$
+- $k_w \in [0, K_w - 1]$
+
+因此我们有：
+
+$$\boxed{\textcolor{red}{c_i} = \left\lfloor \frac{k}{K_h K_w} \right\rfloor, \quad
+\textcolor{red}{k_h} = \left\lfloor \frac{k \bmod (K_h K_w)}{K_w} \right\rfloor, \quad
+\textcolor{red}{k_w} = [k \bmod (K_h K_w)] \bmod K_w}$$
+
+#### 4.2.3 输出像素索引解码方法
+
+我们之前把 $(h_o,w_o)$ 展平成 $n$，接下来我们需要解码出对应关系：
+
+$$\boxed{n \rightarrow (h_o, w_o)}$$
+
+考虑到输出特征图在存储器中的 $[C,H,W]$ 布局，参考下图，我们有：
+
+$$n=h_oW_{out}+w_o$$
+
+![输出像素索引解码方法](./assets/output_index_decode.svg)
+
+现在我们的任务就是利用 $n$ 求解出：
+
+- $h_o$
+- $w_o$
+
+考虑到上述所有量都是整数以及：
+
+- $H_{out}, W_{out}$ 是已知的常数
+- $h_o \in [0, H_{out} - 1]$
+- $w_o \in [0, W_{out} - 1]$
+
+因此我们有：
+
+$$\boxed{\textcolor{red}{h_o} = \left\lfloor \frac{n}{W_{out}} \right\rfloor, \quad
+\textcolor{red}{w_o} = n \bmod W_{out}}$$
+
+#### 4.2.4 根据卷积计算原始公式求解输入像素索引
+
+我们已经知道了：
+
+- **卷积核权重**索引：$(c_o, c_i, k_h, k_w)$
+- **输出像素**索引：$(c_o, h_o, w_o)$
+
+根据公式：
+
+$$\boxed{\begin{cases}
+h_i=h_oS_h-P_h+k_hD_h \\
+w_i=w_oS_w-P_w+k_wD_w
+\end{cases}}$$
+
+可以理解确定出
+
+- **输入像素**索引：$(c_i, h_i, w_i)$
+
+#### 4.2.5 案例分析
+
+我们从一个例子来说明这个过程。
+
+考虑 $C_{\text{in}}=2, H_{\text{in}}=W_{\text{in}}=4, K_h=K_w=3, S_h=S_w=1, P_h=P_w=1, D_h=D_w=1, C_{\text{out}}=1$ 的卷积层。
+
+输入：
+
+$$X_0 = \begin{bmatrix}
+1 & 2 & 3 & 4 \\
+5 & 6 & 7 & 8 \\
+9 & 10 & 11 & 12 \\
+13 & 14 & 15 & 16
+\end{bmatrix}, \quad X_1 = \begin{bmatrix}
+17 & 18 & 19 & 20 \\
+21 & 22 & 23 & 24 \\
+25 & 26 & 27 & 28 \\
+29 & 30 & 31 & 32
+\end{bmatrix}$$
+
+卷积核：
+
+$$W_0=\begin{bmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{bmatrix}, \quad W_1=\begin{bmatrix}
+j & k & l \\
+m & n & o \\
+p & q & r
+\end{bmatrix}$$
+
+此时输出只有 1 个通道，尺寸为：$H_{out}=W_{out}=4$，我们设为 $Y$，**如果我们要计算 $Y[2,2]$**，通过对卷积原始计算方式的理解，我们可以很快锁定出需要的输入像素数据为：
+
+$$X_0 : \begin{bmatrix}
+1 & 2 & 3 & 4 \\
+5 & \textcolor{red}{6} & \textcolor{red}{7} & \textcolor{red}{8} \\
+9 & \textcolor{red}{10} & \textcolor{red}{11} & \textcolor{red}{12} \\
+13 & \textcolor{red}{14} & \textcolor{red}{15} & \textcolor{red}{16}
+\end{bmatrix}, \quad X_1 : \begin{bmatrix}
+17 & 18 & 19 & 20 \\
+21 & \textcolor{red}{22} & \textcolor{red}{23} & \textcolor{red}{24} \\
+25 & \textcolor{red}{26} & \textcolor{red}{27} & \textcolor{red}{28} \\
+29 & \textcolor{red}{30} & \textcolor{red}{31} & \textcolor{red}{32}
+\end{bmatrix}$$
+
+对应 $X_{\text{col}}$ 完整列：
+
+$\begin{bmatrix}6&7&8&10&11&12&14&15&16
+&22&23&24&26&27&28&30&31&32\end{bmatrix}^{T}$
+
+接下来，我们通过上述**地址解码方法来确定这些输入像素的索引**。
+
+已知：
+
+- $n=h_0 W_{out}+w_0 = 2\times 4 + 2 = 10$
+- $C_{out}=1, C_{in}=2$
+- $H_{out}=4, W_{out}=4$
+- $K_h=K_w=3, S_h=S_w=1, P_h=P_w=1, D_h=D_w=1$
+- $k \in [0, C_{in} \times K_h \times K_w - 1] = [0, 2 \times 3 \times 3 - 1] = [0, 17]$
+
+以 k = 7，即**数据 15** 为例：
+
+- $c_i = \left\lfloor k/(K_h K_w) \right\rfloor = \left\lfloor 7/9 \right\rfloor = 0$
+- $k_h = \left\lfloor (k \bmod (K_h K_w))/K_w \right\rfloor = \left\lfloor (7 \bmod 9)/3 \right\rfloor = \left\lfloor 7/3 \right\rfloor = 2$
+- $k_w = [k \bmod (K_h K_w)] \bmod K_w = [7 \bmod 9] \bmod 3 = 7 \bmod 3 = 1$
+- $h_i = h_o S_h - P_h + k_h D_h = 2 \times 1 - 1 + 2 \times 1 = 3$
+- $w_i = w_o S_w - P_w + k_w D_w = 2 \times 1 - 1 + 1 \times 1 = 2$
+
+因此对应输入像素索引：$(c_i, h_i, w_i) = (0, 3, 2)$，也就是 $X_0[3, 2]=15$。
+
+#### 4.2.6 Stride, Padding and Dilation
+
+在 im2col，Stride, Padding 和 Dilation 的处理手段相比 Toeplitz 而言非常简单，它们都不会直接影响卷积核权重矩阵$W_{\text{mat}}$以及中间虚拟矩阵$X_{\text{col}}$，而是通过**修改输入像素索引计算公式**来实现的。
+
+**（1）Stride 和 Dilation 应该如何处理？**
+
+通过作用于输入像素索引计算公式：
+
+$$\begin{cases}
+h_i=h_oS_h-P_h+k_hD_h \\
+w_i=w_oS_w-P_w+k_wD_w
+\end{cases}$$
+
+来实现
+
+**（2）Padding 应该如何处理？**
+
+当计算出发现输入像素索引 $(h_i, w_i)$ **超出了输入特征图的边界时**，说明这个输入像素是**padding**，此时我们直接返回 0 即可。
+
+
+### 4.3 实际硬件实现的细节问题
+
+上述地址解码器只是数学理论，真实硬件实现时还有很多问题需要考虑。
+
+#### 4.3.1 Tiled-Base GEMM
+
+前面为了辅助说明，我们说：“GEMM 要 $X_{\rm col}[k,n]$，硬件现场算地址取一个数”，概念上完全正确。
+但如果真实 GPU/NPU 真这么一个一个取：**效率会非常低，并且容易触发 Cache miss**，真实 GEMM 一般都是基于 Tiled-base 做的。
+
+关于划分与不划分 Tile 的矩阵乘法计算差异可见文档：[Tiled-base GEMM](./gemm_tile/index.md)
+
+---
+
+#### 4.3.2 不保证一定最好 data reuse
+
+即便我们采用了 impicit im2col，消除了 Toeplitz 展开的大规模复制以及 explicit im2col 庞大的中间矩阵$X_{\text{col}}$，并且即便我们做好了 tiled-base GEMM，我们仍然无法保证**数据重用率一定是最优的**。
+
+例如对于特征图最中心的部分元素，在逻辑上，它被卷积核覆盖的次数：$K_h \times K_w$ 决定了它在 GEMM 中被访问的次数。**我们不能保证“该元素第一次被 load 进入 Cache 后，后续每次访问它时它都还在 Cache 中”**。想进一步减少重复 load，需要协同优化：
+
+- cache；
+- SRAM；
+- line buffer；
+- tile buffer；
+- register reuse；
+- dataflow design。
+
+这就会进入后面 AI accelerator 设计的核心问题。
+
+---
+
+所以真正高效的**结构通常是两层优化**
+
+- 第一层：Implicit im2col 消除 $X \rightarrow X_{\text{col}}$的物化。
+- 第二层：**On-chip reuse**。例如：`DRAM -> SRAM -> Tile Buffer -> PE Array`，一个 activation 从 DRAM 读一次以后，尽可能在：SRAM/local buffer/PE network 中重复使用，这才真正**把数据搬运成本压下来**。
+
+#### 4.3.3 Memory Access Pattern
+
+GEMM 性能高的重要原因之一是：**regular contiguous access**
+
+但 Conv 的 implicit gather 可能出现：
+
+- `X[i] -> X[i+1] -> X[i+W] -> X[i+W+1]`
+- `X[i] -> X[i+2] -> X[i+2W] -> ...`(dilation)
+
+这样非线性的访存顺序，所以物理地址不一定天然符合：
+
+- cache line；
+- DRAM burst；
+- GPU coalescing；
+- SRAM banking。
+
+因此高性能 implicit GEMM kernel 很大一部分复杂度，不在 MAC，而在于：**如哈将原始 tensor 中具有卷积结构的数据，高效整理成矩阵单元喜欢的 tile**。
+
+!!! Example
+
+    例如 $[N,C,H,W]$ 和 $[N,H,W,C]$
+    对于某些 GEMM 映射，NHWC 可以让 $C$ 方向连续。而我们的 \(K\) 维包含：$C_{in}K_h K_w$。所以不同 layout 会直接影响：
+    
+        - vector load；
+        - bank conflict；
+        - coalescing；
+        - Tensor Core fragment formation。
+    
+    因此会存在某些 NPU/GPU kernel 特别偏好 $NHWC$ 或者专门的 blocked layout 例如 $NCHWc$，原因往往就在这里。
+
+
+#### 4.3.4 PWC and DWC in Implicit GEMM
+
+**Pointwise Convolution (PWC) 非常适合 GEMM**。
+
+因为：$K_{h}=K_{w}=1\rightarrow K=C_{in}$。输入 $X_{\rm col}$ 实际上只是原 tensor 的一种**内存重排序**，因为不存在 overlapping sliding window。
+
+此时：
+
+- $W_{\rm mat}: C_{out}\times C_{in}$
+- $X_{\rm mat}: C_{in}\times H_{out}W_{out}$
+
+可以直接做 $Y=W_{\rm mat}X_{\rm mat}$
+甚至连 implicit address transformation 都非常简单：
+
+$$\begin{cases}
+h_i=h_oS_h+k_h \\
+w_i=w_oS_w+k_w
+\end{cases}$$
+
+**所以 $1\times 1$ Conv 几乎就是天然 GEMM**，这也是 \(1\times1\) convolution 在矩阵加速器上特别舒服的原因。
+
+而 **Depthwise Conv 则是另一个极端**：每一个输出通道只对应一个输入通道、只对应一个卷积核通道，这意味着：
+
+- 每个输出通道的计算，都是一个 $1\times K_h K_w$ **向量** 和 $K_h K_w \times H_{out} W_{out}$ 的**矩阵**做乘法——**GEMV**
+
+换句话说：**没有一个能够充分复用的中间矩阵 $X_{rm col}$，因为现在每一个输入通道被单独拆解成了独立的中间矩阵 $X_{\rm col}^{(c)}$，并且与独立的卷积核向量进行乘法，没有很好的 reuse 空间**。
+
+但是，无法 reuse 不代表没有很好的并行度，**Depthwise Conv 仍然可以通过通道维度的并行来充分利用硬件资源**。
+
+### 4.4 总结
+
+我们审视整条演化链：
+
+1. **第一阶段：$y=T(W)x$**，Toeplitz 把 sliding kernel 全部展开。问题：**巨大 + 稀疏 + weight duplication**。
+2. **第二阶段：$Y=W_{\rm mat}X_{\rm col}$**，Explicit im2col 把问题变成 dense GEMM。问题：**activation duplication + workspace + memory traffic**。
+3. **第三阶段：$Y=W_{\rm mat}\,\widetilde X_{\rm col}$**，其中$ \widetilde X_{\rm col}$ 只是一个虚拟矩阵，其元素定义为：$\widetilde X_{\rm col}[k,n]=X[c_i,\,h_oS_h-P_h+k_hD_h,\,w_oS_w-P_w+k_wD_w]$
+而：$(c_i,k_h,k_w)=\text{decode}(k)$, $(h_o,w_o)=\text{decode}(n)$，于是**既保留了 GEMM 的计算结构，又避免真正生成 im2col**。
+
+到 explicit im2col 为止，我们主要是在讨论：**算法等价变换**；到了 implicit GEMM，问题开始变成：**数据怎么进入计算阵列？**于是接下来真正的芯片问题就会出现：
+
+- 哪个数据留在 PE 里？
+- 哪个数据在 PE 间流动？
+- partial sum 放在哪里？
+- SRAM 怎么分 tile？
+- 如何让一个 activation 被多个 MAC 重用？
+- 如何让一个 weight 被多个 output position 重用？
+
+这些问题最终就进入：**dataflow 设计**。
