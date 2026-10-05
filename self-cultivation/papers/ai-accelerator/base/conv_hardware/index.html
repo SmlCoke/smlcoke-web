@@ -6688,6 +6688,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#iv-implicit-gemm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. 第三阶段：Implicit GEMM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IV. 第三阶段：Implicit GEMM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-summary-of-explicit-im2col" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Summary of Explicit im2col
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-x_textcol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 \(X_{\text{col}}\) 地址解码方法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 实际硬件实现的细节问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7496,6 +7557,281 @@ X[c_i,h+k_h,w+k_w]\]</div>
 </table>
 <p>下一阶段，我们将正式进入 <strong>explicit im2col → implicit GEMM</strong>。届时最重要的是把下面这个东西讲透：</p>
 <p><span class="arithmatex">\(X_{\text{col}}[k,n]\)</span> 到底如何直接映射回：<span class="arithmatex">\(X[c_i,h_{in},w_{in}]\)</span>。也就是硬件怎样根据 <span class="arithmatex">\(k,n\)</span> 实时算出原始 activation 地址，并把它送入 GEMM/MAC 阵列。这一步开始，就真正进入 AI 加速器实现层面了。</p>
+<h2 id="iv-implicit-gemm">IV. 第三阶段：Implicit GEMM<a class="headerlink" href="#iv-implicit-gemm" title="Permanent link">&para;</a></h2>
+<h3 id="41-summary-of-explicit-im2col">4.1 Summary of Explicit im2col<a class="headerlink" href="#41-summary-of-explicit-im2col" title="Permanent link">&para;</a></h3>
+<p>普通卷积：</p>
+<div class="arithmatex">\[Y[c_o,h_o,w_o]=\sum_{c_i,k_h,k_w}W[c_o,c_i,k_h,k_w]X[c_i,h_i,w_i]\]</div>
+<p>其中:</p>
+<div class="arithmatex">\[\begin{cases}
+h_i=h_oS_h-P_h+k_hD_h \\
+w_i=w_oS_w-P_w+k_wD_w
+\end{cases}\]</div>
+<p>我们把三个 reduction 维度 <span class="arithmatex">\((c_i,k_h,k_w)\)</span> （<strong>确定输入像素坐标</strong>）展开成 GEMM 的 <span class="arithmatex">\(K\)</span> 维，把空间位置 <span class="arithmatex">\((h_o,w_o)\)</span> （<strong>确认输出像素坐标</strong>）展开成 GEMM 的 <span class="arithmatex">\(N\)</span> 维。</p>
+<p>于是：</p>
+<div class="arithmatex">\[Y_{\rm mat}=W_{\rm mat}X_{\rm col}\]</div>
+<p>将被转化为：</p>
+<div class="arithmatex">\[Y_{\rm mat}[m,n]=\sum_kW_{\rm mat}[m,k]X_{\rm col}[k,n]\]</div>
+<p>尺寸：</p>
+<div class="arithmatex">\[[C_{out}\times H_{out}W_{out}]=\underbrace{[C_{out}\times C_{in}K_hK_w]}_{M\times K}\cdot\underbrace{[C_{in}K_hK_w\times H_{out}W_{out}]}_{K\times N}\]</div>
+<p>其中 <span class="arithmatex">\(n \in [0, N-1]\)</span>，为<strong>本次需要计算的输出像素在 <span class="arithmatex">\(Y_{\text{mat}}\)</span> 中的列索引</strong>，同时也是<strong>在 <span class="arithmatex">\(X_{\text{col}}\)</span> 中的列索引</strong>；<span class="arithmatex">\(k \in [0, K-1]\)</span> 为计算<strong>该输出像素</strong>所需要的<strong>某个输入像素在 <span class="arithmatex">\(X_{\text{col}}\)</span> 中的行索引</strong>。并且：</p>
+<div class="arithmatex">\[\begin{cases}
+M=C_{out}        &amp; \sim \text{输出通道数} \\
+K=C_{in}K_hK_w   &amp; \sim \text{计算每个输出像素所需要的输入像素个数} \\
+N=H_{out}W_{out} &amp; \sim \text{单图输出像素个数}
+\end{cases}\]</div>
+<p>Explicit im2col 真正做了从原始输入特征图生成中间矩阵<span class="arithmatex">\(X_{\text{col}}\)</span>，再读取中间矩阵 <span class="arithmatex">\(X_{\text{col}}\)</span> 进行计算。</p>
+<p>Implicit GEMM 则没有实际生成中间矩阵<span class="arithmatex">\(X_{\text{col}}\)</span>，而是直接根据 GEMM 的坐标实时计算出所需的输入数据，然后送入 MAC array。</p>
+<p>核心区别就是：<strong>不把这个中间矩阵真正“物化”出来</strong>。</p>
+<h3 id="42-x_textcol">4.2 <span class="arithmatex">\(X_{\text{col}}\)</span> 地址解码方法<a class="headerlink" href="#42-x_textcol" title="Permanent link">&para;</a></h3>
+<h4 id="421">4.2.1 解码思路<a class="headerlink" href="#421" title="Permanent link">&para;</a></h4>
+<p>根据式：</p>
+<div class="arithmatex">\[Y_{\rm mat}[m,n]=\sum_kW_{\rm mat}[m,k]X_{\rm col}[k,n]\]</div>
+<p>我们如果需要计算坐标为：<span class="arithmatex">\((m, n)\)</span>（<strong>也即<span class="arithmatex">\((c_{o}, n)\)</span></strong>）的输出像素值，那么我们需要的数据有：</p>
+<ul>
+<li>每一个所需的卷积核权重 <span class="arithmatex">\(W_{\text{mat}}[m,k]\)</span>;</li>
+<li>每一个所需的输入像素 <span class="arithmatex">\(X_{\text{col}}[k,n]\)</span>；</li>
+</ul>
+<p>我们现在假设卷积核权重和输入特征图数据在存储器中的存储方式都是<strong>按照通道、高度、宽度的顺序规则（<span class="arithmatex">\([C, H, W]\)</span>）存储</strong>，也即：</p>
+<ul>
+<li><strong>列索引</strong>（<span class="arithmatex">\(k_w\)</span>/<span class="arithmatex">\(w_i\)</span>）先变；</li>
+<li><strong>行索引</strong>（<span class="arithmatex">\(k_h\)</span>/<span class="arithmatex">\(h_i\)</span>）再变；</li>
+<li><strong>通道索引</strong>（<span class="arithmatex">\(c_i\)</span>）最后变。</li>
+</ul>
+<p>那么，如果我们要在存储器中，找到<strong>输入像素</strong>和<strong>卷积核权重</strong>的地址，也就需要获得如下信息：</p>
+<ul>
+<li><strong>输入像素</strong>在<span class="arithmatex">\(X\)</span>中的索引：<span class="arithmatex">\((c_i, h_i, w_i)\)</span></li>
+<li><strong>卷积核权重</strong>在<span class="arithmatex">\(W\)</span>中的索引：<span class="arithmatex">\((c_o, c_i, k_h, k_w)\)</span></li>
+</ul>
+<p>此外，我们可以根据公式：</p>
+<div class="arithmatex">\[\begin{cases}
+h_i=h_oS_h-P_h+k_hD_h \\
+w_i=w_oS_w-P_w+k_wD_w
+\end{cases}\]</div>
+<p>从<strong>卷积核权重索引<span class="arithmatex">\((c_o, c_i, k_h, k_w)\)</span></strong>计算出对应的<strong>输入像素索引<span class="arithmatex">\((c_i, h_i, w_i)\)</span></strong>；</p>
+<p>此外，为了将<strong>输出像素数据正确写回存储器</strong>，我们还需要输出像素在<span class="arithmatex">\(Y\)</span>中的索引：<span class="arithmatex">\((c_o, h_o, w_o)\)</span>。（这里假设输出特征图数据在存储器中的布局方式也是<span class="arithmatex">\(CHW\)</span>）。</p>
+<p>也就是说，我们最终为了计算输出像素<span class="arithmatex">\(Y_{\text{mat}}[m,n]\)</span>，需要从<strong>地址解码器</strong>中解码的<strong>索引信息</strong>只有：</p>
+<ul>
+<li><strong>卷积核权重</strong>在<span class="arithmatex">\(W\)</span>中的索引：<span class="arithmatex">\((c_o, c_i, k_h, k_w)\)</span></li>
+<li><strong>输出像素</strong>在<span class="arithmatex">\(Y\)</span>中的索引：<span class="arithmatex">\((c_o, h_o, w_o)\)</span></li>
+</ul>
+<p>此外，由于<span class="arithmatex">\(c_o\)</span>（通道维度）本身就已经处于 <strong>flatten</strong> 状态，也就是说我们在计算前就已经知道了 <span class="arithmatex">\(c_o\)</span> 的值（即<span class="arithmatex">\(m\)</span>）。</p>
+<h4 id="422">4.2.2 卷积核权重索引解码方法<a class="headerlink" href="#422" title="Permanent link">&para;</a></h4>
+<p>我们之前把 <span class="arithmatex">\((c_i, k_h, k_w)\)</span> 展平成 <span class="arithmatex">\(k\)</span>，接下来我们需要解码出对应关系：</p>
+<div class="arithmatex">\[\boxed{k \rightarrow (c_i, k_h, k_w)}\]</div>
+<p>考虑到卷积核权重在存储器中的 <span class="arithmatex">\([C,H,W]\)</span> 布局，参考下图，我们有：</p>
+<div class="arithmatex">\[k=(c_i K_h + k_h)K_w + k_w\]</div>
+<p><img alt="卷积核权重解码方法" src="assets/kernel_index_decode.svg" /></p>
+<p>现在我们的任务就是利用 <span class="arithmatex">\(k\)</span> 求解出：</p>
+<ul>
+<li><span class="arithmatex">\(c_i\)</span></li>
+<li><span class="arithmatex">\(k_h\)</span></li>
+<li><span class="arithmatex">\(k_w\)</span></li>
+</ul>
+<p>考虑到上述所有量都是整数以及：</p>
+<ul>
+<li><span class="arithmatex">\(K_h, K_w\)</span> 是已知的常数</li>
+<li><span class="arithmatex">\(c_i \in [0, C_{\text{in}} - 1]\)</span></li>
+<li><span class="arithmatex">\(k_h \in [0, K_h - 1]\)</span></li>
+<li><span class="arithmatex">\(k_w \in [0, K_w - 1]\)</span></li>
+</ul>
+<p>因此我们有：</p>
+<div class="arithmatex">\[\boxed{\textcolor{red}{c_i} = \left\lfloor \frac{k}{K_h K_w} \right\rfloor, \quad
+\textcolor{red}{k_h} = \left\lfloor \frac{k \bmod (K_h K_w)}{K_w} \right\rfloor, \quad
+\textcolor{red}{k_w} = [k \bmod (K_h K_w)] \bmod K_w}\]</div>
+<h4 id="423">4.2.3 输出像素索引解码方法<a class="headerlink" href="#423" title="Permanent link">&para;</a></h4>
+<p>我们之前把 <span class="arithmatex">\((h_o,w_o)\)</span> 展平成 <span class="arithmatex">\(n\)</span>，接下来我们需要解码出对应关系：</p>
+<div class="arithmatex">\[\boxed{n \rightarrow (h_o, w_o)}\]</div>
+<p>考虑到输出特征图在存储器中的 <span class="arithmatex">\([C,H,W]\)</span> 布局，参考下图，我们有：</p>
+<div class="arithmatex">\[n=h_oW_{out}+w_o\]</div>
+<p><img alt="输出像素索引解码方法" src="assets/output_index_decode.svg" /></p>
+<p>现在我们的任务就是利用 <span class="arithmatex">\(n\)</span> 求解出：</p>
+<ul>
+<li><span class="arithmatex">\(h_o\)</span></li>
+<li><span class="arithmatex">\(w_o\)</span></li>
+</ul>
+<p>考虑到上述所有量都是整数以及：</p>
+<ul>
+<li><span class="arithmatex">\(H_{out}, W_{out}\)</span> 是已知的常数</li>
+<li><span class="arithmatex">\(h_o \in [0, H_{out} - 1]\)</span></li>
+<li><span class="arithmatex">\(w_o \in [0, W_{out} - 1]\)</span></li>
+</ul>
+<p>因此我们有：</p>
+<div class="arithmatex">\[\boxed{\textcolor{red}{h_o} = \left\lfloor \frac{n}{W_{out}} \right\rfloor, \quad
+\textcolor{red}{w_o} = n \bmod W_{out}}\]</div>
+<h4 id="424">4.2.4 根据卷积计算原始公式求解输入像素索引<a class="headerlink" href="#424" title="Permanent link">&para;</a></h4>
+<p>我们已经知道了：</p>
+<ul>
+<li><strong>卷积核权重</strong>索引：<span class="arithmatex">\((c_o, c_i, k_h, k_w)\)</span></li>
+<li><strong>输出像素</strong>索引：<span class="arithmatex">\((c_o, h_o, w_o)\)</span></li>
+</ul>
+<p>根据公式：</p>
+<div class="arithmatex">\[\boxed{\begin{cases}
+h_i=h_oS_h-P_h+k_hD_h \\
+w_i=w_oS_w-P_w+k_wD_w
+\end{cases}}\]</div>
+<p>可以理解确定出</p>
+<ul>
+<li><strong>输入像素</strong>索引：<span class="arithmatex">\((c_i, h_i, w_i)\)</span></li>
+</ul>
+<h4 id="425">4.2.5 案例分析<a class="headerlink" href="#425" title="Permanent link">&para;</a></h4>
+<p>我们从一个例子来说明这个过程。</p>
+<p>考虑 <span class="arithmatex">\(C_{\text{in}}=2, H_{\text{in}}=W_{\text{in}}=4, K_h=K_w=3, S_h=S_w=1, P_h=P_w=1, D_h=D_w=1, C_{\text{out}}=1\)</span> 的卷积层。</p>
+<p>输入：</p>
+<div class="arithmatex">\[X_0 = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 \\
+5 &amp; 6 &amp; 7 &amp; 8 \\
+9 &amp; 10 &amp; 11 &amp; 12 \\
+13 &amp; 14 &amp; 15 &amp; 16
+\end{bmatrix}, \quad X_1 = \begin{bmatrix}
+17 &amp; 18 &amp; 19 &amp; 20 \\
+21 &amp; 22 &amp; 23 &amp; 24 \\
+25 &amp; 26 &amp; 27 &amp; 28 \\
+29 &amp; 30 &amp; 31 &amp; 32
+\end{bmatrix}\]</div>
+<p>卷积核：</p>
+<div class="arithmatex">\[W_0=\begin{bmatrix}
+a &amp; b &amp; c \\
+d &amp; e &amp; f \\
+g &amp; h &amp; i
+\end{bmatrix}, \quad W_1=\begin{bmatrix}
+j &amp; k &amp; l \\
+m &amp; n &amp; o \\
+p &amp; q &amp; r
+\end{bmatrix}\]</div>
+<p>此时输出只有 1 个通道，尺寸为：<span class="arithmatex">\(H_{out}=W_{out}=4\)</span>，我们设为 <span class="arithmatex">\(Y\)</span>，<strong>如果我们要计算 <span class="arithmatex">\(Y[2,2]\)</span></strong>，通过对卷积原始计算方式的理解，我们可以很快锁定出需要的输入像素数据为：</p>
+<div class="arithmatex">\[X_0 : \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 \\
+5 &amp; \textcolor{red}{6} &amp; \textcolor{red}{7} &amp; \textcolor{red}{8} \\
+9 &amp; \textcolor{red}{10} &amp; \textcolor{red}{11} &amp; \textcolor{red}{12} \\
+13 &amp; \textcolor{red}{14} &amp; \textcolor{red}{15} &amp; \textcolor{red}{16}
+\end{bmatrix}, \quad X_1 : \begin{bmatrix}
+17 &amp; 18 &amp; 19 &amp; 20 \\
+21 &amp; \textcolor{red}{22} &amp; \textcolor{red}{23} &amp; \textcolor{red}{24} \\
+25 &amp; \textcolor{red}{26} &amp; \textcolor{red}{27} &amp; \textcolor{red}{28} \\
+29 &amp; \textcolor{red}{30} &amp; \textcolor{red}{31} &amp; \textcolor{red}{32}
+\end{bmatrix}\]</div>
+<p>对应 <span class="arithmatex">\(X_{\text{col}}\)</span> 完整列：</p>
+<p><span class="arithmatex">\(\begin{bmatrix}6&amp;7&amp;8&amp;10&amp;11&amp;12&amp;14&amp;15&amp;16
+&amp;22&amp;23&amp;24&amp;26&amp;27&amp;28&amp;30&amp;31&amp;32\end{bmatrix}^{T}\)</span></p>
+<p>接下来，我们通过上述<strong>地址解码方法来确定这些输入像素的索引</strong>。</p>
+<p>已知：</p>
+<ul>
+<li><span class="arithmatex">\(n=h_0 W_{out}+w_0 = 2\times 4 + 2 = 10\)</span></li>
+<li><span class="arithmatex">\(C_{out}=1, C_{in}=2\)</span></li>
+<li><span class="arithmatex">\(H_{out}=4, W_{out}=4\)</span></li>
+<li><span class="arithmatex">\(K_h=K_w=3, S_h=S_w=1, P_h=P_w=1, D_h=D_w=1\)</span></li>
+<li><span class="arithmatex">\(k \in [0, C_{in} \times K_h \times K_w - 1] = [0, 2 \times 3 \times 3 - 1] = [0, 17]\)</span></li>
+</ul>
+<p>以 k = 7，即<strong>数据 15</strong> 为例：</p>
+<ul>
+<li><span class="arithmatex">\(c_i = \left\lfloor k/(K_h K_w) \right\rfloor = \left\lfloor 7/9 \right\rfloor = 0\)</span></li>
+<li><span class="arithmatex">\(k_h = \left\lfloor (k \bmod (K_h K_w))/K_w \right\rfloor = \left\lfloor (7 \bmod 9)/3 \right\rfloor = \left\lfloor 7/3 \right\rfloor = 2\)</span></li>
+<li><span class="arithmatex">\(k_w = [k \bmod (K_h K_w)] \bmod K_w = [7 \bmod 9] \bmod 3 = 7 \bmod 3 = 1\)</span></li>
+<li><span class="arithmatex">\(h_i = h_o S_h - P_h + k_h D_h = 2 \times 1 - 1 + 2 \times 1 = 3\)</span></li>
+<li><span class="arithmatex">\(w_i = w_o S_w - P_w + k_w D_w = 2 \times 1 - 1 + 1 \times 1 = 2\)</span></li>
+</ul>
+<p>因此对应输入像素索引：<span class="arithmatex">\((c_i, h_i, w_i) = (0, 3, 2)\)</span>，也就是 <span class="arithmatex">\(X_0[3, 2]=15\)</span>。</p>
+<h4 id="426-stride-padding-and-dilation">4.2.6 Stride, Padding and Dilation<a class="headerlink" href="#426-stride-padding-and-dilation" title="Permanent link">&para;</a></h4>
+<p>在 im2col，Stride, Padding 和 Dilation 的处理手段相比 Toeplitz 而言非常简单，它们都不会直接影响卷积核权重矩阵<span class="arithmatex">\(W_{\text{mat}}\)</span>以及中间虚拟矩阵<span class="arithmatex">\(X_{\text{col}}\)</span>，而是通过<strong>修改输入像素索引计算公式</strong>来实现的。</p>
+<p><strong>（1）Stride 和 Dilation 应该如何处理？</strong></p>
+<p>通过作用于输入像素索引计算公式：</p>
+<div class="arithmatex">\[\begin{cases}
+h_i=h_oS_h-P_h+k_hD_h \\
+w_i=w_oS_w-P_w+k_wD_w
+\end{cases}\]</div>
+<p>来实现</p>
+<p><strong>（2）Padding 应该如何处理？</strong></p>
+<p>当计算出发现输入像素索引 <span class="arithmatex">\((h_i, w_i)\)</span> <strong>超出了输入特征图的边界时</strong>，说明这个输入像素是<strong>padding</strong>，此时我们直接返回 0 即可。</p>
+<h3 id="43">4.3 实际硬件实现的细节问题<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<p>上述地址解码器只是数学理论，真实硬件实现时还有很多问题需要考虑。</p>
+<h4 id="431-tiled-base-gemm">4.3.1 Tiled-Base GEMM<a class="headerlink" href="#431-tiled-base-gemm" title="Permanent link">&para;</a></h4>
+<p>前面为了辅助说明，我们说：“GEMM 要 <span class="arithmatex">\(X_{\rm col}[k,n]\)</span>，硬件现场算地址取一个数”，概念上完全正确。<br />
+但如果真实 GPU/NPU 真这么一个一个取：<strong>效率会非常低，并且容易触发 Cache miss</strong>，真实 GEMM 一般都是基于 Tiled-base 做的。</p>
+<p>关于划分与不划分 Tile 的矩阵乘法计算差异可见文档：<a href="gemm_tile/">Tiled-base GEMM</a></p>
+<hr />
+<h4 id="432-data-reuse">4.3.2 不保证一定最好 data reuse<a class="headerlink" href="#432-data-reuse" title="Permanent link">&para;</a></h4>
+<p>即便我们采用了 impicit im2col，消除了 Toeplitz 展开的大规模复制以及 explicit im2col 庞大的中间矩阵<span class="arithmatex">\(X_{\text{col}}\)</span>，并且即便我们做好了 tiled-base GEMM，我们仍然无法保证<strong>数据重用率一定是最优的</strong>。</p>
+<p>例如对于特征图最中心的部分元素，在逻辑上，它被卷积核覆盖的次数：<span class="arithmatex">\(K_h \times K_w\)</span> 决定了它在 GEMM 中被访问的次数。<strong>我们不能保证“该元素第一次被 load 进入 Cache 后，后续每次访问它时它都还在 Cache 中”</strong>。想进一步减少重复 load，需要协同优化：</p>
+<ul>
+<li>cache；</li>
+<li>SRAM；</li>
+<li>line buffer；</li>
+<li>tile buffer；</li>
+<li>register reuse；</li>
+<li>dataflow design。</li>
+</ul>
+<p>这就会进入后面 AI accelerator 设计的核心问题。</p>
+<hr />
+<p>所以真正高效的<strong>结构通常是两层优化</strong></p>
+<ul>
+<li>第一层：Implicit im2col 消除 <span class="arithmatex">\(X \rightarrow X_{\text{col}}\)</span>的物化。</li>
+<li>第二层：<strong>On-chip reuse</strong>。例如：<code>DRAM -&gt; SRAM -&gt; Tile Buffer -&gt; PE Array</code>，一个 activation 从 DRAM 读一次以后，尽可能在：SRAM/local buffer/PE network 中重复使用，这才真正<strong>把数据搬运成本压下来</strong>。</li>
+</ul>
+<h4 id="433-memory-access-pattern">4.3.3 Memory Access Pattern<a class="headerlink" href="#433-memory-access-pattern" title="Permanent link">&para;</a></h4>
+<p>GEMM 性能高的重要原因之一是：<strong>regular contiguous access</strong></p>
+<p>但 Conv 的 implicit gather 可能出现：</p>
+<ul>
+<li><code>X[i] -&gt; X[i+1] -&gt; X[i+W] -&gt; X[i+W+1]</code></li>
+<li><code>X[i] -&gt; X[i+2] -&gt; X[i+2W] -&gt; ...</code>(dilation)</li>
+</ul>
+<p>这样非线性的访存顺序，所以物理地址不一定天然符合：</p>
+<ul>
+<li>cache line；</li>
+<li>DRAM burst；</li>
+<li>GPU coalescing；</li>
+<li>SRAM banking。</li>
+</ul>
+<p>因此高性能 implicit GEMM kernel 很大一部分复杂度，不在 MAC，而在于：<strong>如哈将原始 tensor 中具有卷积结构的数据，高效整理成矩阵单元喜欢的 tile</strong>。</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>例如 <span class="arithmatex">\([N,C,H,W]\)</span> 和 <span class="arithmatex">\([N,H,W,C]\)</span><br />
+对于某些 GEMM 映射，NHWC 可以让 <span class="arithmatex">\(C\)</span> 方向连续。而我们的 <span class="arithmatex">\(K\)</span> 维包含：<span class="arithmatex">\(C_{in}K_h K_w\)</span>。所以不同 layout 会直接影响：</p>
+<div class="language-text highlight"><pre><span></span><code>- vector load；
+- bank conflict；
+- coalescing；
+- Tensor Core fragment formation。
+</code></pre></div>
+<p>因此会存在某些 NPU/GPU kernel 特别偏好 <span class="arithmatex">\(NHWC\)</span> 或者专门的 blocked layout 例如 <span class="arithmatex">\(NCHWc\)</span>，原因往往就在这里。</p>
+</div>
+<h4 id="434-pwc-and-dwc-in-implicit-gemm">4.3.4 PWC and DWC in Implicit GEMM<a class="headerlink" href="#434-pwc-and-dwc-in-implicit-gemm" title="Permanent link">&para;</a></h4>
+<p><strong>Pointwise Convolution (PWC) 非常适合 GEMM</strong>。</p>
+<p>因为：<span class="arithmatex">\(K_{h}=K_{w}=1\rightarrow K=C_{in}\)</span>。输入 <span class="arithmatex">\(X_{\rm col}\)</span> 实际上只是原 tensor 的一种<strong>内存重排序</strong>，因为不存在 overlapping sliding window。</p>
+<p>此时：</p>
+<ul>
+<li><span class="arithmatex">\(W_{\rm mat}: C_{out}\times C_{in}\)</span></li>
+<li><span class="arithmatex">\(X_{\rm mat}: C_{in}\times H_{out}W_{out}\)</span></li>
+</ul>
+<p>可以直接做 <span class="arithmatex">\(Y=W_{\rm mat}X_{\rm mat}\)</span><br />
+甚至连 implicit address transformation 都非常简单：</p>
+<div class="arithmatex">\[\begin{cases}
+h_i=h_oS_h+k_h \\
+w_i=w_oS_w+k_w
+\end{cases}\]</div>
+<p><strong>所以 <span class="arithmatex">\(1\times 1\)</span> Conv 几乎就是天然 GEMM</strong>，这也是 <span class="arithmatex">\(1\times1\)</span> convolution 在矩阵加速器上特别舒服的原因。</p>
+<p>而 <strong>Depthwise Conv 则是另一个极端</strong>：每一个输出通道只对应一个输入通道、只对应一个卷积核通道，这意味着：</p>
+<ul>
+<li>每个输出通道的计算，都是一个 <span class="arithmatex">\(1\times K_h K_w\)</span> <strong>向量</strong> 和 <span class="arithmatex">\(K_h K_w \times H_{out} W_{out}\)</span> 的<strong>矩阵</strong>做乘法——<strong>GEMV</strong></li>
+</ul>
+<p>换句话说：<strong>没有一个能够充分复用的中间矩阵 <span class="arithmatex">\(X_{rm col}\)</span>，因为现在每一个输入通道被单独拆解成了独立的中间矩阵 <span class="arithmatex">\(X_{\rm col}^{(c)}\)</span>，并且与独立的卷积核向量进行乘法，没有很好的 reuse 空间</strong>。</p>
+<p>但是，无法 reuse 不代表没有很好的并行度，<strong>Depthwise Conv 仍然可以通过通道维度的并行来充分利用硬件资源</strong>。</p>
+<h3 id="44">4.4 总结<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
+<p>我们审视整条演化链：</p>
+<ol>
+<li><strong>第一阶段：<span class="arithmatex">\(y=T(W)x\)</span></strong>，Toeplitz 把 sliding kernel 全部展开。问题：<strong>巨大 + 稀疏 + weight duplication</strong>。</li>
+<li><strong>第二阶段：<span class="arithmatex">\(Y=W_{\rm mat}X_{\rm col}\)</span></strong>，Explicit im2col 把问题变成 dense GEMM。问题：<strong>activation duplication + workspace + memory traffic</strong>。</li>
+<li><strong>第三阶段：<span class="arithmatex">\(Y=W_{\rm mat}\,\widetilde X_{\rm col}\)</span></strong>，其中$ \widetilde X_{\rm col}$ 只是一个虚拟矩阵，其元素定义为：<span class="arithmatex">\(\widetilde X_{\rm col}[k,n]=X[c_i,\,h_oS_h-P_h+k_hD_h,\,w_oS_w-P_w+k_wD_w]\)</span><br />
+而：<span class="arithmatex">\((c_i,k_h,k_w)=\text{decode}(k)\)</span>, <span class="arithmatex">\((h_o,w_o)=\text{decode}(n)\)</span>，于是<strong>既保留了 GEMM 的计算结构，又避免真正生成 im2col</strong>。</li>
+</ol>
+<p>到 explicit im2col 为止，我们主要是在讨论：<strong>算法等价变换</strong>；到了 implicit GEMM，问题开始变成：<strong>数据怎么进入计算阵列？</strong>于是接下来真正的芯片问题就会出现：</p>
+<ul>
+<li>哪个数据留在 PE 里？</li>
+<li>哪个数据在 PE 间流动？</li>
+<li>partial sum 放在哪里？</li>
+<li>SRAM 怎么分 tile？</li>
+<li>如何让一个 activation 被多个 MAC 重用？</li>
+<li>如何让一个 weight 被多个 output position 重用？</li>
+</ul>
+<p>这些问题最终就进入：<strong>dataflow 设计</strong>。</p>
 
 
 
