@@ -38,3 +38,12 @@ hide:
 </a>
 </div>
 
+<div class="section-subtitle">Lithography control system</div>
+
+<div class="card-grid">
+<a class="note-card blue" href="lithography-control/overview/Hans_Butler_2011/">
+  <span class="card-icon" aria-hidden="true">🔍️</span>
+  <div class="card-title">Hans Butler 2011</div>
+  <p class="card-desc">Physical Systems and Classical Control Frameworks</p>
+</a>
+</div>
