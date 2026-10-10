@@ -7336,7 +7336,7 @@ Stage coordinate 中的：<span class="arithmatex">\(F_{xs},F_{ys},F_{zs},T_{xs}
 <div class="arithmatex">\[\mathbf r_l=R\,\mathbf r_s.\]</div>
 <p>不需要再额外加 translation。</p>
 <hr />
-<p>Horizontal Gain Scheduling 只研究：<span class="arithmatex">\(x, y, \theta\)</span>，其中 <span class="arithmatex">\(\theat\)</span> 是绕 <span class="arithmatex">\(z\)</span> 轴的 yaw。</p>
+<p>Horizontal Gain Scheduling 只研究：<span class="arithmatex">\(x, y, \theta\)</span>，其中 <span class="arithmatex">\(\theta\)</span> 是绕 <span class="arithmatex">\(z\)</span> 轴的 yaw。</p>
 <p>先考虑理想情况，如果 stage 没有 yaw，即：</p>
 <div class="arithmatex">\[x_{s} // x_{l}, \quad y_{s} // y_{l}.\]</div>
 <p>那么如果 controller 要一个：<span class="arithmatex">\(F_{xl}=100N\)</span>，基本直接令：<span class="arithmatex">\(F_{xs}=100N\)</span>即可。但如果 stage 有一个小 yaw，<span class="arithmatex">\(x_{s} \nparallel x_{l}\)</span>，于是<strong>首先存在一个最简单的坐标轴旋转耦合</strong>。</p>
@@ -7672,7 +7672,7 @@ z_l\\
 <p>假设第 <span class="arithmatex">\(k\)</span> 个实时控制周期：</p>
 <ul>
 <li>Step 1. 上游给 reference: <span class="arithmatex">\(\mathbf r[k], \dot{\mathbf r}[k], \text{possibly }\ddot{\mathbf r}[k]\)</span></li>
-<li>Step 2. sensor 测 stage，得到：\mathbf q_l[k]$</li>
+<li>Step 2. sensor 测 stage，得到：<span class="arithmatex">\(\mathbf q_l[k]\)</span></li>
 <li>Step 3. 计算 tracking error: <span class="arithmatex">\(\mathbf e[k]=\mathbf r[k]-\mathbf q_l[k]\)</span></li>
 <li>Step 4. 六个 SISO controllers 并行计算 <span class="arithmatex">\(\mathbf f_l[k]\)</span>，即：<span class="arithmatex">\(F_{xl},F_{yl},F_{zl},T_{xl},T_{yl},T_{zl}\)</span></li>
 <li>Step 5. Gain Scheduling: 利用 <span class="arithmatex">\(\mathbf f_l[k]\)</span> + <span class="arithmatex">\(\mathbf r[k],\dot{\mathbf r}[k]\)</span> + <span class="arithmatex">\(m,J,h,\ldots\)</span> 求：<span class="arithmatex">\(\mathbf f_s[k]\)</span></li>
@@ -7706,19 +7706,17 @@ z_l\\
 <p><strong>不是所有耦合都应该靠一个越来越复杂的实时“精确逆模型”去消掉</strong>。</p>
 <p>Butler 展示的实际思想更接近：</p>
 <p><strong>简单、确定性的 rigid-body decoupling+robust SISO feedback+feedforward+mechanical design</strong></p>
-<p>这对以后设计“算法库”很重要。因为它告诉你，<strong>实时链路里很可能不是一个巨大 MIMO optimizer，而是若干层结构明确的 primitive</strong>：</p>
-<p>[<br />
-\boxed{<br />
-\text{gain scheduling}<br />
-\rightarrow<br />
-\text{SISO filters/controllers}<br />
-\rightarrow<br />
-\text{feedforward}<br />
-\rightarrow<br />
-\text{force allocation}<br />
-}<br />
-]<br />
-而真正复杂的 flexible plant 被部分<strong>留给 robust feedback 去处理</strong>。</p>
+<p>这对以后设计“算法库”很重要。因为它告诉我们，<strong>实时链路里很可能不是一个巨大 MIMO optimizer，而是若干层结构明确的 primitive</strong>：</p>
+<div class="arithmatex">\[\boxed{
+\text{gain scheduling}
+\rightarrow
+\text{SISO filters/controllers}
+\rightarrow
+\text{feedforward}
+\rightarrow
+\text{force allocation}
+}\]</div>
+<p>而真正复杂的 flexible plant 被部分<strong>留给 robust feedback 去处理</strong>。</p>
 <h3 id="phase-4-other-critical-control-aspects">Phase 4: Other Critical Control Aspects<a class="headerlink" href="#phase-4-other-critical-control-aspects" title="Permanent link">&para;</a></h3>
 <h4 id="1-disturbance-rejection">1. Disturbance Rejection：除了跟踪轨迹，还要不断抵抗扰动<a class="headerlink" href="#1-disturbance-rejection" title="Permanent link">&para;</a></h4>
 <p>前面我们主要讨论的是：</p>
