@@ -775,7 +775,7 @@ $$\mathbf r_l=R\,\mathbf r_s.$$
 
 ---
 
-Horizontal Gain Scheduling 只研究：$x, y, \theta$，其中 $\theat$ 是绕 $z$ 轴的 yaw。
+Horizontal Gain Scheduling 只研究：$x, y, \theta$，其中 $\theta$ 是绕 $z$ 轴的 yaw。
 
 先考虑理想情况，如果 stage 没有 yaw，即：
 
@@ -1253,7 +1253,7 @@ z_l\\
 假设第 \(k\) 个实时控制周期：
 
 - Step 1. 上游给 reference: $\mathbf r[k], \dot{\mathbf r}[k], \text{possibly }\ddot{\mathbf r}[k]$
-- Step 2. sensor 测 stage，得到：\mathbf q_l[k]$
+- Step 2. sensor 测 stage，得到：$\mathbf q_l[k]$
 - Step 3. 计算 tracking error: $\mathbf e[k]=\mathbf r[k]-\mathbf q_l[k]$
 - Step 4. 六个 SISO controllers 并行计算 $\mathbf f_l[k]$，即：$F_{xl},F_{yl},F_{zl},T_{xl},T_{yl},T_{zl}$
 - Step 5. Gain Scheduling: 利用 $\mathbf f_l[k]$ + $\mathbf r[k],\dot{\mathbf r}[k]$ + $m,J,h,\ldots$ 求：$\mathbf f_s[k]$
@@ -1304,10 +1304,10 @@ Butler 展示的实际思想更接近：
 
 **简单、确定性的 rigid-body decoupling+robust SISO feedback+feedforward+mechanical design**
 
-这对以后设计“算法库”很重要。因为它告诉你，**实时链路里很可能不是一个巨大 MIMO optimizer，而是若干层结构明确的 primitive**：
+这对以后设计“算法库”很重要。因为它告诉我们，**实时链路里很可能不是一个巨大 MIMO optimizer，而是若干层结构明确的 primitive**：
 
-\[
-\boxed{
+
+$$\boxed{
 \text{gain scheduling}
 \rightarrow
 \text{SISO filters/controllers}
@@ -1315,8 +1315,8 @@ Butler 展示的实际思想更接近：
 \text{feedforward}
 \rightarrow
 \text{force allocation}
-}
-\]
+}$$
+
 而真正复杂的 flexible plant 被部分**留给 robust feedback 去处理**。
 
 ### Phase 4: Other Critical Control Aspects
