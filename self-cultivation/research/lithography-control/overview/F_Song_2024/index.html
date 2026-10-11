@@ -6992,7 +6992,7 @@ M_{n-1}, &amp; 前半程（即前 2^{n-1}-1 段 \\
 <p>一些研究尝试用三角函数替代矩形脉冲来设计最高阶导数，以<strong>保证其连续性</strong>。通过对该三角函数进行积分，即可得到所谓的三角函数 S 曲线运动规律。文献 [26] 中的实验结果表明，如图8所示、仅由<strong>七个段组成的三角函数轨迹，其跟踪性能可与具有31个段的五阶多项式轨迹相媲美</strong>。</p>
 <p><img alt="alt text" src="assets/image-5.webp" /></p>
 <p>然而，这种便利性也带来了效率降低的弊端：由于<strong>最大 jerk 值无法持续保持</strong>，导致<strong>执行时间延长</strong>，并且驱动系统的动态能力未能得到充分利用。由此可见，三角函数轨迹的效率较低。</p>
-<div class="admonition note 工程环节">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>先建立如下工程链路脑图：<br />
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>flowchart TD
@@ -7022,7 +7022,7 @@ j_r[k] &amp; =j_r(kT_s) \\
 <p>最后：<span class="arithmatex">\(u[k]=u_{\rm fb}[k]+u_{\rm ff}[k]\)</span></p>
 <p>再经过 <strong>force decoupling / actuator allocation</strong>，变成各 actuator 的 force/current command。而 metrology system 测得实际位置 <span class="arithmatex">\(p_{\rm measured}\)</span>，闭环回来继续纠错。</p>
 </div>
-<div class="admonition example 关于算法实现">
+<div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>实际机器不会真的计算“积分”。</p>
 <p><strong>阶段 1：Trajectory planning</strong> 先决定：</p>
@@ -7070,26 +7070,87 @@ T_s
 <div class="arithmatex">\[\text{很多 axes/channels} \times \text{高 sample rate} \times \text{deterministic latency}\]</div>
 <p>而不是单个 S-curve generator 的算力。</p>
 </div>
-<p>!!! Attention 算法构建分析: Setpoing Generation<br />
-    | 属性 | S-curve Setpoint Generation |<br />
-    |---|---|<br />
-    | Function | smooth trajectory generation |<br />
-    | Input | displacement / endpoint + kinematic bounds |<br />
-    | Constraints | <span class="arithmatex">\(v_{\max},a_{\max},j_{\max},\dots\)</span> |<br />
-    | Offline/planning | 求 segment duration / switching time |<br />
-    | Online input | segment index + time/sample |<br />
-    | Online output | <span class="arithmatex">\(p,v,a,j,\dots\)</span> |<br />
-    | Mathematical form | piecewise polynomial |<br />
-    | <strong>Kernel</strong> | <strong>polynomial evaluation</strong> / <strong>recurrence</strong> |<br />
-    | <strong>Arithmetic</strong> | <strong>MAC</strong> |<br />
-    | Factorial | <strong>constant，不是 runtime operation</strong> |<br />
-    | Division | 通常可预计算 |<br />
-    | State | 当前 <span class="arithmatex">\(p,v,a,\dots\)</span> / segment state |<br />
-    | Dependency | sample-to-sample recurrence（若采用递推实现） |<br />
-    | Parallelism | 多 axis / 多 derivative 可并行 |<br />
-    | Memory | 很小，主要为 coefficients/state |<br />
-    | Real-time character | deterministic, streaming |<br />
-    | FPGA/DSA suitability | 高，但单通道计算量非常小 |</p>
+<div class="admonition attention">
+<p class="admonition-title">算法构建分析: Setpoing Generation</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>S-curve Setpoint Generation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Function</td>
+<td>smooth trajectory generation</td>
+</tr>
+<tr>
+<td>Input</td>
+<td>displacement / endpoint + kinematic bounds</td>
+</tr>
+<tr>
+<td>Constraints</td>
+<td><span class="arithmatex">\(v_{\max},a_{\max},j_{\max},\dots\)</span></td>
+</tr>
+<tr>
+<td>Offline/planning</td>
+<td>求 segment duration / switching time</td>
+</tr>
+<tr>
+<td>Online input</td>
+<td>segment index + time/sample</td>
+</tr>
+<tr>
+<td>Online output</td>
+<td><span class="arithmatex">\(p,v,a,j,\dots\)</span></td>
+</tr>
+<tr>
+<td>Mathematical form</td>
+<td>piecewise polynomial</td>
+</tr>
+<tr>
+<td><strong>Kernel</strong></td>
+<td><strong>polynomial evaluation</strong> / <strong>recurrence</strong></td>
+</tr>
+<tr>
+<td><strong>Arithmetic</strong></td>
+<td><strong>MAC</strong></td>
+</tr>
+<tr>
+<td>Factorial</td>
+<td><strong>constant，不是 runtime operation</strong></td>
+</tr>
+<tr>
+<td>Division</td>
+<td>通常可预计算</td>
+</tr>
+<tr>
+<td>State</td>
+<td>当前 <span class="arithmatex">\(p,v,a,\dots\)</span> / segment state</td>
+</tr>
+<tr>
+<td>Dependency</td>
+<td>sample-to-sample recurrence（若采用递推实现）</td>
+</tr>
+<tr>
+<td>Parallelism</td>
+<td>多 axis / 多 derivative 可并行</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>很小，主要为 coefficients/state</td>
+</tr>
+<tr>
+<td>Real-time character</td>
+<td>deterministic, streaming</td>
+</tr>
+<tr>
+<td>FPGA/DSA suitability</td>
+<td>高，但单通道计算量非常小</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h3 id="42-input-shaping">4.2 Input Shaping<a class="headerlink" href="#42-input-shaping" title="Permanent link">&para;</a></h3>
 <p>Input shaping, also referred to as <strong>command shaping</strong> [39], <strong>reference shaping</strong> [40], or <strong>time-delay filtering</strong>.</p>
 <p>想象你有一根有弹性的尺子。现在要求尺子从位置 A 很快移动到位置 B。</p>
@@ -7192,12 +7253,12 @@ $<span class="arithmatex">\(G(s)=\frac{\omega_o^2}{s^2+2\xi\omega_o s+\omega_o^2
 C\left(w_{o}, \xi\right)=\sum_{i=1}^{n}\left[A_{i} e^{\xi w_{o} \tau_{i}} \cos \left(w_{o} \sqrt{1-\xi^{2}} \tau_{i}\right)\right] \\
 S\left(w_{o}, \xi\right)=\sum_{i=1}^{n}\left[A_{i} e^{\xi w_{o} \tau_{i}} \sin \left(w_{o} \sqrt{1-\xi^{2}} \tau_{i}\right)\right] .
 \end{array}\right.\]</div>
-<p>这一步实际上是作者<strong>把每个 impulse 引起的衰减正弦振动相加</strong>，然后把最终 residual vibration <strong>拆成两个“正交分量”</strong>：<br />
-[<br />
-C(\omega_0,\xi),<br />
-\qquad<br />
-S(\omega_0,\xi).<br />
-]</p>
+<p>这一步实际上是作者<strong>把每个 impulse 引起的衰减正弦振动相加</strong>，然后把最终 residual vibration <strong>拆成两个“正交分量”</strong>：</p>
+<div class="arithmatex">\[
+C(\omega_0,\xi),
+\qquad
+S(\omega_0,\xi).
+\]</div>
 <p>可以把它们粗略理解成：<strong>residual vibration 的 cosine component 和 sine component</strong>。不需要记公式。</p>
 <p>论文用它们只是为了下一步得到一个标量 vibration amplitude：</p>
 <div class="arithmatex">\[V(\omega_0,\xi)=e^{-\xi \omega_0 \tau_n}\sqrt{C(\omega_0,\xi)^2+S(\omega_0,\xi)^2}\]</div>
@@ -7232,30 +7293,30 @@ V\left(w_{o}, \xi\right)=0 \\
 <li>ZVDD (Zero Vibration Double Derivative): <span class="arithmatex">\(n=4\)</span>，进一步要求：<span class="arithmatex">\(\partial^2 V(\omega_o, \xi)/\partial \omega_o^2 = 0\)</span>。</li>
 </ul>
 <p>于是，它们的解为：</p>
-<p>$$\begin{bmatrix}<br />
-\vec{A} \<br />
-\vec{\tau}<br />
-\end{bmatrix}<br />
-=<br />
-\begin{cases}<br />
-\begin{bmatrix}<br />
-\dfrac{1}{1+K} &amp; \dfrac{K}{1+K} \<br />
-0 &amp; \dfrac{1}{2}T_d<br />
-\end{bmatrix},<br />
-&amp; \mathrm{ZV}<br />
-\[14pt]</p>
-<p>\begin{bmatrix}<br />
-\dfrac{1}{(1+K)^2} &amp; \dfrac{2K}{(1+K)^2} &amp; \dfrac{K^2}{(1+K)^2} \<br />
-0 &amp; \dfrac{1}{2}T_d &amp; T_d<br />
-\end{bmatrix},<br />
-&amp; \mathrm{ZVD}<br />
-\[14pt]</p>
-<p>\begin{bmatrix}<br />
-\dfrac{1}{(1+K)^3} &amp; \dfrac{3K}{(1+K)^3} &amp; \dfrac{3K^2}{(1+K)^3} &amp; \dfrac{K^3}{(1+K)^3} \<br />
-0 &amp; \dfrac{1}{2}T_d &amp; T_d &amp; \dfrac{3}{2}T_d<br />
-\end{bmatrix},<br />
-&amp; \mathrm{ZVDD}<br />
-\end{cases}$$</p>
+<div class="arithmatex">\[\begin{bmatrix}
+\vec{A} \\
+\vec{\tau}
+\end{bmatrix}
+=
+\begin{cases}
+\begin{bmatrix}
+\dfrac{1}{1+K} &amp; \dfrac{K}{1+K} \\
+0 &amp; \dfrac{1}{2}T_d
+\end{bmatrix},
+&amp; \mathrm{ZV}
+\\[14pt]
+\begin{bmatrix}
+\dfrac{1}{(1+K)^2} &amp; \dfrac{2K}{(1+K)^2} &amp; \dfrac{K^2}{(1+K)^2} \\
+0 &amp; \dfrac{1}{2}T_d &amp; T_d
+\end{bmatrix},
+&amp; \mathrm{ZVD}
+\\[14pt]
+\begin{bmatrix}
+\dfrac{1}{(1+K)^3} &amp; \dfrac{3K}{(1+K)^3} &amp; \dfrac{3K^2}{(1+K)^3} &amp; \dfrac{K^3}{(1+K)^3} \\
+0 &amp; \dfrac{1}{2}T_d &amp; T_d &amp; \dfrac{3}{2}T_d
+\end{bmatrix},
+&amp; \mathrm{ZVDD}
+\end{cases}\]</div>
 <p>其中：</p>
 <ul>
 <li><span class="arithmatex">\(\vec{A}=[A_1, A_2, \dots, A_n]\)</span>, <span class="arithmatex">\(\vec{\tau}=[\tau_1, \tau_2, \dots, \tau_n]\)</span> 就是我们要求的 shaper 的<strong>幅值向量和延迟时间向量</strong>。</li>
@@ -7277,8 +7338,10 @@ V\left(w_{o}, \xi\right)=0 \\
 <div class="arithmatex">\[\text{2 taps}\rightarrow3\text{ taps}\rightarrow4\text{ taps}\]</div>
 <p>不只是 MAC 数增加，更重要的是：<strong>shaper duration increases</strong></p>
 <p>而对光刻机来说，<strong>duration 直接意味着 throughput</strong></p>
-<p>!!! Attention 算法构建分析: Input Shaping<br />
-    除了ZVD和ZVDD之外，robust input shaping 还有其它解决方案，例如 Extra Insensitivity(EI), Specified Insensitivity(SI), multiimpulse robust(MIR)等，<strong>这里是一个可探索的算法优化点</strong>。</p>
+<div class="admonition attention">
+<p class="admonition-title">算法构建分析: Input Shaping</p>
+<p>除了ZVD和ZVDD之外，robust input shaping 还有其它解决方案，例如 Extra Insensitivity(EI), Specified Insensitivity(SI), multiimpulse robust(MIR)等，<strong>这里是一个可探索的算法优化点</strong>。</p>
+</div>
 <hr />
 <h4 id="p5-input-shaper-control-loop">P5 Input Shaper 与 Control Loop 的连接关系<a class="headerlink" href="#p5-input-shaper-control-loop" title="Permanent link">&para;</a></h4>
 <p><img alt="alt text" src="assets/image-8.webp" /></p>
@@ -7289,31 +7352,93 @@ V\left(w_{o}, \xi\right)=0 \\
 <li>Fig. 14(c) 的 architecture II 正好相反。</li>
 </ul>
 <hr />
-<p>!!! Attention 算法构建分析：Input Shaping<br />
-    | 项目 | Input Shaping |<br />
-    |---|---|<br />
-    | 解决问题 | reference 激励 flexible mode 导致 residual vibration |<br />
-    | 输入 | 原始 trajectory <span class="arithmatex">\(r[k]\)</span> |<br />
-    | 输出 | shaped trajectory <span class="arithmatex">\(r_{\rm is}[k]\)</span> |<br />
-    | Plant knowledge | resonance frequency <span class="arithmatex">\(\omega_0\)</span>、damping <span class="arithmatex">\(\xi\)</span> |<br />
-    | 核心参数 | <span class="arithmatex">\(A_i,\tau_i\)</span> |<br />
-    | 在线算法 | <span class="arithmatex">\(r_{\rm is}[k]=\sum A_i r[k-d_i]\)</span> |<br />
-    | <strong>Kernel</strong> | <strong>sparse FIR / delay-and-sum</strong> |<br />
-    | ZV | 2 taps |<br />
-    | ZVD | 3 taps |<br />
-    | ZVDD | 4 taps |<br />
-    | 在线复杂度 | <span class="arithmatex">\(N\)</span> MUL + <span class="arithmatex">\(N-1\)</span> ADD / sample |<br />
-    | 主要 state | delay buffer |<br />
-    | 参数设计 | exp / sqrt / nonlinear equations，可与实时执行分离 |<br />
-    | 并行性 | taps、axes 天然并行 |<br />
-    | 关键约束 | deterministic streaming |<br />
-    | <strong>主要 tradeoff</strong> | <strong>robustness vs shaper duration / throughput</strong> |<br />
-    | FPGA/DSA 特征 | 非常友好，但计算量小 |<br />
-    | 是否可能是主要算力热点 | 大概率不是 |</p>
-<div class="language-text highlight"><pre><span></span><code>有一个很重要的认识：Input Shaping 看起来公式比 Trajector Planning 复杂得多，但**从 hard-real-time hardware workload 来说，反而可能更简单**。
-
-Input Shaping 环节的理论公式大部分是在设计 Input Shaper 参数；真正每一个 servo sample 必须执行的核心，本质上只是：**读取历史 setpoint + 常数乘法 + 累加**
-</code></pre></div>
+<div class="admonition attention">
+<p class="admonition-title">算法构建分析：Input Shaping</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>Input Shaping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>解决问题</td>
+<td>reference 激励 flexible mode 导致 residual vibration</td>
+</tr>
+<tr>
+<td>输入</td>
+<td>原始 trajectory <span class="arithmatex">\(r[k]\)</span></td>
+</tr>
+<tr>
+<td>输出</td>
+<td>shaped trajectory <span class="arithmatex">\(r_{\rm is}[k]\)</span></td>
+</tr>
+<tr>
+<td>Plant knowledge</td>
+<td>resonance frequency <span class="arithmatex">\(\omega_0\)</span>、damping <span class="arithmatex">\(\xi\)</span></td>
+</tr>
+<tr>
+<td>核心参数</td>
+<td><span class="arithmatex">\(A_i,\tau_i\)</span></td>
+</tr>
+<tr>
+<td>在线算法</td>
+<td><span class="arithmatex">\(r_{\rm is}[k]=\sum A_i r[k-d_i]\)</span></td>
+</tr>
+<tr>
+<td><strong>Kernel</strong></td>
+<td><strong>sparse FIR / delay-and-sum</strong></td>
+</tr>
+<tr>
+<td>ZV</td>
+<td>2 taps</td>
+</tr>
+<tr>
+<td>ZVD</td>
+<td>3 taps</td>
+</tr>
+<tr>
+<td>ZVDD</td>
+<td>4 taps</td>
+</tr>
+<tr>
+<td>在线复杂度</td>
+<td><span class="arithmatex">\(N\)</span> MUL + <span class="arithmatex">\(N-1\)</span> ADD / sample</td>
+</tr>
+<tr>
+<td>主要 state</td>
+<td>delay buffer</td>
+</tr>
+<tr>
+<td>参数设计</td>
+<td>exp / sqrt / nonlinear equations，可与实时执行分离</td>
+</tr>
+<tr>
+<td>并行性</td>
+<td>taps、axes 天然并行</td>
+</tr>
+<tr>
+<td>关键约束</td>
+<td>deterministic streaming</td>
+</tr>
+<tr>
+<td><strong>主要 tradeoff</strong></td>
+<td><strong>robustness vs shaper duration / throughput</strong></td>
+</tr>
+<tr>
+<td>FPGA/DSA 特征</td>
+<td>非常友好，但计算量小</td>
+</tr>
+<tr>
+<td>是否可能是主要算力热点</td>
+<td>大概率不是</td>
+</tr>
+</tbody>
+</table>
+<p>有一个很重要的认识：Input Shaping 看起来公式比 Trajector Planning 复杂得多，但<strong>从 hard-real-time hardware workload 来说，反而可能更简单</strong>。</p>
+<p>Input Shaping 环节的理论公式大部分是在设计 Input Shaper 参数；真正每一个 servo sample 必须执行的核心，本质上只是：<strong>读取历史 setpoint + 常数乘法 + 累加</strong></p>
+</div>
 <h2 id="v-multi-dof-motion-control">V. Multi-DOF Motion Control<a class="headerlink" href="#v-multi-dof-motion-control" title="Permanent link">&para;</a></h2>
 <p>晶圆上每个<strong>裸片的扫描均沿<span class="arithmatex">\(y\)</span>方向进行</strong>，其运动轨迹由第四节中详述的一系列运动规划来实现。当一个裸片曝光完成后，晶圆台在x和y两个方向上同步加速，以将位置调整至下一个裸片。<strong>通过<span class="arithmatex">\(x-y\)</span>平面内的运动，可完成整片晶圆的曝光</strong>。而在<span class="arithmatex">\(z\)</span>轴以及 <span class="arithmatex">\(\theta_x, \theta_y, \theta_z\)</span> 方向上的运动，则<strong>用于保持晶圆表面始终处于物镜的焦平面内</strong>。</p>
 <p>掩模台和晶圆台的六自由度运动均由长行程模块（LSM）、短行程模块（SSM）乃至平衡质量（BM）协同实现，相关内容已在第二节A中讨论。本节特别指出，鉴于其典型性，<strong>多自由度运动控制的研究重点主要聚焦于六自由度 SSM</strong>。</p>
@@ -7357,7 +7482,7 @@ Input Shaping 环节的理论公式大部分是在设计 Input Shaper 参数；�
 <p>即：</p>
 <div class="arithmatex">\[\mathbf v_s=R_z(-\theta_z)\mathbf v_l\]</div>
 </blockquote>
-<div class="admonition example 案例">
+<div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>假设当前准备曝光 wafer 上某一 die。<br />
 在 L-CS 中，stage COG 需要位于：<span class="arithmatex">\(x_l=100\ {\rm mm},y_l=0\)</span><br />
@@ -7470,13 +7595,12 @@ z=h(x,y),
 \frac{\partial h}{\partial y}
 \]</div>
 <p>就和所需的 pitch/roll 有直接关系。这需要我们从 3-D map 中<strong>提取局部平面信息</strong>，然后<strong>计算出 <span class="arithmatex">\(z, \theta_x, \theta_y\)</span> 的 setpoints</strong>。这就涉及到了<strong>查表、插值、拟合等算法内核</strong>。</p>
-<p>!!! Attention 算法构建分析: Veritcal Setpoint Generation</p>
-<div class="language-text highlight"><pre><span></span><code>**Song 只告诉我们 vertical setpoints 来源于 3-D map，并没有给出具体 map interpolation / leveling setpoint-generation 算法。**
-
-所以这些 kernel 目前只能作为“值得进一步寻找位置/leveling算法论文”的候选，不能直接说 Song 已经给出了这些算法。
-
-**这里也是一个值得探索的算法优化点**。
-</code></pre></div>
+<div class="admonition attention">
+<p class="admonition-title">算法构建分析: Veritcal Setpoint Generation</p>
+<p><strong>Song 只告诉我们 vertical setpoints 来源于 3-D map，并没有给出具体 map interpolation / leveling setpoint-generation 算法。</strong></p>
+<p>所以这些 kernel 目前只能作为“值得进一步寻找位置/leveling算法论文”的候选，不能直接说 Song 已经给出了这些算法。</p>
+<p><strong>这里也是一个值得探索的算法优化点</strong>。</p>
+</div>
 <p>这两个问题最终可以压缩为一个结论：</p>
 <div class="arithmatex">\[\boxed{\text{“所有 6 DOF 都持续闭环”不等于“所有 6 DOF的 setpoint 都持续变化”。}}\]</div>
 <p>典型 exposure scan 中，</p>
@@ -7522,53 +7646,52 @@ F_{z s}=\theta_{y l} F_{x l}+F_{z l}+\frac{m}{J_{y}} x_{l} T_{y l}+2 m \dot{x}_{
 <p>转化为 SCOG-CS 中的力</p>
 <div class="arithmatex">\[\mathbf{f_s}=[F_{xs}, F_{ys}, T_{zs}, F_{zs}, T_{xs}, T_{ys}]^T\]</div>
 <p>的表达式（公式 （21））：</p>
-<p>$$\begin{bmatrix}<br />
-F_{xs} \<br />
-F_{ys} \<br />
-T_{zs} \<br />
-F_{zs} \<br />
-T_{xs} \<br />
-T_{ys}<br />
-\end{bmatrix}<br />
-=<br />
-\underbrace{<br />
-\begin{bmatrix}<br />
-1 &amp; \theta_{zl} &amp; \dfrac{m}{J_z} y_l &amp; -\theta_{yl} &amp; 0 &amp; -(z_l-H_{ls})\dfrac{m}{J_y} \[6pt]</p>
-<p>-\theta_{zl} &amp; 1 &amp; -\dfrac{m}{J_z}x_l &amp; \theta_{xl} &amp; (z_l-H_{ls})\dfrac{m}{J_x} &amp; 0 \[6pt]</p>
-<p>0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \[6pt]</p>
-<p>\theta_{yl} &amp; -\theta_{xl} &amp; 0 &amp; 1 &amp; -y_l\dfrac{m}{J_x} &amp; x_l\dfrac{m}{J_y} \[6pt]</p>
-<p>0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \[6pt]</p>
-<p>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1<br />
-\end{bmatrix}}<em _mathrm_GS="\mathrm{GS">{\text{Gain Scheduling: } C</em>}}</p>
-<p>\begin{bmatrix}<br />
-F_{xl} \<br />
-F_{yl} \<br />
-T_{zl} \<br />
-F_{zl} \<br />
-T_{xl} \<br />
-T_{yl}<br />
-\end{bmatrix}<br />
-+<br />
-2m<br />
-\underbrace{<br />
-\begin{bmatrix}<br />
--\dot{z}<em yl="yl">l\dot{\theta}</em><br />
-+\dot{y}<em zl="zl">l\dot{\theta}</em><br />
-\[6pt]</p>
-<p>\dot{z}<em xl="xl">l\dot{\theta}</em><br />
--\dot{x}<em zl="zl">l\dot{\theta}</em><br />
-\[6pt]</p>
-<p>0<br />
-\[6pt]</p>
-<p>-\dot{y}<em xl="xl">l\dot{\theta}</em><br />
-+\dot{x}<em yl="yl">l\dot{\theta}</em><br />
-\[6pt]</p>
-<p>0<br />
-\[6pt]</p>
-<p>0<br />
-\end{bmatrix}<br />
-}<em _mathrm_cor="\mathrm{cor">{\text{Coriolis Forces: } f</em>}}<br />
-$$</p>
+<div class="arithmatex">\[\begin{bmatrix}
+F_{xs} \\
+F_{ys} \\
+T_{zs} \\
+F_{zs} \\
+T_{xs} \\
+T_{ys}
+\end{bmatrix}
+=
+\underbrace{
+\begin{bmatrix}
+1 &amp; \theta_{zl} &amp; \dfrac{m}{J_z} y_l &amp; -\theta_{yl} &amp; 0 &amp; -(z_l-H_{ls})\dfrac{m}{J_y} \\[6pt]
+-\theta_{zl} &amp; 1 &amp; -\dfrac{m}{J_z}x_l &amp; \theta_{xl} &amp; (z_l-H_{ls})\dfrac{m}{J_x} &amp; 0 \\[6pt]
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\[6pt]
+\theta_{yl} &amp; -\theta_{xl} &amp; 0 &amp; 1 &amp; -y_l\dfrac{m}{J_x} &amp; x_l\dfrac{m}{J_y} \\[6pt]
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\[6pt]
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}}_{\text{Gain Scheduling: } C_{\mathrm{GS}}}
+\begin{bmatrix}
+F_{xl} \\
+F_{yl} \\
+T_{zl} \\
+F_{zl} \\
+T_{xl} \\
+T_{yl}
+\end{bmatrix}
++
+2m
+\underbrace{
+\begin{bmatrix}
+-\dot{z}_l\dot{\theta}_{yl}
++\dot{y}_l\dot{\theta}_{zl}
+\\[6pt]
+\dot{z}_l\dot{\theta}_{xl}
+-\dot{x}_l\dot{\theta}_{zl}
+\\[6pt]
+0
+\\[6pt]
+-\dot{y}_l\dot{\theta}_{xl}
++\dot{x}_l\dot{\theta}_{yl}
+\\[6pt]
+0
+\\[6pt]
+0
+\end{bmatrix}
+}_{\text{Coriolis Forces: } f_{\mathrm{cor}}}\]</div>
 <p>关于 GS 解耦公式有如下注意事项：</p>
 <ol>
 <li>在式(21)中引入测量值<strong>会形成一个反馈回路</strong>，这可能会危及系统的稳定性，因此，在 GS 矩阵 <span class="arithmatex">\(C_{\rm GS}\)</span> 以及 Coriolis Forces <span class="arithmatex">\(f_{\rm cor}\)</span> 项中，实际使用的是 reference 值：<span class="arithmatex">\([r_x, r_y, r_{\theta_z}, r_z, r_{\theta_x}, r_{\theta_y}]^T\)</span> 而非测量值：<span class="arithmatex">\([x_{l}, y_{l}, \theta_{z_l}, z_{l}, \theta_{x_l}, \theta_{y_l}]^T\)</span></li>
@@ -7634,13 +7757,15 @@ F_{xs} \\ F_{ys} \\ T_{zs} \\ F_{zs} \\ T_{xs} \\ T_{ys}
 </ul>
 <p><strong>最终导致各 DOF 间出现内部 crosstalk</strong>：</p>
 <p><img alt="alt text" src="assets/image-12.webp" /></p>
-<p>!!! Attention 算法构建分析：静态解耦优化<br />
-    近年来出现了各种：</p>
-<div class="language-text highlight"><pre><span></span><code>- model-based
-- data-based
-
-等**对 $C_{\rm GB}$ 解耦矩阵进行优化的手段**，诸如参考文献[62]-[68]，**因此这里是一个可探索的算法优化点**。
-</code></pre></div>
+<div class="admonition attention">
+<p class="admonition-title">算法构建分析：静态解耦优化</p>
+<p>近年来出现了各种：</p>
+<ul>
+<li>model-based</li>
+<li>data-based</li>
+</ul>
+<p>等<strong>对 <span class="arithmatex">\(C_{\rm GB}\)</span> 解耦矩阵进行优化的手段</strong>，诸如参考文献[62]-[68]，<strong>因此这里是一个可探索的算法优化点</strong>。</p>
+</div>
 <p>但是这些静态解耦方法往往<strong>无法完全消除各自由度之间的交叉耦合</strong>，因为它们只能调整解耦矩阵中的模型参数，而无法改变模型结构。因此，<strong>静态解耦本身被认为不够充分</strong>。此外，还存在着光刻机运动台 flexible mode 以及纳米级精度的问题；最终导致了：</p>
 <p>在具有纳米级精度的多输入多输出（MIMO）运动系统中，<strong>静态解耦主要应用于设计阶段</strong>，或作为提供<strong>标称解耦的一种手段</strong>，<strong>随后再辅以动态解耦</strong>，以进一步降低交叉耦合的影响。</p>
 <hr />
@@ -7736,8 +7861,8 @@ y\to x,\dots\]</div>
 <p>也就是说，控制 <span class="arithmatex">\(x\)</span> 时，会额外在 <span class="arithmatex">\(y\)</span> 产生：<span class="arithmatex">\(y_{\rm cross}(z)=G_{yx}(z)u_x(z)\)</span></p>
 <p>那我们可以额外生成一个补偿：<span class="arithmatex">\(u_{y,\rm comp}(z)=F_{yx}(z)u_x(z)\)</span>，目标是让最终：<span class="arithmatex">\(y_{\rm cross}+y_{\rm comp}\approx0\)</span></p>
 <p>所以直觉上 <span class="arithmatex">\(F_{yx}(z)\)</span> 是在近似一个 <strong>"cross-coupling dynamics 的 inverse / cancellation filter"</strong>。</p>
-<p>此外，<span class="arithmatex">\(F_{ij}(z)\)</span> 还必须是 filter 而非 scalar，例如由于 flexible modes 的存在，真实串扰可能是：<br />
-$<span class="arithmatex">\(y_{\rm cross}[k]=0.05x[k]-0.03x[k-1]+0.01x[k-2]\)</span>$</p>
+<p>此外，<span class="arithmatex">\(F_{ij}(z)\)</span> 还必须是 filter 而非 scalar，例如由于 flexible modes 的存在，真实串扰可能是：</p>
+<div class="arithmatex">\[y_{\rm cross}[k]=0.05x[k]-0.03x[k-1]+0.01x[k-2]\]</div>
 <p>那就必须用：</p>
 <div class="arithmatex">\[F(z)=-0.05+0.03z^{-1}-0.01z^{-2}\]</div>
 <hr />
@@ -7748,8 +7873,8 @@ $<span class="arithmatex">\(y_{\rm cross}[k]=0.05x[k]-0.03x[k-1]+0.01x[k-2]\)</s
 <li>latency/MAC 可预测</li>
 </ul>
 <p>更重要的是：<strong>FIR 可以放置 zeros，用来逼近低频 coupling / inverse dynamics 中的 antiresonance 特性</strong>。</p>
-<div class="admonition note resonance 和 antiresonance">
-<p class="admonition-title">Note</p>
+<div class="admonition note">
+<p class="admonition-title">Resonance 和 Antiresonance</p>
 <ul>
 <li>resonance：在某个频率附近，stage 的响应被放大，<strong>即 <span class="arithmatex">\(G(e^{j\omega})\)</span> 变得很大</strong>；</li>
 <li>antiresonance：在某个频率附近，stage 的响应被抑制，<strong>即 <span class="arithmatex">\(G(e^{j\omega})\)</span> 变得很小</strong>。</li>
@@ -7784,60 +7909,43 @@ $<span class="arithmatex">\(y_{\rm cross}[k]=0.05x[k]-0.03x[k-1]+0.01x[k-2]\)</s
 <p><strong>Filter coefficients 是怎么得到的？</strong></p>
 <p>论文明确提到：通过有限组 perturbed-parameter experiments，迭代最小化 crosstalk-induced error，得到 FIR coefficients</p>
 <hr />
-<p>!!! Attention 算法构建分析：Dynamic Decoupling<br />
-    我们对 Dynamic Decoupling 做 workload 分析：</p>
-<div class="language-text highlight"><pre><span></span><code>例如：
-
-$$F_{ij}(z)=\sum_{i=0}^{L-1}b_{ij,m}z^{-m}$$
-
-那么 DOF $j$ 对 DOF $i$ 的 decoupling 就是：
-
-$$c_{ij}[k]=\sum_{m=0}^{L-1}b_{ij,m}u_i[k-m]$$
-
-DOF $i$ 的 dynamic compensation 就是：
-
-$$u_j[k]=\sum_{j \neq i} c_{ij}[k]=\sum_{j \neq i}\sum_{m=0}^{L-1}b_{ij,m}u_i[k-m]$$
-
-一个 $C_D$ 矩阵最多 30 个 $F_{ij}(z)$，假设每个 FIR 滤波器长度都是 $L$，那么**每个 sample** 的计算亮就是：
-
-$$30L \text{MACs}$$
-
-即使 $L=64$，也才：$1920 \text{MACs}$，在 $20\text{KHz}$ 下，只有：
-
-$$1920\times 20\text{KHz}=38.4\text{M MACs/s}$$
-
-所以单 stage 的 dynamic decoupling 并不算一个“大算力” workload。
-
-**Memory workload 也很好估**
-
-每个长度 \(L\) FIR 需要：
-
-- \(L\) coefficients；
-- 历史 samples。
-
-但注意同一个 input channel \(u_j\) 被多个 \(F_{ij}\) 使用。所以不必真的给 30 个 filter 各存一套 input history。可以让：
-
-$$u_j[k],u_j[k-1],\dots,u_j[k-L+1]$$
-
-只保存一次，然后同时 feed 给：
-
-$$F_{1j},F_{2j},\dots,F_{6j}$$
-
-因此这是很好的：**input-delay-line reuse**机会。
-
-- 对于 6 inputs：历史 buffer 大致 $6L \times \text{FP32/INT8}$ 
-- 而 coefficient memory：$30L \times \text{FP32/INT8}$
-
-即使 FIR 滤波器再叠加上作为 LPF 的 IIR 滤波器，**dynamic decoupling 的 computing/memory workload 也不大**。
-
-
-此外，Dynamic Decoupling 这一问题并未彻底解决，FIR+LPF 不是唯一答案，优化时使用的 “crosstalk error” 里面可能混入：
-
-- coupling-induced error；
-- 非 coupling 引起的其他 error。
-
-于是算法虽然让 measured crosstalk error 下降了，但不保证最终的 $|G(e^{j\omega})|$ 一定下降，这里仍然是**一个值得探索的算法优化点**。
-</code></pre></div>
+<div class="admonition attention">
+<p class="admonition-title">算法构建分析：Dynamic Decoupling</p>
+<p>我们对 Dynamic Decoupling 做 workload 分析：</p>
+<p>例如：</p>
+<div class="arithmatex">\[F_{ij}(z)=\sum_{i=0}^{L-1}b_{ij,m}z^{-m}\]</div>
+<p>那么 DOF <span class="arithmatex">\(j\)</span> 对 DOF <span class="arithmatex">\(i\)</span> 的 decoupling 就是：</p>
+<div class="arithmatex">\[c_{ij}[k]=\sum_{m=0}^{L-1}b_{ij,m}u_i[k-m]\]</div>
+<p>DOF <span class="arithmatex">\(i\)</span> 的 dynamic compensation 就是：</p>
+<div class="arithmatex">\[u_j[k]=\sum_{j \neq i} c_{ij}[k]=\sum_{j \neq i}\sum_{m=0}^{L-1}b_{ij,m}u_i[k-m]\]</div>
+<p>一个 <span class="arithmatex">\(C_D\)</span> 矩阵最多 30 个 <span class="arithmatex">\(F_{ij}(z)\)</span>，假设每个 FIR 滤波器长度都是 <span class="arithmatex">\(L\)</span>，那么<strong>每个 sample</strong> 的计算亮就是：</p>
+<div class="arithmatex">\[30L \text{MACs}\]</div>
+<p>即使 <span class="arithmatex">\(L=64\)</span>，也才：<span class="arithmatex">\(1920 \text{MACs}\)</span>，在 <span class="arithmatex">\(20\text{KHz}\)</span> 下，只有：</p>
+<div class="arithmatex">\[1920\times 20\text{KHz}=38.4\text{M MACs/s}\]</div>
+<p>所以单 stage 的 dynamic decoupling 并不算一个“大算力” workload。</p>
+<p><strong>Memory workload 也很好估</strong></p>
+<p>每个长度 <span class="arithmatex">\(L\)</span> FIR 需要：</p>
+<ul>
+<li><span class="arithmatex">\(L\)</span> coefficients；</li>
+<li>历史 samples。</li>
+</ul>
+<p>但注意同一个 input channel <span class="arithmatex">\(u_j\)</span> 被多个 <span class="arithmatex">\(F_{ij}\)</span> 使用。所以不必真的给 30 个 filter 各存一套 input history。可以让：</p>
+<div class="arithmatex">\[u_j[k],u_j[k-1],\dots,u_j[k-L+1]\]</div>
+<p>只保存一次，然后同时 feed 给：</p>
+<div class="arithmatex">\[F_{1j},F_{2j},\dots,F_{6j}\]</div>
+<p>因此这是很好的：<strong>input-delay-line reuse</strong>机会。</p>
+<ul>
+<li>对于 6 inputs：历史 buffer 大致 <span class="arithmatex">\(6L \times \text{FP32/INT8}\)</span> </li>
+<li>而 coefficient memory：<span class="arithmatex">\(30L \times \text{FP32/INT8}\)</span></li>
+</ul>
+<p>即使 FIR 滤波器再叠加上作为 LPF 的 IIR 滤波器，<strong>dynamic decoupling 的 computing/memory workload 也不大</strong>。</p>
+<p>此外，Dynamic Decoupling 这一问题并未彻底解决，FIR+LPF 不是唯一答案，优化时使用的 “crosstalk error” 里面可能混入：</p>
+<ul>
+<li>coupling-induced error；</li>
+<li>非 coupling 引起的其他 error。</li>
+</ul>
+<p>于是算法虽然让 measured crosstalk error 下降了，但不保证最终的 <span class="arithmatex">\(|G(e^{j\omega})|\)</span> 一定下降，这里仍然是<strong>一个值得探索的算法优化点</strong>。</p>
+</div>
 <hr />
 
 
