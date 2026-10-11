@@ -389,7 +389,7 @@ $$\boxed{p^{(m)}(t)=\sum_{i=0}^{n-m}\frac{1}{i!}p^{(m+i)}(t_k)(t-t_k)^{i}}$$
 然而，这种便利性也带来了效率降低的弊端：由于**最大 jerk 值无法持续保持**，导致**执行时间延长**，并且驱动系统的动态能力未能得到充分利用。由此可见，三角函数轨迹的效率较低。
 
 
-!!! Note 工程环节
+!!! Note
     先建立如下工程链路脑图：
     ```mermaid
     flowchart TD
@@ -428,7 +428,7 @@ $$\boxed{p^{(m)}(t)=\sum_{i=0}^{n-m}\frac{1}{i!}p^{(m+i)}(t_k)(t-t_k)^{i}}$$
     
     再经过 **force decoupling / actuator allocation**，变成各 actuator 的 force/current command。而 metrology system 测得实际位置 $p_{\rm measured}$，闭环回来继续纠错。
 
-!!! Example 关于算法实现
+!!! Example
     实际机器不会真的计算“积分”。
     
     **阶段 1：Trajectory planning** 先决定：
@@ -487,7 +487,8 @@ $$\boxed{p^{(m)}(t)=\sum_{i=0}^{n-m}\frac{1}{i!}p^{(m+i)}(t_k)(t-t_k)^{i}}$$
 
     而不是单个 S-curve generator 的算力。
 
-!!! Attention 算法构建分析: Setpoing Generation
+!!! Attention "算法构建分析: Setpoing Generation"
+
     | 属性 | S-curve Setpoint Generation |
     |---|---|
     | Function | smooth trajectory generation |
@@ -657,6 +658,7 @@ S\left(w_{o}, \xi\right)=\sum_{i=1}^{n}\left[A_{i} e^{\xi w_{o} \tau_{i}} \sin \
 \end{array}\right.$$
 
 这一步实际上是作者**把每个 impulse 引起的衰减正弦振动相加**，然后把最终 residual vibration **拆成两个“正交分量”**：
+
 \[
 C(\omega_0,\xi),
 \qquad
@@ -718,14 +720,12 @@ $$\begin{bmatrix}
 \end{bmatrix},
 & \mathrm{ZV}
 \\[14pt]
-
 \begin{bmatrix}
 \dfrac{1}{(1+K)^2} & \dfrac{2K}{(1+K)^2} & \dfrac{K^2}{(1+K)^2} \\
 0 & \dfrac{1}{2}T_d & T_d
 \end{bmatrix},
 & \mathrm{ZVD}
 \\[14pt]
-
 \begin{bmatrix}
 \dfrac{1}{(1+K)^3} & \dfrac{3K}{(1+K)^3} & \dfrac{3K^2}{(1+K)^3} & \dfrac{K^3}{(1+K)^3} \\
 0 & \dfrac{1}{2}T_d & T_d & \dfrac{3}{2}T_d
@@ -762,7 +762,7 @@ $$\text{2 taps}\rightarrow3\text{ taps}\rightarrow4\text{ taps}$$
 
 而对光刻机来说，**duration 直接意味着 throughput**
 
-!!! Attention 算法构建分析: Input Shaping
+!!! Attention "算法构建分析: Input Shaping"
     除了ZVD和ZVDD之外，robust input shaping 还有其它解决方案，例如 Extra Insensitivity(EI), Specified Insensitivity(SI), multiimpulse robust(MIR)等，**这里是一个可探索的算法优化点**。
 
 ---
@@ -780,7 +780,8 @@ $$\text{2 taps}\rightarrow3\text{ taps}\rightarrow4\text{ taps}$$
 
 ---
 
-!!! Attention 算法构建分析：Input Shaping
+!!! Attention "算法构建分析：Input Shaping"
+    
     | 项目 | Input Shaping |
     |---|---|
     | 解决问题 | reference 激励 flexible mode 导致 residual vibration |
@@ -877,7 +878,7 @@ $$\boxed{\begin{bmatrix} x_s \\ y_s \end{bmatrix} = \begin{bmatrix} \cos(\theta_
 
 
 
-!!! Example 案例
+!!! Example
     假设当前准备曝光 wafer 上某一 die。
     在 L-CS 中，stage COG 需要位于：$x_l=100\ {\rm mm},y_l=0$
     同时 wafer 由于 alignment correction 需要有：$\theta_{zl}=1\ {\rm mrad}$
@@ -1016,7 +1017,7 @@ z=h(x,y),
 
 就和所需的 pitch/roll 有直接关系。这需要我们从 3-D map 中**提取局部平面信息**，然后**计算出 $z, \theta_x, \theta_y$ 的 setpoints**。这就涉及到了**查表、插值、拟合等算法内核**。
 
-!!! Attention 算法构建分析: Veritcal Setpoint Generation
+!!! Attention "算法构建分析: Veritcal Setpoint Generation"
 
     **Song 只告诉我们 vertical setpoints 来源于 3-D map，并没有给出具体 map interpolation / leveling setpoint-generation 算法。**
     
@@ -1093,7 +1094,6 @@ $$\mathbf{f_s}=[F_{xs}, F_{ys}, T_{zs}, F_{zs}, T_{xs}, T_{ys}]^T$$
 
 的表达式（公式 （21））：
 
-
 $$\begin{bmatrix}
 F_{xs} \\
 F_{ys} \\
@@ -1106,18 +1106,12 @@ T_{ys}
 \underbrace{
 \begin{bmatrix}
 1 & \theta_{zl} & \dfrac{m}{J_z} y_l & -\theta_{yl} & 0 & -(z_l-H_{ls})\dfrac{m}{J_y} \\[6pt]
-
 -\theta_{zl} & 1 & -\dfrac{m}{J_z}x_l & \theta_{xl} & (z_l-H_{ls})\dfrac{m}{J_x} & 0 \\[6pt]
-
 0 & 0 & 1 & 0 & 0 & 0 \\[6pt]
-
 \theta_{yl} & -\theta_{xl} & 0 & 1 & -y_l\dfrac{m}{J_x} & x_l\dfrac{m}{J_y} \\[6pt]
-
 0 & 0 & 0 & 0 & 1 & 0 \\[6pt]
-
 0 & 0 & 0 & 0 & 0 & 1
 \end{bmatrix}}_{\text{Gain Scheduling: } C_{\mathrm{GS}}}
-
 \begin{bmatrix}
 F_{xl} \\
 F_{yl} \\
@@ -1133,25 +1127,19 @@ T_{yl}
 -\dot{z}_l\dot{\theta}_{yl}
 +\dot{y}_l\dot{\theta}_{zl}
 \\[6pt]
-
 \dot{z}_l\dot{\theta}_{xl}
 -\dot{x}_l\dot{\theta}_{zl}
 \\[6pt]
-
 0
 \\[6pt]
-
 -\dot{y}_l\dot{\theta}_{xl}
 +\dot{x}_l\dot{\theta}_{yl}
 \\[6pt]
-
 0
 \\[6pt]
-
 0
 \end{bmatrix}
-}_{\text{Coriolis Forces: } f_{\mathrm{cor}}}
-$$
+}_{\text{Coriolis Forces: } f_{\mathrm{cor}}}$$
 
 
 关于 GS 解耦公式有如下注意事项：
@@ -1235,7 +1223,8 @@ $C_{\rm GB}$ 实现的解耦系统动态将呈对角形式，例如公式 (22) �
 
 ![alt text](assets/image-12.webp)
 
-!!! Attention 算法构建分析：静态解耦优化
+!!! Attention "算法构建分析：静态解耦优化"
+    
     近年来出现了各种：
 
     - model-based
@@ -1383,6 +1372,7 @@ $F_{ij}(z)$ 用于补偿参与 coupling，例如：假设 $x\to y$ 残余 coupli
 所以直觉上 $F_{yx}(z)$ 是在近似一个 **"cross-coupling dynamics 的 inverse / cancellation filter"**。
 
 此外，$F_{ij}(z)$ 还必须是 filter 而非 scalar，例如由于 flexible modes 的存在，真实串扰可能是：
+
 $$y_{\rm cross}[k]=0.05x[k]-0.03x[k-1]+0.01x[k-2]$$
 
 那就必须用：
@@ -1400,7 +1390,7 @@ $$F(z)=-0.05+0.03z^{-1}-0.01z^{-2}$$
 更重要的是：**FIR 可以放置 zeros，用来逼近低频 coupling / inverse dynamics 中的 antiresonance 特性**。
 
 
-!!! Note Resonance 和 Antiresonance
+!!! Note "Resonance 和 Antiresonance"
 
     - resonance：在某个频率附近，stage 的响应被放大，**即 $G(e^{j\omega})$ 变得很大**；
     - antiresonance：在某个频率附近，stage 的响应被抑制，**即 $G(e^{j\omega})$ 变得很小**。
@@ -1452,7 +1442,7 @@ Dynamic Decoupler 可以**作为一个独立 accelerator block / filter-bank blo
 
 ---
 
-!!! Attention 算法构建分析：Dynamic Decoupling
+!!! Attention "算法构建分析：Dynamic Decoupling"
     我们对 Dynamic Decoupling 做 workload 分析：
 
     例如：
