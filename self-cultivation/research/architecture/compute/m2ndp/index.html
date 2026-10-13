@@ -1,0 +1,8340 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="SmlCoke">
+      
+      
+        <link rel="canonical" href="https://smlcoke.com/self-cultivation/research/architecture/compute/m2ndp/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>Low-overhead General-purpose Near-Data Processing in CXL Memory Expanders - SmlCoke Home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css?v=20260918-1">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#low-overhead-general-purpose-near-data-processing-in-cxl-memory-expanders" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../../.." title="SmlCoke Home" class="md-header__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SmlCoke Home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Low-overhead General-purpose Near-Data Processing in CXL Memory Expanders
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="cyan"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../microelectronics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  微电子
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../machine-learning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  机器学习
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../programming/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  编程
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工具
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Self-Cultivation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../blog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../lab/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  应用
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../comments/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  留言板
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="SmlCoke Home" class="md-nav__button md-logo" aria-label="SmlCoke Home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SmlCoke Home
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    微电子
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    微电子
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/signals-systems/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    信号与系统
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    信号与系统
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/signals-systems/differential-equations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    线性微分方程
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_2" id="__nav_2_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    线性微分方程
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/signals-systems/differential-equations/homogeneous/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Homogeneous
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/signals-systems/differential-equations/particular/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Particular
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/signals-systems/differential-equations/impulse-balance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Impulse_Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/signals-systems/fourier-transform/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    傅里叶变换
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2_3" id="__nav_2_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    傅里叶变换
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/signals-systems/fourier-transform/cft-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CFT-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/signals-systems/fourier-transform/cft-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CFT-2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/digital-circuits/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    数字集成电路设计
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    数字集成电路设计
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/digital-circuits/course-design/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程设计
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    课程设计
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/course-design/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Init
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/course-design/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/course-design/specifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/course-design/requantization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Re-quantization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VLSI
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3_4" id="__nav_2_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    VLSI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch1. Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/modulation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch2. Modulation and Demodulation
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3_4_3" id="__nav_2_3_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch2. Modulation and Demodulation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/modulation/gaussian-noise-explained/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高斯白噪声进阶
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/modulation/matched-filter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    匹配滤波器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/modulation/noise/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    噪声基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/iteration-bound/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch3. Iteration Bound
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3_4_4" id="__nav_2_3_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch3. Iteration Bound
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/iteration-bound/iteration-bound-explained/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    迭代边界
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/iteration-bound/sampling-clock-iteration-periods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    采样、时钟与迭代周期
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/parallel-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch4. Parallel and Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/retiming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch5. Retiming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/unfolding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch6. Unfolding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/folding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch7. Folding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/systolic-array/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch8. Systolic Array
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3_4_9" id="__nav_2_3_4_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch8. Systolic Array
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/systolic-array/cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN 与脉动阵列
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/fading-channel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch9. Fading Channel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/bandpass-modulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch10. Bandpass Modulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4_12" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/mqam/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch11. MQAM
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3_4_12" id="__nav_2_3_4_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_4_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch11. MQAM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/mqam/mqam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MQAM 补充笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4_13" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/digital-circuits/vlsi/ofdm/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch11. OFDM
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3_4_13" id="__nav_2_3_4_13_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_3_4_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch11. OFDM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/ofdm/ofdm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OFDM 流程示例
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/digital-circuits/vlsi/channel-coding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch12. Channel code and decode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/processors/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU/GPU 架构与系统
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CPU/GPU 架构与系统
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/hardware-software-interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/processors/isa/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch2. ISA
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch2. ISA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/isa/appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    指令集附录
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/processors/arithmetic/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch3. Arithmetic
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch3. Arithmetic
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/arithmetic/denormal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    非规格化数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/arithmetic/grs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GRS 舍入位
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/arithmetic/infinity-nan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infinity 与 NaN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/arithmetic/restoring-division/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    恢复除法
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/processor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch4. Processor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/processor-p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch4. Processor (Part 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/processors/memory/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch5. Memory
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4_7" id="__nav_2_4_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ch5. Memory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/memory/memory-hierarchy-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    存储层次访问流程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/memory/multi-bytes-block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多字节缓存块
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/memory/multilevel-cache-performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多级缓存性能
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/parallel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch6. Parallel Processing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/processors/gpgpu/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPGPU
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4_9" id="__nav_2_4_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GPGPU
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/gpgpu/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPGPU Architecture Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/processors/gpgpu/programming-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPGPU Programming Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/advanced-computer-architecture/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高等计算机系统结构
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    高等计算机系统结构
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/advanced-computer-architecture/fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ch1. Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/soc/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SoC
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SoC
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/soc/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/soc/processor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SoC Processor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/soc/apb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    APB Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/soc/ahb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AHB Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/soc/axi/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AXI Protocol
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6_6" id="__nav_2_6_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AXI Protocol
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/soc/axi/handshake/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AXI Handshake
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/soc/axi/beyond-handshake/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AXI Beyond
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/soc/arithmetic/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    运算电路
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6_7" id="__nav_2_6_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    运算电路
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/soc/arithmetic/compression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/soc/arithmetic/cpa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/hdl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HDL
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    HDL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/hdl/verilog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verilog HDL Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../microelectronics/eda/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EDA Tools
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    EDA Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VS Code + Verilog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/testbench/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testbench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/mobaxterm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MobaXterm + Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/oss-cad-suite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSS CAD Suite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/tcl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tcl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/modelsim/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ModelSim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/vivado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vivado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/yosys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Yosys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../microelectronics/eda/symbiyosys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SymbiYosys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../machine-learning/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    机器学习
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../machine-learning/fundamentals/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    基础
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/fundamentals/fully-connected-networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    全连接神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/fundamentals/optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    优化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/fundamentals/cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/fundamentals/self-attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Attention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/fundamentals/transformer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../machine-learning/computer-vision/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机视觉
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/resnet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ResNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/densenet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DenseNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../machine-learning/computer-vision/yolo/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_4" id="__nav_3_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    YOLO
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/yolo/v1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/yolo/v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/yolo/v3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YOLO v3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/vit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ViT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/pfld/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/mobileone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MobileOne
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../machine-learning/computer-vision/mska/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSKA
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_8" id="__nav_3_3_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MSKA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/mska/computing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSKA Computing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/tscm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSCM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/tsrnet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSRNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PFLD-GhostOne
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3_11" id="__nav_3_3_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PFLD-GhostOne
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/code-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/loss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Loss
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/pytorch-to-onnx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PyTorch2onnx
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../machine-learning/computer-vision/pfld-ghostone/data-augmentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../programming/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编程
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    编程
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../programming/rust/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rust
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../programming/rust/study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 学习笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../programming/rust/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust 环境配置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../programming/python/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../programming/python/environments/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    环境管理
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3_2" id="__nav_4_3_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    环境管理
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../programming/python/environments/venv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    venv
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../programming/python/environments/conda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conda
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    工具
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tools/ai/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 工具
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI 工具
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/ai/claude-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/ai/mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/ai/openrouter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenRouter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/ai/opencode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/ai/aider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git & GitHub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tools/wsl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WSL2
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    WSL2
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/wsl/proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WSL 代理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tools/writing/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    写作
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    写作
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/writing/style-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Markdown 写作规范
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/writing/mkdocs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    站点开发笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/chocolatey/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chocolatey 使用指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../tools/linux/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/linux/commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础命令
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tools/linux/filesystem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Cultivation
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Self-Cultivation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../digital-ic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital IC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../lab/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    应用
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    应用
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../lab/crypto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    加密与解密
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    留言板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. Introduction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I. Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-cxl-memory-expander" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 为什么需要 CXL Memory Expander？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 扩展容量后，为什么程序仍然可能变慢？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-ndp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 NDP：把计算移到数据附近
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-ndp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 已有 NDP 为什么还不够？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-m2ndp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 M²NDP 的两项核心机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-background-and-motivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Background and Motivation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. Background and Motivation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-considerations-in-architecting-ndp-in-cxl-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Considerations in Architecting NDP in CXL Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-compute-express-link-interconnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Compute Express Link Interconnect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-communication-overhead-with-cxliopcie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Communication Overhead with CXL.io/PCIe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-memory-mapped-near-data-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Memory-mapped Near-Data Processing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. Memory-mapped Near-Data Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-memory-mapped-ndp-management-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Memory-Mapped NDP Management Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-ndp-kernel-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. NDP Kernel Launch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-memory-mapped-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Memory-Mapped µthread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-ndp-unit-microarchitecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E. NDP Unit Microarchitecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-cache-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F. Cache Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#g-programming-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        G. Programming Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#h-virtual-memory-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        H. Virtual Memory Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="low-overhead-general-purpose-near-data-processing-in-cxl-memory-expanders">Low-overhead General-purpose Near-Data Processing in CXL Memory Expanders<a class="headerlink" href="#low-overhead-general-purpose-near-data-processing-in-cxl-memory-expanders" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>本文研究的是：<strong>怎样在 CXL Memory Expander 中加入低成本、可编程的计算能力，并降低 Host 调用这些计算单元的开销。</strong><br />
+笔记依据 <a href="annotation/">annotation.md</a> 中的问题及对应 ChatGPT(Web) 回答整理，覆盖 <strong>I、II 和 III-A～H</strong>。<br />
+Date: 2026-10-13</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>对应部分</th>
+<th>整理素材</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I. Introduction</td>
+<td><a href="sessions/introduction/">Introduction 拆解</a></td>
+</tr>
+<tr>
+<td>II. Background and Motivation</td>
+<td><a href="sessions/background/">II-A～C 拆解</a></td>
+</tr>
+<tr>
+<td>III-A～D</td>
+<td><a href="sessions/m2ndp_1/">章节拆解</a>、<a href="sessions/m2ndp_1_qa/">硬件与执行过程问答</a></td>
+</tr>
+<tr>
+<td>III-E～H</td>
+<td><a href="sessions/m2ndp_2/">微架构、存储、编程模型与虚拟内存拆解</a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">阅读这篇论文时先区分两个问题</p>
+<p><strong>Host → NDP</strong>：怎样<strong>注册、启动、查询</strong>一个计算任务？对应 <strong>M² func</strong>。</p>
+<p><strong>NDP → DRAM</strong>：怎样<strong>低成本</strong>地产生足够多的<strong>并发访存</strong>、高效执行任务？对应 <strong>M² µthread</strong>。</p>
+<p>两者共同组成 <strong>M²NDP</strong>。前者是管理接口，后者是线程执行模型；实际执行指令的处理器硬件叫 <strong>NDP Unit</strong>。</p>
+</div>
+<h2 id="i-introduction">I. Introduction<a class="headerlink" href="#i-introduction" title="Permanent link">&para;</a></h2>
+<h3 id="11-cxl-memory-expander">1.1 为什么需要 CXL Memory Expander？<a class="headerlink" href="#11-cxl-memory-expander" title="Permanent link">&para;</a></h3>
+<p>虽然现代服务器 CPU 的<strong>地址空间极大</strong>（例如 64 位 CPU 的理论地址空间可以有 <strong>4 PB</strong>），但是 CPU 能直接连接的 <strong>DDR 通道和 DIMM 数量有限</strong>，而 KVStore、LLM、推荐系统、图计算和数据库等应用需要很大的内存容量。因此，可以通过 CXL 连接额外的内存扩展设备。</p>
+<p><strong>CXL Memory Expander 包含控制器和 DRAM；CXL memory 指的是这类设备提供的内存。</strong> Host CPU 可以通过 <strong>CXL.mem</strong>，使用普通 <strong>load/store</strong> 访问它。</p>
+<p>例如 <code>x = array[i]</code> 对于 Host 来说仍然是一次普通的程序访存，区别在于地址所对应的数据，可能位于 CPU 直接连接的 <strong>Local DRAM</strong>，也可能位于 CXL Memory Expander 的 DRAM。</p>
+<h3 id="12">1.2 扩展容量后，为什么程序仍然可能变慢？<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
+<p>容量增加并不等于 CPU 到这些数据的访问能力同步增加。这里有两个瓶颈：</p>
+<ol>
+<li><strong>带宽瓶颈</strong>：<strong>CXL memory 内部的 DRAM 带宽很高</strong>，但 CPU 访问它时需要经过<strong>带宽有限的 CXL link</strong>。</li>
+<li><strong>延迟瓶颈</strong>：一次 load 要经过更长的访问路径，数据返回并能被 CPU 使用所需的时间增加。</li>
+</ol>
+<p><strong>Fig. 1(a)</strong> 对应第一类问题：连续扫描大数组等程序需要搬运大量数据，性能容易受到链路带宽限制。回答材料引述的性能下降最高约为 <strong>9.9×</strong>，这是相应工作负载与配置下的结果。</p>
+<p><strong>Fig. 1(b)</strong> 对应第二类问题：例如 pointer chasing，必须先读出一个指针，才能知道下一次应该访问哪里。这些访问之间存在依赖，单次 load 的等待时间会直接累积，并影响 KVStore 等应用的尾延迟。</p>
+<p>一些常见的概念：</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>含义</th>
+<th>对本文的作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Operational / arithmetic intensity</td>
+<td>每搬运一定量数据，能完成多少计算</td>
+<td>低计算强度意味着访存成本更容易主导性能</td>
+</tr>
+<tr>
+<td>Memory-bound</td>
+<td>性能主要<strong>受内存访问限制</strong></td>
+<td>本文 NDP 的主要目标</td>
+</tr>
+<tr>
+<td>Bandwidth-intensive</td>
+<td>需要<strong>持续搬运大量数据</strong></td>
+<td>关注单位时间能传输多少数据</td>
+</tr>
+<tr>
+<td>Latency-sensitive</td>
+<td>对<strong>一次访问的等待时间敏感（例如光刻机控制系统）</strong></td>
+<td>关注 load 到结果可使用之间的延迟</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition example">
+<p class="admonition-title">VectorAdd 的计算强度很低</p>
+<p><code>C[i] = A[i] + B[i]</code> 需要读取两个输入、写入一个输出，却只做一次加法。</p>
+<p>如果 A、B、C 位于 CXL memory，而计算由 Host CPU 完成，大量数据就需要跨越 CXL link。增加 CPU 的加法器数量，并不能直接消除链路瓶颈。</p>
+</div>
+<h3 id="13-ndp">1.3 NDP：把计算移到数据附近<a class="headerlink" href="#13-ndp" title="Permanent link">&para;</a></h3>
+<p><strong>Near-Data Processing（NDP）</strong> 的思路是：在 CXL memory 侧放置计算单元，让它直接访问设备内部 DRAM，减少数据跨 CXL link 的搬运。</p>
+<p>例如，对一个 10 GB 数组求和：</p>
+<ul>
+<li><strong>Host 计算</strong>：数组数据经过 CXL link 返回 CPU，再由 CPU 求和。</li>
+<li><strong>NDP 计算</strong>：设备侧读取数组并求和，<strong>Host 只需提交任务，并取得少量结果</strong>。</li>
+</ul>
+<p>收益来自<strong>减少跨链路的数据流量</strong>，并利用 CXL memory 内部的 DRAM 带宽。</p>
+<blockquote>
+<p>那么这里就有一个很现实、很影响实际收益的问题：<strong>计算任务是否适合卸载</strong>，仍取决于程序的访存特征与调用开销。</p>
+</blockquote>
+<h3 id="14-ndp">1.4 已有 NDP 为什么还不够？<a class="headerlink" href="#14-ndp" title="Permanent link">&para;</a></h3>
+<p>首先是<strong>计算硬件的通用性和成本</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>候选方案</th>
+<th>优点</th>
+<th>本文关注的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>专用 ASIC</td>
+<td>对目标算法高效</td>
+<td>工作负载覆盖有限；<strong>同时加入多类专用硬件会增加面积与 NRE</strong>（一次性设计成本）</td>
+</tr>
+<tr>
+<td>CPU core</td>
+<td>通用、可编程</td>
+<td>复杂乱序控制、大缓存等硬件，对低计算强度的 NDP 任务<strong>可能不划算、或者场景不匹配</strong></td>
+</tr>
+<tr>
+<td>GPU 风格计算核心</td>
+<td>大量线程、较高访存并发</td>
+<td>高计算吞吐的资源组织，<strong>不一定符合低成本</strong> memory-bound NDP 的需求</td>
+</tr>
+<tr>
+<td>FPGA</td>
+<td>硬件可重配置</td>
+<td>普通软件开发者不能像编写处理器程序一样直接使用，<strong>编程与实现流程较复杂</strong></td>
+</tr>
+</tbody>
+</table>
+<p>其次是<strong>Host 如何调用 NDP</strong>。即使设备侧计算很快，启动任务、获取状态等控制操作仍可能经过 runtime、driver、命令队列、DMA 和 CXL.io/PCIe 事务，产生微秒级开销。</p>
+<div class="admonition example">
+<p class="admonition-title">短任务特别容易被启动开销淹没</p>
+<p>假设一个 kernel 计算只需 <strong>2 µs</strong>，启动却需要 <strong>4 µs</strong>，那么仅启动开销就超过计算本身。</p>
+<p>对运行数十毫秒的任务，这种开销容易被摊薄；对<strong>小任务、短任务、频繁调用</strong>的任务，即 <strong>fine-grained offloading</strong>，它可能决定端到端性能。</p>
+</div>
+<h3 id="15-m2ndp">1.5 M²NDP 的两项核心机制<a class="headerlink" href="#15-m2ndp" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>要解决的问题</th>
+<th>方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>M² func：Memory-Mapped Function</strong></td>
+<td>Host–NDP 管理通信开销高</td>
+<td>将<strong>管理调用</strong>编码为<strong>对预留地址的 CXL.mem 访问</strong>；Address 标识函数，Writing data承载参数</td>
+</tr>
+<tr>
+<td><strong>M² µthread：Memory-Mapped µthread</strong></td>
+<td>通用 NDP 的计算硬件成本与访存并发</td>
+<td>使用<strong>轻量执行上下文</strong>、FGMT、<strong>地址映射</strong>和 RISC-V Vector 执行，提高单位成本下的访存并发</td>
+</tr>
+</tbody>
+</table>
+<p>M² func 不要求修改 Host CPU 硬件或标准 CXL.mem 报文类型，设备侧通过地址识别管理调用。M² µthread 则让可编程 NDP Unit 执行不同 kernel。</p>
+<p>相对于使用 <strong>passive CXL memory</strong> 的 Host 基线，最高加速 <strong>128×</strong>，几何平均加速 <strong>14.5×</strong>，最高能耗降低 <strong>87.9%</strong>。</p>
+<h2 id="ii-background-and-motivation">II. Background and Motivation<a class="headerlink" href="#ii-background-and-motivation" title="Permanent link">&para;</a></h2>
+<h3 id="a-considerations-in-architecting-ndp-in-cxl-memory">A. Considerations in Architecting NDP in CXL Memory<a class="headerlink" href="#a-considerations-in-architecting-ndp-in-cxl-memory" title="Permanent link">&para;</a></h3>
+<p>这一节确定计算架构的设计目标：<strong>面向大 working set、低计算强度、难以被片上 Cache 容纳的 memory-bound 应用，以较低成本充分利用设备内部 DRAM 带宽。</strong></p>
+<p>如果程序本身 compute-bound，或数据规模很小且缓存复用很好，留在 Host CPU/GPU 上计算可能更合适。</p>
+<h4 id="1-table-igpu-cxl-ndp">1. Table I：GPU 与 CXL-NDP 的设计目标<a class="headerlink" href="#1-table-igpu-cxl-ndp" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>比较维度</th>
+<th>GPU</th>
+<th>本文讨论的 CXL memory + NDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内存容量需求</td>
+<td>相对较低</td>
+<td>较高，首先承担内存扩容职责</td>
+</tr>
+<tr>
+<td>面积与功耗成本</td>
+<td>可投入较多计算资源</td>
+<td>需要保持较低附加成本</td>
+</tr>
+<tr>
+<td>FLOPS / Memory BW</td>
+<td>较高</td>
+<td>较低</td>
+</tr>
+<tr>
+<td>目标工作负载</td>
+<td>偏向计算密集型</td>
+<td>偏向访存密集型</td>
+</tr>
+</tbody>
+</table>
+<p>这张表表达的是论文的<strong>产品与工作负载定位</strong>。GPU 也能执行 memory-bound 应用，这里的比较用于解释作者为什么重新设计 NDP 的线程模型和资源组织。</p>
+<h4 id="2">2. 为什么重点是访存并发？<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
+<p>DRAM 访问需要等待。如果处理器只有一个执行上下文，发出 load 后长时间等待，执行单元和内存系统都可能无法充分利用。</p>
+<p>作者希望维持很多 <strong>outstanding memory requests</strong>，即已经发出、尚未完成的访存请求，让内存系统能持续处理请求。</p>
+<p>对应的设计方向是：</p>
+<ul>
+<li><strong>少量寄存器 / µthread</strong>：降低每个上下文的保存成本。</li>
+<li><strong>大量驻留 µthreads</strong>：某个线程等待时，还有其他可执行线程。</li>
+<li><strong>FGMT（Fine-Grained Multithreading）</strong>：细粒度地交错发射不同线程的指令。</li>
+<li><strong>RISC-V scalar + RVV</strong>：标量指令处理控制与地址，向量指令处理批量数据。</li>
+</ul>
+<p>对于已经受 DRAM 带宽限制的程序，继续增加计算能力可能收益有限。因此，<strong>通用处理器只要能够充分利用内存带宽，就可能取得接近专用逻辑的性能，同时保留可编程性。</strong></p>
+<h3 id="b-compute-express-link-interconnect">B. Compute Express Link Interconnect<a class="headerlink" href="#b-compute-express-link-interconnect" title="Permanent link">&para;</a></h3>
+<p>这一节说明 M²NDP 可以利用哪些 CXL 能力，以及这些能力的边界。</p>
+<h4 id="1-cxl">1. 三类 CXL 协议分别负责什么？<a class="headerlink" href="#1-cxl" title="Permanent link">&para;</a></h4>
+<p><strong>CXL 使用 PCIe PHY，也就是物理传输层</strong>，其上包含不同用途的协议。</p>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>本文相关的作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CXL.io</strong></td>
+<td>PCIe 风格的 I/O、配置和设备管理</td>
+</tr>
+<tr>
+<td><strong>CXL.cache</strong></td>
+<td>支持设备侧缓存与 Host 之间的一致性交互</td>
+</tr>
+<tr>
+<td><strong>CXL.mem</strong></td>
+<td>Host 使用内存语义访问设备内存</td>
+</tr>
+</tbody>
+</table>
+<p>本文最重要的是 <strong>CXL.mem</strong>：Host 可以通过 load/store 访问 CXL memory，为 M² func 提供较低延迟的控制路径。</p>
+<div class="admonition attention">
+<p class="admonition-title">共享物理链路，不等于访问语义相同</p>
+<p>CXL.io 与 CXL.mem 可以使用同一类物理链路，但事务用途和处理路径不同。</p>
+<p>类似地，Host 能通过 CXL.mem 访问设备内存，不代表设备也能通过 CXL.mem 直接访问 Host Local DRAM。</p>
+</div>
+<h4 id="2-fig-2">2. Fig. 2：不同延迟数字的统计范围<a class="headerlink" href="#2-fig-2" title="Permanent link">&para;</a></h4>
+<p><img alt="alt text" src="assets/image.webp" /></p>
+<table>
+<thead>
+<tr>
+<th>数字</th>
+<th>材料中的含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>约 <strong>52～70 ns</strong></td>
+<td>CXL 协议栈与链路 / wire 的往返延迟</td>
+</tr>
+<tr>
+<td>约 <strong>150～175 ns</strong></td>
+<td>典型完整 CXL memory load-to-use 延迟，包含缓存层次、协议、链路与 DRAM 等路径</td>
+</tr>
+<tr>
+<td>约 <strong>300 ns</strong></td>
+<td>经过 CXL switch 时，内存访问延迟量级</td>
+</tr>
+<tr>
+<td>约 <strong>1 µs 或更高</strong></td>
+<td>传统 CXL.io/PCIe 通信的典型量级</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Load-to-use</strong> 是从 load 到数据能够被处理器使用的时间。因此，不能把协议和链路的几十纳秒，直接当成访问一次 DRAM 的总延迟。</p>
+<p>这些数字是回答材料引述的典型值或建模假设，不是所有 CXL 设备固定具有的性能。</p>
+<h4 id="3-hdmhdm-h-hdm-db">3. HDM、HDM-H 与 HDM-DB<a class="headerlink" href="#3-hdmhdm-h-hdm-db" title="Permanent link">&para;</a></h4>
+<p><strong>HDM（Host-managed Device Memory）</strong>：设备上的 DRAM，<strong>被 Host 纳入系统内存管理</strong>，并通过 Host Physical Address（HPA）访问。</p>
+<p><strong>Passive CXL memory</strong> 没有 NDP，只提供内存。Host 可以缓存其中的数据；设备不会自己执行程序、主动修改这些数据。这种情形对应 <strong>HDM-H：host-only coherent model</strong>。</p>
+<p>加入 NDP 后，<strong>设备也会读写 HDM</strong>，同一个地址的数据可能<strong>同时存在于 Host Cache 与设备 DRAM 中</strong>。</p>
+<div class="admonition example">
+<p class="admonition-title">为什么 NDP 需要与 Host Cache 协调？</p>
+<p>Host Cache 中保存 <code>A = 10</code>。如果 NDP 将 DRAM 中的 A 改成 20，而 Host 仍读取缓存副本，就可能继续得到旧值 10。</p>
+<p>问题来自<strong>多个位置保存同一地址的副本</strong>。这与多核 CPU 的缓存一致性问题有相似之处。</p>
+</div>
+<p>M²NDP 使用 <strong>HDM-DB</strong> 模型，相关机制包括：</p>
+<ul>
+<li><strong>DCOH（Device Coherence Agent）</strong>：设备侧负责一致性交互的代理。</li>
+<li><strong>Snoop Filter</strong>：跟踪 Host 对 HDM cache line 的缓存情况。</li>
+<li><strong>BI（Back Invalidation）</strong>：设备向 Host 发起失效请求，使相关缓存副本失效。</li>
+</ul>
+<p>可以用“一个 CPU core 写共享数据，需要让其他 core 的旧副本失效”来类比这里的 NDP–Host 交互。这个类比用于理解一致性需求，不能据此认为 CXL 使用的报文和状态机就等同于 MESI。</p>
+<h4 id="4-atsatc-p2p">4. ATS、ATC 与 P2P<a class="headerlink" href="#4-atsatc-p2p" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>含义</th>
+<th>为什么在本文出现？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ATS：Address Translation Services</strong></td>
+<td>设备向 Host 请求地址转换服务</td>
+<td><strong>NDP 使用虚拟地址时需要转换</strong>；请求可能有微秒级开销</td>
+</tr>
+<tr>
+<td><strong>ATC：Address Translation Cache</strong></td>
+<td>设备侧保存地址转换结果的缓存</td>
+<td><strong>避免每次访问都重新请求转换</strong></td>
+</tr>
+<tr>
+<td><strong>P2P：Peer-to-Peer</strong></td>
+<td><strong>设备之间直接访问</strong></td>
+<td>支持访问 peer CXL device 的 HDM</td>
+</tr>
+</tbody>
+</table>
+<p>III-H 会进一步说明 NDP 的虚拟地址、片上 TLB 与 DRAM-TLB。这里先记住：<strong>低延迟访存、缓存一致性、地址转换和设备间访问，是不同的系统问题。</strong></p>
+<h3 id="c-communication-overhead-with-cxliopcie">C. Communication Overhead with CXL.io/PCIe<a class="headerlink" href="#c-communication-overhead-with-cxliopcie" title="Permanent link">&para;</a></h3>
+<p>这一节解释为什么计算核心之外，还需要 M² func。</p>
+<h4 id="1-ring-buffer">1. Ring Buffer：软件队列与设备硬件协作<a class="headerlink" href="#1-ring-buffer" title="Permanent link">&para;</a></h4>
+<p><strong>Ring Buffer 是循环命令队列。</strong> Host 软件产生 command，设备取出 command 并执行。整个提交机制还需要 runtime/driver、doorbell、DMA engine 和 device command processor 等支持。</p>
+<p>典型路径如下：</p>
+<ol>
+<li>用户程序调用 launch API，由 runtime/driver 构造 <strong>command descriptor</strong>，描述要启动的程序及参数。</li>
+<li>command 位于 Host memory，Host 将 <strong>command pointer</strong> 放入 ring buffer。</li>
+<li>Host 更新 <strong>write/tail pointer</strong>，或写 <strong>doorbell register</strong>，通知设备有新命令。</li>
+<li>设备通过 CXL.io/PCIe 和 DMA 获取 command pointer。</li>
+<li>设备再读取真正的 command，交给 command processor 解析。</li>
+<li>设备启动 kernel。</li>
+<li>计算完成后，Host 通过 polling 或 interrupt 获知完成状态。</li>
+</ol>
+<p>其中出现的各种概念：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>在这条路径中做什么？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime / Driver</td>
+<td>Host 侧软件，负责提交任务和管理设备接口</td>
+</tr>
+<tr>
+<td>Doorbell</td>
+<td>Host 写入后，通知设备检查新任务的寄存器</td>
+</tr>
+<tr>
+<td>DMA engine</td>
+<td>设备侧读取命令或搬运数据的硬件</td>
+</tr>
+<tr>
+<td>Command processor</td>
+<td>设备侧解析命令并安排执行的控制硬件</td>
+</tr>
+<tr>
+<td>Polling</td>
+<td>Host 主动反复查询状态</td>
+</tr>
+<tr>
+<td>Interrupt</td>
+<td>设备发出事件通知，由 Host 处理</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">这里出现了两种 kernel</p>
+<p><strong>Kernel space / kernel-mode</strong> 指 Host 操作系统内核的执行环境，即：<strong>内核态</strong>。</p>
+<p><strong>NDP kernel</strong> 指准备交给 NDP 执行的计算程序。</p>
+<p>“切换到 kernel space”和“启动 NDP kernel”是两件不同的事。</p>
+</div>
+<p>论文中给出的典型开销数据：<strong>launch 约 3～6 µs、polling 约 2～3 µs、DMA 至少约 1 µs</strong>；interrupt 的开销可能相近或更高。这些量级说明控制路径可能很重，不能机械地将所有数字相加，视为每次提交都必然发生的固定延迟。</p>
+<h4 id="2-direct-mmio">2. Direct MMIO：直接读写设备寄存器<a class="headerlink" href="#2-direct-mmio" title="Permanent link">&para;</a></h4>
+<p><strong>MMIO（Memory-Mapped I/O）</strong> 的基本思路与 SoC 中通过地址访问 UART 等外设寄存器相近：CPU 执行 <code>load</code>/<code>store</code>，地址译码后访问设备寄存器。</p>
+<p>Direct MMIO 方案通过 PCIe BAR 暴露 COMMAND、ARG、STATUS 等寄存器。启动路径为：</p>
+<p><strong>CPU store → PCIe Root Complex → Memory Write TLP → Device BAR → 寄存器 → 启动控制逻辑</strong>。</p>
+<p>完成后，Host 读 STATUS，或接收设备的中断通知。</p>
+<p>它省去了 ring buffer 管理与 DMA 获取 command 的部分开销，但论文比较的固定寄存器接口存在限制：</p>
+<ul>
+<li>可用于保存命令和参数的物理寄存器数量有限。</li>
+<li>多个请求容易争用同一套状态，<strong>难以自然支持大量并发调用</strong>。</li>
+<li>多个用户进程共享设备寄存器时，需要额外的隔离与权限管理，可能涉及 driver 和内核态切换。</li>
+</ul>
+<h4 id="3-m2-func">3. M² func 希望同时满足什么？<a class="headerlink" href="#3-m2-func" title="Permanent link">&para;</a></h4>
+<p><strong>低延迟调用、支持并发请求、按进程隔离、初始化后可由用户态直接调用，并保持 Host CPU 与标准 CXL.mem 兼容。</strong></p>
+<p>这就引出第三节：利用 CXL.mem 的地址和写入数据来表达函数调用，由设备侧识别其语义。</p>
+<h2 id="iii-memory-mapped-near-data-processing">III. Memory-mapped Near-Data Processing<a class="headerlink" href="#iii-memory-mapped-near-data-processing" title="Permanent link">&para;</a></h2>
+<h3 id="a-overview">A. Overview<a class="headerlink" href="#a-overview" title="Permanent link">&para;</a></h3>
+<p>整理素材：<a href="sessions/m2ndp_1/">III-A～D 拆解</a>、<a href="sessions/m2ndp_1_qa/">硬件与执行过程问答</a>。</p>
+<h4 id="1">1. 先对应软件对象与硬件实体<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<p><strong>一些基础概念</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>属于什么？</th>
+<th>具体作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NDP kernel</strong></td>
+<td>程序代码及相关 metadata</td>
+<td>描述要执行的计算，<strong>最终使用 RISC-V/RVV 指令</strong></td>
+</tr>
+<tr>
+<td><strong>Kernel instance</strong></td>
+<td>一次启动产生的任务实例</td>
+<td>同一份 kernel code <strong>可以用不同数据启动多次</strong></td>
+</tr>
+<tr>
+<td><strong>M² µthread</strong></td>
+<td>轻量执行实例 / 硬件线程上下文</td>
+<td>执行 kernel 的一个 body，通常处理某一块数据</td>
+</tr>
+<tr>
+<td><strong>µthread slot</strong></td>
+<td><strong>保存</strong>线程状态的硬件资源</td>
+<td><strong>保存 PC、寄存器映射等，使线程可以驻留和切换</strong></td>
+</tr>
+<tr>
+<td><strong>NDP Unit</strong></td>
+<td>处理器硬件</td>
+<td>包含 sub-core、执行单元、寄存器和片上存储等</td>
+</tr>
+<tr>
+<td><strong>NDP Controller</strong></td>
+<td>设备侧控制硬件</td>
+<td><strong>管理 kernel、启动请求、资源和完成状态</strong></td>
+</tr>
+<tr>
+<td><strong>M² func</strong></td>
+<td>Host–NDP 管理接口机制</td>
+<td>把管理函数编码为预留地址上的内存访问</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition attention">
+<p class="admonition-title">多个线程不等于多个完整处理器</p>
+<p>多个 µthread context 可以<strong>共享少量 ALU、LSU 和 vector units</strong>。</p>
+<p>“有 64 个 µthread slot”意味着能保存相应数量的执行上下文，不能据此推断有 64 套独立运算数据通路。</p>
+</div>
+<h4 id="2_1">2. 系统中的位置与数据路径<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h4>
+<p>下面只画出本文相关模块，NDP 的计算与 DRAM 访问都发生在 CXL memory 侧。</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Host process → load/store → CXL.mem
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                                │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                    CXL Memory Expander
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                                ▼
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                         Packet Filter
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                         ├─ 普通地址 → 内存访问路径
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                         └─ M² func 地址
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                                ▼
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                         NDP Controller
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                                ▼
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>                       NDP Units / sub-cores
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>                                ▼
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                      片上互联、缓存与内存控制器
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>                                ▼
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>                              DRAM
+</span></code></pre></div>
+<p><strong>NDP Controller</strong> 的职责包括接收管理调用、记录 kernel metadata、检查资源、安排 NDP Units 执行、跟踪完成状态并保存返回信息。它与执行算术指令的 NDP Units 分工不同。</p>
+<p>材料将它类比为 GPU 的管理 microcontroller / command processor，但论文没有给出其 RTL 细节。因此不能确定它内部究竟采用多少 FSM，或是否使用某个具体的小处理器核。</p>
+<h4 id="3">3. 一次计算任务的完整路径<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<p>以 <code>C = A + B</code> 为例，A/B/C 已位于 CXL memory 中：</p>
+<ol>
+<li><strong>Host 注册 kernel</strong>：提交代码位置与寄存器 / scratchpad 需求，取得 kernel ID。</li>
+<li><strong>Host 启动实例</strong>：提供同步方式、kernel ID、pool 和 B/C base 等参数。</li>
+<li><strong>控制请求到达设备</strong>：Host 向 M² func 地址 store，Packet Filter 将 CXL.mem 请求交给 NDP Controller。</li>
+<li><strong>设备安排资源</strong>：<strong>Controller 管理本次 instance</strong>；<strong>Generator 根据 pool 生成 µthreads</strong>。</li>
+<li><strong>处理器执行代码</strong>：slot 保存上下文，PC 取指，scalar / vector units 执行程序。</li>
+<li><strong>访问输入与输出</strong>：普通 kernel 访存需要地址转换，再通过缓存 / 互联 / memory controller 访问 DRAM；<strong>参数和局部数据可放在 scratchpad</strong>。</li>
+<li><strong>完成与返回状态</strong>：本次工作结束后，Controller 更新实例状态；Host 通过<strong>同步返回或异步查询确认完成</strong>。</li>
+<li><strong>Host 使用计算结果</strong>：访问普通 CXL memory 中的 C，<strong>而非把完整 C 数组作为管理函数返回值接收</strong>。</li>
+</ol>
+<p>后面的 B～H 分别展开这条路径中的接口、调度、执行、存储与地址转换。</p>
+<h3 id="b-memory-mapped-ndp-management-function">B. Memory-Mapped NDP Management Function<a class="headerlink" href="#b-memory-mapped-ndp-management-function" title="Permanent link">&para;</a></h3>
+<h4 id="1-m2-func-region">1. M² func region：用地址表示管理函数<a class="headerlink" href="#1-m2-func-region" title="Permanent link">&para;</a></h4>
+<p>设备预留一段 CXL memory <strong>物理地址空间</strong>作为 <strong>M² func region</strong>。Packet Filter 检查请求地址：</p>
+<ul>
+<li>普通地址：继续处理为正常 DRAM 访问。</li>
+<li>M² func 地址：截获为管理调用，交给 NDP Controller。</li>
+</ul>
+<p>因此，这个区域的核心是<strong>地址对应的接口语义</strong>，而非存放输入数组或 kernel 代码的一块普通 DRAM buffer。</p>
+<p>材料给出的函数 offset 以 32 B 为间隔：</p>
+<table>
+<thead>
+<tr>
+<th>相对 region base 的 offset</th>
+<th>管理函数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x00</code>，即 <code>0 &lt;&lt; 5</code></td>
+<td><code>ndpRegisterKernel</code></td>
+<td>注册代码位置及资源需求</td>
+</tr>
+<tr>
+<td><code>0x20</code>，即 <code>1 &lt;&lt; 5</code></td>
+<td><code>ndpUnregisterKernel</code></td>
+<td>注销 kernel</td>
+</tr>
+<tr>
+<td><code>0x40</code>，即 <code>2 &lt;&lt; 5</code></td>
+<td><code>ndpLaunchKernel</code></td>
+<td>启动一次 kernel instance</td>
+</tr>
+<tr>
+<td><code>0x60</code>，即 <code>3 &lt;&lt; 5</code></td>
+<td><code>ndpPollKernelStatus</code></td>
+<td>查询实例状态</td>
+</tr>
+<tr>
+<td><code>0x80</code>，即 <code>4 &lt;&lt; 5</code></td>
+<td><code>ndpShootdownTlbEntry</code></td>
+<td>使相关地址转换失效，属于特权管理操作</td>
+</tr>
+</tbody>
+</table>
+<p>以上地址都并非完全地址，而是 <strong>offset</strong>——因此事实上存在多个 M² func 区域，每个区域有一个基址（Base）。例如 <strong>region base</strong> 为 <code>0x10000</code>，访问 <code>0x10040</code> 就对应 LaunchKernel。</p>
+<p>论文中的原表格：</p>
+<p><img alt="alt text" src="assets/image-1.webp" /></p>
+<h4 id="2-uncacheable">2. 初始化、进程隔离与 uncacheable<a class="headerlink" href="#2-uncacheable" title="Permanent link">&para;</a></h4>
+<p>Host process 通过 driver 申请自己的 M² func region，driver 将区域设为 <strong>uncacheable</strong>，并通过 CXL.io 告知设备其 <strong>base、bound 和 ASID</strong>。</p>
+<p><strong>Packet Filter 保存这组 metadata（base, bound, ASID）</strong>，每个进程需要 <strong>18 B</strong>。初始化使用 CXL.io，性能收益主要来自之后频繁的管理调用走 CXL.mem。</p>
+<p><strong>ASID（Address Space Identifier）</strong> 用于区分地址空间。不同进程的 region 可以指向同一套 NDP Units，同时保留各自的控制信息与隔离关系。</p>
+<div class="admonition question">
+<p class="admonition-title">为什么共用计算硬件，却要分配不同 region？</p>
+<p>Region 相当于每个进程自己的控制入口。分开以后，设备能识别请求归属，Host 也能通过映射和权限保护这些入口。</p>
+<p><strong>按进程分配接口，不会复制处理器硬件。</strong> 计算资源仍由设备统一管理。</p>
+<p>比如大家 Launch Kernel 都是用的 <code>2 &lt;&lt; 5</code> ，即 <code>offset=0x40</code>，如果没有 region 区分，那么所有 progress 的 launch 请求可能都会变为：<code>0x10040</code>，<strong>设备就无法区分属于哪个进程</strong>。</p>
+</div>
+<div class="admonition question">
+<p class="admonition-title">为什么控制地址必须绕过 Host Cache？</p>
+<p>如果 store 仅更新了 CPU Cache，设备就收不到请求，无法触发管理函数。</p>
+<p>因此，M² func region 必须 uncacheable，使访问真正到达设备。普通输入输出数组与该控制区域的缓存属性需要分开理解。</p>
+</div>
+<h4 id="3_1">3. 调用编码与返回值<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>CXL.mem 请求中的部分</th>
+<th>管理接口中的含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>请求地址</td>
+<td>调用哪个函数，以及属于哪个进程的 region</td>
+</tr>
+<tr>
+<td>Write data</td>
+<td>函数参数</td>
+</tr>
+<tr>
+<td>后续对同一函数地址的 read</td>
+<td>获取该函数的控制返回值</td>
+</tr>
+</tbody>
+</table>
+<p>一次带返回值的调用可概括为：<strong>store 参数 → fence → load 返回值</strong>。</p>
+<p>这里的 <strong>fence</strong> 用于保证调用写入与返回值读取之间的顺序；write 的确认本身不能承载任意函数返回值，所以需要后续 read。</p>
+<p>Host 可以利用向量寄存器打包参数。例如 Fig. 4 中的 <code>vse64.v v1, (x7)</code> 将 v1 内的启动参数写入 x7 指向的控制地址。<strong>这里写的是 metadata / arguments，并非 A、B、C 数组的数据本体。</strong></p>
+<p>案例：Fig 4.</p>
+<p><img alt="alt text" src="assets/image-3.webp" /></p>
+<h3 id="c-ndp-kernel-launch">C. NDP Kernel Launch<a class="headerlink" href="#c-ndp-kernel-launch" title="Permanent link">&para;</a></h3>
+<h4 id="1_1">1. 注册参数与启动参数<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h4>
+<p><strong>注册</strong>说明“程序在哪里、需要什么资源”；<strong>启动</strong>说明“这次执行哪段程序、处理哪些数据”。两者不同。</p>
+<table>
+<thead>
+<tr>
+<th><code>ndpRegisterKernel</code> 参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>codeLoc</code></td>
+<td>kernel code 的位置</td>
+</tr>
+<tr>
+<td><code>scratchpadMemSize</code></td>
+<td>所需 <strong>scratchpad 空间</strong></td>
+</tr>
+<tr>
+<td><code>numIntRegs</code></td>
+<td>每个 µthread 的<strong>整数寄存器需求</strong></td>
+</tr>
+<tr>
+<td><code>numFloatRegs</code></td>
+<td>每个 µthread 的<strong>浮点寄存器需求</strong></td>
+</tr>
+<tr>
+<td><code>numVectorRegs</code></td>
+<td>每个 µthread 的<strong>向量寄存器需求</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><code>ndpLaunchKernel</code> 参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>synchronicity</code></td>
+<td>采用同步还是异步调用语义</td>
+</tr>
+<tr>
+<td><code>ndpKernelID</code></td>
+<td>要运行哪一段已经注册好的 NDP kernel code</td>
+</tr>
+<tr>
+<td><code>µthreadPoolRegion(base, bound)</code></td>
+<td><strong>用一段虚拟地址范围定义本次 µthreads 的映射空间</strong></td>
+</tr>
+<tr>
+<td><code>kernelArgSize</code></td>
+<td>后续 kernel arguments 的字节数</td>
+</tr>
+<tr>
+<td><code>kernelArguments</code></td>
+<td>kernel 使用的指针 / base address、长度等参数</td>
+</tr>
+</tbody>
+</table>
+<p>前四项属于 <strong>M² func 的启动控制参数</strong>；<code>kernelArguments</code> <strong>才是计算程序本身使用的参数</strong>。大数组不直接塞入启动请求，而是通过地址参数指向已经位于 CXL memory 中的数据。</p>
+<h4 id="2-thread-pool-region">2. µthread pool region<a class="headerlink" href="#2-thread-pool-region" title="Permanent link">&para;</a></h4>
+<p>传统 GPU 逻辑中，每一个 thread<strong> 通过 Thread ID 计算自己的数据访问地址</strong>，比如：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></code></pre></div>
+<p>所以 thread 是先存在的，再由 thread ID 算数据地址。</p>
+<p>M²NDP 反过来：<strong>数据地址本身定义这个 µthread</strong>，也就是——<strong>μthread pool region</strong>。它是与一个 kernel instance 关联的<strong>虚拟地址区域</strong>，用于决定生成哪些 µthreads，以及每个 µthread 对应的 mapped address 和 offset。</p>
+<p>例如 <code>[0xA000, 0xA1FF]</code>，每个 µthread 对应 32 B，则得到：</p>
+<ul>
+<li>μ thread 0: 0xA000</li>
+<li>μ thread 1: 0xA020</li>
+<li>μ thread 2: 0xA040</li>
+<li>...</li>
+</ul>
+<p><strong>它不是存放线程对象的数组，也不是 M² func region。</strong> 后者由 Host 用于发控制命令，前者属于设备侧执行的数据映射模型。</p>
+<h4 id="3_2">3. 同步、异步和两类“返回”<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>调用方式</th>
+<th>Host 何时得到调用返回？</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Synchronous</strong></td>
+<td>kernel 结束后，相关返回值读取才完成</td>
+<td>后续工作立即依赖结果时，<strong>Host 等待 Kernel 计算结束后再继续工作</strong></td>
+</tr>
+<tr>
+<td><strong>Asynchronous</strong></td>
+<td>提交后取得 <code>kernelInstanceID</code>，无需等计算结束</td>
+<td>Host 可以继续计算或提交其他任务，之后再查询状态</td>
+</tr>
+</tbody>
+</table>
+<p>这里的同步 / 异步是<strong>软件调用语义</strong>，与同步时钟电路、异步逻辑电路无关。“异步立即返回”指不等待 kernel 完成，<strong>Host computation, 其他 NDP Kernels 和当前 NDP Kernels 可以并发执行</strong>。</p>
+<p>还需要区分：</p>
+<ul>
+<li><strong>控制返回值</strong>：<code>kernelInstanceID</code>、错误或运行状态，<strong>Host 对同一 M²func 地址 load</strong>。</li>
+<li><strong>计算输出</strong>：例如 <code>C[]</code>，由 kernel 的 store 写入普通 CXL memory；确认完成后，Host 再访问该输出数据。</li>
+</ul>
+<p><code>ndpKernelID</code> 标识一份已注册程序，<code>kernelInstanceID</code> 标识其中一次启动；两次运行同一程序，仍是不同实例。</p>
+<h4 id="4">4. 多个请求与硬件资源不足<a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
+<p>这里的 <strong>resource</strong> 包括 µthread slots、physical registers、scratchpad 空间、可用执行容量，以及 launch buffer entries。</p>
+<table>
+<thead>
+<tr>
+<th>设备状态</th>
+<th>启动请求如何处理？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>资源足够</td>
+<td>安排执行，允许多个 kernel 并发</td>
+</tr>
+<tr>
+<td>资源不足，<strong>但请求 buffer 有空间</strong></td>
+<td>暂存请求，<strong>等待之前的 kernel instance 资源释放</strong></td>
+</tr>
+<tr>
+<td>请求 buffer 也已满</td>
+<td>返回 error</td>
+</tr>
+</tbody>
+</table>
+<p>同一 kernel 的整个 pool 也不必一次全部驻留。硬件可以先生成一批 µthreads，完成后释放 slot 和寄存器，再继续生成后续 µthreads。</p>
+<p>因此 M² func 并不是：一次只能跑一个 kernel 的 command register。它设计上支持：<strong>多个 Host thread / process 发起多个 concurrent NDP kernels</strong>。</p>
+<p>这正是它优于“直接 MMIO 写几个 device register”的一部分。</p>
+<h4 id="5-fig-5">5. Fig. 5：通信开销与端到端时间<a class="headerlink" href="#5-fig-5" title="Permanent link">&para;</a></h4>
+<p><strong>Fig 5.</strong></p>
+<p><img alt="alt text" src="assets/image-2.webp" /></p>
+<p>材料采用以下简化模型：</p>
+<div class="arithmatex">\[
+x = 75\ \mathrm{ns},\qquad
+y = 500\ \mathrm{ns},\qquad
+z = \text{NDP kernel execution time}
+\]</div>
+<p>其中 <strong>x 是 CXL.mem 的单程建模延迟</strong>，<strong>y 是 CXL.io/PCIe 的单程建模延迟</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>通信关键路径的特点</th>
+<th>模型中的通信开销</th>
+<th>端到端时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>M² func</strong></td>
+<td>CXL.mem 提交与返回，减少命令获取环节</td>
+<td><span class="arithmatex">\(2x = 0.15\ \mathrm{µs}\)</span></td>
+<td><span class="arithmatex">\(z + 2x\)</span></td>
+</tr>
+<tr>
+<td><strong>Ring Buffer</strong></td>
+<td>排队、通知、DMA 取命令、完成 / 状态交互</td>
+<td><span class="arithmatex">\(8y = 4\ \mathrm{µs}\)</span></td>
+<td><span class="arithmatex">\(z + 8y\)</span></td>
+</tr>
+<tr>
+<td><strong>Direct MMIO</strong></td>
+<td>寄存器启动与状态交互</td>
+<td><span class="arithmatex">\(3y = 1.5\ \mathrm{µs}\)</span></td>
+<td><span class="arithmatex">\(z + 3y\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>若 <span class="arithmatex">\(z=6.4\ \mathrm{µs}\)</span>，则三者分别约为 <strong>6.55 µs、10.4 µs、7.9 µs</strong>。</p>
+<div class="admonition attention">
+<p class="admonition-title">Fig. 5 是通信关键路径模型</p>
+<p><code>store → fence → load</code> 描述调用语义；<span class="arithmatex">\(z+2x\)</span> 描述图中的简化关键路径。不能把 <span class="arithmatex">\(2x\)</span> 解释成整个系统仅有两个报文，也不能为每个软件或硬件步骤都分配同一个固定延迟。</p>
+<p>这些公式的作用是说明：<strong>kernel 越短，压缩 launch / completion 开销越重要。</strong> 它们与 II-C 引述的已有系统开销量级，应分别按各自统计范围理解。</p>
+</div>
+<h3 id="d-memory-mapped-thread">D. Memory-Mapped µthread<a class="headerlink" href="#d-memory-mapped-thread" title="Permanent link">&para;</a></h3>
+<h4 id="1-fgmt">1. 轻量上下文与 FGMT<a class="headerlink" href="#1-fgmt" title="Permanent link">&para;</a></h4>
+<p>复杂 OoO CPU 可以在单个线程中寻找可并行执行的指令，但需要 ROB、issue queue、load/store queue、register renaming 和 wakeup/select 等硬件。本文面对低计算强度的 NDP 任务，选择另一条路线：<strong>单个 µthread 顺序执行，不同 µthreads 交错发射。</strong></p>
+<p>例如：<strong>当 µthread 0 因为 load 等待数据时，调度器选择其他可执行的 µthread，使执行单元继续工作</strong>。这就是 <strong>FGMT：Fine-Grained Multithreading</strong>。</p>
+<p>它<strong>隐藏的是等待时间对整体吞吐的影响</strong>，并没有让一次 DRAM 访问本身变快。</p>
+<p><strong>“µ”强调上下文轻量。</strong>  普通 CPU Hardware thread 中，每个硬件线程都包含：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Architectural state:
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>x0~x31
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>f0~f31
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>vector registers
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>CSR
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>...
+</span></code></pre></div>
+<p>无论这个程序实际用不用，<strong>都有一个完整 ISA context 的概念</strong>。如果一次要保存几十个/几百个 Thread context，Register File 的面积就会很大。而作者注意到：</p>
+<blockquote>
+<p>memory-bound kernel 往往寄存器需求很少。</p>
+</blockquote>
+<p>因此，M² NDP Kernel 注册时声明寄存器需求，<strong>硬件按需求给每个 µthread 分配寄存器</strong>。例如，一个 kernel 只需少量整数和向量寄存器，就不必为每个驻留线程预留一整套很大的寄存器存储。</p>
+<p>因果关系是：<strong>每个线程成本降低 → 同样面积可保存更多上下文 → 更多可交错执行的线程 → 更多未完成访存请求 → 更好地利用 DRAM 带宽。</strong></p>
+<h4 id="2-mapped-address-offset">2. 地址驱动：mapped address 与 offset<a class="headerlink" href="#2-mapped-address-offset" title="Permanent link">&para;</a></h4>
+<p>GPU 程序通常从 <code>blockIdx、threadIdx、blockDim</code> 算出元素编号，再计算数据地址。</p>
+<p>M² µthread 以 pool region 的地址空间定义执行实例，创建时直接给出：</p>
+<ul>
+<li><strong>x1 = mapped address</strong>：当前 µthread 对应的数据块地址。</li>
+<li><strong>x2 = offset</strong>：该地址相对于 pool base 的字节偏移。</li>
+</ul>
+<blockquote>
+<p>这里的 x1 和 x2 就是 µthread 的寄存器映射。<strong>它们是在 µthread 生成时就被分配并且 rename 好的寄存器</strong>。因此，这里体现出了 μthread generator 的作用。</p>
+</blockquote>
+<p>用 <span class="arithmatex">\(G\)</span> 表示<strong>每个 µthread 的数据粒度</strong>，则可以把映射写成：</p>
+<div class="arithmatex">\[
+\mathrm{mapped\_address}_i = \mathrm{pool\_base} + iG
+\]</div>
+<div class="arithmatex">\[
+\mathrm{offset}_i = iG
+\]</div>
+<p>这是对材料中地址例子的公式化表达。</p>
+<div class="admonition example">
+<p class="admonition-title">Fig. 4：从 Host 控制地址到 VectorAdd 数据地址</p>
+<p>Host 中 x7 保存控制入口的虚拟地址 <code>0x60040</code>；经过 Host 地址转换后，请求地址为 <code>0x10040</code>。</p>
+<p>设备上的 M² func base 是 <code>0x10000</code>，所以 <code>0x10040</code> 对应 <code>base + 0x40</code>，即 LaunchKernel。Packet Filter 将该访问交给 NDP Controller。</p>
+<p>本次 VectorAdd 的 A、B、C 起始地址分别为 <code>0xA000、0xB000、0xC000</code>。选 A 的 <code>[0xA000, 0xA1FF]</code> 作为 pool，B/C base 作为 kernel arguments，每个 µthread 处理 32 B。</p>
+<table>
+<thead>
+<tr>
+<th>µthread</th>
+<th>x1：mapped address</th>
+<th>x2：offset</th>
+<th>B 地址</th>
+<th>C 地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>0xA000</code></td>
+<td><code>0x00</code></td>
+<td><code>0xB000</code></td>
+<td><code>0xC000</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>0xA020</code></td>
+<td><code>0x20</code></td>
+<td><code>0xB020</code></td>
+<td><code>0xC020</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>0xA040</code></td>
+<td><code>0x40</code></td>
+<td><code>0xB040</code></td>
+<td><code>0xC040</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>0xA060</code></td>
+<td><code>0x60</code></td>
+<td><code>0xB060</code></td>
+<td><code>0xC060</code></td>
+</tr>
+</tbody>
+</table>
+<p>A 的地址直接使用 x1；B/C 的地址分别为 <code>B_base + x2</code>、<code>C_base + x2</code>。图示的 pool 共 512 B，因此可对应 <strong>16 个 µthreads</strong>。</p>
+<p>图中还展示了<strong>线程的交错分配</strong>：<strong>Unit 0 处理 µthread 0、4……，Unit 1 处理 µthread 1、5……</strong>。这些线程在各自执行单元上进行 load、add、store。交错分配的目的是：<strong>让不同的 μ thread 分配到不同的 NDP Unit，防止同一个 Unit 的 µthread slots 被吃满，而其他 NDP Unit 空闲</strong>。</p>
+</div>
+<p>这个模型减少的是<strong>从线程编号生成数据地址的部分指令</strong>，并没有消除 kernel 中所有地址计算。例如 B/C 仍要与 offset 相加。</p>
+<p>映射也不必强制对应一个真实输入地址。<strong>可以使用 dummy address；只要程序不实际访问它，offset 就可以作为线程编号使用</strong>。</p>
+<h4 id="3-gpu">3. 与 GPU 比较的四个设计点<a class="headerlink" href="#3-gpu" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>比较点</th>
+<th>材料中的 GPU 模型</th>
+<th>M² µthread 模型</th>
+<th>作者希望获得的收益</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>地址与执行方式</td>
+<td>通过线程 ID 计算地址，使用 SIMT</td>
+<td>地址 / offset 直接赋给 µthread，scalar + RVV SIMD [1]</td>
+<td>减少地址及部分控制计算的重复</td>
+</tr>
+<tr>
+<td>资源管理粒度</td>
+<td>thread block 是重要的资源分配单位</td>
+<td><strong>单个 µthread 完成后即可释放自身资源</strong></td>
+<td>减少不规则任务中的资源滞留 [2]</td>
+</tr>
+<tr>
+<td>片上共享存储范围</td>
+<td>CUDA shared memory <strong>以 block 为共享范围</strong></td>
+<td><strong>同一 NDP Unit 的 µthreads 可共享 scratchpad</strong> [3]</td>
+<td>减少重复初始化和 DRAM 中转</td>
+</tr>
+<tr>
+<td>数据处理粒度</td>
+<td>例如 32 个 FP32 lane 对应 128 B 数据</td>
+<td><strong>接近底层 DRAM 访问粒度</strong> [4]，例如 32 / 64 B</td>
+<td>降低将<strong>大量不规则任务绑定一起执行的浪费</strong></td>
+</tr>
+</tbody>
+</table>
+<p>[1]: <strong>Scalar + SIMD</strong> 的分工是：一份控制 / 地址逻辑用标量指令处理，批量数据用向量指令处理。论文借此说明降低硬件成本的思路，不应泛化为“所有 GPU 都没有标量执行能力”。<br />
+[2]: <strong>例如由于 thread diverge，一个 thread block 中的 warp 所占用的资源直到该 thread block 所有的 warp 都执行完毕后才能释放</strong>。<br />
+[3]: <strong>Scratchpad</strong> 是软件显式管理的<strong>片上 SRAM</strong>，具体见 III-F。<strong>它的共享范围扩大到 NDP Unit</strong>，而非 GPU 的 shared memory 将共享范围约束在 Thread Block 内。<br />
+[4]: <strong>DRAM access granularity</strong> 是<strong>底层一次访问的数据粒</strong>度。材料举例：LPDDR5 约 32 B、DDR5 约 64 B。让一个 µthread 对应类似规模的数据块，是为了匹配访存需求，而非追求尽可能宽的向量。</p>
+<h4 id="4-dram">4. “并行”是否要求 DRAM 一次给出所有数据？<a class="headerlink" href="#4-dram" title="Permanent link">&para;</a></h4>
+<p>不需要。并行包含几个层次：</p>
+<ol>
+<li><strong>多个 NDP Units、多个 sub-cores</strong> 执行计算。</li>
+<li><strong>多个 µthreads</strong> 同时驻留，部分执行、部分等待。</li>
+<li><strong>多个请求同时 outstanding</strong>，进入片上互联与 memory controller。</li>
+<li>请求被<strong>分配到不同 DRAM channels / banks</strong>，或在同一资源上排队与流水处理。</li>
+</ol>
+<p>因此，多个 kernel 可以重叠运行，但仍<strong>受到执行单元、队列、寄存器、DRAM 带宽等资源约束</strong>。<strong>并发请求多，不意味着 DRAM 单拍输出所有任务的数据。</strong></p>
+<h3 id="e-ndp-unit-microarchitecture">E. NDP Unit Microarchitecture<a class="headerlink" href="#e-ndp-unit-microarchitecture" title="Permanent link">&para;</a></h3>
+<p>整理素材：<a href="sessions/m2ndp_2/">III-E～H 拆解</a>，并参照 <a href="sessions/m2ndp_1_qa/">硬件组成问答</a>。</p>
+<p>NDP Unit Architecture 示意图：</p>
+<p><img alt="alt text" src="assets/image-4.webp" /></p>
+<h4 id="1-ndp-unit">1. NDP Unit 内部的模块<a class="headerlink" href="#1-ndp-unit" title="Permanent link">&para;</a></h4>
+<p>NDP Unit 可以理解成一个<strong>面向 memory-bound 工作负载的多线程 RISC-V Vector 小处理器</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>保存或执行什么？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>µthread Generator</strong></td>
+<td>根据 pool 与执行阶段<strong>产生新的 µthreads</strong></td>
+</tr>
+<tr>
+<td><strong>NDP sub-cores</strong></td>
+<td>将执行资源划分成多个较小单元，简化 dispatch</td>
+</tr>
+<tr>
+<td><strong>L1 Instruction Cache</strong></td>
+<td>缓存 kernel 指令</td>
+</tr>
+<tr>
+<td><strong>L1 Data Cache / Scratchpad</strong></td>
+<td>保存缓存数据或软件管理的片上数据</td>
+</tr>
+<tr>
+<td><strong>L1-I-TLB / L1-D-TLB</strong></td>
+<td>保存指令 / 数据访问的地址转换</td>
+</tr>
+</tbody>
+</table>
+<p>每个 NDP sub-cores 又包含：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>保存或执行什么？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>µthread slots</strong></td>
+<td>保存各驻留线程的 <strong>PC</strong>、<strong>CSR(Configure and Status Register)</strong>、当前<strong>指令相关状态及寄存器 base ID</strong></td>
+</tr>
+<tr>
+<td><strong>Decoder / register mapping</strong></td>
+<td>译码并将逻辑寄存器映射到分配的物理寄存器</td>
+</tr>
+<tr>
+<td><strong>Register File</strong></td>
+<td>保存各 µthread 的整数、浮点与向量寄存器值</td>
+</tr>
+<tr>
+<td><strong>Scalar / vector ALU</strong></td>
+<td>执行相应的算术逻辑运算</td>
+</tr>
+<tr>
+<td><strong>Scalar / vector SFU</strong></td>
+<td>特殊功能执行单元</td>
+</tr>
+<tr>
+<td><strong>Scalar / vector LSU</strong></td>
+<td>发出 load/store，处理访存相关操作</td>
+</tr>
+</tbody>
+</table>
+<p>其中 <strong>PC</strong> 决定下一条指令的位置；<strong>CSR</strong> 保存线程相关控制状态；<strong>LSU（Load/Store Unit）</strong> 负责访存。多个 context 共享执行单元，而不是各自拥有完整 datapath。</p>
+<p>每个 μthread slots 包含一个程序计数器（PC）、RISC‑V的配置与状态寄存器（CSR），以及当前<strong>已解码指令的操作码和寄存器编号，并为整型/浮点/向量寄存器提供 base IDs</strong>。</p>
+<p>base IDs 在创建 μthread 并为其分配所需寄存器时确定；<strong>逻辑寄存器只需在其基址编号上加上逻辑编号，即可映射到物理寄存器</strong>。</p>
+<h4 id="2-thread">2. 一个 µthread 从创建到完成<a class="headerlink" href="#2-thread" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Generator 为当前 body 选择一个待处理 mapped address。</li>
+<li>硬件找到空闲 slot，并按 kernel 声明的需求分配寄存器。</li>
+<li>初始化 PC 为对应代码入口，写入 mapped address、offset 等执行信息。</li>
+<li>取指、译码，并将逻辑寄存器号映射到已分配的物理存储。</li>
+<li>单个 µthread 内顺序执行；<strong>等待访存时，其他 ready µthreads 继续发射</strong>。</li>
+<li>执行完成后，释放该线程的 slot 和寄存器，继续处理 pool 中后续工作。</li>
+</ol>
+<p>!!! "Interleaved Schedule"<br />
+    为实现 NDP Unit 的 load-balance，μthread 以与内存访问粒度相匹配的方式在各 NDP Unit 上交错调度。否则，对于 Fine-grained NDP Kernel 而言，各NDP单元之间可能会出现显著的<strong>负载不均衡</strong>（例如，某个NDP单元可能同时活跃 64 个 μthread，而其他单元则处于空闲状态）。</p>
+<div class="language-text highlight"><pre><span></span><code>我们可以直接从 Fig 4. 中窥见这一点，其中 μthread 并非按顺序 `0~n` 位于 NDP Unit 0，`n~2n-1` 位于 NDP Unit 1...，而是**交错分配到不同的 NDP Units**。这样可以确保每个 NDP Unit 都有足够的 μthread 来保持执行单元的高利用率。
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">这里的寄存器映射与 OoO CPU 的用途不同</p>
+<p>每个 µthread 都会使用 x1、x2 等逻辑寄存器名，但它们必须保存各自的数据。<strong>Slot 中的 base ID 等信息，用于找到该线程实际获分配的 physical registers</strong>。</p>
+<p>本文采用顺序执行；看到 register renaming / mapping，并不意味着该核心具备复杂 CPU 的乱序发射与推测执行。</p>
+</div>
+<p>多个 sub-core 将调度分散到较小单元；按 memory-access granularity 交错分配 µthreads，则有助于避免任务全部集中到少数 NDP Units。</p>
+<h4 id="3_3">3. 用配置示例理解硬件规模<a class="headerlink" href="#3_3" title="Permanent link">&para;</a></h4>
+<p>Sessions 引述了一个评估配置，下面仅用它说明“Unit、sub-core、slot”的关系。这些数值不是 M²NDP 模型的固定要求。</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>配置示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一个 memory expander</td>
+<td>32 个 NDP Units，频率 2 GHz</td>
+</tr>
+<tr>
+<td>每个 NDP Unit</td>
+<td>4 个 sub-cores</td>
+</tr>
+<tr>
+<td>每个 sub-core</td>
+<td>16 个 µthread slots</td>
+</tr>
+<tr>
+<td>每个 sub-core 的标量执行资源</td>
+<td>2 个 ALU、1 个 SFU、1 个 LSU</td>
+</tr>
+<tr>
+<td>每个 sub-core 的向量执行资源</td>
+<td>1 个 ALU、1 个 SFU、1 个 LSU</td>
+</tr>
+<tr>
+<td>其他资源</td>
+<td>48 KB register file、128 KB scratchpad / L1D、256-bit vector units 等</td>
+</tr>
+<tr>
+<td>DRAM 系统示例</td>
+<td>32-channel LPDDR5，总带宽 409.6 GB/s</td>
+</tr>
+</tbody>
+</table>
+<p>由此可算出：<strong>每个 Unit 有 <span class="arithmatex">\(4\times16=64\)</span> 个 slot，32 个 Units 共 2048 个 slot。</strong></p>
+<p><strong>这说明驻留上下文可以很多，执行单元却由这些上下文共享</strong>。一个 kernel 的 µthread 总数也可以超过 2048，通过分批生成完成。</p>
+<h3 id="f-cache-hierarchy">F. Cache Hierarchy<a class="headerlink" href="#f-cache-hierarchy" title="Permanent link">&para;</a></h3>
+<h4 id="1-scratchpadcache-dram">1. 先区分 Scratchpad、Cache 和 DRAM<a class="headerlink" href="#1-scratchpadcache-dram" title="Permanent link">&para;</a></h4>
+<p><strong>Scratchpad Memory（SPM）是 NDP Unit 内部，由软件显式管理的高速片上 SRAM。</strong> 它是已有的体系结构概念，本文的设计重点在共享范围和使用方式。</p>
+<table>
+<thead>
+<tr>
+<th>比较项</th>
+<th>Scratchpad</th>
+<th>L1 Data Cache</th>
+<th>设备 DRAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>位置</td>
+<td>NDP Unit 的片上存储</td>
+<td>NDP Unit 附近的片上存储</td>
+<td>CXL memory 的主要容量来源</td>
+</tr>
+<tr>
+<td>管理方式</td>
+<td><strong>程序显式选择要保存和访问的数据</strong></td>
+<td>硬件管理缓存行、命中与替换</td>
+<td>通过内存控制器访问</td>
+</tr>
+<tr>
+<td>典型内容</td>
+<td><strong>kernel arguments、临时共享变量、局部 reduction 结果</strong></td>
+<td>普通内存访问得到的数据副本</td>
+<td>大输入数组、输出和其他全局数据</td>
+</tr>
+<tr>
+<td>地址意义</td>
+<td><strong>访问预留地址，明确指向片上工作区</strong></td>
+<td>普通内存地址可能命中 Cache，也可能 miss</td>
+<td>对应设备内存中的数据</td>
+</tr>
+</tbody>
+</table>
+<p>例如，kernel 将 x3 设置为 scratchpad base <code>0x10000000</code> 后，<code>sd x0, 0(x3)</code> 明确将这块片上 SRAM 中的对应位置清零。此外，论文说明，<strong>同一组片上存储容量可以在 L1 Data Cache 与 scratchpad 之间配置</strong>。</p>
+<h4 id="2-scratchpad-m2ndp">2. Scratchpad 在 M²NDP 中的三个用途<a class="headerlink" href="#2-scratchpad-m2ndp" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>共享 kernel arguments</strong>：启动后，参数被放入各 NDP Unit 的 scratchpad，多个 µthreads 可以读取相同参数。</li>
+<li><strong>共享临时结果</strong>：同一个 Unit 的 µthreads 可以<strong>更新局部累加量</strong>，<strong>减少频繁写回 DRAM</strong>。</li>
+<li><strong>减少 global memory traffic</strong>：尽量<strong>在片上完成重复访问、局部协作与中间计算</strong>。</li>
+</ol>
+<p>同一 NDP Unit 内的 µthreads 可以共享该存储。访问 scratchpad 的 load/store 路径还支持 atomic operations。<strong>不同 NDP Units 的局部结果，可以再通过全局内存合并</strong>，III-G 的 reduction 就采用这种组织。</p>
+<div class="admonition attention">
+<p class="admonition-title">三个 region 各有不同用途</p>
+<p><strong>M² func region</strong>：Host 发出管理调用的控制地址区域。</p>
+<p><strong>µthread pool region</strong>：定义线程 mapped address / offset 的虚拟地址区域。</p>
+<p><strong>Scratchpad region</strong>：NDP kernel 用来访问 Unit 内片上工作存储的区域。</p>
+<p>它们都涉及地址映射，但控制、执行划分与数据存储的职责不同。</p>
+</div>
+<h4 id="3_4">3. 数据缓存层次与原子操作<a class="headerlink" href="#3_4" title="Permanent link">&para;</a></h4>
+<p>本文的数据访问层次为：<strong>NDP Unit 的 L1D → memory-side L2 → memory controller → DRAM</strong>。</p>
+<ul>
+<li><strong>L1D 采用 write-through</strong>：写操作继续向下传播，<strong>减少 dirty 数据仅停留于 private L1 的情况</strong>，简化缓存一致性的实现。</li>
+<li><strong>L2 位于 memory controller 前</strong>：作为内存侧的缓存层。</li>
+<li><strong>Global-memory atomic 在 memory-side L2 处理</strong>：对<strong>共享全局地址的原子更新</strong>在这一层完成。</li>
+<li><strong>Scratchpad atomic 在本地路径处理</strong>：用于同一 Unit 内的共享更新。</li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Write-through 不能单独解决所有一致性问题</p>
+<p>Write-through 描述的是<strong>写入如何传播</strong>。另一个 L1 已经缓存旧值时，如何保证后续读看到正确数据，仍是需要处理的问题。</p>
+<p>论文没有给出完整的 NDP private-L1 一致性协议。可以记录作者采用该层次以降低复杂度，不能进一步推出“只要 write-through，就不需要任何一致性管理”。</p>
+</div>
+<p>Host Cache 与设备内存之间的交互则由 II-B 中的 HDM-DB / DCOH / BI 等机制支持，它与 NDP Units 内部的缓存组织，需要分别理解。</p>
+<h4 id="4-instruction-cache">4. Instruction Cache 与代码生命周期<a class="headerlink" href="#4-instruction-cache" title="Permanent link">&para;</a></h4>
+<p>目标 kernel 通常“数据多、代码短”，<strong>instruction working set 较小，因此无需非常大的 I-cache</strong>。</p>
+<p>论文说明，注销 kernel 时会 flush Instruction Cache，以免后续取到过期代码。但是这一操作发生的频率较低，对性能的影响可以忽略不记。这个行为也表明：<strong>kernel 是由 PC 取指、译码并执行的程序，不是固定组合逻辑</strong>。</p>
+<h3 id="g-programming-model">G. Programming Model<a class="headerlink" href="#g-programming-model" title="Permanent link">&para;</a></h3>
+<h4 id="1-kernel-code">1. Kernel code 在哪里，又由谁执行？<a class="headerlink" href="#1-kernel-code" title="Permanent link">&para;</a></h4>
+<p>本文 kernel 使用 <strong>RV64IMAFDV 或其子集</strong>，不支持依赖操作系统服务的指令，例如 ECALL。设备侧不需要为每个 µthread 运行一个 OS thread。</p>
+<p>可以确定的执行关系为：<strong>代码入口 → PC 取指 → I-cache → decoder → scalar / vector execution units</strong>。</p>
+<p>注册参数提供 <code>codeLoc</code>，设备据此管理代码位置；µthread 的 PC 指向对应执行阶段的入口。</p>
+<div class="admonition attention">
+<p class="admonition-title">代码位置与搬运流程的已知边界</p>
+<p>论文明确给出 <code>codeLoc</code>、I-cache 和注销时的 I-cache flush，但没有完整说明 binary 上传、存储和入口 metadata 的格式。</p>
+<p>“代码存放在 NDP 能访问的 memory / HDM，Unit 通过 PC 取指”是合理的路径解释；<strong>注册时是否复制整个 binary、是否只记录 pointer、多个 body 的入口如何编码，仍未明确。</strong></p>
+</div>
+<h4 id="2-initializerkernel-body-finalizer">2. Initializer、Kernel Body 与 Finalizer<a class="headerlink" href="#2-initializerkernel-body-finalizer" title="Permanent link">&para;</a></h4>
+<p>一个 NDP kernel 可以包含初始化、一个或多个并行阶段，以及收尾阶段。</p>
+<table>
+<thead>
+<tr>
+<th>组成</th>
+<th>含义</th>
+<th>Reduction 例子中的作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Initializer</strong></td>
+<td>并行 body 开始前执行初始化</td>
+<td>将参与 Unit 的 scratchpad local sum 清零</td>
+</tr>
+<tr>
+<td><strong>Kernel Body</strong></td>
+<td>对 pool 对应的 µthreads 执行数据处理</td>
+<td>每个 µthread 读取一块数据、求和、累加局部结果</td>
+</tr>
+<tr>
+<td><strong>Finalizer</strong></td>
+<td>所有 body 完成后的收尾</td>
+<td>将每个 Unit 的 local sum 合并到 global sum</td>
+</tr>
+</tbody>
+</table>
+<p>这些是<strong>同一个 kernel 的代码阶段</strong>。Initializer / Finalizer 用于一次启动中的阶段性工作，<strong>body 则面向 pool 的多个执行实例</strong>。在下面的多 Unit reduction 中，每个 Unit 都需要处理自己的局部 scratchpad 状态。</p>
+<h4 id="3-kernel-multiple-bodies">3. 为什么一份 kernel 可以有 multiple bodies？<a class="headerlink" href="#3-kernel-multiple-bodies" title="Permanent link">&para;</a></h4>
+<p>算法可能有多个相互依赖的并行阶段。例如，阶段 1 先形成完整 histogram，阶段 2 再使用该 histogram 计算后续结果。</p>
+<p>本文模型是：</p>
+<p><strong>Initializer → Body 0 的全部 µthreads 完成 → Body 1 的全部 µthreads 完成 → …… → Finalizer</strong>。</p>
+<p>一个 body 对应的所有 µthreads 完成后，generator 才为下一 body 重新生成 µthreads。这形成了 <strong>kernel-wide phase barrier</strong>。</p>
+<div class="admonition example">
+<p class="admonition-title">跨阶段同步为什么有用？</p>
+<p>µthread A 很快完成 Body 0，µthread B 还在生成 Body 0 的结果。</p>
+<p>如果 A 立即进入 Body 1，<strong>可能读取尚未由 B 更新的输入</strong>。阶段 barrier 要求等本阶段全部工作完成，再开始下一阶段。</p>
+<p>因此，multiple bodies 可以表示“<strong>多个并行 phase</strong>”，并<strong>提供 phase 之间的同步边界</strong>。这里就会涉及到 atomic 操作。</p>
+</div>
+<p>不能默认寄存器值会自动跨 body 保留；材料描述的是下一阶段<strong>重新生成</strong> µthreads。需要保留的阶段间数据，应与 scratchpad / 全局存储的共享方式一并考虑。</p>
+<h4 id="4-reduction-sum">4. 案例：两级 Reduction Sum<a class="headerlink" href="#4-reduction-sum" title="Permanent link">&para;</a></h4>
+<p>如 Fig 8.</p>
+<p><img alt="alt text" src="assets/image-5.webp" /></p>
+<p>目标为：</p>
+<div class="arithmatex">\[
+S = \sum_{i=0}^{N-1} A[i]
+\]</div>
+<p>计算分成两层：<strong>µthread 对自己的数据块求和 → 累加到本 Unit 的 local sum → 各 Unit 合并到 global sum</strong>。</p>
+<p>图中 scratchpad 的使用如下：</p>
+<table>
+<thead>
+<tr>
+<th>地址</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x10000000</code>，即 SPM base + 0</td>
+<td>本 NDP Unit 的 64-bit local sum</td>
+</tr>
+<tr>
+<td><code>0x10000008</code>，即 SPM base + 8</td>
+<td><strong>最终 global result 的地址</strong>，即一个 pointer</td>
+</tr>
+</tbody>
+</table>
+<p>第二个位置保存的是<strong>结果地址</strong>，不是结果本身。Finalizer 要先读取这个 pointer，才知道应该向哪里累加。</p>
+<p>下面按 sessions 中的代码整理，标量 load/store 统一采用 <code>imm(rs1)</code> 的访存表示。代码用于理解数据路径，不是包含向量配置、阶段入口与退出约定的完整可运行程序。</p>
+<p><strong>Initializer：清零本 Unit 的 local sum。</strong></p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">li</span><span class="w"> </span><span class="no">x3</span><span class="p">,</span><span class="w"> </span><span class="mi">0x10000000</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nf">sd</span><span class="w"> </span><span class="no">x0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">x3</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Kernel Body：一个 µthread 对自己映射的数据块求和。</strong></p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nf">vle64.v</span><span class="w">    </span><span class="no">v2</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">x1</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nf">vmv.v.i</span><span class="w">    </span><span class="no">v1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nf">vredsum.vs</span><span class="w"> </span><span class="no">v3</span><span class="p">,</span><span class="w"> </span><span class="no">v2</span><span class="p">,</span><span class="w"> </span><span class="no">v1</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nf">vmv.x.s</span><span class="w">    </span><span class="no">x4</span><span class="p">,</span><span class="w"> </span><span class="no">v3</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nf">li</span><span class="w">         </span><span class="no">x3</span><span class="p">,</span><span class="w"> </span><span class="mi">0x10000000</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nf">amoadd.d</span><span class="w">   </span><span class="no">x4</span><span class="p">,</span><span class="w"> </span><span class="no">x4</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">x3</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Finalizer：将本 Unit 的 local sum 累加到全局结果。</strong></p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">li</span><span class="w">       </span><span class="no">x3</span><span class="p">,</span><span class="w"> </span><span class="mi">0x10000000</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nf">ld</span><span class="w">       </span><span class="no">x4</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">x3</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nf">ld</span><span class="w">       </span><span class="no">x5</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">(</span><span class="no">x3</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nf">amoadd.d</span><span class="w"> </span><span class="no">x4</span><span class="p">,</span><span class="w"> </span><span class="no">x4</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">x5</span><span class="p">)</span>
+</span></code></pre></div>
+<h4 id="5-isa">5. 逐条理解原 ISA 功能与示例作用<a class="headerlink" href="#5-isa" title="Permanent link">&para;</a></h4>
+<p><strong>① <code>li rd, immediate</code>：将立即数放入整数寄存器。</strong></p>
+<p>LI 是 assembler <strong>pseudo-instruction（伪指令）</strong>，没有独立、固定的机器编码。Assembler 会按立即数展开成 ADDI、LUI 或多条指令。</p>
+<p>各阶段重复使用的 <code>li x3, 0x10000000</code>，都用于取得本 Unit 的 scratchpad base。</p>
+<p><strong>② <code>sd rs2, imm(rs1)</code>：保存一个 64-bit doubleword。</strong></p>
+<p>有效地址为 <code>rs1 + imm</code>，将 rs2 的 64-bit 值写入该地址。<code>sd x0, 0(x3)</code> 使用<strong>恒为零的 x0，将 local sum 清零</strong>。</p>
+<p>它属于 <strong>S-type</strong>，材料给出的完整字段为：</p>
+<table>
+<thead>
+<tr>
+<th>位域</th>
+<th><code>[31:25]</code></th>
+<th><code>[24:20]</code></th>
+<th><code>[19:15]</code></th>
+<th><code>[14:12]</code></th>
+<th><code>[11:7]</code></th>
+<th><code>[6:0]</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SD</td>
+<td><code>imm[11:5]</code></td>
+<td><code>rs2</code></td>
+<td><code>rs1</code></td>
+<td><code>011</code></td>
+<td><code>imm[4:0]</code></td>
+<td><code>0100011</code></td>
+</tr>
+</tbody>
+</table>
+<p>其中 <code>funct3 = 011</code> 表示 doubleword store。</p>
+<p><strong>③ <code>vle64.v vd, (rs1)</code>：按连续地址加载 64-bit 向量元素。</strong></p>
+<p>它是 RVV 的 <strong>unit-stride vector load</strong>。元素地址依次为 <code>rs1、rs1+8、rs1+16……</code>。</p>
+<p>示例中 x1 是<strong>创建 µthread 时提供的 mapped address</strong>，因此将该线程负责的数据块加载到 v2。</p>
+<p>加载多少元素由 <strong>vl、vtype / SEW / LMUL</strong> 等向量配置决定，不能仅由指令名中的 64 推出。<strong>64 指每个访存元素为 64 bit</strong>。</p>
+<p>编码使用 <strong>LOAD-FP major opcode space</strong>，包含 vector destination、integer base register、mask 与 vector-memory addressing mode 等字段。</p>
+<p><strong>④ <code>vmv.v.i vd, immediate</code>：将小立即数广播到 active vector elements。</strong></p>
+<p><code>vmv.v.i v1, 0</code> 将 v1 的有效元素置零，为后续 reduction 提供初值，尤其是 <code>v1[0] = 0</code>。</p>
+<p>它属于 <strong>OP-V</strong>，major opcode 为 <code>1010111</code>；与 vector merge 共享编码形式，通过 <code>vm = 1</code> 和特定 source field 表示 move。</p>
+<p><strong>⑤ <code>vredsum.vs vd, vs2, vs1</code>：将向量元素归约为一个和。</strong></p>
+<p>其功能可写成：</p>
+<div class="arithmatex">\[
+vd[0] = vs1[0] + \sum_{j=0}^{vl-1} vs2[j]
+\]</div>
+<p>示例中，<code>v3[0] = v1[0] + sum(v2)</code>。<strong>因为初值为零，所以得到本 µthread 数据块的和</strong>。例如 v2 为 <code>[3, 5, 7, 2]</code>，结果为 17。</p>
+<p>它使用 <strong>OP-V arithmetic</strong> 编码；材料给出 <code>funct6 = 000000</code>。这条 reduction 的输出关注 element 0，并非将每个输入元素分别输出一个结果。</p>
+<p><strong>⑥ <code>vmv.x.s rd, vs2</code>：将向量 element 0 移到整数寄存器。</strong></p>
+<p><code>vmv.x.s x4, v3</code> 将本线程的归约结果从 <code>v3[0]</code> <strong>移到 x4，供标量 atomic 指令使用</strong>。材料没有列出其完整编码位域。</p>
+<p><strong>⑦ <code>amoadd.d rd, rs2, (rs1)</code>：对 64-bit 内存位置进行原子加法。</strong></p>
+<p>它将<strong>读旧值、相加、写回</strong>作为不可分割的 read-modify-write 操作，并将旧值返回 rd：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathrm{old} &amp;\leftarrow \mathrm{Mem}[rs1] \\
+\mathrm{Mem}[rs1] &amp;\leftarrow \mathrm{old} + rs2 \\
+rd &amp;\leftarrow \mathrm{old}
+\end{aligned}
+\]</div>
+<p>这是语义示意，atomicity 覆盖整个更新过程。</p>
+<p>Body 中 <code>rs1 = x3</code> <strong>指向 scratchpad local sum</strong>，<code>rs2 = x4</code> <strong>提供当前 µthread 的部分和</strong>。</p>
+<p>因此，<code>amoadd.d x4, x4, (x3)</code> 完成 <strong>local sum += partial sum</strong>。这里使用 atomic 操作是因为可能有多个 μthread 都在对同一地址：<code>(x3)</code> 中的数据 local sum 进行更新，atomic 命令可以解决数据 race 的问题。</p>
+<p>它属于 <strong>RV64A 的 AMO encoding</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>位域</th>
+<th><code>[31:27]</code></th>
+<th><code>[26]</code></th>
+<th><code>[25]</code></th>
+<th><code>[24:20]</code></th>
+<th><code>[19:15]</code></th>
+<th><code>[14:12]</code></th>
+<th><code>[11:7]</code></th>
+<th><code>[6:0]</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMOADD.D</td>
+<td><code>00000</code></td>
+<td><code>aq</code></td>
+<td><code>rl</code></td>
+<td><code>rs2</code></td>
+<td><code>rs1</code></td>
+<td><code>011</code></td>
+<td><code>rd</code></td>
+<td><code>0101111</code></td>
+</tr>
+</tbody>
+</table>
+<p>其中 <code>.D</code> 表示 doubleword；aq / rl 是原子指令中的顺序控制字段。示例重点是原子加法，不展开这些字段的完整内存顺序规则。</p>
+<div class="admonition example">
+<p class="admonition-title">为什么不能用普通 load-add-store 累加？</p>
+<p>初始 local sum 为 0，两个 µthreads 分别要加 17 与 31。</p>
+<p>如果二者都先读取 0，再分别写入 17 和 31，最后可能只剩其中一个结果，丢失另一次更新。</p>
+<p><strong>Atomic add 使更新依次生效，最终得到 48</strong>。它<strong>解决的是同一共享地址更新时的 race</strong>。</p>
+</div>
+<p><strong>⑧ <code>ld rd, imm(rs1)</code>：读取一个 64-bit doubleword。</strong></p>
+<p>它属于 <strong>RV64I 的 I-type load</strong>，有效地址为 <code>rs1 + imm</code>，读出的值放入 rd。</p>
+<p>Finalizer 的两条 LD 分别读取：</p>
+<ul>
+<li><code>ld x4, 0(x3)</code>：得到<strong>本 Unit 的 local sum</strong>。</li>
+<li><code>ld x5, 8(x3)</code>：得到 <strong>global result 的地址</strong>。</li>
+</ul>
+<p>最后 <code>amoadd.d x4, x4, (x5)</code> 将局部和加到 <code>Mem[x5]</code>，由 memory-side L2 的<strong>全局 atomic 路径处理</strong>。这里同样使用 atomic 指令<strong>防止当前 NDP Unit 与其他 Unit 的 finalizer 之间的 race</strong>。</p>
+<div class="admonition note">
+<p class="admonition-title">指令编码的整理范围</p>
+<p>上述指令解释来自 sessions 中的 ISA 背景说明。保留了材料提供的 S-type、AMO 位域，以及 RVV opcode / 字段概述。</p>
+<p>材料未完整列出所有 RVV 指令的机器编码，也没有给出全部向量配置和程序结束约定；这里不补成声称可直接汇编运行的完整 binary。</p>
+</div>
+<h4 id="6-local-sum">6. 为什么用 local sum 再合并？<a class="headerlink" href="#6-local-sum" title="Permanent link">&para;</a></h4>
+<p>同一 Unit 的很多 µthreads 先通过 scratchpad atomic 更新局部和；body 全部完成后，<strong>由 finalizer 将局部和更新到全局结果</strong>。</p>
+<p>这样可以<strong>减少每个 µthread 都直接访问 DRAM 中同一全局累加位置的流量</strong>。</p>
+<p>需要区分两种保障：</p>
+<ul>
+<li><strong>Atomic add</strong>：避免多个更新彼此覆盖。</li>
+<li><strong>阶段 barrier</strong>：<strong>确保 finalizer 读取 local sum 时，body 的全部计算已经完成</strong>。</li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">示例运行前提</p>
+<p>每个 Unit 的 local sum 由 initializer 清零；global result 使用累加操作，也需要正确的初值，scratchpad + 8 中的结果 pointer 需要事先准备好。</p>
+<p>这是由示例语义得到的运行前提。论文中的片段没有展开 global result 的完整初始化与参数布置代码。</p>
+</div>
+<h3 id="h-virtual-memory-support">H. Virtual Memory Support<a class="headerlink" href="#h-virtual-memory-support" title="Permanent link">&para;</a></h3>
+<h4 id="1-passive-memory">1. 为什么 passive memory 不需要自己翻译地址？<a class="headerlink" href="#1-passive-memory" title="Permanent link">&para;</a></h4>
+<p>Host 用户程序使用虚拟地址，但普通 CXL.mem 请求到达设备之前，<strong>Host 已完成地址转换</strong>：</p>
+<p><strong>Process VA → Host MMU → Host Physical Address → CXL.mem → Device memory</strong>。</p>
+<p>因此，作为普通 CXL Memory Expander 的 passive CXL memory 不需要为了这条普通 Host 访问路径，再重复执行一次用户 VA → PA 转换。</p>
+<h4 id="2-ndp">2. 为什么 NDP 自己需要虚拟地址？<a class="headerlink" href="#2-ndp" title="Permanent link">&para;</a></h4>
+<p>NDP Unit 是<strong>主动执行程序的处理器</strong>。<strong>它的 load/store 使用程序中的 pointer，而 Host 用户进程中的 pointer 本身是虚拟地址</strong>。</p>
+<p>本文规定 <strong>µthread pool region 和 kernel load/store 使用 virtual addresses</strong>。为了使用这些地址，NDP 需要地址转换支持。</p>
+<div class="admonition question">
+<p class="admonition-title">不在 NDP 上运行 Linux/多进程，为什么还需要 VM？</p>
+<p>虚拟内存需求来自<strong>服务 Host 进程的地址空间</strong>，并不要求 NDP 自己运行操作系统。</p>
+<p>此外，NDP Unit 需要支持运行多进程，因为设备可为多个 Host processes 服务。Process A 与 B 即使都使用 VA <code>0x1000</code>，也可能指向不同对象，需要通过 <strong>ASID + VPN</strong> 区分。</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>地址出现的位置</th>
+<th>应怎样理解？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host 程序中的 M² func pointer</td>
+<td>Host 虚拟地址，经过 Host 转换才成为设备看到的控制请求地址</td>
+</tr>
+<tr>
+<td>Packet Filter 保存的 <strong>region base / bound</strong></td>
+<td>用于识别 CXL.mem 控制请求的<strong>物理地址</strong>范围</td>
+</tr>
+<tr>
+<td><strong>启动参数中的 µthread pool</strong></td>
+<td>NDP 使用的<strong>虚拟地址</strong>范围</td>
+</tr>
+<tr>
+<td>Kernel 中的普通 pointer / load/store</td>
+<td>NDP 执行时需要解释和转换的<strong>虚拟地址</strong></td>
+</tr>
+<tr>
+<td>Scratchpad 预留地址</td>
+<td>NDP 内部工作存储的映射入口，不能当成普通 DRAM 地址理解</td>
+</tr>
+</tbody>
+</table>
+<p>在 Fig. 4 中，<code>VA 0x60040 → PA 0x10040</code> 发生在 Host 控制访问路径。与之相对，写入数据中携带的 pool / pointer 参数，仍需要按 NDP 的地址语义解释。</p>
+<h4 id="3-ndp">3. NDP 能访问哪些内存？<a class="headerlink" href="#3-ndp" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>内存位置</th>
+<th>材料中的访问范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本设备的 HDM</td>
+<td>NDP 可以访问</td>
+</tr>
+<tr>
+<td>Peer CXL device 的 HDM</td>
+<td>通过相应 P2P / 互联能力访问</td>
+</tr>
+<tr>
+<td>Host Local DRAM</td>
+<td><strong>不能仅通过 CXL.mem 直接访问</strong></td>
+</tr>
+</tbody>
+</table>
+<p>能访问 HDM，不意味着可以绕过进程映射和权限。Virtual address 的可见性、地址转换与底层访问路径仍需同时满足。</p>
+<p>论文提到可借鉴 GPU 的 PCIe、driver/runtime 和 page-fault handling 来扩展 Host-side memory 访问，但没有把它作为本文基础机制的完整实现展开。</p>
+<h4 id="4-tlb-reach">4. 片上 TLB 的 reach 为什么可能不够？<a class="headerlink" href="#4-tlb-reach" title="Permanent link">&para;</a></h4>
+<p><strong>TLB 缓存的是地址转换结果。</strong> 用 VPN（Virtual Page Number）查找 PPN（Physical Page Number），避免每次访问都重新获取映射。</p>
+<p>TLB reach 表示缓存条目能够覆盖的地址空间大小。材料举出 D-TLB 为 256 entries，假设每页 4 KiB，则：</p>
+<div class="arithmatex">\[
+\mathrm{TLB\ reach} = 256 \times 4\ \mathrm{KiB} = 1\ \mathrm{MiB}
+\]</div>
+<p><strong>这对几十至几百 GB 的数据很小</strong>。若频繁 miss，并且每次都通过 ATS 向 Host 请求转换，转换开销可能主导 NDP 的访问时间。</p>
+<p>因此作者引入更大容量的中间转换缓存：<strong>DRAM-TLB</strong>。</p>
+<h4 id="5-dram-tlb">5. DRAM-TLB 是怎样的物理存在？<a class="headerlink" href="#5-dram-tlb" title="Permanent link">&para;</a></h4>
+<p>它是<strong>从 CXL device 的 DRAM 中预留一块区域</strong>，用来<strong>存放大量 translation entries</strong>。查询逻辑与这块存储共同组成转换缓存机制。</p>
+<table>
+<thead>
+<tr>
+<th>比较项</th>
+<th>On-chip TLB</th>
+<th>DRAM-TLB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>存储位置</td>
+<td>处理器附近的片上存储</td>
+<td>CXL device 的 <strong>DRAM 预留区域</strong></td>
+</tr>
+<tr>
+<td>容量</td>
+<td>小，受片上成本限制</td>
+<td><strong>大，利用 DRAM 容量</strong></td>
+</tr>
+<tr>
+<td>查询方式</td>
+<td>片上查找</td>
+<td>根据 VPN / ASID 算出位置，再读取 entry</td>
+</tr>
+<tr>
+<td>作用</td>
+<td>快速命中近期转换</td>
+<td>扩大转换覆盖范围，降低片上 miss 的代价</td>
+</tr>
+<tr>
+<td>共享范围</td>
+<td>各 Unit 的 I/D-TLB</td>
+<td>同一 CXL memory 中的 NDP Units 可共享</td>
+</tr>
+</tbody>
+</table>
+<p><strong>它不是把传统 CAM 型 TLB 电路放进 DRAM 芯片</strong>。名称中的 DRAM 指条目存储介质。</p>
+<p>材料给出的每个 entry 为 <strong>16 B</strong>，包含 ASID、tag、PPN、permission bits / attributes 等。</p>
+<p>这样，仍然假设每页 4 KB，256 GB 的地址空间只需要大小为：<span class="arithmatex">\(16 \text{B} \times 256 \text{G} / 4096 = 1 \text{GB}\)</span> 的 DRAM-TLB 存储量。相比于 256 GB 的数据容量，<strong>开销约为 0.4%，极小</strong>。使用 2 MiB huge pages 时，同样 16 B/page 的比例还会更小。</p>
+<h4 id="6-hash-entry">6. Hash 如何决定 entry 的位置？<a class="headerlink" href="#6-hash-entry" title="Permanent link">&para;</a></h4>
+<p>材料说明，位置根据 <strong>VPN、ASID 和每个 CXL memory 的 base address</strong> 确定。机制可以示意为：</p>
+<div class="arithmatex">\[
+\mathrm{index} = \mathrm{hash}(\mathrm{VPN},\ \mathrm{ASID})
+\]</div>
+<div class="arithmatex">\[
+\mathrm{entry\_address}
+= \mathrm{DRAM\_TLB\_base}
++ \mathrm{index}\times16\ \mathrm{B}
+\]</div>
+<p>这是帮助理解存储位置计算的示意公式，不是材料给出的完整 hash 或冲突处理算法。</p>
+<p>具体过程为：</p>
+<ol>
+<li>从 VA 取得 VPN，结合当前进程的 ASID，<strong>利用 Hash Value 计算 index</strong>；</li>
+<li>读取对应的 DRAM-TLB entry。</li>
+<li>检查 tag、ASID 是否匹配，并使用相应转换与权限信息。</li>
+<li>命中时取得 PPN，可用于补充片上 TLB。</li>
+</ol>
+<p><strong>为什么所有 Units 能共享？</strong> 同一设备内，Unit 0 与 Unit 17 若查询相同 <code>(ASID, VPN)</code>，会<strong>定位到同一条 entry，无需各自复制一个庞大的转换表</strong>。</p>
+<h4 id="7-refill">7. 转换路径与未展开的 refill 细节<a class="headerlink" href="#7-refill" title="Permanent link">&para;</a></h4>
+<p>可以把材料中的关系理解为：</p>
+<p><strong>NDP VA → on-chip TLB → miss 时查 DRAM-TLB → 再 miss 时请求 Host / ATS 的转换支持</strong>。</p>
+<p>其中 <strong>on-chip TLB</strong> 和 <strong>DRAM-TLB</strong> 是<strong>两层转换缓存</strong>。Host 维护的映射提供最终转换依据。</p>
+<div class="admonition attention">
+<p class="admonition-title">三级路径是帮助理解的补全</p>
+<p>论文明确说明 DRAM-TLB 用于增加 reach、降低片上 miss penalty，也介绍了 ATS。但最后一层的精确 refill protocol、hash collision handling 和完整 page-fault 流程没有展开。</p>
+</div>
+<h4 id="8-tlb-shootdown">8. 页映射改变：TLB shootdown<a class="headerlink" href="#8-tlb-shootdown" title="Permanent link">&para;</a></h4>
+<p>若 OS 将某个 VA page 从物理页 100 改映射到物理页 200，旧转换必须失效，否则 NDP 可能继续访问旧位置。</p>
+<p>需要处理相关的 <strong>on-chip TLB 与 DRAM-TLB</strong>，并对涉及的 CXL-M²NDP 设备执行 <strong>TLB shootdown</strong>。前面的特权管理接口 <code>ndpShootdownTlbEntry</code> 就服务于这类操作。</p>
+<p>材料说明，<strong>目标 in-memory datasets 很少 swapping，因此作者假设映射变化并不频繁</strong>。</p>
+<div class="admonition note">
+<p class="admonition-title">把几种正确性机制对应回各自的问题</p>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>处理什么问题？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host 访问中的 fence</td>
+<td>管理调用写入与返回值读取的顺序</td>
+</tr>
+<tr>
+<td>Kernel body 之间的 barrier</td>
+<td>多个并行 phase 的先后关系</td>
+</tr>
+<tr>
+<td>Atomic add</td>
+<td>多个执行实例更新同一累加量时避免丢失更新</td>
+</tr>
+<tr>
+<td>Cache coherence / BI</td>
+<td>同一数据在缓存与内存中有多个副本时的协调</td>
+</tr>
+<tr>
+<td>TLB shootdown</td>
+<td>页映射变化后，缓存的旧地址转换需要失效</td>
+</tr>
+</tbody>
+</table>
+<p>它们分别处理操作顺序、阶段同步、共享更新、数据副本和地址映射。</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../../javascripts/extra.js?v=20260604-2"></script>
+      
+        <script src="../../../../../javascripts/crypto.js?v=20260917-1"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+        <script src="../../../../../javascripts/katex.js"></script>
+      
+    
+  </body>
+</html>
