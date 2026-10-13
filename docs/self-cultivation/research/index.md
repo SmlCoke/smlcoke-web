@@ -53,3 +53,18 @@ hide:
   <p class="card-desc">Complete algorithm taxonomy</p>
 </a>
 </div>
+
+<div class="section-subtitle">Architecture and SoC</div>
+
+<div class="card-grid">
+<a class="note-card red" href="architecture/base/">
+  <span class="card-icon" aria-hidden="true">🌈</span>
+  <div class="card-title">Base Concepts</div>
+  <p class="card-desc">Fundamental Concepts in Multi-core Interconnect and Heterogeneous Computing Systems</p>
+</a>
+<a class="note-card indigo" href="architecture/compute/m2ndp/">
+  <span class="card-icon" aria-hidden="true">🌈</span>
+  <div class="card-title">M²NDP</div>
+  <p class="card-desc">Low-overhead General-purpose Near-Data Processing in CXL Memory Expanders</p>
+</a>
+</div>
