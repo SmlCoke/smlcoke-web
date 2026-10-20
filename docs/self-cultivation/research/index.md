@@ -54,7 +54,7 @@ hide:
 </a>
 </div>
 
-<div class="section-subtitle">Architecture and SoC</div>
+<div class="section-subtitle">(Micro)Architecture</div>
 
 <div class="card-grid">
 <a class="note-card red" href="architecture/base/">
