@@ -1,7 +1,6 @@
 # Low-overhead General-purpose Near-Data Processing in CXL Memory Expanders
 
 > 本文研究的是：**怎样在 CXL Memory Expander 中加入低成本、可编程的计算能力，并降低 Host 调用这些计算单元的开销。**
-> 笔记依据 [annotation.md](./annotation.md) 中的问题及对应 ChatGPT(Web) 回答整理，覆盖 **I、II 和 III-A～H**。
 > Date: 2026-10-13
 
 | 对应部分 | 整理素材 |
