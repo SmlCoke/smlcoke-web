@@ -291,6 +291,34 @@ body::before {
   color: var(--site-accent-strong);
 }
 
+.reader-section-tab {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.reader-section-tab[data-bound="true"] {
+  display: inline-flex;
+}
+
+.reader-section-tab:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 4px;
+}
+
+@media screen and (min-width: 76.25em) {
+  body.reader-section-switching .md-nav--primary > .md-nav__list > .md-nav__item {
+    display: none;
+  }
+
+  body.reader-section-switching .md-nav--primary > .md-nav__list > .reader-section-selected {
+    display: block;
+    margin: 0;
+  }
+}
+
 .md-search__form {
   border: 1px solid var(--site-border);
   border-radius: 999px;

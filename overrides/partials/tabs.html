@@ -1,0 +1,32 @@
+{# Section buttons select a navigation tree without opening its first page. #}
+{% import "partials/tabs-item.html" as item with context %}
+<nav class="md-tabs" aria-label="{{ lang.t('tabs') }}" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      {% for nav_item in nav.items %}
+        {% set first = nav_item.children | first if nav_item.children else none %}
+        {% if nav_item.children and (nav_item.children | length > 1 or first.children) %}
+          <li class="md-tabs__item reader-section-tab-item{% if nav_item.active %} md-tabs__item--active{% endif %}">
+            <button type="button" class="md-tabs__link reader-section-tab"
+              data-section-tab="{{ loop.index }}"
+              aria-controls="__section_nav_{{ loop.index }}"
+              aria-pressed="{{ 'true' if nav_item.active else 'false' }}"
+              title="切换到 {{ nav_item.title | e }} 分区导航">
+              {{ nav_item.title }}
+            </button>
+            <noscript>
+              {% set index = nav_item.children | selectattr("is_index") | first %}
+              {% if index %}
+                <a href="{{ index.url | url }}" class="md-tabs__link">{{ nav_item.title }}</a>
+              {% else %}
+                <span class="md-tabs__link">{{ nav_item.title }}</span>
+              {% endif %}
+            </noscript>
+          </li>
+        {% else %}
+          {{ item.render(nav_item) }}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</nav>
