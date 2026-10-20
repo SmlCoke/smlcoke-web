@@ -14,7 +14,6 @@
 
   let heroTimer = null;
   let resizeBound = false;
-  const sectionTabsViewport = window.matchMedia("(min-width: 76.25em)");
 
   function onPageReady(callback) {
     if (window.document$ && typeof window.document$.subscribe === "function") {
@@ -291,78 +290,6 @@
     }
   }
 
-  function resetSectionTabs() {
-    document.body.classList.remove("reader-section-switching");
-    document.querySelectorAll(".reader-section-selected").forEach(function (section) {
-      section.classList.remove("reader-section-selected");
-    });
-
-    const sidebar = document.querySelector(".md-sidebar--primary");
-    if (sidebar && sidebar.dataset.readerPageHidden === "true") {
-      sidebar.hidden = true;
-    }
-
-    const roots = document.querySelectorAll(".md-nav--primary > .md-nav__list > .md-nav__item");
-    document.querySelectorAll(".md-tabs__item").forEach(function (item, index) {
-      const active = Boolean(roots[index]?.classList.contains("md-nav__item--active"));
-      item.classList.toggle("md-tabs__item--active", active);
-      item.querySelector("[data-section-tab]")?.setAttribute("aria-pressed", String(active));
-    });
-  }
-
-  function selectSectionTab(button) {
-    const toggle = document.getElementById(`__nav_${button.dataset.sectionTab}`);
-    const section = toggle?.closest(".md-nav__item");
-    const sidebar = document.querySelector(".md-sidebar--primary");
-    if (!section || !sidebar || !sectionTabsViewport.matches) return;
-    const scrollPosition = { left: window.scrollX, top: window.scrollY, behavior: "instant" };
-
-    document.querySelectorAll(".reader-section-selected").forEach(function (item) {
-      item.classList.remove("reader-section-selected");
-    });
-    section.classList.add("reader-section-selected");
-    document.body.classList.add("reader-section-switching");
-    toggle.checked = true;
-    sidebar.hidden = false;
-
-    document.querySelectorAll(".md-tabs__item").forEach(function (item) {
-      const selected = item.contains(button);
-      item.classList.toggle("md-tabs__item--active", selected);
-      item.querySelector("[data-section-tab]")?.setAttribute("aria-pressed", String(selected));
-    });
-
-    setBool(storageKeys.navOpen, true);
-    applyReaderState();
-    window.requestAnimationFrame(function () {
-      window.scrollTo(scrollPosition);
-    });
-  }
-
-  function initSectionTabs() {
-    const sidebar = document.querySelector(".md-sidebar--primary");
-    if (sidebar) {
-      sidebar.dataset.readerPageHidden = String(sidebar.hidden);
-    }
-    resetSectionTabs();
-
-    document.querySelectorAll("[data-section-tab]").forEach(function (button) {
-      const section = document.getElementById(`__nav_${button.dataset.sectionTab}`)?.closest(".md-nav__item");
-      if (section) section.id = button.getAttribute("aria-controls");
-      if (button.dataset.bound) return;
-      button.dataset.bound = "true";
-      button.addEventListener("click", function () {
-        selectSectionTab(button);
-      });
-    });
-  }
-
-  sectionTabsViewport.addEventListener("change", function () {
-    if (!sectionTabsViewport.matches) {
-      resetSectionTabs();
-      applyReaderState();
-    }
-  });
-
   function initHeroBackground() {
     const hero = document.querySelector(".hero-container");
     if (heroTimer) {
@@ -543,7 +470,6 @@
   }
 
   onPageReady(function () {
-    initSectionTabs();
     initReaderLayout();
     initHeroBackground();
     enhanceCodeBlocks();

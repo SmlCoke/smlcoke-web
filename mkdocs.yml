@@ -73,11 +73,11 @@ markdown_extensions:
 
 # 引入自定义 CSS（用于背景动画和按钮）
 extra_css:
-  - stylesheets/extra.css?v=20261020-1 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
+  - stylesheets/extra.css?v=20261020-2 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
   - https://unpkg.com/katex@0/dist/katex.min.css # 添加 KaTeX CSS
 
 extra_javascript:
-  - javascripts/extra.js?v=20261020-1
+  - javascripts/extra.js?v=20261020-2
   - javascripts/crypto.js?v=20260917-1
   - https://unpkg.com/katex@0/dist/katex.min.js # 先引入 KaTeX 核心
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js # 引入 KaTeX 自动渲染插件
@@ -87,7 +87,7 @@ use_directory_urls: true
 
 # 导航约定：有主页的分区，将本分区 index.md 作为第一个直接子项。
 # 独立文章也使用「标题 -> 列表 -> 文章/index.md」，避免被上级误认作主页。
-# 顶部有下级内容的 tab 只切换左侧分区导航；主页通过左侧标题进入。
+# 顶部 tab 进入各自的真实分区主页；无主页的分类只包含下级 section。
 nav:
 - 首页:
   - index.md
