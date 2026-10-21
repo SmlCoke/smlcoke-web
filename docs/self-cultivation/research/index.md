@@ -67,4 +67,9 @@ hide:
   <div class="card-title">M²NDP</div>
   <p class="card-desc">Low-overhead General-purpose Near-Data Processing in CXL Memory Expanders</p>
 </a>
+<a class="note-card indigo" href="architecture/interconnect/cxl/">
+  <span class="card-icon" aria-hidden="true">💎</span>
+  <div class="card-title">CXL(Compute Express Link)</div>
+  <p class="card-desc">New-Generation Interconnect Technology</p>
+</a>
 </div>

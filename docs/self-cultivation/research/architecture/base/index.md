@@ -54,6 +54,8 @@ Memory Controller
 
 这里有一些较为基础的名词（非复杂概念级）：
 
+### 1.1 Base Concepts
+
 ---
 
 #### (1) LLC (Last-Level Cache, 末级缓存)
@@ -400,3 +402,37 @@ CPU -> PCIe -> GPU
 ```
 
 之后会引出：Host / Device, **Device Memorym**, **DMA**, Unified Memorym, PCIe Bottleneck, **CXL** 等概念。
+
+### 1.2 DRAM: Cornerstone of Memory Subsystem
+
+本节的目标是理解清楚如下三个问题：
+
+1. 一个物理地址最终是怎样落到某个 DRAM 单元上的？
+2. 为什么 DRAM 的 bandwidth 和 latency 是两回事？
+3. 为什么多 Socket 会自然产生 NUMA？
+
+从一次 Cache miss 开始，假设某个 Core 执行 `x = A[i];` 时，假设虚拟地址已经通过 TLB/Page Table 拿到了物理地址 `PA=0x1234_5678`，但是之后：**L1 miss → L2 miss → LLC miss**，这时才真正需要访问主存。
+
+```mermaid
+flowchart LR
+    Core["Core"]
+    Cache["Cache Hierarchy"]
+    MC["Memory Controller"]
+
+    Core -->|"Load PA=0x12345678"| Cache
+    Cache -->|"LLC miss"| MC
+```
+
+Memory Controller 收到的核心信息可以抽象成：**Read Physical Address** `PA=0x1234_5678`，但是 DRAM 无法直接理解：`0x12345678`，DRAM 实际是层次化组织的，**Memory Controller 必须把物理地址“解码”为类似**:
+
+```text
+Channel
+Rank
+Bank Group
+Bank
+Row
+Column
+Byte Offset
+```
+
+等字段含义，这里会涉及到 DRAM 的层次化结构组织，参见：[DRAM 层次化结构组织](./dram_structure/index.md)。

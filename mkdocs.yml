@@ -387,6 +387,8 @@ nav:
     - Architecture:
       - Base:
         - self-cultivation/research/architecture/base/index.md
+        - DRAM Structure:
+          - self-cultivation/research/architecture/base/dram-structure/index.md
       - Compute:
         - M²NDP:
           - self-cultivation/research/architecture/compute/m2ndp/index.md
