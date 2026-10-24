@@ -1,0 +1,6 @@
+# Base environment used by this site's build hooks and integration checks.
+mkdocs==1.6.1
+mkdocs-material==9.7.2
+pymdown-extensions==10.21
+# Click 8.3+ disables MkDocs 1.6.1's default live reload.
+click==8.2.1

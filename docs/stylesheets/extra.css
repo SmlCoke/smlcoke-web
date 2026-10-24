@@ -1604,6 +1604,33 @@ h2#__comments {
   }
 }
 
+/* Build-time diagrams are external SVG files; follow the site's theme toggle. */
+.md-typeset .diagram-pair {
+  display: block;
+  max-width: 100%;
+  margin: 1em auto;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.md-typeset .diagram-pair img {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.md-typeset .diagram-pair .diagram-dark {
+  display: none;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .diagram-pair .diagram-light {
+  display: none;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .diagram-pair .diagram-dark {
+  display: inline-block;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

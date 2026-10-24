@@ -42,6 +42,17 @@ plugins:
   - search
   - blog
 
+hooks:
+  - scripts/mkdocs_diagrams.py
+
+extra:
+  diagrams:
+    tools_dir: D:/Tools/diagramming
+    layout: elk
+    light_theme: 0
+    dark_theme: 200
+    timeout: 90
+
 # 配置 Markdown 扩展（启用数学公式支持）
 markdown_extensions:
   - admonition # 极其漂亮的提示/警告框！
@@ -73,7 +84,7 @@ markdown_extensions:
 
 # 引入自定义 CSS（用于背景动画和按钮）
 extra_css:
-  - stylesheets/extra.css?v=20261020-2 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
+  - stylesheets/extra.css?v=20261021-1 # 每次更新时，注意修改?v查询参数，防止浏览器直接利用本地旧缓存
   - https://unpkg.com/katex@0/dist/katex.min.css # 添加 KaTeX CSS
 
 extra_javascript:
@@ -388,7 +399,7 @@ nav:
       - Base:
         - self-cultivation/research/architecture/base/index.md
         - DRAM Structure:
-          - self-cultivation/research/architecture/base/dram-structure/index.md
+          - self-cultivation/research/architecture/base/dram_structure/index.md
       - Compute:
         - M²NDP:
           - self-cultivation/research/architecture/compute/m2ndp/index.md
