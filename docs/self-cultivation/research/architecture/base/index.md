@@ -20,36 +20,43 @@ Memory Controller
 
 进入多核后，可能变为：
 
-```text
- Core 0      Core 1      Core 2            Core 63
- L1/L2       L1/L2       L1/L2              L1/L2
-    \           |           |                 /
-     +----------+-----------+----------------+
-                      |
-              Coherent Interconnect
-             /        |          \
-          LLC     Memory Ctrl    I/O
-                    |             |
-                   DDR          PCIe
-                                  |
-                                 FPGA
+```d2 width="850" alt="Case 1：多核与一致性互连"
+vars: { d2-config: { pad: 24 } }
+direction: right
+**.style.font-size: 26
+core0: "Core 0 · L1/L2"
+core1: "Core 1 · L1/L2"
+core2: "Core 2 · L1/L2"
+core63: "… Core 63 · L1/L2"
+fabric: "Coherent\nInterconnect"
+llc: LLC
+mc: Memory Ctrl
+io: I/O
+ddr: DDR
+pcie: PCIe
+fpga: FPGA
+core0 -- fabric
+core1 -- fabric
+core2 -- fabric
+core63 -- fabric
+fabric -- llc
+fabric -- mc -- ddr
+fabric -- io -- pcie -- fpga
 ```
 
 如果考虑多个 CPU Socket，可能变为：
 
-```text
-             CPU Socket 0                      CPU Socket 1
-        +--------------------+             +--------------------+
-        | 64 Cores           |             | 64 Cores           |
-        | Private L1/L2      |             | Private L1/L2      |
-        | Shared LLC         |             | Shared LLC         |
-        | DDR Controllers    |             | DDR Controllers    |
-        +---------+----------+             +----------+---------+
-                  |                                   |
-              Local DDR                           Local DDR
-                  |                                   |
-                  +--------- Inter-socket ------------+
-                              coherent link
+```d2 layout="tala" width="850" alt="Case 2：双 Socket 与本地内存"
+vars: { d2-config: { pad: 24 } }
+direction: right
+**.style.font-size: 26
+socket0: "CPU Socket 0\n64 Cores\nPrivate L1/L2\nShared LLC\nDDR Controllers"
+socket1: "CPU Socket 1\n64 Cores\nPrivate L1/L2\nShared LLC\nDDR Controllers"
+ddr0: "Local\nDDR"
+ddr1: "Local\nDDR"
+ddr0 -- socket0
+socket0 <-> socket1: "Inter-socket\ncoherent link" {style.font-size: 22}
+socket1 -- ddr1
 ```
 
 这里有一些较为基础的名词（非复杂概念级）：
@@ -153,15 +160,22 @@ Core3 ─┤                  │
 
 过去芯片可能用：**总线（Bus）**，后来规模变大后会使用：**Ring, Mesh, NoC** 等网络拓扑，例如：
 
-```text
-Core
- │
-Cache
- │
-┌───────────────────────┐
-│         NoC           │
-├────┬────┬────┬────────┤
-LLC  MC   PCIe  Other IP
+```d2 alt="Case 3：NoC 与片上目标"
+vars: { d2-config: { pad: 24 } }
+direction: right
+**.style.font-size: 20
+core: Core
+cache: Cache
+noc: NoC
+llc: LLC
+mc: MC
+pcie: PCIe
+other: Other IP
+core -- cache -- noc
+noc -- llc
+noc -- mc
+noc -- pcie
+noc -- other
 ```
 
 其思想仍然是：**很多 requester 和 target 之间进行 transaction**，只是**复杂程度远高于普通 SoC 总线**。
@@ -201,12 +215,18 @@ Memory Controller 的任务是：**把 CPU 的 memory request 转换成 DRAM 能
     ```
 - **DIMM**: Dual In-line Memory Module，双列直插内存模块，是**把 DRAM chips 封装在 PCB 上的内存条**，例如：
 
-    ```
-    ┌─────────────────────────────┐
-    │ ■ ■ ■ ■ ■ ■ ■ ■             │
-    │ DRAM chips                  │
-    └─────────────────────────────┘
-          DIMM
+    ```d2 alt="Case 4：DIMM 上的 DRAM 芯片"
+    vars: { d2-config: { pad: 24 } }
+    dimm: "DIMM · DRAM chips" {
+      grid-rows: 1
+      grid-gap: 8
+      *.label: ""
+      *.shape: square
+      *.width: 24
+      *.height: 24
+      chip0; chip1; chip2; chip3
+      chip4; chip5; chip6; chip7
+    }
     ```
 
 **关于 Memory Channel**:
@@ -240,27 +260,33 @@ Memory Controller
 
 把前面的概念合起来，目前的系统就可以变为：
 
-```text
-                 CPU Package
-┌─────────────────────────────────────────┐
-│                                         │
-│ Core0     Core1     Core2     Core3      │
-│  L1        L1        L1        L1       │
-│  L2        L2        L2        L2       │
-│    \        |        |        /         │
-│                                         │
-│              LLC                        │
-│                                         │
-│      On-Chip Interconnect               │
-│             │          │                │
-│             │          │                │
-│   Memory Controller    PCIe             │
-│      │        │                          │
-└──────┼────────┼──────────────────────────┘
-       │        │
-      DDR      DDR
-       │        │
-     DIMM     DIMM
+```d2 width="900" alt="Case 5：CPU Package 与 DDR 通道"
+vars: { d2-config: { pad: 24 } }
+direction: right
+**.style.font-size: 26
+cpu: CPU Package {
+  core0: "Core 0 · L1 · L2"
+  core1: "Core 1 · L1 · L2"
+  core2: "Core 2 · L1 · L2"
+  core3: "Core 3 · L1 · L2"
+  llc: LLC
+  fabric: "On-Chip\nInterconnect"
+  mc: "Memory\nController"
+  pcie: PCIe
+  core0 -- llc
+  core1 -- llc
+  core2 -- llc
+  core3 -- llc
+  llc -- fabric
+  fabric -- mc
+  fabric -- pcie
+}
+ddr0: DDR
+ddr1: DDR
+dimm0: DIMM
+dimm1: DIMM
+cpu.mc -- ddr0 -- dimm0
+cpu.mc -- ddr1 -- dimm1
 ```
 
 
@@ -326,22 +352,13 @@ Memory Controller
     
     现代服务器通常是多 Socket 系统，例如：
 
-    ```text
-                Socket 0
-            ┌──────────────┐
-            │ Core × N     │
-            │ LLC          │
-            │ Memory Ctrl  │
-            └───────┬──────┘
-                    │
-            CPU-to-CPU Link
-                    │
-            ┌───────┴──────┐
-            │ Core × N     │
-            │ LLC          │
-            │ Memory Ctrl  │
-            └──────────────┘
-                Socket 1
+    ```d2 layout="tala" alt="Case 6：CPU-to-CPU Link"
+    vars: { d2-config: { pad: 24 } }
+    direction: right
+    **.style.font-size: 14
+    socket0: "Socket 0\nCore × N\nLLC\nMemory Ctrl"
+    socket1: "Socket 1\nCore × N\nLLC\nMemory Ctrl"
+    socket0 <-> socket1: CPU-to-CPU Link
     ```
 
     而关键来了：

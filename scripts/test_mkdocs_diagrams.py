@@ -97,6 +97,13 @@ THIS IS AN EXAMPLE AND MUST NOT BE RENDERED: {
             self.assertIn('diagram-dark', pair)
         images = re.findall(r'<img[^>]+src="([^"]+\.svg)"', output)
         self.assertEqual(len(images), 14)
+        # Explicit geometry prevents responsive SVGs being normalized to the
+        # browser fallback width of 300px, and bounds their article footprint.
+        for tag in re.findall(r'<img[^>]+class="[^"]*diagram-(?:light|dark)[^"]*"[^>]*>', output):
+            self.assertRegex(tag, r'width="\d+"')
+            self.assertRegex(tag, r'height="\d+"')
+            self.assertLessEqual(int(re.search(r'width="(\d+)"', tag)[1]), 760)
+            self.assertLessEqual(int(re.search(r'height="(\d+)"', tag)[1]), 320)
         for uri in images:
             path = (self.root / 'site' / 'guide' / unquote(urlsplit(uri).path)).resolve()
             self.assertTrue(path.is_file(), path)
@@ -123,6 +130,53 @@ THIS IS AN EXAMPLE AND MUST NOT BE RENDERED: {
                             re.findall(r'assets/diagrams/[^" ]+', second))
         self.assertTrue(any('AFTER' in p.read_text(encoding='utf-8')
                             for p in (self.root / 'site' / 'assets' / 'diagrams').glob('*.svg')))
+
+    def test_per_diagram_width_for_both_fences_and_source_images(self):
+        self.write('assets/cpu.d2', 'CPU -> Cache\n')
+        self.write('assets/clock.json5', "{signal:[{name:'clk',wave:'p...'}]}\n")
+        self.write('index.md', '''# Width controls
+
+```d2 width="850px" layout="tala" alt="Pixels"
+CPU -> Cache
+```
+
+```wavedrom width="90%" alt="Percent"
+{signal:[{name:'clk',wave:'p...'}]}
+```
+
+![File pixels](assets/cpu.d2){width="640"}
+
+![File percent](assets/clock.json5){as="wavedrom" width="75%"}
+''')
+        output = self.build()
+        pairs = re.findall(r'<span class="diagram-pair">(.*?)</span>', output, re.S)
+        self.assertEqual(len(pairs), 4)
+        for pair, expected in zip(pairs, (850, '90%', 640, '75%')):
+            for tag in re.findall(r'<img[^>]+>', pair):
+                img = ET.fromstring(tag[:-1] + ' />')
+                if isinstance(expected, int):
+                    self.assertEqual(int(img.get('width')), expected)
+                    path = (self.root / 'site' / 'guide' / img.get('src')).resolve()
+                    vb = list(map(float, ET.parse(path).getroot().get('viewBox').split()))
+                    self.assertAlmostEqual(int(img.get('height')), expected * vb[3] / vb[2], delta=1)
+                else:
+                    self.assertIn('width:' + expected, img.get('style'))
+                    self.assertGreater(int(img.get('width')), 0)
+                    self.assertGreater(int(img.get('height')), 0)
+
+    def test_invalid_width_fails_for_fences_and_source_images(self):
+        self.write('assets/cpu.d2', 'CPU -> Cache\n')
+        for width in ('0', '-10', '101%', '0%', 'wide', '50%;display:none'):
+            for markup in (f'```d2 width="{width}"\nCPU -> Cache\n```',
+                           f'![CPU](assets/cpu.d2){{width="{width}"}}'):
+                with self.subTest(width=width, markup=markup):
+                    self.write('index.md', '# Bad width\n\n' + markup + '\n')
+                    with self.assertRaises(Exception) as raised:
+                        self.build()
+                    error = raised.exception
+                    while error.__context__ is not None:
+                        error = error.__context__
+                    self.assertIn('width', str(error))
 
     def test_bad_d2_fails_build_instead_of_showing_code(self):
         self.write('index.md', '# Bad\n\n```d2\nbroken: {\n```\n')

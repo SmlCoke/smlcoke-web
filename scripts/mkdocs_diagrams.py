@@ -8,6 +8,7 @@ import json
 import logging
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 from types import SimpleNamespace
@@ -25,6 +26,18 @@ from pymdownx.superfences import SuperFencesException
 LOG = logging.getLogger("mkdocs.plugins.diagrams")
 SCRIPT_DIR = Path(__file__).resolve().parent
 SVG_NS = "http://www.w3.org/2000/svg"
+
+
+def _parse_width(value):
+    """Accept a pixel width or a percentage of the article, never raw CSS."""
+    if value is None:
+        return None
+    value = str(value).strip()
+    if re.fullmatch(r"[1-9]\d*(?:px)?", value):
+        return int(value.removesuffix("px"))
+    if re.fullmatch(r"\d+(?:\.\d+)?%", value) and 0 < float(value[:-1]) <= 100:
+        return value
+    raise PluginError("绘图 width 必须是正整数像素（如 850、850px）或 0% 到 100% 之间的百分比（不含 0%）")
 
 
 class DiagramBuilder:
@@ -116,9 +129,10 @@ class DiagramBuilder:
 
     def pair(self, language, source, options=None, source_path=None, attributes=None):
         options = options or {}
+        attrs = dict(attributes or {})
+        requested_width = _parse_width(options.get("width", attrs.get("width")))
         targets = self.render(language, source, options, source_path)
         outer = ET.Element("span", {"class": "diagram-pair"})
-        attrs = dict(attributes or {})
         attrs.pop("src", None)
         attrs.setdefault("alt", options.get("alt", f"{language} diagram"))
         if options.get("title"):
@@ -130,6 +144,23 @@ class DiagramBuilder:
                 "class": (attrs.get("class", "") + f" diagram-{mode}").strip(),
                 "loading": "lazy", "decoding": "async",
             })
+            # Explicit geometry bypasses the site's 300px SVG fallback. Only
+            # automatic sizing uses the 760x320 box; an author width overrides
+            # that box, while CSS still fits the image to its article column.
+            viewbox = ET.fromstring(self.assets[target]).get("viewBox", "").split()
+            if len(viewbox) == 4:
+                width, height = float(viewbox[2]), float(viewbox[3])
+                if width > 0 and height > 0:
+                    if isinstance(requested_width, int):
+                        scale = requested_width / width
+                    elif requested_width is None:
+                        scale = min(1, 760 / width, 320 / height)
+                    else:
+                        scale = 1
+                        style = image_attrs.get("style", "").rstrip("; ")
+                        image_attrs["style"] = f"{style};width:{requested_width}".lstrip(";")
+                    image_attrs["width"] = str(max(1, round(width * scale)))
+                    image_attrs["height"] = str(max(1, round(height * scale)))
             ET.SubElement(outer, "img", image_attrs)
         return outer
 
@@ -184,11 +215,12 @@ class DiagramImageExtension(Extension):
         super().__init__()
 
     def extendMarkdown(self, md):
-        md.treeprocessors.register(DiagramImages(md, self.builder), "diagram_images", 15)
+        # attr_list (priority 8) must attach width/style to source images first.
+        md.treeprocessors.register(DiagramImages(md, self.builder), "diagram_images", 7)
 
 
 def _validate(language, inputs, options, attrs, md):
-    allowed = {"alt", "title"}
+    allowed = {"alt", "title", "width"}
     if language == "d2":
         allowed.update({"layout", "sketch"})
     unknown = set(inputs) - allowed
