@@ -53,7 +53,7 @@ class DiagramBuilder:
         ))
         self.node = os.environ.get("NODE_EXECUTABLE", shutil.which("node") or "node")
         self.modules = str(tools / "wavedrom" / "node_modules")
-        self.layout = settings.get("layout", "elk")
+        self.layout = settings.get("layout", "tala")
         self.light_theme = int(settings.get("light_theme", 0))
         self.dark_theme = int(settings.get("dark_theme", 200))
         self.timeout = int(settings.get("timeout", 90))
