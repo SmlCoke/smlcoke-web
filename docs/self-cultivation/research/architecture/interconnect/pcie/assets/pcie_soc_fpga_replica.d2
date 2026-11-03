@@ -1,0 +1,150 @@
+# D2 recreation of the CPU/SoC – FPGA PCIe hardware block diagram.
+# Use: d2 --layout elk --theme 0 --pad 24 pcie_soc_fpga_replica.d2 out.svg
+# D2 uses automatic layout: geometry and wire bends will differ from the reference.
+
+direction: down
+style.fill: "#FFFFFF"
+
+classes: {
+  chip: {
+    style: {
+      fill: "#F1F3F5"
+      stroke: "#A3AFBF"
+      stroke-width: 2
+      border-radius: 20
+      font-size: 28
+      font-color: "#111111"
+      bold: true
+    }
+  }
+  blue: {
+    style: {
+      fill: "#DCE8F8"
+      stroke: "#579EFF"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 25
+      font-color: "#111111"
+      bold: false
+    }
+  }
+  gray: {
+    style: {
+      fill: "#DFE3E8"
+      stroke: "#657890"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 25
+      font-color: "#111111"
+      bold: false
+    }
+  }
+  green: {
+    style: {
+      fill: "#D9E9DF"
+      stroke: "#0EAD49"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 24
+      font-color: "#111111"
+      bold: false
+    }
+  }
+  link: {
+    style: {
+      stroke: "#191919"
+      stroke-width: 2
+      font-size: 24
+    }
+  }
+}
+
+cpu: "CPU / SoC 芯片" {
+  class: chip
+  label.near: top-left
+  # The first declared grid dimension is dominant.
+  # Column-major order: left column (cores, DDR) then right (NoC, root port).
+  grid-columns: 2
+  grid-rows: 2
+  horizontal-gap: 40
+  vertical-gap: 25
+
+  cores: "CPU Cores" {
+    class: blue
+    width: 220
+    height: 78
+  }
+  ddr: "DDR\nController" {
+    class: gray
+    width: 220
+    height: 100
+  }
+  noc: "NoC / Coherence Fabric" {
+    class: blue
+    width: 490
+    height: 78
+  }
+  root: "PCIe Root Port\nController + PHY / SerDes" {
+    class: blue
+    width: 490
+    height: 100
+  }
+
+  cores -- noc: {class: link}
+  noc -- root: {class: link}
+  ddr -- root: {class: link}
+}
+
+# DDR4 module is off-chip.
+dimm: "DDR4 DIMM" {
+  class: gray
+  width: 195
+  height: 68
+  style.fill: "#F6F6F7"
+}
+cpu.ddr -- dimm: {class: link}
+
+fpga: "FPGA 芯片" {
+  class: chip
+  label.near: top-left
+  grid-columns: 2
+  grid-rows: 2
+  horizontal-gap: 36
+  vertical-gap: 25
+
+  # An invisible placeholder reserves the unused upper-left cell.
+  spacer: " " {
+    width: 220
+    height: 82
+    style.opacity: 0
+  }
+  sensor: "Sensor Data\nBRAM / FIFO" {
+    class: gray
+    width: 220
+    height: 95
+  }
+  endpoint: "PCIe Endpoint\nPHY + Protocol IP" {
+    class: blue
+    width: 500
+    height: 82
+  }
+  dma: "DMA Engine\nFSM · Descriptor · FIFO" {
+    class: green
+    width: 500
+    height: 95
+  }
+
+  endpoint -- dma: {class: link}
+  sensor -- dma: {class: link}
+}
+
+cpu.root -> fpga.endpoint: "PCIe ×8\nPCB traces" {
+  style: {
+    stroke: "#2868ED"
+    stroke-width: 5
+    font-size: 24
+    font-color: "#2868ED"
+    bold: false
+  }
+  target-arrowhead.shape: arrow
+}

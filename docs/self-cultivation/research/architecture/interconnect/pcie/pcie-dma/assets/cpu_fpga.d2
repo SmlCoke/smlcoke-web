@@ -1,0 +1,185 @@
+direction: right
+
+classes: {
+  chip: {
+    style: {
+      fill: "#F3F5F7"
+      stroke: "#9AA4B2"
+      stroke-width: 2
+      border-radius: 18
+      font-size: 30
+      bold: true
+    }
+  }
+
+  section: {
+    style: {
+      fill: "#EEF2F6"
+      stroke: "#A7B0BC"
+      stroke-width: 2
+      border-radius: 14
+      font-size: 28
+      bold: true
+    }
+  }
+
+  blue: {
+    style: {
+      fill: "#DCE8F8"
+      stroke: "#5B9BFF"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 24
+      bold: false
+    }
+  }
+
+  green: {
+    style: {
+      fill: "#DDEEDF"
+      stroke: "#3DA35A"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 24
+      bold: false
+    }
+  }
+
+  gray: {
+    style: {
+      fill: "#E9EDF2"
+      stroke: "#7D8A99"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 24
+      bold: false
+    }
+  }
+
+  memory: {
+    style: {
+      fill: "#F7F7F7"
+      stroke: "#7D8A99"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 24
+      bold: false
+    }
+  }
+
+  hidden: {
+    style: {
+      fill: "transparent"
+      stroke: "transparent"
+      font-size: 24
+    }
+  }
+}
+
+cpu: "CPU 芯片" {
+  class: chip
+  direction: down
+
+  cpu_row: "" {
+    class: hidden
+    direction: right
+
+    cores: "CPU cores/cache" {
+      class: blue
+      width: 260
+      height: 84
+    }
+
+    fabric: "Host fabric" {
+      class: blue
+      width: 240
+      height: 84
+    }
+
+    rc: "RC / Root Port" {
+      class: blue
+      width: 240
+      height: 84
+    }
+
+    cores <-> fabric
+    fabric <-> rc
+  }
+
+  mc: "Memory Controller" {
+    class: gray
+    width: 280
+    height: 92
+  }
+
+  cpu_row.fabric -> mc
+}
+
+dram: "Host DRAM\n\nDescriptor Queue\nInput Tensor" {
+  class: memory
+  width: 280
+  height: 190
+}
+
+fpga: "FPGA" {
+  class: chip
+  direction: down
+
+  pcie: "[P] PCIe Controller" {
+    class: blue
+    width: 320
+    height: 84
+  }
+
+  dma: "DMA Engine" {
+    class: green
+    width: 280
+    height: 84
+  }
+
+  bram: "[G] Input BRAM" {
+    class: blue
+    width: 260
+    height: 84
+  }
+
+  npu: "[N] NPU" {
+    class: green
+    width: 220
+    height: 84
+  }
+
+  pcie -> dma
+  dma -> bram
+  bram -> npu
+}
+
+cpu.mc -> dram: "DDR" {
+  style: {
+    stroke: "#7D8A99"
+    stroke-width: 4
+    font-size: 24
+    font-color: "#5C6773"
+  }
+}
+
+cpu.cpu_row.rc -> fpga.pcie: "PCIe Link" {
+  style: {
+    stroke: "#2868ED"
+    stroke-width: 4
+    font-size: 24
+    font-color: "#2868ED"
+    bold: true
+  }
+  target-arrowhead.shape: arrow
+}
+
+dram -> fpga.dma: "Descriptor / Input data" {
+  style: {
+    stroke: "#7D8A99"
+    stroke-width: 2
+    stroke-dash: 4
+    font-size: 24
+    font-color: "#5C6773"
+  }
+}

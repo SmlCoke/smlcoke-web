@@ -1,0 +1,21 @@
+direction: right
+
+classes: {
+  role: {
+    style.border-radius: 12
+    style.font-size: 20
+  }
+}
+
+host: "Host\nCPU / Memory" {class: role}
+rc: "Root Complex\n主机侧接入" {class: role}
+sw: "Switch\n转发事务" {class: role}
+gpu: "Endpoint\nGPU" {class: role}
+nic: "Endpoint\nNIC" {class: role}
+fpga: "Endpoint\nFPGA" {class: role}
+
+host <-> rc: "内部连接"
+rc <-> sw: "Link"
+sw <-> gpu: "Link"
+sw <-> nic: "Link"
+sw <-> fpga: "Link"

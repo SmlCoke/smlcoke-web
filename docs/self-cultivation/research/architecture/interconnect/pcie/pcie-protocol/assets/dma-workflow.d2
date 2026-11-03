@@ -1,0 +1,13 @@
+shape: sequence_diagram
+
+cpu: "CPU / Driver"
+ep: "Endpoint\n加速设备"
+memory: "Host 侧\nRC / Memory"
+
+cpu -> memory: "① 准备输入与描述符、完成同步（Host 内部）"
+cpu -> ep: "② BAR doorbell · MemWr"
+ep -> memory: "③ DMA 读输入 · MemRd"
+memory -> ep: "④ 返回输入 · CplD"
+ep -> ep: "⑤ 设备计算"
+ep -> memory: "⑥ DMA 写结果 · MemWr"
+ep -> cpu: "⑦ MSI-X · MemWr（经 Host 中断系统）"

@@ -1,0 +1,16 @@
+direction: right
+
+classes: {
+  layer: {
+    style.border-radius: 14
+    style.font-size: 20
+    style.stroke-width: 2
+  }
+}
+
+tl: "Transaction Layer\n事务层\n访问、响应与排序" {class: layer}
+dll: "Data Link Layer\n数据链路层\n当前一跳的可靠传输" {class: layer}
+phy: "Physical Layer\n物理层\n训练、同步与传输" {class: layer}
+
+tl -> dll: "承载事务"
+dll -> phy: "使用链路"

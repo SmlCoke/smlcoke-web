@@ -1,0 +1,9 @@
+shape: sequence_diagram
+
+requester: "Requester\n请求发起方"
+completer: "Completer\n请求服务方"
+
+requester -> completer: "① MemRd · Tag 0"
+requester -> completer: "② MemRd · Tag 1"
+completer -> requester: "③ CplD · Tag 1 · Data B"
+completer -> requester: "④ CplD · Tag 0 · Data A"

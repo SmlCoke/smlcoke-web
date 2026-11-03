@@ -1,0 +1,185 @@
+direction: down
+
+# Hardware Diagram Theme — large-font, high-contrast style.
+# All typography is >= 34. Layout is intentionally NOT specified here.
+# Render with e.g. d2 --layout=elk file.d2 file.svg
+
+classes: {
+  chip: {
+    style: {
+      fill: "#F0F2F5"
+      stroke: "#9DA9B8"
+      stroke-width: 3
+      border-radius: 18
+      font-size: 42
+      font-color: "#141820"
+      bold: true
+      shadow: false
+    }
+  }
+  section: {
+    style: {
+      fill: "#F7F8FA"
+      stroke: "#A5B1BF"
+      stroke-width: 3
+      border-radius: 16
+      font-size: 34
+      font-color: "#222A35"
+      bold: true
+      shadow: false
+    }
+  }
+  blue: {
+    style: {
+      fill: "#DCE8F8"
+      stroke: "#579EFF"
+      stroke-width: 3
+      border-radius: 12
+      font-size: 28
+      font-color: "#111827"
+      bold: false
+      shadow: false
+    }
+  }
+  green: {
+    style: {
+      fill: "#D9EDE2"
+      stroke: "#18A058"
+      stroke-width: 3
+      border-radius: 12
+      font-size: 28
+      font-color: "#111827"
+      bold: false
+      shadow: false
+    }
+  }
+  gray: {
+    style: {
+      fill: "#E2E6EB"
+      stroke: "#718198"
+      stroke-width: 3
+      border-radius: 12
+      font-size: 28
+      font-color: "#111827"
+      bold: false
+      shadow: false
+    }
+  }
+  whitebox: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#8A98A8"
+      stroke-width: 3
+      border-radius: 12
+      font-size: 28
+      font-color: "#111827"
+      bold: false
+      shadow: false
+    }
+  }
+  memory: {
+    style: {
+      fill: "#F7F8FA"
+      stroke: "#718198"
+      stroke-width: 3
+      border-radius: 14
+      font-size: 34
+      font-color: "#222A35"
+      bold: true
+      shadow: false
+    }
+  }
+  spacer: {
+    label: ""
+    style: {
+      opacity: 0
+    }
+  }
+  link-primary: {
+    style: {
+      stroke: "#2768F2"
+      stroke-width: 5
+      font-size: 24
+      font-color: "#2768F2"
+      bold: true
+    }
+  }
+  link-muted: {
+    style: {
+      stroke: "#66758B"
+      stroke-width: 3
+      font-size: 24
+      font-color: "#475569"
+      bold: false
+    }
+  }
+  link-data: {
+    style: {
+      stroke: "#14965D"
+      stroke-width: 4
+      font-size: 24
+      font-color: "#107B4B"
+      bold: true
+    }
+  }
+}
+
+
+host: "主机内部互连与内存系统" {
+    class: chip
+}
+root_port: "Root Port" {
+    class: chip
+}
+
+switch_upstream_port: "Switch 上游端口" {
+    class: blue
+}
+
+exchange: "交换结构：缓冲、路由、仲裁" {
+    class: chip
+}
+
+switch_downstream_port_1: "Switch 下游端口1" {
+    class: green
+}
+
+switch_downstream_port_2: "Switch 下游端口2" {
+    class: green
+}
+
+nic: "网卡 Endpoint" {
+    class: chip
+}
+
+mc: "存储控制器 Endpoint" {
+    class: chip
+}
+
+host <-> root_port {
+    class: link-muted
+}
+
+root_port <-> switch_upstream_port: "PCIe Link"{
+    class: link-data
+}
+
+switch_upstream_port <-> exchange {
+    class: link-muted
+}
+
+exchange <-> switch_downstream_port_1 {
+    class: link-muted
+}
+
+exchange <-> switch_downstream_port_2 {
+    class: link-muted
+}
+
+switch_downstream_port_1 <-> nic: "PCIe Link" {
+    class: link-data
+}
+
+switch_downstream_port_2 <-> mc: "PCIe Link" {
+    class: link-data
+}

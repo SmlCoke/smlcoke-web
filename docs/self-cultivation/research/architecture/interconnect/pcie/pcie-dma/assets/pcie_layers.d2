@@ -1,0 +1,225 @@
+# Hardware Diagram Theme — large-font, high-contrast style.
+# All typography is >= 34. Layout is intentionally NOT specified here.
+# Render with e.g. d2 --layout=elk file.d2 file.svg
+direction: down
+
+classes: {
+  chip: {
+    style: {
+      fill: "#F0F2F5"
+      stroke: "#9DA9B8"
+      stroke-width: 3
+      border-radius: 18
+      font-size: 52
+      font-color: "#141820"
+      bold: true
+      shadow: false
+    }
+  }
+  section: {
+    style: {
+      fill: "#F7F8FA"
+      stroke: "#A5B1BF"
+      stroke-width: 3
+      border-radius: 16
+      font-size: 44
+      font-color: "#222A35"
+      bold: true
+      shadow: false
+    }
+  }
+  blue: {
+    style: {
+      fill: "#DCE8F8"
+      stroke: "#579EFF"
+      stroke-width: 3
+      border-radius: 12
+      font-size: 38
+      font-color: "#111827"
+      bold: false
+      shadow: false
+    }
+  }
+  green: {
+    style: {
+      fill: "#D9EDE2"
+      stroke: "#18A058"
+      stroke-width: 3
+      border-radius: 12
+      font-size: 38
+      font-color: "#111827"
+      bold: false
+      shadow: false
+    }
+  }
+  gray: {
+    style: {
+      fill: "#E2E6EB"
+      stroke: "#718198"
+      stroke-width: 3
+      border-radius: 12
+      font-size: 38
+      font-color: "#111827"
+      bold: false
+      shadow: false
+    }
+  }
+  whitebox: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#8A98A8"
+      stroke-width: 3
+      border-radius: 12
+      font-size: 38
+      font-color: "#111827"
+      bold: false
+      shadow: false
+    }
+  }
+  memory: {
+    style: {
+      fill: "#F7F8FA"
+      stroke: "#718198"
+      stroke-width: 3
+      border-radius: 14
+      font-size: 44
+      font-color: "#222A35"
+      bold: true
+      shadow: false
+    }
+  }
+  spacer: {
+    label: ""
+    style: {
+      opacity: 0
+    }
+  }
+  link-primary: {
+    style: {
+      stroke: "#2768F2"
+      stroke-width: 5
+      font-size: 34
+      font-color: "#2768F2"
+      bold: true
+    }
+  }
+  link-muted: {
+    style: {
+      stroke: "#66758B"
+      stroke-width: 3
+      font-size: 34
+      font-color: "#475569"
+      bold: false
+    }
+  }
+  link-data: {
+    style: {
+      stroke: "#14965D"
+      stroke-width: 4
+      font-size: 34
+      font-color: "#107B4B"
+      bold: true
+    }
+  }
+}
+
+cmd: "FPGA DMA 的请求命令" {
+  class: whitebox
+}
+
+pcie: "PCIe Layers" {
+  class: chip
+  direction: down
+
+  t: "Transaction Layer\n头部生成逻辑/TLP 缓冲/发送调度与流控写作" {
+    class: blue
+  }
+
+  d: "Data Link Layer\n序号状态/LCRC计算/Replay Buffer/ACK 处理" {
+    class: green
+  }
+
+  p: "Physical Layer\n包边界处理/Lane 分发/扰码/ 128b/130b /Gearbox" {
+    class: gray
+  }
+
+  t->d {
+    class: link-muted
+  }
+
+  d->p {
+    class: link-muted
+  }
+
+}
+
+cmd -> pcie {
+  class: link-primary
+}
+
+Lanes: {
+  class: section
+  direction: right
+  height: 720
+  
+  Lane1: "Lane 1" {
+  class: chip
+  direction: down
+
+  serializer: "Serializer" {
+    class: whitebox
+  }
+
+  driver: "差分发送驱动" {
+    class: whitebox
+  }
+
+  Port: "TXP/TXN" {
+    class: whitebox
+  }
+
+  serializer -> driver {
+    class: link-muted
+  }
+  driver -> Port {
+    class: link-muted
+  }
+  }
+
+  LaneM: "......" {
+    class: chip
+    direction: down
+    height: 720
+
+  }
+
+
+  LaneN: "Lane N" {
+    class: chip
+    direction: down
+    height: 720
+
+    serializer: "Serializer" {
+      class: whitebox
+    }
+
+    driver: "差分发送驱动" {
+      class: whitebox
+    }
+
+    Port: "TXP/TXN" {
+      class: whitebox
+    }
+
+    serializer -> driver {
+      class: link-muted
+    }
+    driver -> Port {
+      class: link-muted
+    }
+  }
+}
+
+pcie -> Lanes {
+  class: link-data
+}
