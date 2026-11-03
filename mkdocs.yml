@@ -400,12 +400,22 @@ nav:
         - self-cultivation/research/architecture/base/index.md
         - DRAM Structure:
           - self-cultivation/research/architecture/base/dram_structure/index.md
+        - CPU Package Pin:
+          - self-cultivation/research/architecture/base/cpu_port/index.md
       - Compute:
         - M²NDP:
           - self-cultivation/research/architecture/compute/m2ndp/index.md
       - Interconnect:
         - CXL:
           - self-cultivation/research/architecture/interconnect/cxl/index.md
+        - PCIe:
+          - self-cultivation/research/architecture/interconnect/pcie/index.md
+          - PCIe Protocl Behavior:
+            - self-cultivation/research/architecture/interconnect/pcie/pcie-protocol/index.md
+          - DMA Example Analysis:
+            - self-cultivation/research/architecture/interconnect/pcie/pcie-dma/index.md
+          - NetFPGA 2015:
+            - self-cultivation/research/architecture/interconnect/pcie/netfpga-2015/index.md
 - 博客:
   - blog/index.md
 - 应用:
