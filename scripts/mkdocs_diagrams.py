@@ -26,6 +26,7 @@ from pymdownx.superfences import SuperFencesException
 LOG = logging.getLogger("mkdocs.plugins.diagrams")
 SCRIPT_DIR = Path(__file__).resolve().parent
 SVG_NS = "http://www.w3.org/2000/svg"
+D2_OPTIONS = ("layout", "sketch", "pad")
 
 
 def _parse_width(value):
@@ -38,6 +39,27 @@ def _parse_width(value):
     if re.fullmatch(r"\d+(?:\.\d+)?%", value) and 0 < float(value[:-1]) <= 100:
         return value
     raise PluginError("绘图 width 必须是正整数像素（如 850、850px）或 0% 到 100% 之间的百分比（不含 0%）")
+
+
+def _d2_flags(options):
+    """Only explicit Markdown options become flags overriding source config."""
+    flags = []
+    if "layout" in options:
+        layout = options["layout"]
+        if layout not in {"dagre", "elk", "tala"}:
+            raise PluginError(f"不支持的 D2 layout: {layout}")
+        flags.extend(["--layout", layout])
+    if "sketch" in options:
+        sketch = str(options["sketch"]).lower()
+        if sketch not in {"true", "false"}:
+            raise PluginError("sketch 必须是 true 或 false")
+        flags.append(f"--sketch={sketch}")
+    if "pad" in options:
+        pad = str(options["pad"])
+        if not re.fullmatch(r"[0-9]+", pad):
+            raise PluginError("pad 必须是非负整数")
+        flags.extend(["--pad", str(int(pad))])
+    return flags
 
 
 class DiagramBuilder:
@@ -71,11 +93,11 @@ class DiagramBuilder:
         file = md.treeprocessors["relpath"].file
         self.page = SimpleNamespace(file=file, url=file.url)
 
-    def run(self, args, source=None, cwd=None):
+    def run(self, args, source=None, cwd=None, env=None):
         try:
             result = subprocess.run(
                 args, input=source, capture_output=True, text=True,
-                encoding="utf-8", errors="replace", cwd=cwd, timeout=self.timeout,
+                encoding="utf-8", errors="replace", cwd=cwd, env=env, timeout=self.timeout,
                 creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
             )
         except (OSError, subprocess.TimeoutExpired) as exc:
@@ -92,23 +114,26 @@ class DiagramBuilder:
         cwd = Path(self.page.file.abs_src_path).parent
         if source_path is not None:
             cwd = source_path.parent
-        layout = options.get("layout", self.layout)
-        if layout not in {"dagre", "elk", "tala"}:
-            raise PluginError(f"不支持的 D2 layout: {layout}")
-        sketch = str(options.get("sketch", "false")).lower()
-        if sketch not in {"true", "false"}:
-            raise PluginError("sketch 必须是 true 或 false")
-        key = (language, source, str(source_path or cwd), layout, sketch)
+        flags = _d2_flags(options) if language == "d2" else []
+        key = (language, source, str(source_path or cwd), tuple(flags))
         if key in self.rendered:
             return self.rendered[key]
         targets = []
         for mode, theme in (("light", self.light_theme), ("dark", self.dark_theme)):
             if language == "d2":
+                if self.layout not in {"dagre", "elk", "tala"}:
+                    raise PluginError(f"不支持的站点 D2 layout: {self.layout}")
+                # Earlier D2 declarations are defaults; the original source can
+                # override them using D2's own parser (including imports/vars).
+                defaults = (f"vars: {{ d2-config: {{ layout-engine: {self.layout}; "
+                            "pad: 24; sketch: false } }\n")
+                env = os.environ.copy()
+                for name in ("D2_LAYOUT", "D2_PAD", "D2_SKETCH"):
+                    env.pop(name, None)
                 svg = self.run([
-                    self.d2, "--layout", layout, "--theme", str(theme),
-                    "--dark-theme", "-1", "--pad", "24", f"--sketch={sketch}",
-                    str(source_path) if source_path else "-", "-",
-                ], source=None if source_path else source, cwd=cwd)
+                    self.d2, "--theme", str(theme), "--dark-theme", "-1",
+                    *flags, "-", "-",
+                ], source=defaults + source, cwd=cwd, env=env)
             else:
                 svg = self.run([
                     self.node, str(SCRIPT_DIR / "render_wavedrom.cjs"),
@@ -128,8 +153,12 @@ class DiagramBuilder:
         return targets
 
     def pair(self, language, source, options=None, source_path=None, attributes=None):
-        options = options or {}
+        options = dict(options or {})
         attrs = dict(attributes or {})
+        if language == "d2":
+            for name in D2_OPTIONS:
+                if name in attrs:
+                    options.setdefault(name, attrs.pop(name))
         requested_width = _parse_width(options.get("width", attrs.get("width")))
         targets = self.render(language, source, options, source_path)
         outer = ET.Element("span", {"class": "diagram-pair"})
@@ -222,7 +251,7 @@ class DiagramImageExtension(Extension):
 def _validate(language, inputs, options, attrs, md):
     allowed = {"alt", "title", "width"}
     if language == "d2":
-        allowed.update({"layout", "sketch"})
+        allowed.update(D2_OPTIONS)
     unknown = set(inputs) - allowed
     if unknown:
         raise SuperFencesException(f"不支持的 {language} 代码块选项: {sorted(unknown)}")

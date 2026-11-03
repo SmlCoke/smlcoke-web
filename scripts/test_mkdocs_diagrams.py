@@ -3,8 +3,10 @@
 from pathlib import Path
 import os
 import re
+import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
@@ -177,6 +179,100 @@ CPU -> Cache
                     while error.__context__ is not None:
                         error = error.__context__
                     self.assertIn('width', str(error))
+
+    def check_d2_rendering(self, source, header, flags, expected_flags, default_layout='elk'):
+        """Compare both Markdown entry points with a direct native D2 render."""
+        settings = yaml.safe_load(self.config_path.read_text(encoding='utf-8'))
+        settings['extra'] = {'diagrams': {'layout': default_layout}}
+        self.config_path.write_text(yaml.safe_dump(settings), encoding='utf-8')
+        self.write('assets/cpu.d2', source)
+        self.write('index.md', f'''# D2 parameters
+
+```d2 {header}
+{source}```
+
+![CPU](assets/cpu.d2){{{header} width="85%"}}
+''')
+        # Capture the real renderer calls as well as checking the output, so a
+        # silently discarded option or a leaked environment default is caught.
+        with patch.dict(os.environ, {'D2_LAYOUT': 'dagre', 'D2_PAD': '999',
+                                     'D2_SKETCH': 'true'}):
+            with patch('subprocess.run', wraps=subprocess.run) as calls:
+                output = self.build()
+        renders = [call for call in calls.call_args_list
+                   if str(call.args[0][0]).lower().endswith('d2.exe')]
+        self.assertTrue(renders)
+        for call in renders:
+            args = call.args[0]
+            for name in ('--layout', '--pad'):
+                self.assertEqual(name in args, name in flags)
+                if name in flags:
+                    self.assertEqual(args[args.index(name) + 1], flags[flags.index(name) + 1])
+            self.assertEqual([x for x in args if x.startswith('--sketch=')],
+                             [x for x in flags if x.startswith('--sketch=')])
+            self.assertNotIn('D2_LAYOUT', call.kwargs['env'])
+            self.assertNotIn('D2_PAD', call.kwargs['env'])
+            self.assertNotIn('D2_SKETCH', call.kwargs['env'])
+
+        exe = renders[0].args[0][0]
+        expected_env = dict(os.environ)
+        for name in ('D2_LAYOUT', 'D2_PAD', 'D2_SKETCH'):
+            expected_env.pop(name, None)
+        images = re.findall(r'<img[^>]+class="diagram-(?:light|dark)"[^>]*>', output)
+        self.assertEqual(len(images), 4)
+        for tag in images:
+            img = ET.fromstring(tag[:-1] + ' />')
+            self.assertNotIn('layout', img.attrib)
+            self.assertNotIn('sketch', img.attrib)
+            self.assertNotIn('pad', img.attrib)
+            mode = img.get('class').removeprefix('diagram-')
+            expected = subprocess.run(
+                [exe, '--theme', '0' if mode == 'light' else '200',
+                 '--dark-theme', '-1', *expected_flags, '-', '-'],
+                input=source, text=True, encoding='utf-8', capture_output=True,
+                check=True, cwd=self.docs / 'guide' / 'assets', env=expected_env,
+            ).stdout
+            path = (self.root / 'site' / 'guide' / img.get('src')).resolve()
+            actual_root, expected_root = ET.parse(path).getroot(), ET.fromstring(expected)
+            self.assertEqual(actual_root.get('viewBox'), expected_root.get('viewBox'))
+            def labels(root):
+                return [(x.get('x'), x.get('y'), ''.join(x.itertext()))
+                        for x in root.iter() if x.tag.endswith('}text')]
+            self.assertEqual(labels(actual_root), labels(expected_root))
+        self.assertEqual(output.count('class="diagram-pair"'), 2)
+
+    def test_image_and_fence_markdown_options_override_source_header(self):
+        source = ('vars: { d2-config: { layout-engine: elk; pad: 60; sketch: true } }\n'
+                  'direction: right\nCPU <-> RAM: Link\n')
+        self.check_d2_rendering(
+            source, 'layout="tala" sketch="false" pad="8"',
+            ['--layout', 'tala', '--sketch=false', '--pad', '8'],
+            ['--layout', 'tala', '--sketch=false', '--pad', '8'],
+        )
+
+    def test_source_header_overrides_site_defaults(self):
+        source = ('vars: { d2-config: { layout-engine: tala; pad: 40; sketch: true } }\n'
+                  'direction: right\nCPU <-> RAM: Link\n')
+        self.check_d2_rendering(source, '', [],
+                                ['--layout', 'tala', '--pad', '40', '--sketch=true'])
+
+    def test_unconfigured_source_keeps_site_defaults(self):
+        self.check_d2_rendering('direction: right\nCPU <-> RAM: Link\n', '', [],
+                                ['--layout', 'elk', '--pad', '24', '--sketch=false'])
+
+    def test_invalid_render_options_fail_for_fences_and_source_images(self):
+        self.write('assets/cpu.d2', 'CPU -> RAM\n')
+        for name, value in (('layout', 'unknown'), ('sketch', 'maybe'), ('pad', '-1')):
+            for markup in (f'```d2 {name}="{value}"\nCPU -> RAM\n```',
+                           f'![CPU](assets/cpu.d2){{{name}="{value}"}}'):
+                with self.subTest(option=name, markup=markup):
+                    self.write('index.md', '# Invalid option\n\n' + markup + '\n')
+                    with self.assertRaises(Exception) as raised:
+                        self.build()
+                    error = raised.exception
+                    while error.__context__ is not None:
+                        error = error.__context__
+                    self.assertIn(name, str(error))
 
     def test_bad_d2_fails_build_instead_of_showing_code(self):
         self.write('index.md', '# Bad\n\n```d2\nbroken: {\n```\n')
