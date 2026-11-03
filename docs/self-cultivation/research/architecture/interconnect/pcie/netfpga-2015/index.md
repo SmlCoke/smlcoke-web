@@ -117,7 +117,7 @@ Host Bridge 的核心含义是：**将处理器／主机内存这一侧的访问
 
 **PCIe Switch 的典型架构**可以理解为：
 
-![PCIe Switch 典型架构](assets/pcie_switch.d2){layout="tala"}
+![PCIe Switch 典型架构](assets/pcie_switch.d2){layout="tala", width="50%"}
 
 这是逻辑拓扑示意，省略了芯片集成位置和厂商内部互连。
 
@@ -288,7 +288,7 @@ PCI Slots 就是主板上**可插扩展卡的实体插槽**：塑料连接器、
 
 用 UART 举例。UART 是一种串行收发字节的控制器，其典型内部结构是：
 
-```d2 layout="elk"
+```d2 layout="elk" width="50%"
 direction: down
 a: "片内总线接口"
 b: "地址译码、控制寄存器、状态寄存器"

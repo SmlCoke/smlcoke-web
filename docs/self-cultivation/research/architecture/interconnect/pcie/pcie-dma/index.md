@@ -10,13 +10,13 @@ CPU-FPGA 系统架构：
 
 <!-- ![CPU-FPGA Architecture](assets/cpu_fpga_tala_right.svg) -->
 
-![CPU-FPGA Architecture](assets/cpu_fpga.d2){layout="tala"}
+![CPU-FPGA Architecture](assets/cpu_fpga.d2){layout="tala", width="80%"}
 
 FPGA 内部展开：
 
 <!-- ![FPGA Architecture](assets/fpga_tala_right.svg) -->
 
-![FPGA Architecture](assets/fpga.d2){layout="tala"}
+![FPGA Architecture](assets/fpga.d2){layout="tala", width="70%"}
 
 探讨分析：
 
@@ -889,7 +889,7 @@ DW2 = 0x20000000    地址
 
 <!-- ![PCIe Layers Architecture](assets/pcie_layers.svg) -->
 
-![PCIe Layers Architecture](assets/pcie_layers.d2){layout="tala"}
+![PCIe Layers Architecture](assets/pcie_layers.d2){layout="tala", width="50%"}
 
 > 这只是一张功能结构图，厂商可能把部分逻辑并行处理或合并实现。
 
@@ -897,11 +897,13 @@ DW2 = 0x20000000    地址
     DMA 通过芯片内并行接口提供地址、长度、Tag 等。
     
     **Head Generator** 将这些**字段拼接为 Head**，通过 FIFO 或其他缓冲进入发送通路。对 MemRd，没有要附加的输入张量数据；对 MemWr 或 CplD，则还要接入对应 Payload。
+
 2. **Data Link Layer: 为相邻两端之间的可靠传输维护状态。**
     典型硬件包括：发送**序号计数器**、LCRC 计算逻辑、Replay Buffer(保留未被链路确认的 Packet)、ACK/NAK 解析及重传控制状态机。
     LCRC 计算可以实现为**并行 XOR／CRC 更新电路**，Replay Buffer 可以用 **RAM 保存数据包**。
 
     DLLP 不是 TLP 经过 TLP 后的转化物，**DLLP 是另一类独立的数据包**，用来**传送 ACK/NAK、流控更新等**。发送通路需要将**待发送 TLP 与这些链路管理信息适当地调度到物理层**。
+
 3. **Physical Layer：先构造可传输的数据流，再分发到 Lane**
     物理层需要标识包边界，并**组织 TLP、DLLP 和链路控制信息**。Gen3 使用相应的帧界定令牌，例如 STP。随后将普通数据流分发到各条 Lane。
 
@@ -915,12 +917,14 @@ DW2 = 0x20000000    地址
     ```
 
     一个 TLP 可以跨多个编码块，一个编码块也可以涉及多个包的内容。
+
 4. **每条 Lane 的编码逻辑进行扰码和 128b/130b 编码**
     128 bit 的块内容 + 2 bit 的同步头 = 130 bit 编码块。
     
     扰码器通常使用**移位寄存器状态和 XOR 电路**，使线路数据具有适合传输的统计特征。同步头帮助**接收端识别和对齐编码块**。Gearbox 再适配编码块与收发器并行接口的宽度。例如 130 bit 块需要相应拼接和拆分电路。
     
     实际 FPGA 收发器资料中能看到这些具体模块：**编码器、扰码器、Gearbox、块对齐器、弹性缓冲**等。
+
 5. **SerDes 和模拟收发电路产生真正的线路信号**
     **发送侧**：
     并行数据字 → Serializer 串行器 → 高速串行 bit 流 → 差分驱动器及发送均衡 → TXP/TXN
