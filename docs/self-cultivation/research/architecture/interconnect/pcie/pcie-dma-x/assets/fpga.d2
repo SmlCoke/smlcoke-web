@@ -1,0 +1,237 @@
+direction: right
+
+classes: {
+  chip: {
+    style: {
+      fill: "#F3F5F7"
+      stroke: "#9AA4B2"
+      stroke-width: 2
+      border-radius: 18
+      font-size: 30
+      bold: true
+    }
+  }
+
+  subchip: {
+    style: {
+      fill: "#EEF2F6"
+      stroke: "#A7B0BC"
+      stroke-width: 2
+      border-radius: 14
+      font-size: 28
+      bold: true
+    }
+  }
+
+  blue: {
+    style: {
+      fill: "#DCE8F8"
+      stroke: "#5B9BFF"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 24
+      bold: false
+    }
+  }
+
+  green: {
+    style: {
+      fill: "#DDEEDF"
+      stroke: "#3DA35A"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 24
+      bold: false
+    }
+  }
+
+  gray: {
+    style: {
+      fill: "#E9EDF2"
+      stroke: "#7D8A99"
+      stroke-width: 2
+      border-radius: 12
+      font-size: 24
+      bold: false
+    }
+  }
+
+  whitebox: {
+    style: {
+      fill: "#FAFBFC"
+      stroke: "#A0AAB8"
+      stroke-width: 2
+      border-radius: 10
+      font-size: 24
+      bold: false
+    }
+  }
+}
+
+fpga: "FPGA" {
+  class: chip
+  direction: right
+
+  pcie_side: "PCIe Side" {
+    class: subchip
+    direction: down
+
+    pcie: "[P] PCIe Controller\n+ interface adapter" {
+      class: blue
+      width: 320
+      height: 110
+    }
+
+    req_tx: "Request TX" {
+      class: whitebox
+      width: 220
+      height: 58
+    }
+
+    intr_tx: "Interrupt TX" {
+      class: whitebox
+      width: 220
+      height: 58
+    }
+
+    cpl_rx: "Completion RX" {
+      class: whitebox
+      width: 220
+      height: 58
+    }
+
+    pcie -- req_tx
+    pcie -- intr_tx
+    pcie -- cpl_rx
+  }
+
+  compute_side: "Compute Side" {
+    class: subchip
+    direction: down
+
+    bram: "[G] BRAM" {
+      class: blue
+      width: 160
+      height: 76
+    }
+
+    npu: "[N] NPU" {
+      class: green
+      width: 160
+      height: 76
+    }
+
+    bram -> npu: "read port" {
+      style: {
+        font-size: 26
+      }
+    }
+  }
+
+  dma_block: "DMA Engine" {
+    class: subchip
+    direction: down
+
+    a: "[A] BAR registers / Queue control\nQ_BASE, Q_HEAD, Q_TAIL" {
+      class: gray
+      width: 360
+      height: 110
+    }
+
+    b: "[B] Read sequencer + Tag RAM" {
+      class: blue
+      width: 360
+      height: 76
+    }
+
+    c: "[C] Completion handler / demux" {
+      class: blue
+      width: 360
+      height: 76
+    }
+
+    d: "[D] Data FIFO / BRAM writer" {
+      class: green
+      width: 360
+      height: 76
+    }
+
+    e: "[E] Job status / MSI-X generator" {
+      class: gray
+      width: 360
+      height: 76
+    }
+
+    a -> b: "kick" {
+      style: {
+        font-size: 26
+      }
+    }
+    c -> b: "descriptor / context" {
+      style: {
+        font-size: 26
+      }
+    }
+    c -> d: "data + dst" {
+      style: {
+        font-size: 26
+      }
+    }
+    d -> e: "done / status" {
+      style: {
+        font-size: 26
+      }
+    }
+  }
+
+}
+
+fpga.pcie_side.pcie <-> fpga.dma_block.a: "I1" {
+  style: {
+    stroke: "#2868ED"
+    stroke-width: 4
+    font-size: 24
+    font-color: "#2868ED"
+    bold: true
+  }
+}
+
+fpga.dma_block.b -> fpga.pcie_side.req_tx: "I2" {
+  style: {
+    stroke: "#2868ED"
+    stroke-width: 4
+    font-size: 24
+    font-color: "#2868ED"
+    bold: true
+  }
+}
+
+fpga.pcie_side.cpl_rx -> fpga.dma_block.c: "I3" {
+  style: {
+    stroke: "#2868ED"
+    stroke-width: 4
+    font-size: 24
+    font-color: "#2868ED"
+    bold: true
+  }
+}
+
+fpga.dma_block.e -> fpga.pcie_side.intr_tx: "I4" {
+  style: {
+    stroke: "#2868ED"
+    stroke-width: 4
+    font-size: 24
+    font-color: "#2868ED"
+    bold: true
+  }
+}
+
+fpga.dma_block.d -> fpga.compute_side.bram: "I5" {
+  style: {
+    stroke: "#2868ED"
+    stroke-width: 4
+    font-size: 24
+    font-color: "#2868ED"
+    bold: true
+  }
+}
