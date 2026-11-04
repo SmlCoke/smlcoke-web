@@ -10,13 +10,13 @@ CPU-FPGA 系统架构：
 
 <!-- ![CPU-FPGA Architecture](assets/cpu_fpga_tala_right.svg) -->
 
-![CPU-FPGA Architecture](assets/cpu_fpga.d2){layout="tala", width="80%"}
+![CPU-FPGA Architecture](assets/cpu_fpga.d2){layout="tala", width="100%"}
 
 FPGA 内部展开：
 
 <!-- ![FPGA Architecture](assets/fpga_tala_right.svg) -->
 
-![FPGA Architecture](assets/fpga.d2){layout="tala", width="70%"}
+![FPGA Architecture](assets/fpga.d2){layout="tala", width="80%"}
 
 探讨分析：
 
@@ -89,7 +89,7 @@ Q_ENABLE = 1
 - `Q_HEAD`：本例硬件**当前处理的队列位置**。
 - `Q_TAIL`：软件**已经提交到的位置**。
 
-当 `Q_HEAD == QTAIL` 时，表示当前没有待处理描述符；当 `Q_HEAD != QTAIL` 时，表示队列中存在待处理描述符。
+当 `Q_HEAD == Q_TAIL` 时，表示当前没有待处理描述符；当 `Q_HEAD != Q_TAIL` 时，表示队列中存在待处理描述符。
 
 本例还提前配置好一个 MSI-X 中断项及其主机处理程序。
 
@@ -131,7 +131,7 @@ cfg_byte_enable
 +0x08      DST_LOCAL_ADDR   0x0000000000008000    64 bit
 +0x10      LENGTH_BYTES     512                   32 bit
 +0x14      OPCODE           H2C_READ              16 bit
-+0x16      FLAGS            完成后请求中断         16 bit
++0x16      FLAGS            完成后请求中断          16 bit
 +0x18      JOB_ID           7                     32 bit
 +0x1C      RESERVED         0                     32 bit
 ```
@@ -699,7 +699,7 @@ CPU 发起
 **失败时最重要的两条规则是：**
 
 - 已写入部分 BRAM 的数据**仍然是“不完整输入”**。对于本例，则是保持 `BUFFER_VALID=0`，不启动使用它的推理。
-- 超时不表示已发出的请求**必须按 IP 的请求终止、排空及复位规则处理迟到的 Completion**，再安全回收上下文和复用 Tag。
+- 超时不表示已发出的请求已经被取消，**必须按 IP 的请求终止、排空及复位规则处理迟到的 Completion**，再安全回收上下文和复用 Tag。
 
 ---
 
