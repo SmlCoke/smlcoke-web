@@ -1,0 +1,51 @@
+...@hardware-theme
+direction: down
+p: "P: PCIe subsystem wrapper" {
+  class: chip
+  direction: down
+  hard: "PCIe Hard IP\nPHY / Data Link / Transaction Layer" {class: io}
+  bridge: "CQ/CC BAR Bridge\nBAR decode / Host-read context" {class: control}
+  rq: "RQ Formatter + holding FIFO\n16 B interface descriptor" {class: io}
+  rc: "RC Parser + payload aligner\n12 B descriptor removal" {class: io}
+  irq: "MSI-X IP adapter\nExternal IRQ request mode" {class: control}
+  hard -> bridge: "CQ" {class: bus}
+  bridge -> hard: "CC" {class: bus}
+  rq -> hard: "RQ" {class: bus}
+  hard -> rc: "RC" {class: bus}
+  irq -> hard: "dedicated MSI-X interface" {class: event}
+}
+dma: "Application DMA Engine" {
+  class: chip
+  direction: down
+  ctrl: "Control plane" {
+    class: chip
+    direction: down
+    axil: "AXI4-Lite decoder\nI1: 32-bit control fabric" {class: control}
+    a: "A: Queue registers\nBASE / SIZE / HEAD / TAIL" {class: control}
+    e: "E: Job / buffer / IRQ status\nMSI-X Table + PBA" {class: control}
+    axil <-> a {class: bus}
+    axil <-> e {class: bus}
+  }
+  b: "B: Descriptor + Request Scheduler\nAddress/length generators / Tag allocator" {class: io}
+  tags: "B: Tag Context RAM\nvalid / kind / Job / destination / progress" {class: memory}
+  c: "C: Completion Handler\nTag check / DESC-DATA demux" {class: io}
+  d: "D: Addressed Payload FIFO + Writer\n{addr, data, keep, job, packet_last}" {class: data}
+  ctrl.a -> b: "published tail" {class: event}
+  b -> tags: "allocate context" {class: bus}
+  tags <-> c: "lookup / update" {class: bus}
+  c -> b: "DESC data / completion progress" {class: event}
+  c -> d: "DATA: 256-bit addressed stream" {class: payload}
+}
+compute: "Local memory + compute" {
+  class: chip
+  direction: down
+  g: "G: Input BRAM\nPort A write / Port B read" {class: memory}
+  n: "N: NPU Controller + Core\nLocal weights" {class: data}
+  g -> n: "Port B: en / addr / dout" {class: payload}
+}
+p.bridge <-> dma.ctrl.axil: "I1: AXI4-Lite" {class: bus}
+dma.b -> p.rq: "I2: command" {class: bus}
+p.rc -> dma.c: "I3: metadata + payload" {class: bus}
+dma.ctrl.e -> p.irq: "I4: MSI-X request" {class: event}
+dma.d -> compute.g: "I5: native BRAM write" {class: payload}
+dma.ctrl.e <-> compute.n: "input task / buffer release" {class: event}

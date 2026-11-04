@@ -24,13 +24,67 @@ FPGA 内部展开：
 2. DMA 在硬件中的模块组成
 3. 一次真实的、运行在 PCIe 上的 DMA 传输的完整数据通路
 
-## II. An Example DMA Read Task
+## II. More Detailed Architecture
+
+**更完整清晰的系统架构图**如下。这里我们会展开之前为显式突出的 PCIe Controller IP, BAR Bridge, IOMMU, Coherency Fabric, RQ/RC/CQ/CC 等结构。
+
+![More Detailed System Architecture](assets/system_hw.d2){layout="elk", width="70%"}
+
+FPGA 内部架构展开见：
+
+![FPGA Internal Architecture](assets/fpga_hw.d2){layout="elk", width="70%"}
+
+上述架构图中的 `P` 将 PCIe Controller IP 与 Interface Adapter 抽象为一个整体，这里**着重展开一下 `P` 以及 FPGA 的内部结构**。我们选择 **AMD UltraScale+ PCIe Integrated Block 的 RQ/RC/CQ/CC 接口族**作为具体参照。
+
+`P` 是一个包装层：内部包含 **PCIe Hard IP，以及 RQ Formatter、RC Parser/Aligner、CQ/CC BAR Bridge 等适配逻辑**。Hard IP 不会直接输出本文自定义的 `rd_addr` 或已经去头的 `cpl_data`。
+
+| Hard IP 接口 | 请求角色、方向（以 FPGA 应用逻辑为参照） | 本例承载的事务 |
+|---|---|---|
+| **RQ：Requester Request** | FPGA 作为请求者，**用户逻辑 → IP** | 描述符 MemRd、R0/R1 MemRd (**I2**) |
+| **RC：Requester Completion** | FPGA 收到自己发起请求的完成，**IP → 用户逻辑** | 描述符 CplD、四个数据 CplD (**I3**) |
+| **CQ：Completer Request** | FPGA 作为被访问者，**IP → 用户逻辑** | Host 写队列配置、Doorbell；Host 读状态 (**I1**) |
+| **CC：Completer Completion** | FPGA 回复 Host 发起的 Non-Posted 请求，**用户逻辑 → IP** | 状态 MMIO Read 的 CplD (**I1**)|
+
+对应原文接口编号和硬件展开关系：
+
+| 原接口 | 展开后的硬件边界 | 片内协议选择 |
+|---|---|---|
+| `I1` | CQ/CC BAR Bridge ↔ **A 与 E 的寄存器窗口** | **32-bit AXI4-Lite**；也可保留原自定义寄存器接口 |
+| `I2` | B → RQ Formatter → Hard IP | 自定义命令握手 → **PCIe AXI4-Stream** 接口格式 |
+| `I3` | Hard IP → RC Parser/Aligner → C | **PCIe AXI4-Stream** → 去头、对齐的数据与元信息 |
+| `I4` | E → 中断适配逻辑 → Hard IP | MSI-X 专用接口或共享 RQ 的 MemWr，取决于配置 |
+| `I5` | D → G | 原生同步 BRAM 写端口；可选替换为 AXI4-MM 写通路 |
+
+
+端口的 `m_axis`/`s_axis` 命名是**从 PCIe IP 的视角**命名：
+
+- IP 输出 Packet 的 RC/CQ 接口信号使用 `m_axis_rc_*`、`m_axis_cq_*`
+- 应用送入 IP 的 RQ/CC 接口信号使用 `s_axis_rq_*`、`s_axis_cc_*`。
+- READY 信号始终沿数据反方向传播。
+
+| 信号族 | IP 原生接口上的含义 | 本例须注意 |
+|---|---|---|
+| `*_tdata` | Descriptor 与可能存在的 Payload | 256 bit |
+| `*_tvalid` | 发送方当前提供的 beat 有效 | 不能等待 READY 后才决定是否发 VALID |
+| `*_tready` | 接收方可以接受当前 beat | **同一采样沿 VALID 与 READY 同时有效才传输**；某些原生端口为同值多 bit |
+| `*_tkeep` | 当前 beat 的有效 **DW** | 256-bit 接口为 8 bit，相当于“**掩码**” |
+| `*_tlast` | 本配置下当前原生 Packet 结束 | straddle 关闭，不是整个 DMA Job 完成 |
+| `*_tuser` | BE、包界定、属性等接口特有侧带 | 各通道含义/宽度不同，按生成 IP 定义 |
+
+需要注意：
+
+- PCIe 用户接口**通常工作于 IP 给出的 `user_clk`**，并有对应 user reset 和 link-up 状态。
+- **RQ/RC/CQ/CC 采用 AXI4-Stream 握手**，传输内容有厂商定义的 **Descriptor、Payload 和 TUSER**。
+
+---
+
+## III. An Example DMA Read Task
 
 我们以如下 DMA 任务为例：
 
 > FPGA 通过 DMA (运行在 PCIe 链路) 的方式，从 CPU DRAM 获取一段 Input Tensor 数据，进行神经网络推理。
 
-探索每个环节在硬件侧到底会发生什么事情、哪些模块参与数据通路、接口/信号如何变化等细节。本文意图打通 “软件程序——协议规范——硬件底层” 整个图景，作为 baseline。后面想要了解其他更高级的概念只需要在上面添砖加瓦即可。
+探索每个环节在硬件侧到底会发生什么事情、哪些模块参与数据通路、接口/信号如何变化等细节。本文意图打通“软件程序——协议规范——硬件底层”整个图景，作为 baseline。后面想要了解其他更高级的概念只需要在上面添砖加瓦即可。
 
 CPU, DMA Engine, PCIe Controller 这三个角色是后续频繁出现的结构，这里先明确它们的分工职责。
 
@@ -89,33 +143,50 @@ Q_ENABLE = 1
 - `Q_HEAD`：本例硬件**当前处理的队列位置**。
 - `Q_TAIL`：软件**已经提交到的位置**。
 
-当 `Q_HEAD == QTAIL` 时，表示当前没有待处理描述符；当 `Q_HEAD != QTAIL` 时，表示队列中存在待处理描述符。
+当 `Q_HEAD == Q_TAIL` 时，表示当前没有待处理描述符；当 `Q_HEAD != Q_TAIL` 时，表示队列中存在待处理描述符。
 
 本例还提前配置好一个 MSI-X 中断项及其主机处理程序。
 
 **实际硬件路径：**
 
-```text
-CPU MMIO 写
-    → 主机 RC 生成 MemWr TLP
-    → PCIe Link
-    → P: PCIe Controller 解析主机对 BAR 的访问
-    → I1
-    → A 的地址译码和寄存器写使能
-```
+> *CPU MMIO 写 → 主机 RC 生成 MemWr TLP → PCIe Link → P: PCIe Controller CQ 接口解析主机对 BAR 访问 → I1(AXI4-Lite) → A 的地址译码和寄存器写使能*
+
 
 `I1: PCIe Controller -> BAR Registers` 可以提供这样的内部信息：
 
+这里我们**展开为了相对原文更详细的 AXI4-Lite 内部互连**。 
+
 ```text
-cfg_wr_en
-cfg_addr
-cfg_wdata
-cfg_byte_enable
+m_axis_cq_tdata
+m_axis_cq_tvalid
+m_axis_cq_tlast
+m_axis_cq_tkeep
+m_axis_cq_...
 ```
 
-例如命中 `Q_BASE` 的写访问，会**使对应寄存器在时钟沿装入新值**。
+为了使初始化、Doorbell 和状态回读落到可实现的地址译码，给出一份**本文自定义**的 BAR0 寄存器表。沿用 `Doorbell=0x10`、`JOB_STATUS=0x18`。
 
-**这里的 MMIO 写与之后的 Doorbell 都存在，但它们不必携带每项任务的完整参数。** 现在写的是队列配置；任务参数稍后放在主机内存中的描述符里。
+**CQ/CC BAR Bridge 是 AXI4-Lite Manager，A、E 及 MSI-X 表窗口是被访问端。** 这里的 AXI4-Lite **只有单拍访问**，无 `AxLEN/WLAST`。[AXI4-Lite：Arm IHI 0022H.c，Part B](https://documentation-service.arm.com/static/602a9df190ee6824a1e02b98)
+
+| BAR0 偏移 | 寄存器 | 属性 | 硬件行为 |
+|---:|---|---|---|
+| `0x00` | `Q_BASE_LO` | RW，停机时改 | **描述符队列**的 DMA 地址低 32 bit，本例 `0x10000000` |
+| `0x04` | `Q_BASE_HI` | RW，停机时改 | 地址高 32 bit，本例 0 |
+| `0x08` | `Q_SIZE` | RW，停机时改 | **描述符队列**物理槽数，本例 16 |
+| `0x0C` | `Q_HEAD` | RO | 已退休位置；禁用且排空后的初始化将其清零 |
+| `0x10` | `Q_TAIL_DOORBELL` | RW | 写入已发布尾位置；读回当前 tail；产生重新检查队列的条件 |
+| `0x14` | `Q_CTRL` | RW | bit 0=`ENABLE`；其余位保留 |
+| `0x18` | `JOB_STATUS` | RO | 最近任务的 DMA 状态；NPU 状态另存 |
+| `0x1C` | `JOB_ID` | RO | 最近完成/失败任务的 ID，本例 7 |
+| `0x20` | `BYTES_DONE` | RO | 该任务已经提交到目标存储的有效字节数 |
+| `0x24` | `ERROR_CODE` | RO | 描述符、Completion 或本地写错误原因 |
+| `0x28` | `IRQ_CAUSE` | W1C | 软件写 1 清除对应原因；同拍新事件优先保留 |
+| `0x2C` | `IRQ_MASK` | RW | 设备事件的通知屏蔽；与 MSI-X 表项 Mask 分开 |
+| `0x30` | `BUFFER_STATUS` | RO | bit 0=`INPUT_VALID`；由缓冲区所有权控制器维护 |
+| `0x34` | `NPU_STATUS` | RO | 输入任务已接收、计算中、计算结束等状态 |
+
+> 1. MSI-X Table 沿用附录 B 的 `BAR0+0x1000`，另为 PBA 分配合法且不重叠的区域，并在 Capability 中声明。
+> 2. 原 Step 1 的 `Q_HEAD=0、Q_TAIL=0` 可理解为**设备/队列初始化后的状态**。
 
 ---
 
@@ -184,20 +255,36 @@ Q_TAIL ← 1
 - 直接 MMIO 写寄存器方式：CPU 将每个任务的地址、长度等**直接写入设备任务寄存器**。
 - 描述符方式：CPU 将任务参数写进**主机内存**，设备寄存器**保存队列位置**，**Doorbell** 通知设备获取新描述符。真实商用 FPGA DMA IP 很多采用这一种。[AMD H2C 流程](https://docs.amd.com/r/4.1-English/pg195-pcie-dma/Example-H2C-Flow)
 
+!!! "Note Ring Queue and Doorbell"
+    **环形队列并不只需要两个指针寄存器**。
+    本例使用最容易实现的一种约定：**16 个物理槽，即保留 1 槽区分满与空，最多提交 15 个未退休项**。槽索引为 4 bit，`tail` 指向下一个可发布位置，`head` 指向下一个待处理/退休位置。
+
+    \[
+    \mathrm{empty}=(head=tail),\qquad
+    \mathrm{full}=((tail+1)\bmod16=head)
+    \]
+
+    **一个 Doorbell 可以发布多项任务。** 例如从 tail=0 更新到 3，表示槽 0、1、2 已准备好；**B 应持续工作直到 head 追上 tail**，而不是把 Doorbell 当作“只执行一次”的脉冲。
+
+    除此之外，还有如下复杂情况：
+
+    1. **多 Job 并行处理**：本文案例可逐个串行处理 DMA Job，并在 Job 退休时推进 head。要进一步并行处理多个 Job，需要分别维护 **fetch/dispatch 指针、retire 指针、每个 Job 的状态和缓冲区所有权**。
+    2. 队列槽的生命周期为：*软件填写 → 发布 tail → **B 获取并保存完整描述符** → Job 结束并退休 → 软件允许复用*。`JOB_ID/JOB_STATUS` 可能**被后续完成覆盖**，因此驱动应该在确认/清除 `IRQ_CAUSE` 前保持结果不被覆盖、阻止下一 Job 退休。高吞吐实现还可能**增加完成记录 FIFO 或主机完成队列**。
+
 ---
 
 ### Step 4. 获取描述符：FPGA 首先发出一个读取元数据的 PCIe 请求。
 
 现在活动的是 
 
-- A: BAR Registers / Queue Controll
-- B: Read Sequencer + Tag BRAM
+- A: BAR Registers
+- B: Scheduler
 - P: PCIe Controller
 - 主机 RC
 - 主机内存系统
-- C: Completion Handler / demux
+- C: Completion Handler
 
-`B: Read Sequencer` 已经从 `A` 知道队列基址和当前位置，因此可以计算：
+`B` 已经从 `A` 知道队列基址和当前位置，因此可以计算：
 
 ```text
 descriptor_addr
@@ -208,7 +295,7 @@ descriptor_addr
 
 队列基址 `Q_BASE` **通过初始化寄存器提供**。
 
-本例**由 `B: Read Sequencer` 分配 Tag `0x01`，建立上下文**：
+本例**由 `B` 分配 Tag `0x01`，建立上下文**：
 
 ```text
 Tag 0x01：
@@ -217,7 +304,7 @@ Tag 0x01：
     destination   = B 的描述符寄存器
 ```
 
-随后通过 `I2` 向 `P: PCIe Controller` 提交读命令：
+随后通过 `I2` (**B → RQ Formatter → Hard IP**) 向 `P: PCIe Controller` 提交读命令：
 
 ```text
 rd_req_valid = 1
@@ -227,6 +314,37 @@ rd_tag       = 0x01
 ```
 
 当 `rd_req_valid && rd_req_ready` 成立，`P` 接受命令。**若尚未接受，`B` 保持这些信息，不反复创建新请求**。
+
+!!! Attention "拆解 I2: B → RQ Formatter → Hard IP"
+    `B` 发出的 `{rd_addr, rd_len_bytes, rd_tag}` 先进入一个命令保持寄存器/FIFO。RQ Formatter 从中形成 **128-bit Requester Request Descriptor**。到这里说 B → RQ Formatter 的传输路径，可采用**自定义命令握手协议**。
+    
+    接下来 RQ Formatter 通过 **AXI4-Stream 协议**，
+    提供 `s_axis_rq_tdata/tkeep/tlast/tuser/tvalid`，Hard IP 通过 `s_axis_rq_tready` 表示接受。
+
+    在本节选择的 256-bit、无 straddle、DW 对齐模式下，一个没有 Payload 的 MemRd 可以在一个 RQ beat 内提交：
+
+    | RQ 字节 lane | 内容 |
+    |---|---|
+    | 0～15 | 128-bit RQ Descriptor |
+    | 16～31 | 无效 |
+
+    此时 `TKEEP=8'h0F、TLAST=1`。**这里 TKEEP 每 bit 表示一个 32-bit DW 有效**，不是普通应用流的逐 Byte keep。
+
+    请求从生成到发出可以有三个事件：
+
+    1. **调度器保留资源**：拿到 Tag、写好上下文、预留返回容量。
+    2. **命令进入 RQ Adapter**：I2 成功握手，B 才推进 `src/remaining`。Adapter 接管稳定保持命令的责任。
+    3. **原生 RQ 包被 IP 接受**：Packet 最后一拍完成握手，IP 后续按链路状态及流控发送。
+
+    这三个事件位于不同周期。RQ 被**阻塞**时，**Adapter 保持 Descriptor、TUSER、TKEEP、TLAST 和 VALID**，不得再次分配 Tag。
+
+    一般请求切分除了 MRRS，还要考虑 4 KiB 边界、剩余长度和实现自己的最大请求粒度。对本例对齐地址，可写为：
+
+    \[
+    L_{next}=\min(L_{remain},MRRS,4096-(A_{src}\bmod4096),L_{impl})
+    \]
+
+    **每次接受一个命令后才更新源地址和剩余长度**。
 
 `P` 将其组织成 **MemRd TLP**：
 
@@ -253,8 +371,8 @@ Payload      = 32 B 描述符内容
 ```text
 P 解析 Completion
     → I3 将 Tag、状态和数据交给 C: Completion Handler
-    → C 查询 Tag 上下文，得到 kind=DESC
-    → C 将数据送入 B: Read Sequencer 的描述符寄存器
+    → C 查询 Tag Context RAM 获取上下文，得到 kind=DESC
+    → C 将数据送入 B: Scheduler 的描述符寄存器
 ```
 
 **这批返回数据不会被 Completion Handler 进一步写进神经网络输入缓冲区，因为 Tag 上下文已经说明它是描述符。**
@@ -278,7 +396,7 @@ job_id    = 7
 
 ### Step 5. 执行任务：DMA 将 512 B 输入拆成两个读请求，并保存各自上下文。
 
-这时任务参数来自 CPU 写入的描述符；具体请求由 `B` 自动计算。
+这时任务参数来自 CPU 写入的描述符，具体请求由 `B`: **Scheduler** 自动计算。
 
 本例**单次请求上限是 256 B**，地址又没有跨越 4 KiB 边界，因此拆成：
 
@@ -296,7 +414,7 @@ job_id    = 7
     Tag           = 0x11
 ```
 
-`B: Read Sequencer` 的 Tag 上下文 RAM 保存：
+`B`: **Tag Context RAM 保存**：
 
 ```text
 Tag 0x10 → DATA，Job 7，本地基址 0x8000，请求长度 256 B
@@ -305,7 +423,7 @@ Tag 0x11 → DATA，Job 7，本地基址 0x8100，请求长度 256 B
 
 这里 `Tag` 的作用是：**当返回数据到达时，查回它属于哪次读请求、应写入哪里。** 
 
-本例选择**由 DMA 分配 Tag、PCIe IP 接受应用提供的 Tag**。**其他实现可以由 IP 分配并反馈给 DMA**，但必须保持一致的管理方式。[AMD Tag 管理说明](https://docs.amd.com/r/zh-CN/pg213-pcie4-ultrascale-plus/%E9%9D%9E%E8%BD%AC%E5%8F%91%E4%BC%A0%E8%BE%93%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%A0%87%E7%AD%BE%E7%AE%A1%E7%90%86)
+> 本例选择**由 DMA 分配 Tag、PCIe IP 接受应用提供的 Tag**。**其他实现可以由 IP 分配并反馈给 DMA**，但必须保持一致的管理方式。[AMD Tag 管理说明](https://docs.amd.com/r/zh-CN/pg213-pcie4-ultrascale-plus/%E9%9D%9E%E8%BD%AC%E5%8F%91%E4%BC%A0%E8%BE%93%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%A0%87%E7%AD%BE%E7%AE%A1%E7%90%86)
 
 **Outstanding Request 在这里出现。**
 
@@ -323,17 +441,33 @@ Outstanding reads = 2
 
 每个 MemRd 没有 Payload，**但是**发送时**也**需要相应的 **Non-Posted Header Credit**。假设当前主机已通告足够的额度，`P` 可以发送两个请求；若额度不足，它必须等待。
 
-```text
-Tag 是否可用：
-我有没有能力记住并区分这次读请求？
-
-Credit 是否足够：
-相邻接收端是否允许我继续发送这一类数据包？
-```
+!!! Note "理解 Tag & Credit"
+    - Tag 是否可用：我有没有能力记住并区分这次读请求？
+    - Credit 是否足够：相邻接收端是否允许我继续发送这一类数据包？
 
 它们是两种不同约束。**DMA 还必须预留返回数据的缓冲能力**，本例允许两个 256 B 读请求并发，**就必须能妥善接收和处理**它们的返回数据。
 
-**Credit 由 PCIe Controller 管理**：它可能先缓存命令再等待发送，缓冲满后通过 `rd_req_ready=0` 反压 `B`。[AMD PCIe Credit 说明](https://docs.amd.com/r/en-US/pg054-7series-pcie/Receiver-Flow-Control-Credits-Available)
+**Credit 由 PCIe Controller 管理**：它可能先缓存命令再等待发送，缓冲满后**通过 AXI4-Stream 协议的信号 `rd_req_ready=0` 反压 `B`**。[AMD PCIe Credit 说明](https://docs.amd.com/r/en-US/pg054-7series-pcie/Receiver-Flow-Control-Credits-Available)
+
+!!! Attention "B/C 对 Tag Context RAM 的并行访问"
+    `B: Read Sequencer + Tag RAM` **实际上包含几组并行电路**，而非“发请求 → 等返回 → 再发请求”这样简单的状态机。
+
+    | 子模块 | 寄存器/RAM 与组合逻辑 | 与其他模块的交互 |
+    |---|---|---|
+    | Descriptor Controller | 32 B 描述符寄存器、字段检查、队列 FSM | 选择 DESC 请求，接收 C 返回的描述符 |
+    | Request Scheduler | 源/目的地址寄存器、剩余长度减法器、边界比较器 | 每次选择 DESC 或 DATA 请求，检查资源 |
+    | Tag Allocator | free bitmap 或 free-list、分配优先编码器 | 分配时清空闲位，安全完成后置回 |
+    | Tag Context RAM | 按 Tag 寻址的上下文存储 | **B 建表，C 查表**并更新接收进度 |
+    | RQ Command FIFO | 地址、长度、Tag | **隔离资源分配与 RQ 背压** |
+    | Job Tracker | 已提交字节/请求数、未完成数、错误锁存 | 向 E 汇总 |
+
+    **Tag RAM 若由同步 BRAM 实现，查表有读延迟。** 
+    一种可实现的 C 流水线是：
+    
+    1. 第 0 拍握手**接收/锁存 Completion 元信息**并**发出 Tag 读地址**；
+    2. 第 1 拍**取得上下文、检查范围和状态**；之后产生带目的地址的数据记录。
+    
+    **到来的 Payload 在 skid buffer/FIFO 中等候**。
 
 ---
 
@@ -473,13 +607,13 @@ PCIe DMA 地址
 
 现在主要活动的是 
 
-- P: PCIe Controller
+- P: PCIe Controller, RC
 - C: Completion Handler
-- B 的 **Tag RAM**
-- D: Data **FIFO** / BRAM Writer
+- B 的 **Tag Context RAM**
+- D: Payload **FIFO** / BRAM Writer
 - G: Input **BRAM**
 
-PCIe Controller 接收、检查并解析 CplD，通过 `I3` 提供类似信息：
+PCIe Controller 以及 RC Parser (**AXI4-Stream 协议**)接收、检查并解析 CplD。**然后**通过 `I3` (**自定义命令握手协议**)提供类似信息：
 
 ```text
 cpl_tag
@@ -494,7 +628,8 @@ cpl_ready
 cpl_last
 ```
 
-这是本文定义的、经过头部解析和数据对齐后的内部接口。`cpl_last` 标识当前返回数据包的最后一拍，**不是指整个 DMA 任务的最后一拍**。
+这是本文定义的、经过头部解析和数据对齐后的内部接口。`cpl_last` 标识当前返回数据包的最后一拍，**不是指个 DMA 任务的最后一拍**。
+
 
 假设四个 CplD 依次如下：
 
@@ -530,7 +665,25 @@ cpl_last
 
 实现还会检查**地址、长度和返回进度是否一致**，**并非只累加收到的字节就宣布成功**。[AMD Completion 字段及检查说明](https://docs.amd.com/r/en-US/pg346-cpm-pcie/Requester-Completion-Descriptor-Format)
 
-**具体电路如何写 BRAM？**
+如下是**上述链路中的关键步骤**。
+
+#### Hard → RC: 去头与重新对齐
+
+**CplD 从 Hard IP 传输到 RC 时**，AMD PG213 规定 Completion 在 **RC 上以** **96-bit（12 B）接口 Descriptor + Payload** 交付。[PG213 RC Operation](https://docs.amd.com/r/en-US/pg213-pcie4-ultrascale-plus/Requester-Completion-Interface-Operation)
+
+以到达的第一份 Tag=`0x11`、128 B Payload 为例，定义 byte lane 0 为 `TDATA[7:0]`，P0～P127 是当前 CplD 的 Payload：
+
+| 原生 RC beat | lane 0～31 的有效内容 | RC TKEEP（DW 粒度） | RC TLAST |
+|---:|---|---|---:|
+| 0 | lane 0～11：Descriptor；lane 12～31：P0～P19 | `8'hFF` | 0 |
+| 1 | P20～P51 | `8'hFF` | 0 |
+| 2 | P52～P83 | `8'hFF` | 0 |
+| 3 | P84～P115 | `8'hFF` | 0 |
+| 4 | lane 0～11：P116～P127；其余无效 | `8'h07` | 1 |
+
+---
+
+#### 具体电路如何写 Paylod FIFO？
 
 `C: Completion Handler` 查表并验证返回后，将“**目的地址＋Payload**”交给 `D`。`D` 的 **FIFO 暂存数据**，写入控制逻辑产生：
 
@@ -556,7 +709,52 @@ ram_byte_enable[31:0]
 
 若 FIFO 暂时不能接收，接口通过 `ready=0` 反压。**未被接受的数据必须按接口规则保持，写地址和计数器也不能错误推进**。这种是正常的等待，不是传输失败。
 
-每个请求收齐其全部 Completion 后，可以结束该 PCIe 读并**按 IP 规则回收 Tag**。但**若 Payload 仍在 `D` 的 FIFO 中，尚未全部写入 BRAM，DMA 任务仍未完成。**
+每个请求收齐其全部 Completion 后，可以结束该 PCIe 读并**按 IP 规则回收 Tag**。但**Payload 仍在 `D` 的 FIFO 中，尚未全部写入 BRAM，DMA 任务仍未完成。**
+
+---
+
+#### Payload FIFO → Input BRAM
+
+本案例选择 **按地址写 G，不用把不同 Tag 重新排为线性流**。因此 C→D 的 FIFO 不应只存 `data`，每条至少保存：
+
+```systemverilog
+typedef struct packed {
+    logic [255:0] data;
+    logic [31:0]  keep;       // Byte 粒度
+    logic [63:0]  dst_addr;   // 当前 beat 的本地字节地址
+    logic [31:0]  job_id;
+    logic         packet_last;
+} local_write_beat_t;
+```
+
+采用 AXI4-Stream 命名时，可将地址、Job ID 放在应用定义的 TUSER 中。若采用自定义 `valid/ready` FIFO 接口，也完全可行。
+
+| 信号 | 本例语义 | 何时更新/使用 |
+|---|---|---|
+| `data[255:0]` | 当前 32 B 数据，低 byte lane 对应低地址 | 握手后写入 |
+| `keep[31:0]` | Byte 写使能 | 与数据一起进入 FIFO，最终变成 BRAM byte enable |
+| `dst_addr` | 本 beat 目的字节地址 | 与该 beat 同步 |
+| `valid/ready` | 记录有效/接收容量 | `fire=valid && ready` 时接受一次 |
+| `packet_last` | 当前 CplD Payload 结束 | 供 Packet 跟踪 |
+
+**BRAM 不带 AXI READY**。Writer 的 READY 来自本地端口是否获准使用、内部流水是否有空间等条件。
+
+Writer 可以采用直接组合驱动或增加流水级。若加了一级写端口寄存器，提交计数就应跟踪**寄存后真正写入的事件**。
+
+
+**可选扩展：用 AXI4 Memory-Mapped 写端替换 I5。** 对第一份 128 B CplD，可发：
+
+| AXI4-MM 字段 | 本例值 | 含义 |
+|---|---:|---|
+| `AWADDR` | `0x8100` | 本地起始字节地址 |
+| `AWLEN` | 3 | 4 个 beat 减 1 |
+| `AWSIZE` | 5 | 每拍 `2^5=32 B` |
+| `AWBURST` | INCR | 每拍地址递增 32 B |
+| `WDATA/WSTRB` | 256-bit / 32-bit | Payload / Byte 写使能 |
+| `WLAST` | 第 4 个有效传输 beat 置 1 | Burst 数据结束 |
+| `BRESP` | 等待成功响应 | 计入本地写完成与错误跟踪 |
+
+路径变为 D 内的：*AXI Write Master → Interconnect（可选）→ AXI BRAM Controller → G*。
 
 !!! Question "既然可以分 CplD 多批返回，那为什么读请求也有单次请求上限？"
     在本案例中，单次读请求上限是 256B，即一个 MemRd TLP 一次最多请求 256B 数据。
@@ -663,13 +861,20 @@ BYTES_DONE → 512
 
 这次状态回读本身**又是一笔 MMIO 读（通过 MemRd TLP 实现）**：
 
-```text
-CPU 发起
-    → 主机 RC 发 MemRd
-    → P 将 BAR 读交给 A
-    → A 从 E 取得状态并返回读数据
-    → P 生成 CplD 返回 CPU
-```
+> *CPU 发起 → 主机 RC 发 MemRd → P 将 BAR 读交给 A → A 从 E 取得状态并返回读数据 → P 生成 CplD 返回 CPU*
+
+**这条链路过程稍微展开后，可以理解为**：
+
+以附录 B 的 `readl(BAR0+0x18)` 为例，Host 发出的 MemRd 到 FPGA 后，经 CQ 交给 BAR Bridge。Bridge 需要保留：**Host Requester ID、Host Tag、请求长度、地址低位/BE、目标 Function** 等完成上下文，再产生 `ARADDR=0x18` 的 AXI4-Lite Read。
+
+| 阶段 | 硬件动作 | 要保留的状态 |
+|---|---|---|
+| **CQ 接受 Host Read** | 译码 BAR/偏移，分配一个 BAR Read Context | Host Requester ID 和 Host Tag |
+| **AR 握手** | A: BAR Registers/E **接受状态读取** | 寄存器偏移与相应上下文 |
+| **R 握手** | **Bridge 取得 RDATA/RRESP** | 状态快照、成功/错误结果 |
+| CC 等待发送 | 组装 **96-bit Completion Descriptor 与数据** | 保持完整 CC Packet 直到接受 |
+| CC Packet 接受 | **释放**这项 BAR Read Context | IP 继续进行链路传输 |
+
 
 驱动据此通知应用程序、回收相应主机侧资源，并按设备约定确认或清除中断原因。
 
@@ -699,7 +904,7 @@ CPU 发起
 **失败时最重要的两条规则是：**
 
 - 已写入部分 BRAM 的数据**仍然是“不完整输入”**。对于本例，则是保持 `BUFFER_VALID=0`，不启动使用它的推理。
-- 超时不表示已发出的请求**必须按 IP 的请求终止、排空及复位规则处理迟到的 Completion**，再安全回收上下文和复用 Tag。
+- 超时不表示已发出的请求已经被取消，**必须按 IP 的请求终止、排空及复位规则处理迟到的 Completion**，再安全回收上下文和复用 Tag。
 
 ---
 
