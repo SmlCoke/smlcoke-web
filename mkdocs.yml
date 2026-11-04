@@ -416,6 +416,8 @@ nav:
             - self-cultivation/research/architecture/interconnect/pcie/pcie-dma/index.md
           - NetFPGA 2015:
             - self-cultivation/research/architecture/interconnect/pcie/netfpga-2015/index.md
+          - PCIe DMA X:
+            - self-cultivation/research/architecture/interconnect/pcie/pcie-dma-x/index.md
 - 博客:
   - blog/index.md
 - 应用:

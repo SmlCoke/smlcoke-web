@@ -16,4 +16,9 @@
   <div class="card-title">③ NetFPGA 2015</div>
   <p class="card-desc">Some Other Fragments</p>
 </a>
+<a class="note-card emerald" href="pcie-dma-x/">
+  <span class="card-icon" aria-hidden="true">🎈</span>
+  <div class="card-title">④ PCIe DMA X</div>
+  <p class="card-desc">More Detailed Analysis for the same example</p>
+</a>
 </div>
