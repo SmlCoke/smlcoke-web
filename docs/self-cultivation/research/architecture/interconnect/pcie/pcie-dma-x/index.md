@@ -28,11 +28,11 @@ FPGA 内部展开：
 
 **更完整清晰的系统架构图**如下。这里我们会展开之前为显式突出的 PCIe Controller IP, BAR Bridge, IOMMU, Coherency Fabric, RQ/RC/CQ/CC 等结构。
 
-![More Detailed System Architecture](assets/system_hw.d2){layout="elk", width="70%"}
+![More Detailed System Architecture](assets/system_hw.d2){layout="elk", width="90%"}
 
 FPGA 内部架构展开见：
 
-![FPGA Internal Architecture](assets/fpga_hw.d2){layout="elk", width="70%"}
+![FPGA Internal Architecture](assets/fpga_hw.d2){layout="elk", width="90%"}
 
 上述架构图中的 `P` 将 PCIe Controller IP 与 Interface Adapter 抽象为一个整体，这里**着重展开一下 `P` 以及 FPGA 的内部结构**。我们选择 **AMD UltraScale+ PCIe Integrated Block 的 RQ/RC/CQ/CC 接口族**作为具体参照。
 
@@ -255,14 +255,11 @@ Q_TAIL ← 1
 - 直接 MMIO 写寄存器方式：CPU 将每个任务的地址、长度等**直接写入设备任务寄存器**。
 - 描述符方式：CPU 将任务参数写进**主机内存**，设备寄存器**保存队列位置**，**Doorbell** 通知设备获取新描述符。真实商用 FPGA DMA IP 很多采用这一种。[AMD H2C 流程](https://docs.amd.com/r/4.1-English/pg195-pcie-dma/Example-H2C-Flow)
 
-!!! "Note Ring Queue and Doorbell"
+!!! Attention "Note Ring Queue and Doorbell"
     **环形队列并不只需要两个指针寄存器**。
     本例使用最容易实现的一种约定：**16 个物理槽，即保留 1 槽区分满与空，最多提交 15 个未退休项**。槽索引为 4 bit，`tail` 指向下一个可发布位置，`head` 指向下一个待处理/退休位置。
 
-    \[
-    \mathrm{empty}=(head=tail),\qquad
-    \mathrm{full}=((tail+1)\bmod16=head)
-    \]
+    $$\mathrm{empty}=(head=tail),\quad \mathrm{full}=((tail+1)\bmod16=head)$$
 
     **一个 Doorbell 可以发布多项任务。** 例如从 tail=0 更新到 3，表示槽 0、1、2 已准备好；**B 应持续工作直到 head 追上 tail**，而不是把 Doorbell 当作“只执行一次”的脉冲。
 
@@ -316,7 +313,7 @@ rd_tag       = 0x01
 当 `rd_req_valid && rd_req_ready` 成立，`P` 接受命令。**若尚未接受，`B` 保持这些信息，不反复创建新请求**。
 
 !!! Attention "拆解 I2: B → RQ Formatter → Hard IP"
-    `B` 发出的 `{rd_addr, rd_len_bytes, rd_tag}` 先进入一个命令保持寄存器/FIFO。RQ Formatter 从中形成 **128-bit Requester Request Descriptor**。到这里说 B → RQ Formatter 的传输路径，可采用**自定义命令握手协议**。
+    `B` 发出的 `{rd_addr, rd_len_bytes, rd_tag}` 先进入一个命令保持寄存器/FIFO。RQ Formatter 从中形成 **128-bit Requester Request Descriptor**。到这里是 B → RQ Formatter 的传输路径，可采用**自定义命令握手协议**。
     
     接下来 RQ Formatter 通过 **AXI4-Stream 协议**，
     提供 `s_axis_rq_tdata/tkeep/tlast/tuser/tvalid`，Hard IP 通过 `s_axis_rq_tready` 表示接受。
