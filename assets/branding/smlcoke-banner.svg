@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="title desc">
+  <title id="title">SmlCoke — Notes, ideas &amp; things I build.</title>
+  <desc id="desc">A midnight-blue banner with a mint open-book and home symbol, the SmlCoke name, and the website address.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#101e2c"/><stop offset="1" stop-color="#162f38"/></linearGradient>
+    <linearGradient id="ink" x2="1" y2="1"><stop stop-color="#b9f5dc"/><stop offset="1" stop-color="#71c9c0"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="1278" height="358" rx="26" fill="url(#background)" stroke="#314653"/>
+  <!-- An open notebook whose roof makes it a small home for ideas. -->
+  <g transform="translate(66 62)">
+    <rect width="236" height="236" rx="62" fill="#152f38" stroke="#34545a"/>
+    <path d="M53 105 118 52 183 105" fill="none" stroke="url(#ink)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M118 117C99 102 79 100 56 105V172C80 168 99 173 118 187C137 173 156 168 180 172V105C157 100 137 102 118 117Z" fill="#23454b" stroke="url(#ink)" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M118 120V182M74 127C84 127 92 130 101 135M74 145C84 145 92 148 101 153M137 135C146 130 154 127 163 127M137 153C146 148 154 145 163 145" fill="none" stroke="#b9f5dc" stroke-width="4" stroke-linecap="round"/>
+    <path d="M179 40V60M169 50H189" stroke="#efd6a1" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g font-family="Segoe UI, Inter, Arial, sans-serif">
+    <text x="358" y="104" fill="#a8d7cf" font-size="16" font-weight="600" letter-spacing="4">A PERSONAL SPACE ON THE WEB</text>
+    <text x="354" y="194" fill="#f5f2e9" font-size="78" font-weight="700" letter-spacing="-2">SmlCoke</text>
+    <text x="358" y="244" fill="#cedbdc" font-size="27">Notes, ideas &amp; things I build.</text>
+    <circle cx="364" cy="290" r="4" fill="#a8dfc8"/>
+    <text x="380" y="296" fill="#a8d7cf" font-size="18" letter-spacing="1">smlcoke.com</text>
+  </g>
+  <g fill="none" stroke="#426669" stroke-width="1.5" opacity=".5">
+    <path d="M1072 74C1204 88 1112 238 1210 286M1194 60C1080 117 1235 192 1114 305"/>
+    <circle cx="1138" cy="175" r="57"/>
+  </g>
+  <circle cx="1138" cy="118" r="5" fill="#92cbbb"/>
+  <circle cx="1193" cy="190" r="4" fill="#efd6a1"/>
+</svg>
