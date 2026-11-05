@@ -44,28 +44,4 @@ hide:
   <div class="card-title">PCIe</div>
   <p class="card-desc">High-speed serial interconnect notes and reading guide</p>
 </a>
-
-<a class="note-card red" href="architecture/interconnect/pcie/pcie-protocol/">
-  <span class="card-icon" aria-hidden="true">🌈</span>
-  <div class="card-title">PCIe Protocol Behavior</div>
-  <p class="card-desc">Protocol layers, topology, and split transactions</p>
-</a>
-
-<a class="note-card blue" href="architecture/interconnect/pcie/pcie-dma/">
-  <span class="card-icon" aria-hidden="true">📤</span>
-  <div class="card-title">PCIe/DMA Microarchitecture Model</div>
-  <p class="card-desc">A DMA read example from the host to the FPGA</p>
-</a>
-
-<a class="note-card indigo" href="architecture/interconnect/pcie/netfpga-2015/">
-  <span class="card-icon" aria-hidden="true">🚃</span>
-  <div class="card-title">NetFPGA 2015</div>
-  <p class="card-desc">PCIe switches, FPGA connections, and implementation fragments</p>
-</a>
-
-<a class="note-card emerald" href="architecture/interconnect/pcie/pcie-dma-x/">
-  <span class="card-icon" aria-hidden="true">🎈</span>
-  <div class="card-title">PCIe DMA X</div>
-  <p class="card-desc">Detailed hardware analysis of the PCIe DMA example</p>
-</a>
 </div>
