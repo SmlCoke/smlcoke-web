@@ -1,0 +1,69 @@
+vars: {
+  d2-config: {
+    layout-engine: tala
+    pad: 24
+    sketch: false
+  }
+}
+direction: right
+
+classes: {
+  chip: {style: {fill: "#F0F3F7"; stroke: "#697B94"; stroke-width: 2; border-radius: 14; font-size: 34; bold: true}}
+  block: {style: {fill: "#FFFFFF"; stroke: "#77879D"; stroke-width: 2; border-radius: 10; font-size: 28}}
+  io: {style: {fill: "#E4EEFF"; stroke: "#3974C6"; stroke-width: 2; border-radius: 10; font-size: 28}}
+  control: {style: {fill: "#FFF1D8"; stroke: "#B57B21"; stroke-width: 2; border-radius: 10; font-size: 28}}
+  data: {style: {fill: "#E0F1E9"; stroke: "#28825D"; stroke-width: 2; border-radius: 10; font-size: 28}}
+  memory: {style: {fill: "#EFE8F9"; stroke: "#8260A7"; stroke-width: 2; border-radius: 10; font-size: 28}}
+  physical: {style: {stroke: "#3974C6"; stroke-width: 4; font-color: "#255A9E"; font-size: 24; bold: true}}
+  bus: {style: {stroke: "#55728F"; stroke-width: 2; font-color: "#334C68"; font-size: 22}}
+  payload: {style: {stroke: "#28825D"; stroke-width: 3; font-color: "#1A6849"; font-size: 22}}
+  event: {style: {stroke: "#B57B21"; stroke-width: 2; stroke-dash: 4; font-color: "#8B5C14"; font-size: 22}}
+}
+
+fpga: "FPGA 芯片" {
+    class: chip
+    direction: down
+
+    hard: "硬核区域（专用硅片）" {
+        class: block
+        direction: down
+
+        pcie: "PCIe IP 硬核\nSerDes/链路层/事务层/配置空间（BAR 配置寄存器）" {
+            class: control
+        }
+
+        mem_ctrl: "DDR 控制器" {
+            class: control
+        }
+
+        mem: "BRAM/URAM" {
+            class: memory
+        }
+
+        pcie -- mem_ctrl: "AXI 接口" {
+            class: bus
+        }
+
+        mem_ctrl -- mem
+    }
+
+    pl: "可编程逻辑（PL）区域" {
+        class: block
+        direction: down
+
+        dma: "QDMA/XDMA 软 IP\n描述符引擎/数据搬运状态机/控制或状态寄存器（BAR2 目标）" {
+            class: control
+            direction: down
+        }
+
+        user: "用户逻辑模块\n自定义寄存器（BAR0 目标）/计算核心" {
+            class: data
+            direction: down
+        }
+
+        axi: "AXI-Lite Interconnect\nDecoder" {
+            class: bus
+            direction: down
+        }
+    }
+}
