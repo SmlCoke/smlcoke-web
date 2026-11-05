@@ -452,4 +452,4 @@ Column
 Byte Offset
 ```
 
-等字段含义，这里会涉及到 DRAM 的层次化结构组织，参见：[DRAM 层次化结构组织](./dram_structure/index.md)。
+等字段含义，这里会涉及到 DRAM 的层次化结构组织，参见：[DRAM 层次化结构组织](../../../digital-ic/architecture/memory-hierarchy/dram_structure/index.md)。

@@ -376,6 +376,27 @@ nav:
   - self-cultivation/index.md
   - Digital IC:
     - self-cultivation/digital-ic/index.md
+    - Architecture:
+      - Processor:
+        - CPU Package Pin:
+          - self-cultivation/digital-ic/architecture/processor/cpu_port/index.md
+      - Memory Hierarchy:
+        - DRAM Structure:
+          - self-cultivation/digital-ic/architecture/memory-hierarchy/dram_structure/index.md
+      - I/O Subsystem:
+        - Host-Device I/O Fundamentals:
+          - self-cultivation/digital-ic/architecture/io-subsystem/host-device/index.md
+      - Interconnect:
+        - PCIe:
+          - self-cultivation/digital-ic/architecture/interconnect/pcie/index.md
+          - PCIe Protocol Behavior:
+            - self-cultivation/digital-ic/architecture/interconnect/pcie/pcie-protocol/index.md
+          - DMA Example Analysis:
+            - self-cultivation/digital-ic/architecture/interconnect/pcie/pcie-dma/index.md
+          - NetFPGA 2015:
+            - self-cultivation/digital-ic/architecture/interconnect/pcie/netfpga-2015/index.md
+          - PCIe DMA X:
+            - self-cultivation/digital-ic/architecture/interconnect/pcie/pcie-dma-x/index.md
   - Research:
     - self-cultivation/research/index.md
     - AI Accelerator:
@@ -398,26 +419,12 @@ nav:
     - Architecture:
       - Base:
         - self-cultivation/research/architecture/base/index.md
-        - DRAM Structure:
-          - self-cultivation/research/architecture/base/dram_structure/index.md
-        - CPU Package Pin:
-          - self-cultivation/research/architecture/base/cpu_port/index.md
       - Compute:
         - M²NDP:
           - self-cultivation/research/architecture/compute/m2ndp/index.md
       - Interconnect:
         - CXL:
           - self-cultivation/research/architecture/interconnect/cxl/index.md
-        - PCIe:
-          - self-cultivation/research/architecture/interconnect/pcie/index.md
-          - PCIe Protocl Behavior:
-            - self-cultivation/research/architecture/interconnect/pcie/pcie-protocol/index.md
-          - DMA Example Analysis:
-            - self-cultivation/research/architecture/interconnect/pcie/pcie-dma/index.md
-          - NetFPGA 2015:
-            - self-cultivation/research/architecture/interconnect/pcie/netfpga-2015/index.md
-          - PCIe DMA X:
-            - self-cultivation/research/architecture/interconnect/pcie/pcie-dma-x/index.md
 - 博客:
   - blog/index.md
 - 应用:

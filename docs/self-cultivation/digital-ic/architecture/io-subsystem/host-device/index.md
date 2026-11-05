@@ -1,4 +1,4 @@
-# DMA Fundamentals
+# Host-Device I/O Fundamentals
 
 ## I. FPGA 的 DMA Engine 和 BAR 寄存器到底“长什么样、在哪里”
 

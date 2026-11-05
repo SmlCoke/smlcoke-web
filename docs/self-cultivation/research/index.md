@@ -62,11 +62,6 @@ hide:
   <div class="card-title">Base Concepts</div>
   <p class="card-desc">Fundamental Concepts in Multi-core Interconnect and Heterogeneous Computing Systems</p>
 </a>
-<a class="note-card sky" href="architecture/interconnect/pcie/">
-  <span class="card-icon" aria-hidden="true">🔗</span>
-  <div class="card-title">PCIe</div>
-  <p class="card-desc">High-speed serial computer expansion bus standard</p>
-</a>
 <a class="note-card indigo" href="architecture/compute/m2ndp/">
   <span class="card-icon" aria-hidden="true">🚃</span>
   <div class="card-title">M²NDP</div>
