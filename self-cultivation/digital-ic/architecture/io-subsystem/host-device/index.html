@@ -12973,7 +12973,7 @@
   <a href="#12-dma-engine" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.2 DMA Engine 到底是什么形式？
+        1.2 DMA Engine 的存在形式
       
     </span>
   </a>
@@ -12984,7 +12984,7 @@
   <a href="#13-bar" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.3 BAR 寄存器在哪里？
+        1.3 BAR 寄存器的位置
       
     </span>
   </a>
@@ -12992,10 +12992,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#14-mmio" class="md-nav__link">
+  <a href="#14-example-a-mmio-operation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.4 举例：一次 MMIO 写操作落到哪里？
+        1.4 Example: A MMIO Operation
       
     </span>
   </a>
@@ -13007,6 +13007,56 @@
     <span class="md-ellipsis">
       
         1.5 整体布局示意
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-function-bdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Function 与 BDF 编号
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. Function 与 BDF 编号">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-bdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 BDF
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-bdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 BDF 编号的作用
       
     </span>
   </a>
@@ -13066,7 +13116,7 @@
 </table>
 <p><strong>DMA Engine 属于 PL 区域</strong>——它是一块用 LUT、FF、BRAM 搭建出来的<strong>硬件电路</strong>，但它是<strong>软 IP（Soft IP）</strong>，也就是说，它的功能由你综合进 FPGA 的 RTL 代码决定，可以按需修改、替换或删除。</p>
 <hr />
-<h3 id="12-dma-engine">1.2 DMA Engine 到底是什么形式？<a class="headerlink" href="#12-dma-engine" title="Permanent link">&para;</a></h3>
+<h3 id="12-dma-engine">1.2 DMA Engine 的存在形式<a class="headerlink" href="#12-dma-engine" title="Permanent link">&para;</a></h3>
 <p><strong>它是一块硬件电路，但是一块“可编程配置出来的硬件电路”</strong>，而不是像 PCIe 硬核那样出厂就固化好的。</p>
 <p>以 Xilinx 的 <strong>QDMA</strong> 或 <strong>XDMA</strong> 为例：</p>
 <ul>
@@ -13081,7 +13131,7 @@
 </blockquote>
 <p>它不同于 ASIC 中出厂固化的 DMA 控制器，也不同于 CPU 上运行的一段软件程序。</p>
 <hr />
-<h3 id="13-bar">1.3 BAR 寄存器在哪里？<a class="headerlink" href="#13-bar" title="Permanent link">&para;</a></h3>
+<h3 id="13-bar">1.3 BAR 寄存器的位置<a class="headerlink" href="#13-bar" title="Permanent link">&para;</a></h3>
 <p>BAR 寄存器要分两层来看，这是最容易混淆的地方：</p>
 <h4 id="1-bar-bar-configuration-registers">(1) BAR 配置寄存器（BAR Configuration Registers）<a class="headerlink" href="#1-bar-bar-configuration-registers" title="Permanent link">&para;</a></h4>
 <p>这些寄存器定义“这个 BAR 有多大、是 MMIO 还是 I/O、是 32 位还是 64 位地址”等信息。它们位于 <strong>PCIe 硬核的配置空间（Configuration Space）</strong> 中，属于<strong>专用硅片</strong>，出厂固定，不可通过 PL 修改。</p>
@@ -13100,7 +13150,7 @@
 <li>它们通过 <strong>AXI4-Lite 从接口</strong>暴露给 PCIe 硬核，由 AXI4-Lite Decoder 根据地址路由。</li>
 </ul>
 <hr />
-<h3 id="14-mmio">1.4 举例：一次 MMIO 写操作落到哪里？<a class="headerlink" href="#14-mmio" title="Permanent link">&para;</a></h3>
+<h3 id="14-example-a-mmio-operation">1.4 Example: A MMIO Operation<a class="headerlink" href="#14-example-a-mmio-operation" title="Permanent link">&para;</a></h3>
 <p>假设 FPGA 设计如下：</p>
 <ul>
 <li>PCIe 硬核（Hard IP）位于专用硅片区域；</li>
@@ -13120,34 +13170,64 @@
 <p>如果 CPU 写的是 <code>BAR2_base + 0x8</code>，则第 4 步 Decoder 会把事务路由到 <strong>QDMA IP 的 AXI4-Lite 从接口</strong>，最终写入 QDMA 内部的控制寄存器——这些寄存器同样是 PL 区域中用 LUT/FF 实现的软逻辑寄存器。</p>
 <hr />
 <h3 id="15">1.5 整体布局示意<a class="headerlink" href="#15" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────┐
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                         FPGA 芯片                            │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│                                                             │
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  ┌──────────────────────┐   ┌────────────────────────────┐  │
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  │   硬核区域（专用硅片） │   │   可编程逻辑（PL）区域       │  │
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  │                      │   │                            │  │
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  │  ┌────────────────┐  │   │  ┌──────────────────────┐  │  │
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  │  │ PCIe 硬核       │  │   │  │ QDMA / XDMA 软 IP    │  │  │
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  │  │ - SerDes       │  │   │  │ - 描述符引擎          │  │  │
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  │  │ - 链路层        │  │   │  │ - 数据搬运状态机      │  │  │
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  │  │ - 事务层        │  │   │  │ - 控制/状态寄存器     │  │  │
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  │  │ - 配置空间      │  │   │  │   (BAR2 目标)        │  │  │
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  │  │   (BAR 配置寄存器)│  │   │  └──────────────────────┘  │  │
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  │  └───────┬────────┘  │   │                            │  │
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  │          │ AXI       │   │  ┌──────────────────────┐  │  │
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│  │          │ 接口       │   │  │ 用户逻辑模块          │  │  │
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  │  ┌───────┴────────┐  │   │  │ - 自定义寄存器        │  │  │
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│  │  │ DDR 控制器      │  │   │  │   (BAR0 目标)        │  │  │
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│  │  └────────────────┘  │   │  │ - 计算核心            │  │  │
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│  │                      │   │  └──────────────────────┘  │  │
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│  │  ┌────────────────┐  │   │                            │  │
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│  │  │ BRAM / URAM    │  │   │  ┌──────────────────────┐  │  │
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│  │  └────────────────┘  │   │  │ AXI4-Lite Interconnect│  │  │
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│  │                      │   │  │ / Decoder            │  │  │
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│  └──────────────────────┘   │  └──────────────────────┘  │  │
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│                             └────────────────────────────┘  │
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>└─────────────────────────────────────────────────────────────┘
-</span></code></pre></div>
+<p><span class="diagram-pair"><img alt="FPGA Inner Layout" src="../../../../../assets/diagrams/eccca44ae9bc2b860a697ace.light.svg" class="diagram-light" loading="lazy" decoding="async" width="329" height="320"><img alt="FPGA Inner Layout" src="../../../../../assets/diagrams/2eca0816446212ea8ddff928.dark.svg" class="diagram-dark" loading="lazy" decoding="async" width="329" height="320"></span></p>
+<h2 id="ii-function-bdf">II. Function 与 BDF 编号<a class="headerlink" href="#ii-function-bdf" title="Permanent link">&para;</a></h2>
+<h3 id="21-function">2.1 Function<a class="headerlink" href="#21-function" title="Permanent link">&para;</a></h3>
+<p>PCIe 规范允许多个独立的物理功能（<strong>PCIe-Function</strong>）存在于同一个物理设备（Endpoint）内，这样的设备被称为<strong>多功能设备（Multi-Function Device）</strong>。你可以把一个 FPGA 卡想象成一栋大楼，<strong>Function 就是大楼里一个个独立的“房间”或“公司”</strong>。</p>
+<p>每个 Function 在逻辑上都是<strong>完全独立</strong>的：</p>
+<ul>
+<li><strong>独立的配置空间</strong>：每个 Function 都拥有自己<strong>完整的 4 KiB PCIe 配置空间（Configuration Space）</strong>，用来描述自己的身份（厂商ID、设备ID）和资源需求（BAR）。</li>
+<li><strong>独立的驱动程序</strong>：操作系统可以为每一个 Function 绑定<strong>不同的设备驱动程序</strong>。这是多功能设计的核心优势——它将 FPGA 内不同用途的逻辑（例如一个 Function 用于 DMA 数据通路，另一个 Function 用于控制管理接口）在软件层面彻底解耦，极大简化了驱动的开发和维护。</li>
+<li><strong>独立的资源</strong>：每个 Function 可以拥有自己独立的 BAR 地址窗口和中断资源。</li>
+</ul>
+<p>一个典型的例子是，一块 FPGA 可以同时实现三个 Function：一个用于控制 GPIO（LED/开关），一个用于 I2C 控制器，另一个用于 MDIO 接口。对于主机操作系统来说，它看到的是三个独立的 PCIe 设备，而非一个复杂的 FPGA。</p>
+<hr />
+<h3 id="22-bdf">2.2 BDF<a class="headerlink" href="#22-bdf" title="Permanent link">&para;</a></h3>
+<p><strong>BDF（Bus:Device.Function）编号</strong>是 PCIe 拓扑中用于<strong>唯一标识一个 Function</strong> 的地址。它的格式是 <code>总线号:设备号.功能号</code>，每个部分都有固定的位宽：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">组成部分</th>
+<th style="text-align: left;">示例值</th>
+<th style="text-align: left;">位宽</th>
+<th style="text-align: left;">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Bus Number (总线号)</strong></td>
+<td style="text-align: left;"><code>01</code></td>
+<td style="text-align: left;">8-bit</td>
+<td style="text-align: left;">该 Function 所在的 PCIe <strong>总线</strong>编号。Root Complex 所在的总线通常为 0。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Device Number (设备号)</strong></td>
+<td style="text-align: left;"><code>00</code></td>
+<td style="text-align: left;">5-bit</td>
+<td style="text-align: left;">该 Function 所在<strong>设备</strong>在总线上的编号，有时也被称为“槽位号”。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Function Number (功能号)</strong></td>
+<td style="text-align: left;"><code>0</code></td>
+<td style="text-align: left;">3-bit</td>
+<td style="text-align: left;">该 Function 在<strong>设备内部</strong>的编号。一个多功能设备最多可以有 <strong>8</strong> 个 Function（0~7）。</td>
+</tr>
+</tbody>
+</table>
+<p>所以，<code>01:00.0</code> 的完整含义是：<strong>总线 01 上，设备 00 内部的第 0 号功能</strong>。</p>
+<blockquote>
+<p><strong>扩展形式</strong>：有时会看到 <code>0000:01:00.0</code>，最前面的 <code>0000</code> 是 <strong>PCI Domain</strong> 编号，用于区分大型服务器中的多个 PCIe 主机桥。在普通 PC 中，domain 通常都是 0，因此常被省略。</p>
+</blockquote>
+<hr />
+<h3 id="23-bdf">2.3 BDF 编号的作用<a class="headerlink" href="#23-bdf" title="Permanent link">&para;</a></h3>
+<p>BDF 并非一个单纯的“显示标签”，它在 PCIe 架构中承担着关键的<strong>寻址与路由</strong>功能。</p>
+<h4 id="1">1. 配置空间访问的“门牌号”<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<p>在系统启动时，<strong>Root Complex</strong> 会对 PCIe 拓扑进行<strong>枚举（Enumeration）</strong>。它通过<strong>发送配置读写 TLP 来探测每个可能存在的 BDF</strong>。<strong>如果某个 BDF 对应的 Function 存在，其配置空间的 Vendor ID 寄存器会返回有效值</strong>；如果不存在，则返回 <code>0xFFFF</code>。操作系统正是通过遍历 BDF，来发现系统中所有可用的 PCIe Function。</p>
+<p>在 <strong>ECAM（Enhanced Configuration Access Mechanism）</strong> 机制下，BDF 被直接编码进内存地址。每个 Function 的 4 KiB 配置空间在 ECAM 窗口中的偏移量，由 <code>Bus[27:20] + Device[19:15] + Function[14:12]</code> 共同决定。</p>
+<h4 id="2-tlp">2. TLP 路由的“目的地地址”<a class="headerlink" href="#2-tlp" title="Permanent link">&para;</a></h4>
+<p>当 CPU 或设备发起一个 PCIe TLP 时，TLP 的 <strong>Header</strong> 中会携带 <strong>Requester ID</strong> 和/或 <strong>Completer ID</strong>，这些字段的值<strong>就是发起方或目标方的 BDF 编号</strong>。PCIe Switch 和 Root Complex 依靠 TLP 中的 BDF 信息，将数据包精确地路由到目标 Function。</p>
+<h4 id="3-dma">3. 中断与 DMA 的“身份标识”<a class="headerlink" href="#3-dma" title="Permanent link">&para;</a></h4>
+<p>当 FPGA 中的某个 Function 发起 <strong>MSI/MSI-X 中断或 DMA 请求</strong>时，事务中同样会<strong>嵌入该 Function 的 BDF 作为其身份标识</strong>。IOMMU 可以利用 BDF 来区分不同 Function 的 DMA 访问，实施精细的隔离与保护。</p>
 
 
 
