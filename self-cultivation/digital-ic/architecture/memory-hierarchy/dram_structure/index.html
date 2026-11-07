@@ -12947,10 +12947,154 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-dram" class="md-nav__link">
+  <a href="#i-introduction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. 为什么 DRAM 不是一个大数组？
+        I. Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-dram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. DRAM 的层次结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. DRAM 的层次结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-dram-cell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 DRAM Cell
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-row-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 按 Row 和 Column 的组织
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-bank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Bank
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-dram-chip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 DRAM Chip
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-rank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Rank
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-dimm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 DIMM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Channel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-memory-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Memory Controller
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. Memory Controller">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 物理地址解码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 请求调度
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix
       
     </span>
   </a>
@@ -12975,7 +13119,7 @@
 
 
 <h1 id="dram-structure-organization">DRAM Structure Organization<a class="headerlink" href="#dram-structure-organization" title="Permanent link">&para;</a></h1>
-<h2 id="1-dram">1. 为什么 DRAM 不是一个大数组？<a class="headerlink" href="#1-dram" title="Permanent link">&para;</a></h2>
+<h2 id="i-introduction">I. Introduction<a class="headerlink" href="#i-introduction" title="Permanent link">&para;</a></h2>
 <p>从软件看来，Memory 是一个类似：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Memory[0]
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Memory[1]
@@ -12991,6 +13135,286 @@
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                     └── Row
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>                          └── Column
 </span></code></pre></div>
+<p>也就是说，我们在 CPU 那里看到的：<code>PA=0x12345678</code>，最终可能被映射成：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Channel = 1
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Rank    = 0
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Bank    = 5
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Row     = 0x1234
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Column  = 0x38
+</span></code></pre></div>
+<p>所以软件空间地址与物理 DRAM 地址之间存在 Address Mapping。</p>
+<p>接下来，我们从最底层的 DRAM Cell 开始，逐步向上分析 DRAM 的层次结构。</p>
+<h2 id="ii-dram">II. DRAM 的层次结构<a class="headerlink" href="#ii-dram" title="Permanent link">&para;</a></h2>
+<h3 id="21-dram-cell">2.1 DRAM Cell<a class="headerlink" href="#21-dram-cell" title="Permanent link">&para;</a></h3>
+<p>一个 DRAM bit 的经典结构是：1 Transistor + 1 Capacitor，如图：</p>
+<p><img alt="DRAM Bit Cell" src="assets/image-1.webp" /></p>
+<p>Capacitor 是否存储电荷表示 <code>1</code> 或 <code>0</code>。</p>
+<p>电容会漏电，因此<strong>需要定期 Refresh（刷新）</strong>——这就是 DRAM 名称中 <strong>Dynamic</strong> 的来源之一。</p>
+<h3 id="22-row-column">2.2 按 Row 和 Column 的组织<a class="headerlink" href="#22-row-column" title="Permanent link">&para;</a></h3>
+<p>假设有一大片 DRAM Cell: </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>          Column
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>       0 1 2 3 4 ...
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Row 0  □ □ □ □ □
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Row 1  □ □ □ □ □
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Row 2  □ □ □ □ □
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Row 3  □ □ □ □ □
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>...
+</span></code></pre></div>
+<p>它不是每次只访问一个 bit，实际访问过程可以粗略理解为：</p>
+<ol>
+<li>先选一整行 Row</li>
+<li>整行数据进入 Sense Amplifier / Row Buffer</li>
+<li>再从 Row Buffer 中选择 Column</li>
+</ol>
+<p>之所以会有这样的访问方式，是因为 DRAM Cell 的 Row &amp; Column 组织方式：</p>
+<p>DRAM Cell 的 <strong>Word Line (字线)</strong> 与 <strong>Row (行)</strong> 对应，<strong>Bit Line (位线)</strong> 与 <strong>Column (列)</strong> 对应。具体来说：</p>
+<h4 id="word-line-row">Word line 与 Row<a class="headerlink" href="#word-line-row" title="Permanent link">&para;</a></h4>
+<p>Word Line 是横向贯穿存储阵列的控制线，<strong>每一根 Word Line 唯一对应一个 Row</strong>。</p>
+<ul>
+<li><strong>物理连接</strong>：同一个 Row 上所有 DRAM Cell 的 <strong>访问晶体管栅极（Gate）</strong> 都连接到同一根 Word Line。当这根 Word Line 被 <strong>激活（施加高电压）</strong> 时，该行上所有 Cell 的晶体管会同时导通。</li>
+<li><strong>操作粒度</strong>：DRAM 的激活操作是<strong>以 Row 为单位</strong>的。<strong>Row Decoder</strong> 根据行地址选中并驱动一根 Word Line，从而j激活整行。</li>
+</ul>
+<p>正因为一根 Word Line 能一次性激活一整行的所有存储单元，所以“共享同一根 Word Line 的 Cell 集合”就被定义为一个 <strong>DRAM Row</strong>。</p>
+<h4 id="bit-line-column">Bit Line 与 Column<a class="headerlink" href="#bit-line-column" title="Permanent link">&para;</a></h4>
+<p>Bit Line 是纵向贯穿存储阵列的数据线，<strong>每一根（或每一对）Bit Line 唯一对应一个 Column</strong>。</p>
+<ul>
+<li><strong>物理连接</strong>：同一个 Column 上所有 DRAM Cell 的<strong>访问晶体管漏极（Drain）</strong>都连接到同一根 Bit Line。当某行的 Word Line 激活后，栅极处于高电平，晶体管导通，该行 Cell 内的电容电荷就会与各自所在列的 Bit Line 发生<strong>电荷共享</strong>，从而被读出。</li>
+<li><strong>数据通路</strong>：Bit Line 负责将存储电容中的微弱信号送往<strong>灵敏放大器（Sense Amplifier）</strong>进行放大，最终输出为数字 0 或 1。</li>
+<li><strong>列选择</strong>：虽然激活是整行发生的，但数据输出时，<strong>Column Decoder</strong> 会通过<strong>列选择信号（CSL）</strong>，从被激活的整行中，仅<strong>选中所需要的那一列（或几列）</strong>的 Bit Line 数据送到 I/O 总线上。</li>
+</ul>
+<blockquote>
+<p>在现代 DRAM 的层次化结构中，为了降低功耗和延迟，上述“Word Line 对 Row、Bit Line 对 Column”的关系在子阵列（Subarray）层面依然严格成立，只是命名上可能演化为 <strong>Local Word Line / Local Bit Line</strong> 等变体。</p>
+</blockquote>
+<p>所以 DRAM 访问天然具有<strong>两阶段性质</strong>：<strong>Active Row → Access Column</strong>。</p>
+<p>并且，我们不难注意到上述访问方式有一个<strong>严重限制</strong>：<strong>不能同时激活多行</strong>！</p>
+<div class="admonition warning">
+<p class="admonition-title">不能同时激活多行</p>
+<p>一列的所有 DRAM Cell 是共享同一根 bit line 的吗？如果是这样，那么<strong>一次访问开启多行的时候，然后读取同一列的数据？是否会出现错乱？还是说不允许这种操作？</strong></p>
+<p>——没错，就是不允许这种操作！这确实是 DRAM 架构中一个关键的限制。<strong>一列的所有 DRAM Cell 确实共享同一根 Bit Line，但同时激活多行并读取同一列是绝对不允许的</strong>，这会直接导致数据错乱。</p>
+<p>在同一个 DRAM Bank 内，每一列只有一根（或一对差分）Bit Line，垂直贯穿整个阵列，连接着该列上所有 Row 的 DRAM Cell。当一行被激活时，该行所有 Cell 的电荷会同时“共享”到各自连接的 Bit Line 上，这个过程称为 <strong>Charge Sharing</strong>。<strong>Sense Amplifier</strong> 随即检测 <strong>Bit Line 上微小的电压变化</strong>，并将其<strong>放大</strong>为完整的逻辑电平。</p>
+<p>如果尝试在同一 Bank 中同时激活两行，那么这两行位于同一列的 Cell 会<strong>同时向同一根 Bit Line 放电</strong>——Bit Line 上的最终电压将取决于两个 DRAM Cell 电荷的“竞争”结果。</p>
+<ul>
+<li>如果两个 Cell 存储的值相同（都是 1 或都是 0），Bit Line 的电压可能勉强能被正确识别；</li>
+<li>但如果一个存 1、一个存 0，它们会相互中和，导致 Bit Line 的电压处于一个模糊的中间态。<strong>灵敏放大器无法判断这个中间电压代表的是 0 还是 1，读出的数据就是随机的、错误的</strong>。     </li>
+</ul>
+<p>正因为这种物理上的冲突，<strong>DRAM 的基本协议从架构上就禁止这种操作</strong>。</p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Precharge 与访问完整物理流程</p>
+<p>从外部看，“行激活”只是给Word Line（字线）一个高电平，但在器件物理层面，这个高电平是一系列精密物理过程的触发器。而 <strong>Precharge（预充电）</strong> 正是为这个触发过程搭建一个确定、可复现的初始物理状态。</p>
+<p>我们考虑如下这一场景：存储电容为 <span class="arithmatex">\(C_s\)</span>，<strong>行激活前</strong>电压 <span class="arithmatex">\(V_{\text{cell}}\)</span>; 位线电容为 <span class="arithmatex">\(C_{BL}\)</span>，<strong>行激活前</strong>电压：<span class="arithmatex">\(V_{BL}\)</span>。我们假设晶体管是理想晶体管，导通电阻为 0，那么<strong>行激活后</strong>，两个电容达到相同电压：</p>
+<div class="arithmatex">\[V=\frac{C_{s}V_{\text{cell}}+C_{BL}V_{\text{pre}}}{C_{s}+C_{BL}}\]</div>
+<p>那么位线电容的电压变化为：</p>
+<div class="arithmatex">\[\Delta V_{BL}=\frac{V_{\text{cell}}-V_{\text{pre}}}{1+C_{BL}/C_{s}}\]</div>
+<p>通常来说，位线电容 <span class="arithmatex">\(C_{BL}\)</span> 远大于存储电容 <span class="arithmatex">\(C_s\)</span>，所以 <span class="arithmatex">\(\Delta V_{BL}\)</span> 会相对较小。这个电压变化极其微弱，<strong>通常只有几十到一百多毫伏</strong>。这就是为什么单纯的“高电平”远远不够，必须要有后续的 <strong>Sense Amplifier</strong> 来将这个微小差异放大成完整的逻辑电平。</p>
+<p><strong>Precharge</strong> 的核心目的，就是为上述微弱的电荷共享过程，创造一个确定、均匀且已知的<strong>初始条件</strong>。<strong>简单来说，就是提供一个稳定的、确定的 <span class="arithmatex">\(V_{\text{BL}}\)</span></strong>。如果没有Precharge，位线电压将处于不可预测的浮动状态，<strong>微弱的信号将完全被噪声淹没</strong>。</p>
+<p><strong>Precharge 的物理过程</strong>可以总结为：通过 Precharge电路，将<strong>一对互补位线（BL和/BL）短接</strong>，使它们的<strong>电位强制相等</strong>，通常为：<span class="arithmatex">\(V_{DD}/2\)</span>，这是一个<strong>精妙的平衡</strong>。无论电容存储的是<strong>高电平（接近 <span class="arithmatex">\(V_{DD}\)</span>）</strong>还是<strong>低电平（接近0V）</strong>，电荷共享后，位线电压都会从 <span class="arithmatex">\(V_{DD}/2\)</span> 这个“中点”<strong>向两个方向产生对称的偏移</strong>。这能<strong>最大化灵敏放大器可检测的初始电压差</strong>。</p>
+<p>结合上述物理过程，一次DRAM读取在器件层面的完整图景是：</p>
+<ol>
+<li><strong>Precharge</strong>：位线对（BL, /BL）被均衡并预充到 <span class="arithmatex">\(V_{DD}/2\)</span>。此时，字线处于关闭状态，存储电容 <span class="arithmatex">\(C_S\)</span> <strong>与外界隔离</strong>，保持着数据电荷。</li>
+<li><strong>行激活与电荷共享</strong>：字线被拉至高电平，该行所有存取晶体管导通。每个存储电容 <span class="arithmatex">\(C_S\)</span> 与自己的位线 <span class="arithmatex">\(C_{BL}\)</span> 发生<strong>电荷共享</strong>，导致位线电压产生一个微小的、依赖存储数据的偏移（高于或低于<span class="arithmatex">\(V_{DD}/2\)</span>）。</li>
+<li><strong>灵敏放大</strong>：灵敏放大器被激活，它本质上是一个<strong>正反馈锁存器</strong>。它检测到BL和/BL之间微小的电压差，通过正反馈迅速将这个差异<strong>放大并锁存</strong>：电压稍高的一侧被拉至 <span class="arithmatex">\(V_{DD}\)</span>，稍低的一侧被拉至地（GND）。</li>
+<li><strong>数据再生</strong>：在灵敏放大过程中，被拉至满幅（<span class="arithmatex">\(V_{DD}\)</span>或GND）的位线电压会<strong>反过来给存储电容<span class="arithmatex">\(C_S\)</span>充电或放电</strong>，将其<strong>电荷状态恢复到读取前的水平，补偿了电荷共享造成的损失</strong>。这正是DRAM“破坏性读出”后“再生”的物理机制。</li>
+</ol>
+</div>
+<h4 id="row-buffer">Row Buffer<a class="headerlink" href="#row-buffer" title="Permanent link">&para;</a></h4>
+<p>假设 Bank 中存在 <code>Row 100</code>, <code>Row 101</code>, <code>Row 102</code> ...</p>
+<p>当前已经打开 <code>Row 100</code>，它的数据已经被放入 <strong>row buffer</strong>。</p>
+<p>这时访问 <code>Row 100, Column 10</code>，然后又访问 <code>Row 100, Column 20</code>，<strong>第二次访问就相对快</strong>。这称为：<strong>Row Hit</strong>。因为当前需要的 row 已经是 <strong>open row</strong>。</p>
+<p>如果访问 <code>Row 101</code>，那么通常需要：</p>
+<blockquote>
+<p><em>关闭 Row 100 → </em><em>Precharge</em><em> → Activate Row 101 → Access Column</em></p>
+</blockquote>
+<p>这种情况称为：<strong>Row Conflict</strong>。</p>
+<p>所以 Row Hit 通常明显快于 Row Miss / Row Conflict，这也是为什么 DRAM <strong>访问延迟并不是一个完全固定的数字</strong>。</p>
+<h3 id="23-bank">2.3 Bank<a class="headerlink" href="#23-bank" title="Permanent link">&para;</a></h3>
+<p>上述 Row 和 Column 的组织方式决定了一块区域不能同时激活多个 Row，否则会出现 bit line 紊乱。</p>
+<p>如果整个 DRAM 只有一个大 Row Buffer，那么就会出现这种情况</p>
+<blockquote>
+<p>Access Row A → Waiting →<br />
+Access Row B → Waiting →<br />
+Access Row C → Waiting ...</p>
+</blockquote>
+<p><strong>并行性非常差</strong>，所以 DRAM 被进一步划分成多个 <strong>Bank</strong>。</p>
+<p>例如：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>DRAM
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a> ├── Bank 0
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a> ├── Bank 1
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a> ├── Bank 2
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a> ├── Bank 3
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a> ├── Bank 4
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a> ├── Bank 5
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a> ├── Bank 6
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a> └── Bank 7
+</span></code></pre></div>
+<p>每个 Bank 有自己的 Row Buffer。因此可以做到：</p>
+<ul>
+<li>Bank 0 正在 activate</li>
+<li>Bank 1 正在传输数据</li>
+<li>Bank 2 正在 <strong>precharge</strong></li>
+<li>Bank 3 正在等待</li>
+</ul>
+<p>这就是：<strong>Bank 级并行（Bank-Level Parallelism, BLP）</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Latency 与 Bandwidth</p>
+<p>Bank 数量增加，<strong>并不意味着单次访问延迟变短</strong>。它主要提高并行处理多个 memory requests 的能力。也即 <strong>Latency 和 Bandwidth</strong> 的区别。<br />
+多 Bank、多 Channel 主要是在提高带宽。<br />
+假设一个 memory request：<code>load A</code> 需要 80ns。</p>
+<p>如果只能串行：<code>Access A -&gt; Access B -&gt; Access B</code>，吞吐量会很低。</p>
+<p>但是如果存在多个 Bank，就可以：</p>
+<ul>
+<li>Bank 0: Access A</li>
+<li>Bank 1: Access B</li>
+<li>Bank 2: Access C</li>
+</ul>
+<p>很多访问就可以 overlap，于是<strong>单次 latency 依旧很高，但是总 Throughput 会提高</strong>。</p>
+</div>
+<h3 id="24-dram-chip">2.4 DRAM Chip<a class="headerlink" href="#24-dram-chip" title="Permanent link">&para;</a></h3>
+<p>一个 DRAM Chip 通常包含多个 Bank，每个 Bank 有自己的 Row Buffer 和 Column 结构。</p>
+<p>所以到目前为止的层次化结构为：<code>chip -&gt; bank -&gt; row -&gt; column</code>。</p>
+<p>但是<strong>一个 DRAM Chip 并不一定一次提供完整的 64 bit CPU memory bus 数据</strong>。</p>
+<p>例如很多 DRAM 芯片可能是：<code>x4</code>, <code>x8</code>, <code>x16</code> ... 这里的 <code>x8</code> 表示一个 DRAM Chip <strong>每次提供 8 bit 数据</strong>。</p>
+<p>于是需要多个 DRAM chip 并行工作，例如 8 × <code>x8</code> chips 可以形成 64-bit 的数据宽度。</p>
+<h3 id="25-rank">2.5 Rank<a class="headerlink" href="#25-rank" title="Permanent link">&para;</a></h3>
+<p><strong>上述共同工作的</strong>、<strong>一次给出完整数据</strong>的多个 DRAM chips 称为一个 <strong>Rank</strong>。</p>
+<p>概念上：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Rank 0
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Chip0 Chip1 Chip2 Chip3 Chip4 Chip5 Chip6 Chip7
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  │     │     │     │     │     │     │     │
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  └─────┴─────┴─────┴─────┴─────┴─────┴─────┘
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>                  64-bit
+</span></code></pre></div>
+<p>因此 <strong>Rank 是一组同时响应同一组 memory command、共同提供一个完整数据宽度的 DRAM chips</strong>。</p>
+<div class="admonition question">
+<p class="admonition-title">x8 的 8bit 来自几个 Bank、来自几个 ROW？</p>
+<p>比如 CPU load A 想要一个 64bit 的数据，那么其中分配给 DRAM chip 0 的是 A[0:7]，那么：</p>
+<ol>
+<li>这 8 个 bit 是<strong>由多个 Bank 给出的还是一个 Bank 给出的</strong>？</li>
+<li>如果是一个 Bank ，那么<strong>是一个 Row 同时给出 8bit 还是多个 Row 共同给出 8bit</strong>？</li>
+</ol>
+<p>结论是：对于一次64位的 CPU Load，分配给单个 x8 DRAM 芯片的那 8 位数据，<strong>通常来自该芯片内部的一个Bank</strong>，并且是在<strong>一次行激活</strong>后，从同一行中通过<strong>突发传输（Burst）连续</strong>读出的。</p>
+<p>更具体地来说：</p>
+<p>在现代 DRAM 中，一个Bank内部<strong>一次列访问</strong>产生的数据量<strong>通常是64位（或128位）</strong>。例如 x8 芯片对外的<strong>数据引脚（DQ）是 8 位宽</strong>，但其<strong>内部存储阵列（Bank）到 I/O 逻辑的数据通路</strong>要宽得多（64bit）。<br />
+这种设计被称为 <strong>8n 预取架构</strong>。以 DDR3 x8 为例，芯片内部一次性从存储阵列中<strong>并行读出 64 位数据</strong>，然后通过一个<strong>多路复用器</strong>，将这64位数据<strong>拆分成8个连续的8位块</strong>，在外部时钟的驱动下，通过<strong>8 根 DQ 引脚依次串行输出</strong>。</p>
+</div>
+<h3 id="26-dimm">2.6 DIMM<a class="headerlink" href="#26-dimm" title="Permanent link">&para;</a></h3>
+<p>DIMM, Dual In-line Memory Module，双列直插内存模块。是一种<strong>将多个 DRAM chips 安装在 PCB 上，并带有金手指接口的内存模块</strong>。一个 DIMM 可以有多个 Rank，例如：</p>
+<ul>
+<li>DIMM<ul>
+<li>Rank 0</li>
+<li>Rank 1</li>
+</ul>
+</li>
+</ul>
+<p>物理上，DIMM 包含：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>DIMM
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a> ├── DRAM Chips
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a> ├── SPD EEPROM
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a> ├── PCB
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a> └── 其他电气结构
+</span></code></pre></div>
+<p>其本质就是把多颗 DRAM 芯片组织成标准化内存模块。</p>
+<h3 id="27-channel">2.7 Channel<a class="headerlink" href="#27-channel" title="Permanent link">&para;</a></h3>
+<p>现在来到了 Memory Controller 级别，一个 Memory Controller 可以有多个 Memory Channel，每个 Channel 通常拥有相对独立的数据传输资源。</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Memory Controller
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Channel 0 ── DIMM
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Channel 1 ── DIMM
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Channel 2 ── DIMM
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Channel 3 ── DIMM
+</span></code></pre></div>
+<p>多个 Channel 可以并行工作，例如：</p>
+<ul>
+<li>Channel 0: Access A</li>
+<li>Channel 1: Access B</li>
+<li>Channel 2: Access C</li>
+<li>Channel 3: Access D</li>
+</ul>
+<p>这就是<strong>通道级并行（Channel-Level Parallelism, CLP）</strong>。</p>
+<h2 id="iii-memory-controller">III. Memory Controller<a class="headerlink" href="#iii-memory-controller" title="Permanent link">&para;</a></h2>
+<p>Memory Controller (MC) 是 CPU 与 DRAM 之间的核心枢纽，它负责将 CPU 发出的<strong>64位物理地址</strong>翻译成 DRAM 能理解的 <strong>Channel → Rank → Bank → Row → Column</strong> 命令序列，并高效地调度这些命令。</p>
+<p>Memory Controller 的主要功能包括：</p>
+<ol>
+<li><strong>地址解码</strong>：MC 内部有可编程的地址映射逻辑，负责将统一的物理地址空间“切分”成不同的位段，分别对应 Channel、Rank、Bank、Row 和 Column。</li>
+<li><strong>命令调度与重排序</strong>：MC 维护一个<strong>命令队列 (Command Queue)</strong>，它会根据 DRAM 的时序约束（如 tRAS, tRP, tCAS 等）和当前 Bank 状态（Row Buffer 是否命中），对读写请求进行<strong>重排序 (Re-ordering)</strong>，以最大化吞吐量、最小化延迟。</li>
+<li><strong>刷新管理</strong>：DRAM 电容会漏电，MC 内的<strong>刷新逻辑</strong> 会周期性地生成自动刷新命令，在后台维持数据完整性，无需 CPU 干预。</li>
+<li><strong>多核仲裁</strong>：当多个 CPU 核心同时请求内存时，MC 中的<strong>仲裁器 (Arbiter)</strong> 负责在命令队列和刷新逻辑之间进行选择，公平且高效地分配内存带宽。</li>
+</ol>
+<p>这里我们着重介绍<strong>物理地址解码功能</strong>。</p>
+<h3 id="31">3.1 物理地址解码<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>物理地址解码是将一个 64 位的线性地址，按照<strong>从低位到高位</strong>的顺序，切分成若干段，每一段对应 DRAM 层次结构中的一个特定组件。</p>
+<p>一个典型的解码层次结构如下（从低位到高位）：</p>
+<p><strong>Byte Offset → Column → Bank (Group) → Rank → Row</strong></p>
+<ul>
+<li><strong>Byte Offset (字节偏移)</strong>：地址的最低几位用于在<strong>一个数据总线宽度</strong>（如64位=8字节）内定位具体字节。对于64位总线，最低 <strong>3 位</strong>（<span class="arithmatex">\(2^3=8\)</span>）就是字节偏移。</li>
+<li><strong>Column (列地址)</strong>：接下来的一段用于选择 Bank 内的列。列地址位宽决定了<strong>每个 Row 中有多少个可寻址的“数据块”</strong>。</li>
+<li><strong>Bank (Bank 地址)</strong>：Bank 地址位用于在 Rank 内选择具体的 Bank。其位宽由 Rank 内 Bank 的数量决定（例如，8 个 Bank需要 <strong>3 位</strong>）。</li>
+<li><strong>Rank (Rank 地址)</strong>：如果系统有多个 Rank，还需要一段地址来选择目标 Rank。</li>
+<li><strong>Row (行地址)</strong>：剩余的最高位地址段用于选择 Bank 内的 Row（页面）。这是地址中<strong>位宽最宽</strong>的部分，决定了每个 Bank 有多少行。</li>
+</ul>
+<blockquote>
+<p><strong>注意</strong>：这个切分顺序并非绝对固定。<strong>Column 地址有时会被拆分成高、低两部分，分别放在 Bank 地址的两侧</strong>，以实现更精细的交错策略。</p>
+</blockquote>
+<div class="admonition question">
+<p class="admonition-title">为什么地址解码中，没有 DRAM Chip 层级？</p>
+<p>因为<strong>同一个 Rank 内的所有 DRAM Chip 是并行、同时被选中</strong>的—— Rank，本身就是一组 DRAM Chip。</p>
+<p>例如，<strong>8 颗 x8 DRAM Chip 组成一个 64-bit Rank</strong>。</p>
+<p>当 CPU 请求一个 64 位数据时：</p>
+<ol>
+<li><strong>命令与地址广播</strong>：内存控制器向这个 Rank 发出<strong>同一套</strong> Command、Bank Address、Row Address、Column Address 信号。这 8 颗 Chip 的<strong>地址引脚是并联</strong>的，它们<strong>同时收到完全相同的地址</strong>。</li>
+<li><strong>同时激活</strong>：8 颗 Chip 各自<strong>在自己的对应 Bank 中激活对应的 Row</strong>，同时进行电荷共享和灵敏放大。</li>
+<li><strong>各贡献 8 位</strong>：每颗 Chip 通过自己的 8 根 DQ 引脚输出 8 位数据。</li>
+<li><strong>硬连线拼接</strong>：在 PCB 或 DIMM 上，Chip 0 的 8 根 DQ 连接到数据总线的 <strong>DQ[7:0]</strong>，Chip 1 连接到 <strong>DQ[15:8]</strong>，……，Chip 7 连接到 <strong>DQ[63:56]</strong>。这个映射是<strong>物理布线固定死的，不需要任何地址位来“选择”哪颗 Chip 输出哪一段</strong>。</li>
+</ol>
+<p>所以，<strong>Chip 之间的分工是由数据总线的物理走线决定的，而不是由地址解码决定的</strong>。地址解码只负责在 <strong>Channel、Rank、Bank、Row、Column</strong> 这些维度上做选择；一旦 Rank 被选中，Rank 内所有 Chip 就作为一个整体同时工作。</p>
+</div>
+<div class="admonition question">
+<p class="admonition-title">Channel 层级为什么通常不会放在地址最高位？</p>
+<p>这是体系结构中一个很漂亮的设计思想。<br />
+假设：</p>
+<ul>
+<li><code>0x00000000</code> ~ <code>0x3FFFFFFF</code> → Channel 0</li>
+<li><code>0x40000000</code> ~ <code>0x7FFFFFFF</code> → Channel 1</li>
+</ul>
+<p>那么连续数组：<code>A[0], A[1], A[2], A[3]...</code> 它们的 PA 的高位地址通常是相同的，因此 CPU 很可能长期只访问：Channel 0，<strong>这会浪费其他并行 Channel 的带宽</strong>。</p>
+<p>因此 Memory Controller 通常会做：<strong>Memory Interleaving</strong>，将连续的地址<strong>映射到不同的 Channel</strong> 上，从而<strong>充分利用多通道并行性</strong>。</p>
+</div>
+<h4 id="_1">地址映射的灵活性与交错策略<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<p>上面的例子展示的是一种<strong>物理布局</strong>。但在真实系统中，MC 的地址映射是<strong>高度可配置</strong>的，其核心目的是优化<strong>并行性</strong>。这通过<strong>交错 (Interleaving)</strong> 技术实现：</p>
+<ul>
+<li><strong>Channel Interleaving</strong>：例如上述例子。</li>
+<li><strong>Cache-line Interleaving</strong>：将连续的 Cache Line 分散到<strong>不同的 Bank</strong> 中。这样，CPU 连续访问相邻地址时，请求<strong>会并行地发往多个 Bank</strong>，从而隐藏单个 Bank 的<strong>行激活延迟</strong>，提升带宽。</li>
+<li><strong>Row Interleaving</strong>：将连续的地址映射到<strong>不同的 Bank 的相同 Row</strong> 中，这同样是为了并行化访问。</li>
+</ul>
+<p>此外，现代 MC 还会使用<strong>XOR 加密/散列</strong>的方式，将部分高位地址位（如 Row 位）与低位地址位（如 Bank 位）进行异或运算，来生成最终的 Bank 地址。这可以<strong>打散</strong>规律性的访问模式，避免“Bank 冲突”（多个请求同时命中同一个 Bank），是一种更高级的交错技术。</p>
+<h3 id="32">3.2 请求调度<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p>MC 不会严格按照 Memory 访问请求的到来顺序进行处理，而是会考虑 Re-ordering。</p>
+<p>例如 CPU 依次发出如下访问请求：</p>
+<ul>
+<li>Req A → Bank0 Row10</li>
+<li>Req B → Bank0 Row10</li>
+<li>Req C → Bank0 Row11</li>
+<li>Req D → Bank0 Row10</li>
+</ul>
+<p>如果严格按照顺序处理，那么：A 和 B 会开启 Row 10，但是 C <strong>会关闭 Row 10，开启 Row 11</strong>，这又会涉及到 Precharge → Activate → Access Column 的完整流程，<strong>延迟会很高</strong>。Memory Controller 完全可以重排序为：</p>
+<ul>
+<li>Req A → Bank0 Row10</li>
+<li>Req B → Bank0 Row10</li>
+<li>Req D → Bank0 Row10</li>
+<li>Req C → Bank0 Row11</li>
+</ul>
+<p>这样就可以增加：<strong>row buffer hit rate</strong>，掩盖 <strong>row activation latency</strong>，提高吞吐量。</p>
+<p>一个经典的调度策略就是 <strong>FR-FCFS（First Ready -  First Come First Serve）</strong>，粗略理解是：</p>
+<ul>
+<li>优先选择<strong>已经 Ready</strong> 的 Row hit</li>
+<li>其次再考虑<strong>到达时间</strong></li>
+</ul>
+<p>这样可能可以提高这样提高 memory throughput，代价是可能带来 fairness 的问题，例如某些 Bank 的请求<strong>可能会被长期延迟</strong>。</p>
+<h2 id="appendix">Appendix<a class="headerlink" href="#appendix" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Cache Hierarchy 要求发生 miss 时从 Memory 一次性读取一个 Cache Line 的数据。这个 Cache Line 通常不一定是一个字（例如 64bit），可能包含多个字（例如 4 个）。那么这总共多个字（例如 256 bit 的数据）如何“一次性”由 DRAM 给出？一个 Rank 一次不是只能提供 64bit 的数据吗？</li>
+<li>什么叫做按照 Cache Line 的粒度，组织 Memory？</li>
+</ol>
 
 
 
