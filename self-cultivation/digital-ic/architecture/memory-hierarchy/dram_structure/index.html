@@ -13091,13 +13091,63 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#appendix" class="md-nav__link">
+  <a href="#iv-mishmash" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Appendix
+        IV. MishMash
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="IV. MishMash">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-kn-prefetch-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 "\(k\)n" Prefetch Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-burst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Burst 传输
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-cache-line-memory-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 以 Cache Line 为单位的 Memory Hierarchy 设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-memory-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Memory Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -13274,6 +13324,33 @@ Access Row C → Waiting ...</p>
 <p>所以到目前为止的层次化结构为：<code>chip -&gt; bank -&gt; row -&gt; column</code>。</p>
 <p>但是<strong>一个 DRAM Chip 并不一定一次提供完整的 64 bit CPU memory bus 数据</strong>。</p>
 <p>例如很多 DRAM 芯片可能是：<code>x4</code>, <code>x8</code>, <code>x16</code> ... 这里的 <code>x8</code> 表示一个 DRAM Chip <strong>每次提供 8 bit 数据</strong>。</p>
+<p>更具体来说，x<span class="arithmatex">\(n\)</span> DRAM Chip 内部阵列中，一个 Column 地址就包含 <strong>n 个 bit</strong>。例如：</p>
+<table>
+<thead>
+<tr>
+<th>芯片规格</th>
+<th>每个 Column 地址对应的数据位宽</th>
+<th>一个 Bank 的内部组织示例 (行 × 列 × 位宽)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x4</td>
+<td>4 bit</td>
+<td>4096 行 × 2048 列 <strong>× 4 bit</strong></td>
+</tr>
+<tr>
+<td>x8</td>
+<td>8 bit</td>
+<td>4096 行 × 1024 列 <strong>× 8 bit</strong></td>
+</tr>
+<tr>
+<td>x16</td>
+<td>16 bit</td>
+<td>4096 行 × 512 列 <strong>× 16 bit</strong></td>
+</tr>
+</tbody>
+</table>
 <p>于是需要多个 DRAM chip 并行工作，例如 8 × <code>x8</code> chips 可以形成 64-bit 的数据宽度。</p>
 <h3 id="25-rank">2.5 Rank<a class="headerlink" href="#25-rank" title="Permanent link">&para;</a></h3>
 <p><strong>上述共同工作的</strong>、<strong>一次给出完整数据</strong>的多个 DRAM chips 称为一个 <strong>Rank</strong>。</p>
@@ -13287,14 +13364,14 @@ Access Row C → Waiting ...</p>
 <p>因此 <strong>Rank 是一组同时响应同一组 memory command、共同提供一个完整数据宽度的 DRAM chips</strong>。</p>
 <div class="admonition question">
 <p class="admonition-title">x8 的 8bit 来自几个 Bank、来自几个 ROW？</p>
-<p>比如 CPU load A 想要一个 64bit 的数据，那么其中分配给 DRAM chip 0 的是 A[0:7]，那么：</p>
+<p>比如 CPU load A 想要一个 64 bit 的数据，那么其中分配给 DRAM chip 0 的是 A[0:7]，那么：</p>
 <ol>
 <li>这 8 个 bit 是<strong>由多个 Bank 给出的还是一个 Bank 给出的</strong>？</li>
 <li>如果是一个 Bank ，那么<strong>是一个 Row 同时给出 8bit 还是多个 Row 共同给出 8bit</strong>？</li>
 </ol>
 <p>结论是：对于一次64位的 CPU Load，分配给单个 x8 DRAM 芯片的那 8 位数据，<strong>通常来自该芯片内部的一个Bank</strong>，并且是在<strong>一次行激活</strong>后，从同一行中通过<strong>突发传输（Burst）连续</strong>读出的。</p>
 <p>更具体地来说：</p>
-<p>在现代 DRAM 中，一个Bank内部<strong>一次列访问</strong>产生的数据量<strong>通常是64位（或128位）</strong>。例如 x8 芯片对外的<strong>数据引脚（DQ）是 8 位宽</strong>，但其<strong>内部存储阵列（Bank）到 I/O 逻辑的数据通路</strong>要宽得多（64bit）。<br />
+<p>在现代 DRAM 中，一个Bank内部<strong>一次列访问</strong>产生的数据量<strong>通常是64位（或128位）</strong>。例如 x8 芯片对外的<strong>数据引脚（DQ）是 8 位宽</strong>，但其<strong>内部存储阵列（Bank）到 I/O 逻辑的数据通路</strong>要宽得多（64 bit）。<br />
 这种设计被称为 <strong>8n 预取架构</strong>。以 DDR3 x8 为例，芯片内部一次性从存储阵列中<strong>并行读出 64 位数据</strong>，然后通过一个<strong>多路复用器</strong>，将这64位数据<strong>拆分成8个连续的8位块</strong>，在外部时钟的驱动下，通过<strong>8 根 DQ 引脚依次串行输出</strong>。</p>
 </div>
 <h3 id="26-dimm">2.6 DIMM<a class="headerlink" href="#26-dimm" title="Permanent link">&para;</a></h3>
@@ -13347,8 +13424,15 @@ Access Row C → Waiting ...</p>
 <p><strong>Byte Offset → Column → Bank (Group) → Rank → Row</strong></p>
 <ul>
 <li><strong>Byte Offset (字节偏移)</strong>：地址的最低几位用于在<strong>一个数据总线宽度</strong>（如64位=8字节）内定位具体字节。对于64位总线，最低 <strong>3 位</strong>（<span class="arithmatex">\(2^3=8\)</span>）就是字节偏移。</li>
-<li><strong>Column (列地址)</strong>：接下来的一段用于选择 Bank 内的列。列地址位宽决定了<strong>每个 Row 中有多少个可寻址的“数据块”</strong>。</li>
-<li><strong>Bank (Bank 地址)</strong>：Bank 地址位用于在 Rank 内选择具体的 Bank。其位宽由 Rank 内 Bank 的数量决定（例如，8 个 Bank需要 <strong>3 位</strong>）。</li>
+<li>
+<p><strong>Column (列地址)</strong>：Column 地址选择 Bank 内的列。列地址位宽决定了<strong>每个 Row 中有多少个可寻址的“数据块”</strong>。<strong>而一个 Column 包含多少位数据，取决于 DRAM Chip 的规格（x4, x8, x16 等）</strong>。例如，x8 芯片的每个 Column 地址对应 8 位数据。</p>
+<blockquote>
+<p>注意：这里的 Column 地址是系统地址编码中的 Column 地址，一个 Column 包含多个 bit；这个 Column 地址<strong>不是 DRAM Chip 内部 Cell Array 的 Column 地址——这个地址准确来说是 Bit Line 地址</strong>。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Bank (Bank 地址)</strong>：Bank 地址位用于在 Rank 内选择具体的 Bank。其位宽由 Rank 内 Bank 的数量决定（例如，8 个 Bank需要 <strong>3 位</strong>）。</p>
+</li>
 <li><strong>Rank (Rank 地址)</strong>：如果系统有多个 Rank，还需要一段地址来选择目标 Rank。</li>
 <li><strong>Row (行地址)</strong>：剩余的最高位地址段用于选择 Bank 内的 Row（页面）。这是地址中<strong>位宽最宽</strong>的部分，决定了每个 Bank 有多少行。</li>
 </ul>
@@ -13404,16 +13488,341 @@ Access Row C → Waiting ...</p>
 <li>Req C → Bank0 Row11</li>
 </ul>
 <p>这样就可以增加：<strong>row buffer hit rate</strong>，掩盖 <strong>row activation latency</strong>，提高吞吐量。</p>
-<p>一个经典的调度策略就是 <strong>FR-FCFS（First Ready -  First Come First Serve）</strong>，粗略理解是：</p>
+<p>一个经典的调度策略就是 <strong>FR-FCFS（First Ready - First Come First Serve）</strong>，粗略理解是：</p>
 <ul>
 <li>优先选择<strong>已经 Ready</strong> 的 Row hit</li>
 <li>其次再考虑<strong>到达时间</strong></li>
 </ul>
 <p>这样可能可以提高这样提高 memory throughput，代价是可能带来 fairness 的问题，例如某些 Bank 的请求<strong>可能会被长期延迟</strong>。</p>
-<h2 id="appendix">Appendix<a class="headerlink" href="#appendix" title="Permanent link">&para;</a></h2>
+<h2 id="iv-mishmash">IV. MishMash<a class="headerlink" href="#iv-mishmash" title="Permanent link">&para;</a></h2>
+<h3 id="41-kn-prefetch-architecture">4.1 "<span class="arithmatex">\(k\)</span>n" Prefetch Architecture<a class="headerlink" href="#41-kn-prefetch-architecture" title="Permanent link">&para;</a></h3>
+<p>之前提到过这个案例：</p>
+<blockquote>
+<p>以 DDR3 x8 为例，芯片内部一次性从存储阵列中<strong>并行读出 64 位数据</strong>，然后通过一个<strong>多路复用器</strong>，将这64位数据<strong>拆分成8个连续的8位块</strong>，在外部时钟的驱动下，通过<strong>8 根 DQ 引脚依次串行输出</strong>。</p>
+</blockquote>
+<p>这种机制就是 "8n" Prefetch Architecture。</p>
+<p>准确来说，</p>
+<ul>
+<li><span class="arithmatex">\(n\)</span> = 这颗 DRAM 芯片<strong>对外的数据引脚宽度（DQ 位宽）</strong>。也就是的 x4、x8、x16 里的那个数字。x8 芯片，n=8；x4 芯片，n=4；x16 芯片，n=16。</li>
+<li><span class="arithmatex">\(k\)</span> = <strong>预取倍数</strong>，即芯片内部一次从存储阵列中并行读出的数据量，<strong>是外部 DQ 宽度的 <span class="arithmatex">\(k\)</span> 倍</strong>。</li>
+</ul>
+<p>所以“8n 预取” = 芯片内部一次并行读出 <span class="arithmatex">\(8\times n\)</span> 位，然后<strong>通过 n 根 DQ 引脚分 8 拍串行送出</strong>。</p>
+<blockquote>
+<p>——这里还<strong>必须配合 Burst 传输理解</strong>，比如此处 Burst Length 就是 8。</p>
+</blockquote>
+<p>不同规格 DRAM Chip 的 "8n prefetch" 体现：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">芯片规格</th>
+<th style="text-align: left;">n（外部DQ宽度）</th>
+<th style="text-align: left;">8n（内部一次预取宽度）</th>
+<th style="text-align: left;">外部突发拍数</th>
+<th style="text-align: left;">一次突发总输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">x4</td>
+<td style="text-align: left;">4 bit</td>
+<td style="text-align: left;"><strong>32 bit</strong></td>
+<td style="text-align: left;">8 拍</td>
+<td style="text-align: left;">8×4 = 32 bit</td>
+</tr>
+<tr>
+<td style="text-align: left;">x8</td>
+<td style="text-align: left;">8 bit</td>
+<td style="text-align: left;"><strong>64 bit</strong></td>
+<td style="text-align: left;">8 拍</td>
+<td style="text-align: left;">8×8 = 64 bit</td>
+</tr>
+<tr>
+<td style="text-align: left;">x16</td>
+<td style="text-align: left;">16 bit</td>
+<td style="text-align: left;"><strong>128 bit</strong></td>
+<td style="text-align: left;">8 拍</td>
+<td style="text-align: left;">8×16 = 128 bit</td>
+</tr>
+</tbody>
+</table>
+<h4 id="_2">硬件支持：内部数据通路<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p>以 "x8" 的 "8n prefetch" 为例，一颗 x8 芯片内部的数据流是这样的：</p>
+<p><span class="diagram-pair"><img alt="prefetch_datapath" _="," width="746" src="../../../../../assets/diagrams/cfdcc30170f391f3dcf91706.light.svg" class="diagram-light" loading="lazy" decoding="async" style="width:60%" height="1003"><img alt="prefetch_datapath" _="," width="746" src="../../../../../assets/diagrams/4928f09dcea666c538ff63b9.dark.svg" class="diagram-dark" loading="lazy" decoding="async" style="width:60%" height="1003"></span></p>
+<ul>
+<li><strong>暂存</strong>：8n 预取并行读出的宽数据（例如 64 位），会被送入位于 <strong>Sense Amplifier 和 Column Selector</strong> 之间的 Latch 或 Register阵列中。这个寄存器阵列<strong>有能力存储一次突发传输所需的全部数据</strong>。</li>
+<li><strong>输出过程</strong>：这个宽寄存器阵列的输出连接到一个多路复用器。MUX 在内部高速时钟的驱动下，逐拍从宽数据中<strong>切出 n 位</strong>，送往 DQ 引脚。这就完成了并行到串行的转换。</li>
+</ul>
+<h4 id="prefetch">设计动机：为什么要有 prefetch<a class="headerlink" href="#prefetch" title="Permanent link">&para;</a></h4>
+<p>——<strong>解决“核心慢、接口快”的速度鸿沟</strong>，这是 prefetch architecture 存在的根本原因。</p>
+<p>DRAM 的<strong>核心阵列</strong>（电容 + 灵敏放大器 + 位线）的物理操作速度是有上限的——灵敏放大器检测微小电压差、电荷共享、数据再生，这些<strong>模拟物理过程需要时间</strong>。而<strong>外部 I/O 接口</strong>的时钟频率<strong>却在每一代 DDR 中不断飙升</strong>。</p>
+<p>如果内部阵列和外部接口以同样的速率、同样的宽度工作，那么接口频率一提速，核心阵列就跟不上了。</p>
+<p><strong><span class="arithmatex">\(k\)</span>n prefetch</strong> 的精妙之处在于：<strong>让内部阵列以外部接口 <span class="arithmatex">\(1/k\)</span> 的频率工作，但每次多读 <span class="arithmatex">\(k\)</span> 倍的数据</strong>。</p>
+<p>核心阵列不必跑得和接口一样快，只要一次多读一点、<strong>把数据“囤”在 MUX 前面</strong>，就能跟上外部的高速串行输出。</p>
+<h3 id="42-burst">4.2 Burst 传输<a class="headerlink" href="#42-burst" title="Permanent link">&para;</a></h3>
+<p>Burst 传输是一种 DRAM 操作模式：在<strong>接收到一个起始地址和读/写命令</strong>后，DRAM 芯片会<strong>自动地、连续地</strong>访问一系列<strong>相邻的列地址</strong>，并连续地输出或输入<strong>多个数据字</strong>，而无需 Memory Controller 为每个数据字都发送单独的列地址命令。</p>
+<p>Burst 传输的几个关键特性：</p>
+<ul>
+<li><strong>突发长度（Burst Length, BL）</strong>：一次突发传输包含的数据“拍”数。对于 64 位总线，<strong>BL=8</strong> 是DDR3/DDR4时代的标准配置，正好对应一个 64 字节的 Cache Line。</li>
+<li><strong>突发类型（Burst Type）</strong>：数据输出的顺序。可以是<strong>顺序</strong>的（如 0-1-2-3-4-5-6-7），也可以是<strong>交错（Interleaved）</strong> 的（如 0-1-2-3-4-5-6-7 的一种混淆顺序）。</li>
+<li>
+<p><strong>环绕（Wrap）特性</strong>：突发传输会在一个对齐的地址块边界内“环绕”。例如，考虑如下案例：</p>
+<p><strong>64 位</strong>系统，单 Channel，单 Rank，8 个 x8 DRAM chip，默认 Burst Length = 8<br />
+该系统中，因为是 x8，因此<strong>系统地址编码中的 Column 地址</strong>，一个地址就对应 Cell Array 中的 <strong>8bit 数据</strong>；8 个 x8 DRAM Chip 的这 8 bit 数据<strong>共同组成一个完整的 64 bit 字</strong>。</p>
+<p>现在，我们假设系统地址给出的 Column 地址是 5，而 Burst Length = 8，那么此时的访问顺序就是：“字5→字6→字7→字0→字1→字2→字3→字4”，具体来说：</p>
+<ul>
+<li>第一次：8 个 x8 DRAM Chip 各自给出 Column 5 的 8 bit 数据，组成完整的 64 bit，对应“<strong>字5</strong>”。</li>
+<li>第二次：8 个 x8 DRAM Chip 各自给出 Column 6 的 8 bit 数据，组成完整的 64 bit，对应“<strong>字6</strong>”。</li>
+<li>第三次：8 个 x8 DRAM Chip 各自给出 Column 7 的 8 bit 数据，组成完整的 64 bit，对应“<strong>字7</strong>”。</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<p>关于 Burst 传输，<strong>更重要的是理解它与 <span class="arithmatex">\(k\)</span>n prefetch 的配合关系</strong>，我们以 "8n prefetch" 和 Burst Length = 8 为例：</p>
+<ul>
+<li><strong>8n Prefetch</strong> 是芯片的“内部微架构”：它定义的是 DRAM 芯片<strong>内部的数据通路宽度</strong>。具体来说，芯片<strong>内部的数据通路宽度</strong>是<strong>外部 I/O 接口宽度</strong>（<span class="arithmatex">\(n\)</span>）的$ 8$ 倍。这是一种硬件设计，目的是让速度较慢的内部核心阵列，能够一次并行读出大量数据（<span class="arithmatex">\(8n\)</span>），以“宽而慢”的内部操作，去匹配“窄而快”的外部接口。它属于芯片的<strong>微架构范畴，不可配置，出厂即固定</strong>。</li>
+<li><strong>Burst Length=8</strong> 是“外部传输协议”：它定义的是在外部数据总线上，<strong>一次读/写命令会连续传输多少个数据单元（“拍”）</strong>。这是一个由内存控制器通过 <strong>模式寄存器 (Mode Register)</strong> 配置的软件可见参数。它属于<strong>芯片的指令集架构范畴</strong>，是<strong>软件可见、可配置</strong>的协议参数。</li>
+</ul>
+<p>它们通过如下方式协同工作，我们依旧考虑：</p>
+<blockquote>
+<p><strong>64 位</strong>系统，单 Channel，单 Rank，8 个 x8 DRAM chip，默认 Burst Length = 8，8n prefetch。</p>
+</blockquote>
 <ol>
-<li>Cache Hierarchy 要求发生 miss 时从 Memory 一次性读取一个 Cache Line 的数据。这个 Cache Line 通常不一定是一个字（例如 64bit），可能包含多个字（例如 4 个）。那么这总共多个字（例如 256 bit 的数据）如何“一次性”由 DRAM 给出？一个 Rank 一次不是只能提供 64bit 的数据吗？</li>
-<li>什么叫做按照 Cache Line 的粒度，组织 Memory？</li>
+<li>CPU 发出一个 <code>Load</code> 命令，想要获取一个 64 bit 的数据字。</li>
+<li>Cache Hierarchy 完全 Miss，交给 Memory Controller 处理。Memory Controller <strong>不会一次只读 64 bit</strong>，而是会发出一个 <strong>Burst Read</strong> 命令，指定 <strong>起始 Column 地址</strong> 和 <strong>Burst Length=8</strong>。（<em>这里还涉及到以 Cache Line 为基本操作单位设计存储系统的思想，见 4.3 节。</em>）</li>
+<li><strong>内部预取</strong>：DRAM 芯片接收到这个命令，会在内部一次性从存储阵列中<strong>并行读出 8n = 64 bit数据</strong>，并将这些数据<strong>暂存到内部的寄存器阵列</strong>中。</li>
+<li><strong>外部分 8 拍输出</strong>：这个宽数据块被送入一个<strong>多路复用器</strong>，然后被拆分成 <strong>8 个宽度为 8 的片段</strong>，在连续的8个“拍”（Burst Length=8）中，通过 <span class="arithmatex">\(8\)</span> 根 DQ 引脚依次送出。</li>
+</ol>
+<p>这就是 <span class="arithmatex">\(k\)</span>n prefetch 与 Burst Length = <span class="arithmatex">\(k\)</span> 的协同工作机制——<strong>它们刚好对齐：内部一次读出 <span class="arithmatex">\(k\)</span> 倍数据，外部分 <span class="arithmatex">\(k\)</span> 拍传输</strong>。那么，问题来了：</p>
+<div class="admonition question">
+<p class="admonition-title">问题一：<span class="arithmatex">\(k\)</span>n prefetech 的 <span class="arithmatex">\(k\)</span> 与 BL 不同怎么办？</p>
+<p>BL 可以配置为不同值，不一定严格等于 <span class="arithmatex">\(k\)</span>。<br />
+但是 BL 也不能随意设置为任意值，<strong>典型值就是 <span class="arithmatex">\(k\)</span> 的一半</strong>。</p>
+<p>例如同样的系统：<strong>64 位</strong>系统，单 Channel，单 Rank，8 个 x8 DRAM chip，8n prefetch</p>
+<p>现在我们令 BL = 4，那么</p>
+<ul>
+<li>芯片内部依然完成<strong>完整的 8n prefetch</strong>，8 个数据块全部准备就绪，<strong>位于暂存寄存器中</strong>。</li>
+<li>前 4 个数据块依次被送到外部总线。</li>
+<li>对于后 4 个数据块，<strong>控制逻辑会禁用输出驱动器</strong>，使得最后 4 个数据块无法被送到 DQ 引脚上。</li>
+</ul>
+<p>这就称为 <strong>BC4, Burst Chop 4</strong>。它的出现是为了避免带宽浪费，例如：</p>
+<p><strong>假设规定 Burst Length 锁死为 prefetch 倍数</strong>。那么，一颗 8n prefetch 的 DDR3 芯片将只能支持 Burst Length=8。当系统只需要传输 4 拍数据（例如，一个<strong>较小的 Cache Line 或特定应用场景</strong>）时，它也不得不传输完整的 8 拍，<strong>造成 50% 的带宽浪费</strong>。</p>
+<blockquote>
+<p>在原生 DDR4 芯片(8n prefetch) 中，不支持 BL=16 的 Burst 传输。因此 BL 参数<strong>并非可随意配置的</strong>。</p>
+</blockquote>
+</div>
+<div class="admonition question">
+<p class="admonition-title">问题二：BL 与系统数据总线宽度的关系</p>
+<p><strong>两者并无直接关系</strong>，换句话说：x8 DRAM Chip 不是只能服务 64 bit 系统，它还<strong>可以服务 32 bit, 128 bit 系统</strong>。</p>
+<p>我们在上面的 Burst 传输推演流程中，默认的数据总线宽度为 64 bit，这只是一个例子。在 Burst 的每拍中，8 个 x8 DRAM Chip 各自输出 8 bit 数据，组成完整的 64 bit 数据字。</p>
+<p>对于其他宽度的系统总线，<strong>即便我们只使用同一种 DRAM Chip，也可以通过调整 Rank 内的 Chip 数量来适配数据总线宽度</strong>。例如：</p>
+<ul>
+<li>4 个 x8 DRAM Chip 可以组成 32 bit Rank；</li>
+<li>16 个 x8 DRAM Chip 可以组成 128 bit Rank。</li>
+</ul>
+<p>而 <strong>Burst Length 和 Burst 传输只讨论 DRAM 需要连续输出多少 Beat 数据块，它本身并不关心这个数据块是 64 bit 还是 32 bit 的</strong>。 </p>
+</div>
+<p>DDR 演进过程中，典型 Prefetch 和 BL 参数参加下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">DRAM 世代</th>
+<th style="text-align: left;"><strong>Prefetch 架构</strong></th>
+<th style="text-align: left;"><strong>支持的典型 Burst Length</strong></th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>DDR2</strong></td>
+<td style="text-align: left;"><strong>4n</strong> prefetch</td>
+<td style="text-align: left;"><strong>4</strong> (或8)</td>
+<td style="text-align: left;">内部一次预取4n位，外部通常分<strong>4拍</strong>送出。此时两者数值对应。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>DDR3</strong></td>
+<td style="text-align: left;"><strong>8n</strong> prefetch</td>
+<td style="text-align: left;"><strong>8</strong> (固定)，可支持 <strong>Burst Chop=4</strong>（砍半）</td>
+<td style="text-align: left;">内部架构已固定为8n预取，但外部协议允许通过“Burst Chop”功能只传输<strong>4拍</strong>，以节省带宽。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>DDR4</strong></td>
+<td style="text-align: left;"><strong>8n</strong> prefetch</td>
+<td style="text-align: left;"><strong>8</strong> (固定)，同样支持 <strong>Burst Chop=4</strong></td>
+<td style="text-align: left;">与DDR3类似，内部架构未变，外部支持BL8或BC4模式。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>DDR5</strong></td>
+<td style="text-align: left;"><strong>16n</strong> prefetch</td>
+<td style="text-align: left;"><strong>16</strong> (基础)</td>
+<td style="text-align: left;">内部预取倍数提升至16，以匹配更高频率的外部接口。</td>
+</tr>
+</tbody>
+</table>
+<p>此外，对于读/写操作的 Burst 传输，有一些不同：</p>
+<ul>
+<li>对于 Read 操作，<strong>并不要求 Burst 传输的初始地址对齐</strong>——例如对于 BL8 架构，并不要求起始地址一定是 8 的倍数（即低三位为 0b000），<strong>这是因为要支持 Wrap 传输和 BC4</strong>。<ul>
+<li>Wrap 本身需要自定义<strong>初始地址</strong>；</li>
+<li>对于 BC4，起始地址如果<strong>并非 8 的倍数并且 BL=4 不可达</strong>，那么会丢失想要访问的那一个字。</li>
+</ul>
+</li>
+<li>真正<strong>需要初始地址对齐的，是 Write 操作</strong>。例如对于写操作，DDR3 SDRAM 会<strong>忽略列地址的低3位 <code>CA[2:0]</code></strong>，内部的写操作总是<strong>从 8 字（或 8n）对齐的边界开始</strong>。</li>
+</ul>
+<p>总结（<strong>BL8，DDR3</strong>）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">操作类型</th>
+<th style="text-align: left;">突发长度</th>
+<th style="text-align: left;">起始地址对齐要求（读操作）</th>
+<th style="text-align: left;">关键约束/行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>读 (READ)</strong></td>
+<td style="text-align: left;"><strong>BL8 (Wrap)</strong></td>
+<td style="text-align: left;"><strong>无对齐要求</strong>，可从任意<code>CA[2:0]</code>开始</td>
+<td style="text-align: left;">由<code>CA[2:0]</code>决定起始点，按顺序或交错模式环绕输出。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>读 (READ)</strong></td>
+<td style="text-align: left;"><strong>BC4</strong></td>
+<td style="text-align: left;"><strong>无对齐要求</strong>，可从任意<code>CA[2:0]</code>开始</td>
+<td style="text-align: left;"><code>A12=0</code>选择BC4，从<code>CA[2:0]</code>开始输出4个数据。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>写 (WRITE)</strong></td>
+<td style="text-align: left;"><strong>BL8</strong></td>
+<td style="text-align: left;"><strong>要求8字节对齐</strong></td>
+<td style="text-align: left;">硬件忽略<code>CA[2:0]</code>，始终从8字边界开始写入。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>写 (WRITE)</strong></td>
+<td style="text-align: left;"><strong>BC4</strong></td>
+<td style="text-align: left;"><strong>要求4字节对齐</strong></td>
+<td style="text-align: left;"><code>CA[2]</code>决定写入选通的高/低半区，<code>CA[1:0]</code>被忽略。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-cache-line-memory-hierarchy">4.3 以 Cache Line 为单位的 Memory Hierarchy 设计<a class="headerlink" href="#43-cache-line-memory-hierarchy" title="Permanent link">&para;</a></h3>
+<p>CPU 与主存之间的数据交换通常是以 Cache Line 为基本单位的，这是一种设计范式，意味着所有<strong>对物理内存的请求</strong>，其最小操作单元都是一个完整的 Cache Line（通常是 64 B），而不是 CPU 当前明确指定的那一个字节或一个字。</p>
+<p>这种设计的哲学基础是自然还是 <strong>Spatial Locality</strong>——程序访问了某个地址，那么它很可能接下来会访问附近的地址。一次性取回整个块，<strong>就把未来可能用到的数据提前准备好了</strong>，虽然单次传输量变大，但<strong>摊薄到每次访问上的效率更高</strong>。</p>
+<p>而我们之前介绍的 <span class="arithmatex">\(k\)</span>n prefetech 和 Burst 传输机制，正式为了<strong>支持以 Cache Line 为单位的高效数据传输</strong>而设计的。</p>
+<p>进一步，在整个 Memory Hierarchy 中，<strong>Cache Line 作为最小传输单位</strong>的设计理念贯穿始终，我们按距离 CPU 的距离依次梳理：</p>
+<ol>
+<li><strong>Cache System</strong>：<strong>Cache Line 是 Cache Sytem 的最小传输单位，贯穿 L1 → L2 → LLC</strong>。CPU 在访问内存时，通常会以 Cache Line 为单位从上一级 Cache 或主存中获取数据。</li>
+<li><strong>Memory Controller</strong>：MC 在处理 CPU 的内存请求时，通常会以 Cache Line 为单位进行调度和命令生成。即使 CPU 请求的是一个字节，MC 也会<strong>将其扩展为一个完整的 Cache Line 请求</strong>，以便充分利用 DRAM 的 Burst 传输能力。此外，MC 还会<strong>按 Cache Line 边界组织和交错分配地址</strong>。</li>
+<li><strong>Prefetch 与 Burst Transmission</strong>：DRAM 芯片内部的 <span class="arithmatex">\(k\)</span>n prefetch 机制和外部的 Burst 传输协议，其 Payload 恰好可以匹配 Cache Line Size。例如 Cache Line = 64B，通常用 <strong>8× x8 DRAM Chip + 8n prefetch + BL=8</strong> 的组合，一次完整传输一个 Cache Line。</li>
+</ol>
+<h3 id="44-memory-controller">4.4 Memory Controller<a class="headerlink" href="#44-memory-controller" title="Permanent link">&para;</a></h3>
+<p>现在，我们回过头来再来看看 MC 除了基本的：</p>
+<ul>
+<li>地址解码</li>
+<li>请求调度和重排</li>
+</ul>
+<p>之外，还需负责哪些功能。</p>
+<p>首先，很容易明白的就是：</p>
+<ul>
+<li>MC 必须知道 DRAM 的<strong>层次化结构</strong>，例如 Channel 多少个、Rank 多少个、Bank 多少个、Row/Column 的位宽等；</li>
+<li>MC 必须知道 DRAM 的<strong>时序约束</strong>；</li>
+<li>MC 必须知道 DRAM 的 <strong>Prefetch 架构</strong>；</li>
+<li>MC 必须决定 <strong>Burst Length</strong> 并且<strong>通知 DRAM 传输</strong>。</li>
+</ul>
+<p>因此：</p>
+<h4 id="441">4.4.1 静态配置与动态训练<a class="headerlink" href="#441" title="Permanent link">&para;</a></h4>
+<p>Memory Controller（MC）需要知道<strong>插在 Channel 中的 DRAM 的具体架构</strong>，但这套知识<strong>并非在出厂时写入 MC 并且锁死只能搭配某种 DRAM 的</strong>，而是在系统启动时通过读取 <strong>SPD信息</strong>和执行<strong>硬件训练</strong>动态获取的。</p>
+<ul>
+<li>
+<p><strong>静态配置</strong>：读取 <strong>SPD (Serial Presence Detect)</strong><br />
+    每根内存条上都有一个小的 EEPROM 芯片，即SPD，存储着制造商写入的基础规格参数，如容量、时序、电压、Rank数、Bank数、Row/Column地址宽度、DQ位宽等。<strong>系统启动时，MC 会通过 SMBus 等接口读取 SPD，获得 DRAM 的理论架构蓝图</strong>。</p>
+</li>
+<li>
+<p><strong>动态训练 (Training)</strong>：<strong>校准物理层（PHY）参数</strong><br />
+    仅靠 SPD 的静态参数不够，因为PCB走线差异等因素会导致<strong>信号偏差</strong>。因此，MC 会执行<strong>内存训练</strong>，动态校准物理层参数，如读取/写入延迟、信号电压、时序偏移等，确保数据在高速传输下的可靠性。</p>
+<blockquote>
+<p>注：这一过程对 OS 是“透明”的，无法通过 OS 直接观测训练过程本身。<strong>内存训练发生在操作系统加载之前</strong>，属于固件（BIOS/UEFI）的职责范围。具体来说，它在 UEFI启动流程的 PEI（Pre-EFI Initialization）阶段完成，由 <strong>MRC（Memory Reference Code）</strong> 负责。当操作系统内核开始执行时，内存早已初始化完毕、可供使用了。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="442-mode-register">4.4.2 Mode Register<a class="headerlink" href="#442-mode-register" title="Permanent link">&para;</a></h4>
+<p><strong>Mode Register（模式寄存器）</strong> 是 DRAM 芯片内部一组可编程的配置寄存器，它定义了芯片的工作模式和行为参数。MC 通过 <strong>MRS（Mode Register Set）命令</strong> 将<strong>配置写入这些寄存器</strong>，从而在启动时告诉 DRAM 以何种方式工作。它是 MC 与 DRAM 之间协议契约的物理载体。</p>
+<p>每颗 DRAM 芯片内部都有<strong>一组 Mode Register</strong>，通常编号为 MR0、MR1、MR2……（DDR3 有 MR0~MR3，DDR4 有 MR0~MR6，DDR5 更多）。每个寄存器是<strong>一组可读写的触发器</strong>，其每一段控制一个特定的工作参数。</p>
+<p>在 DDR3 中，最核心的是 MR0，其位段定义如下（简化）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">位段</th>
+<th style="text-align: left;">功能</th>
+<th style="text-align: left;">典型取值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>A[1:0]</strong></td>
+<td style="text-align: left;"><strong>Burst Length</strong></td>
+<td style="text-align: left;">(BL)8、(BC)4（通过 A12 动态切换）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>A[3]</strong></td>
+<td style="text-align: left;"><strong>Burst Type</strong></td>
+<td style="text-align: left;">Sequential or Interleaved</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>A[6:4]</strong></td>
+<td style="text-align: left;"><strong>CAS Latency (CL)</strong></td>
+<td style="text-align: left;">CL=5~11 等</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>A[12]</strong></td>
+<td style="text-align: left;"><strong>PPD（Precharge Power-Down）</strong></td>
+<td style="text-align: left;">预充电掉电模式选择</td>
+</tr>
+</tbody>
+</table>
+<p>其他寄存器（MR1~MR3）则配置 DLL 使能、输出驱动强度、ODT（On-Die Termination）、写入恢复时间等参数。</p>
+<p><strong>Mode Resigter 与 MC 紧密相联，在内存系统中发挥着至关重要的作用。</strong> 结合我们之前的讨论，Mode Register 的作用可以归纳为一条主线：<strong>它是 MC 将"系统级决策"翻译为"芯片级行为"的桥梁。</strong> 我们以 DDR3 为例进行举例说明：</p>
+<ol>
+<li>
+<p><strong>识别 Burst Length 并执行突发传输</strong><br />
+    BL 由 MC 决定，但<strong>执行者是 Mode Register</strong>。</p>
+<ul>
+<li>MC 根据 Cache Line 大小（64 字节）和总线宽度（64 位），决定使用 <strong>BL8</strong>。</li>
+<li>MC 通过 <strong>MRS 命令</strong>将 BL8 写入 MR0 的 A[1:0] 位。</li>
+<li>此后，DRAM 芯片在每次收到 READ/WRITE 命令时，都会<strong>自动按照 BL8 的节奏</strong>输出/接收 8 拍数据，无需 MC 每拍都发命令。</li>
+</ul>
+</li>
+<li>
+<p><strong>切换 BL8 与 BC4</strong><br />
+    DDR3 <strong>通过 Mode Register 和 A12 引脚的配合</strong>实现 BC4 模式的动态切换：</p>
+<ul>
+<li>MR0 中配置了 BL8 为基础模式。</li>
+<li>当 MC 需要 BC4 时，它在发出 READ/WRITE 命令的同时，将 <strong>A12 引脚拉低</strong>。</li>
+<li>DRAM 检测到 A12=0，便知道本次操作应使用 BC4 模式，于是<strong>只输出 4 拍</strong>（通过<strong>输出掩码屏蔽</strong>后 4 拍）。</li>
+</ul>
+<p><strong>Mode Register 设定了"默认模式"，而 A12 引脚提供了"逐命令的动态覆盖"</strong>，两者结合实现了灵活性。</p>
+</li>
+<li>
+<p><strong>定义 Burst Type</strong></p>
+<p>关于 Wrap 顺序，<strong>是否启用以及采用哪种具体顺序</strong>，正是由 MR0 的 <strong>A[3] 位（Burst Type）</strong> 决定的。</p>
+<ul>
+<li>A[3]=0：Sequential 模式。</li>
+<li>A[3]=1：Interleaved 模式。</li>
+</ul>
+<p>MC 根据 CPU 的访问模式和 Cache Line 填充策略，选择最合适的 Burst Type，写入 Mode Register。</p>
+</li>
+<li>
+<p><strong>记录时序参数</strong><br />
+    MC 在调度命令时，必须知道 DRAM 的读延迟（CL）、写恢复时间（tWR）等参数，才能正确插入等待周期。这些参数同样存储在 Mode Register 中，MC 通过 MRS 写入后，DRAM 在每次读写时据此确定内部时序。<strong>Mode Register 是 MC 与 DRAM 之间时序契约的物理存储。</strong></p>
+</li>
+<li>
+<p><strong>MC 启动配置流程的终点</strong><br />
+    MC 启动时需要经历静态配置和动态训练两个阶段，最终将所有决策写入 Mode Register。这个过程可以总结为：</p>
+<ol>
+<li>MC 通过 <strong>SPD</strong> 读取 DIMM 的基础参数。</li>
+<li>MC 执行<strong>训练</strong>，<strong>校准</strong> PHY 参数。</li>
+<li>MC 通过 <strong>MRS 命令</strong>，将训练结果和系统决策（<strong>BL、CL、Burst Type、ODT 等</strong>）<strong>写入 Mode Register</strong>。这一步就是配置流程的终点，<strong>一旦MRS 完成，DRAM 就进入了 MC 期望的工作状态</strong>，后续所有访存操作都基于这些配置执行。</li>
+</ol>
+</li>
 </ol>
 
 
