@@ -1,0 +1,30 @@
+:is(.md-content__inner, .md-post__content).md-typeset {
+  /* sans-serif config*/
+  --reader-article-font: "Inter", "Source Han Sans SC", "Noto Sans CJK SC",
+  var(--reader-ui-font);
+  /* serif config */
+  /* --reader-article-font: "Noto Serif SC", "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif; */
+  font-size: 0.86rem;
+}
+
+@media (max-width: 720px) {
+  :is(.md-content__inner, .md-post__content).md-typeset {
+    font-size: 0.84rem;
+  }
+}
+
+:is(.md-content__inner, .md-post__content).md-typeset :is(.admonition, table:not([class])) {
+  font-size: 0.72rem;
+}
+
+:is(.md-content__inner, .md-post__content).md-typeset :is(.admonition-title, table:not([class]) th) {
+  font-family: var(--reader-article-font);
+}
+
+:is(.md-content__inner, .md-post__content).md-typeset :is(p, li, table:not([class])) {
+  line-height: 1.62;
+}
+
+:is(.md-content__inner, .md-post__content).md-typeset :is(ul, ol) > li:not(:last-child) {
+  margin-bottom: 0.3em;
+}

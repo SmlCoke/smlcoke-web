@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% set typography = config.extra.get("typography", "original") %}
+  {% if page and page.meta and page.meta.get("typography") in ["original", "reading"] %}
+    {% set typography = page.meta.typography %}
+  {% endif %}
+  {% if typography == "reading" %}
+    <link rel="stylesheet" href="{{ 'stylesheets/typography-reading.css?v=1' | url }}">
+  {% endif %}
+{% endblock %}

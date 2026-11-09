@@ -46,6 +46,7 @@ hooks:
   - scripts/mkdocs_diagrams.py
 
 extra:
+  typography: reading
   diagrams:
     tools_dir: D:/Tools/diagramming
     layout: elk
