@@ -13158,6 +13158,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#v-transmission-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V. Transmission &amp; Timing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="V. Transmission &amp; Timing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-clock-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Clock Domains
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-ddr-phy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 DDR PHY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-ck-and-dqs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 CK and DQS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Timing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -13831,6 +13892,278 @@ Access Row C → Waiting ...</p>
 </ol>
 </li>
 </ol>
+<h2 id="v-transmission-timing">V. Transmission &amp; Timing<a class="headerlink" href="#v-transmission-timing" title="Permanent link">&para;</a></h2>
+<p>现在我们深入到 Memory Controller 与 DRAM 之间的数据交换的传输时序问题。</p>
+<h3 id="51-clock-domains">5.1 Clock Domains<a class="headerlink" href="#51-clock-domains" title="Permanent link">&para;</a></h3>
+<p>首先需要明确：<code>CPU Core -&gt; Fabric -&gt; Memory Controller -&gt; DRAM</code> 这条链路所经过的 <strong>Clock Domain</strong>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">时钟名称</th>
+<th style="text-align: left;">典型频率/关系</th>
+<th style="text-align: left;">产生硬件模块</th>
+<th style="text-align: left;">核心职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>CPU Core Clock</strong> (<span class="arithmatex">\(f_{\text{core}}\)</span>)</td>
+<td style="text-align: left;">数 GHz (如 3~5 GHz)</td>
+<td style="text-align: left;">CPU Core PLL</td>
+<td style="text-align: left;">驱动 CPU 计算流水线、ALU、L1/L2 Cache 等核心数字逻辑。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Fabric / Uncore Clock</strong> (<span class="arithmatex">\(f_{\text{ring}} / f_{\text{mesh}}\)</span>)</td>
+<td style="text-align: left;">2~3 GHz</td>
+<td style="text-align: left;">System Agent / Fabric PLL</td>
+<td style="text-align: left;"><strong>驱动芯片内片上网络</strong>、共享 L3 Cache，负责各 Core 与内存控制器间的数据搬运。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Memory Controller (MC) / DFI 时钟</strong> (<span class="arithmatex">\(f_{\text{mc}}\)</span> / <span class="arithmatex">\(f_{\text{DFI}}\)</span>)</td>
+<td style="text-align: left;">往往为总线频率的 1/2 或 1/4 (如 Gear 2/4 模式)</td>
+<td style="text-align: left;"><strong>由 DDR PLL 分频生成</strong></td>
+<td style="text-align: left;">驱动内存控制器的<strong>纯数字逻辑</strong>以及 <strong>DFI (DDR PHY Interface)</strong> 接口。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>DDR PHY 高速时钟</strong> (<span class="arithmatex">\(f_{\text{vco}} / f_{\text{high}}\)</span>)</td>
+<td style="text-align: left;"><strong>极高（等于或倍频于 IO 数据速率）</strong></td>
+<td style="text-align: left;">DDR PHY 内部的 Dedicated PLL / LC-VCO</td>
+<td style="text-align: left;">驱动 PHY 内部的 <strong>SerDes 电路</strong>、高速采样锁存器。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>DDR 总线差分时钟 (CK_t / CK_c)</strong></td>
+<td style="text-align: left;">数据传输率的一半</td>
+<td style="text-align: left;">DDR PHY 的 TX 发送通路（时钟分频器与输出 Buffer）</td>
+<td style="text-align: left;"><strong>常开</strong>的全局差分参考时钟，提供给 PCB 走线和 DRAM 芯片，用于同步命令/地址 (CA) 信号，并作为 DRAM 内部 DLL 的参考源。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>数据选通时钟 (DQS_t / DQS_c)</strong></td>
+<td style="text-align: left;">频率同 CK，但为突发式 (Bursted)</td>
+<td style="text-align: left;"><strong>写操作：</strong> PHY 产生<br><strong>读操作：</strong> DRAM 内部产生</td>
+<td style="text-align: left;"><strong>伴随数据 (Source-Synchronous) 的选通时钟</strong>。仅在发生数据传输时随 DQ 突发翻转，<strong>负责直接采样 DQ 数据</strong>。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>DRAM 内部阵列时钟</strong> (<span class="arithmatex">\(t_{\text{CK\_internal}}\)</span>)</td>
+<td style="text-align: left;">相对低频 (200~400 MHz)</td>
+<td style="text-align: left;">DRAM 内部时钟分频与控制逻辑</td>
+<td style="text-align: left;">为存储阵列内部<strong>物理上耗时的操作（如行激活、电荷分享、灵敏放大）</strong> 提供一个精确的本地时序基准</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-ddr-phy">5.2 DDR PHY<a class="headerlink" href="#52-ddr-phy" title="Permanent link">&para;</a></h3>
+<p>这里值得提及的是 DDR PHY 电路以及高速 PHY 时钟。</p>
+<p>Memory Controller 的协议层是<strong>纯 Standard Cell 综合的数字电路</strong>，而外部引脚连接的是复杂的 <strong>PCB 传输线</strong>，属于<strong>高速模拟/混合信号电路</strong>。Memory Controller 输出的是遵循特定<strong>片上协议</strong>（如 DFI 协议）的并行数字信号；而 DRAM 芯片接收和输出的是高速串行电气信号。</p>
+<p>DDR PHY，就是位于 Memory Controller 和 DRAM 芯片之间的接口模块，它是一个混合信号电路：输入端面向 Memory Controller，工作在<strong>相对较低频率的数字逻辑域</strong>；它的输出端面向 DRAM，工作在<strong>极高频率的模拟/电气域</strong>。</p>
+<blockquote>
+<p>Memory Controller 协议层的数字逻辑电路之所以工作频率较低，是因为数字逻辑位宽大、走线复杂，降频运行以满足静态时序分析 (STA) 和降低动态功耗。</p>
+</blockquote>
+<p>而 <strong>DDR PHY 高速时钟</strong>是 PHY 内部<strong>频率最高的一档时钟</strong>，通常由 PHY 专用的 <strong>DDR PLL</strong>（有时称为 <strong>PHY PLL</strong>、<strong>DDR 倍频 PLL</strong>）产生。它的频率与 DDR 数据速率直接相关：</p>
+<ul>
+<li>在 DDR 接口中，一个 CK 周期传输 2 bit。如果 PHY 采用半速率或四分之一速率架构，内部高速时钟往往是 CK 频率的 2× 或 4×。例如<a href="https://nanoxplore-wiki.atlassian.net/wiki/plugins/viewsource/viewpagesrc.action?pageId=219971591">有资料指出</a>，PHY 需要“频率为 DDR 存储器时钟两倍”的时钟，因为<strong>物理层接口只使用正沿，必须靠更快的时钟来覆盖双沿传输的时序</strong>。</li>
+<li>该时钟由 PHY 内的 PLL 对参考时钟进行倍频产生。<a href="https://www.alldatasheet.jp/html-pdf/549764/TI1/TMS320C6457CCMH8/9792/142/TMS320C6457CCMH8.html#1">TI 的 DDR2 PHY 文档</a>中可见 PLL 以 ×5 有效倍率向 PHY 提供时钟；专利文献也明确写到，DDR PHY 的时钟生成 PLL 负责产生“合适的 PLL 时钟”。</li>
+</ul>
+<p>DDR PHY 的核心功能包括：</p>
+<ol>
+<li><strong>并串转换</strong>：把 Memory Controller 侧较宽的并行写数据，转换为 DDR 接口上按 <strong>DQS 节拍</strong>逐比特发送的串行数据流，该功能由 DDR PHY 高速时钟驱动，硬件电路是高速 SerDes。</li>
+<li><strong>串并转换</strong>：把 DRAM 回传的串行读数据重新汇聚为并行数据，交给控制器。该过程中 PHY 需要利用高速时钟派生出的多相位版本（如 90° 延迟）<strong>把 DQS 搬到数据窗口中央</strong>进行可靠采样。</li>
+<li><strong>时序校准与去偏移（Deskew &amp; Training）</strong>：消除 PCB 走线长短不一带来的板级延迟差异（包含 Write Leveling、Read Gate Training、Read/Write VREF 寻优等），实现<strong>皮秒 (ps) 级别的精细对齐</strong>。</li>
+<li><strong>生成 DDR 接口信号</strong>：输出 CK/CKB、命令/地址、DQ、DQS（写方向），并接收读方向的 DQ/DQS。<strong>CK 和写 DQS</strong> 最终都源于 PHY 内部的高速时钟，经过分频、延迟和占空比校正后送出。</li>
+</ol>
+<h3 id="53-ck-and-dqs">5.3 CK and DQS<a class="headerlink" href="#53-ck-and-dqs" title="Permanent link">&para;</a></h3>
+<p><strong>DDR CK</strong> 是 DDR 接口上由 Memory Controller/PHY 的 Clock Slice 产生并<strong>送往 DRAM 的公共差分时钟（CK/CKB）</strong> ，用作命令、地址采样以及 DRAM 内部操作的时间基准。</p>
+<ul>
+<li>产生点：始终由 MC 侧的 DDR PHY <strong>单向发送给 DRAM</strong>。</li>
+<li>电路实现：DDR PLL 的输出经过分频器产生与总线传输率匹配的时钟信号。然后通过高度对称的 Clock Tree 分发，经过 Differential TX Driver 变换为<strong>互补信号 CK_t / CK_c 打出芯片</strong>。它在系统工作时始终连续不断地翻转。</li>
+</ul>
+<p><strong>DQS(Data Input/Output Strobe)</strong> 是双向源同步数据选通信号，<strong>写方向由控制器/PHY 产生</strong>、<strong>读方向由 DRAM 产生</strong>，伴随 DQ 数据用于接收端采样数据——它并非严格意义上的周期时钟，而是随数据有效窗口跳变的选通信号。</p>
+<p>DQS 是一组<strong>双向（Bidirectional）、半双工、突发翻转（Bursted）</strong>的差分信号。谁发数据，谁就负责产生对应的 DQS：</p>
+<ul>
+<li><strong>写操作（CPU <span class="arithmatex">\(\rightarrow\)</span> DRAM）：由 DDR PHY 产生</strong><ul>
+<li>PHY 内部将产生 CK 的高速时钟源引出一路，通过相位插值器（PI）或延迟锁相环（DLL）进行精确的 <strong><span class="arithmatex">\(90^\circ\)</span>（四分之一周期）相移</strong>。</li>
+<li>配合命令时序，在写数据突发期间，开启 DQS 输出缓冲器打出波形。</li>
+</ul>
+</li>
+<li><strong>读操作（DRAM <span class="arithmatex">\(\rightarrow\)</span> CPU）：由 DRAM 芯片内部产生</strong><ul>
+<li>DRAM 芯片内部集成了 <strong>DRAM DLL</strong>。该 DLL 锁定在外部输入的 CK 时钟上，消除 DRAM 内部接收放大器和时钟树带来的传播延迟。</li>
+<li>当收到 Read 命令后，DRAM 内部的 Read FIFO 将数据吐出到 DQ 引脚的同时，利用这路锁相时钟驱动 DQS 引脚翻转，与读出的数据同步返回给 CPU。</li>
+</ul>
+</li>
+</ul>
+<p>DDR CK 是真正意义上的时钟信号，其功能如下：</p>
+<ul>
+<li>作为 DRAM <strong>内部操作的时间基准</strong>，DRAM 内部的模式寄存器设置、激活、读写命令时序都以 CK 周期计数。</li>
+<li>作为<strong>CMD 和 ADDR 的采样时钟</strong>。DDR 中命令/地址在 CK 的单沿（通常是上升沿）被 DRAM 锁存。</li>
+</ul>
+<p>但是，CK <strong>不直接用于高速数据 DQ 的采样</strong>——数据采样由 DQS 完成。CK 是“公共时钟”，DQS 是“源同步数据时钟”。</p>
+<p>也就是说，我们平常说的：DDR 双边沿采样，这里的双边沿，<strong>指的是 DQS 的双边沿</strong>，而不是 CK 的双边沿。</p>
+<p>DQS 选通、以及 DQ 数据信号的采样，见下一节。</p>
+<h3 id="54-timing">5.4 Timing<a class="headerlink" href="#54-timing" title="Permanent link">&para;</a></h3>
+<p>我们各通过一项示例来演示 DRAM 的读/写操作时序。</p>
+<p>参考系统：数据总线位宽 64bit, Cache Line 64 B, DRAM 方面：1 Channel, 1 Rank, 8 × x8 DRAM Chip, 8n Prefetch, Burst Length = 8，DDR3 风格</p>
+<p>Burst Length = 8，每次传输 8 颗 x8 DRAM Chip 同时工作，提供 64 bit 数据。8 颗 DRAM Chip 各自提供一组：<code>DQ[7:0]</code>，以及一对差分 DQS：</p>
+<div class="arithmatex">\[\text{DQS}_{t}[k], \text{DQS}_{c}[k], k=0,1,2,\dots 7\]</div>
+<p>其中<span class="arithmatex">\(k\)</span><strong>为 DRAM Chip 芯片序号</strong>。</p>
+<p>每一对差分 DQS 负责对应的 8-bit DQ Byte Lane。这意味着物理接口有 64 条 DQ 数据线、16 条 DQS 信号线（8 对差分对）。</p>
+<p>因为 DDR 双边沿传输，定义：</p>
+<div class="arithmatex">\[t_{\text{UI}}=\frac{t_{\text{CK}}}{2}\]</div>
+<p>其中 UI（Unit Interval）表示<strong>一个 DQ 数据 Beat 的时间宽度</strong>。</p>
+<p>下面将 8 个连续数据 Beat 表示为 D0～D7。每个 D0～D7 均是 64-bit 数据。为了观察物理 DQS 时序，<strong>波形中只绘制一个代表性的 x8 Byte Lane</strong>，其余七组具有同样的基本时序关系。</p>
+<h4 id="read-timing">Read Timing<a class="headerlink" href="#read-timing" title="Permanent link">&para;</a></h4>
+<p><img alt="ddr_dqs_read_timing" src="assets/ddr_dqs_read_timing.svg" /></p>
+<ul>
+<li><span class="arithmatex">\(\text{CK}_{t}\)</span> 就是 DDR CK 时钟</li>
+<li>DQS 差分选通信号（DQS_t 和 DQS_c）<strong>由 DRAM 驱动</strong>，与 DDR CK 保持<strong>边沿对齐（in-phase）</strong>。DQS_t 和 DQS_c 的每次交叉，<strong>对应差分 DQS 的一个有效跳变边沿</strong>。</li>
+<li>数据信号 DQ 的变化周期是 UI，即 <span class="arithmatex">\(t_{\text{CK}}/2\)</span></li>
+</ul>
+<p>Memory Controller 的 DDR PHY 接收到 DQS 信号后，<strong>会在内部将 DQS 延迟 90 度，再用其延迟后的边沿去对准 DQ 数据的中心进行采样</strong>。</p>
+<p>我们详细考虑这一过程，以数据 D0 为例：</p>
+<p><img alt="ddr_dqs_read_timing_detail" src="assets/dqs_read_detail.svg" /></p>
+<p>具体过程为：</p>
+<ol>
+<li>DRAM 内部读取到数据后，输出驱动器开始驱动 D0。</li>
+<li>DRAM <strong>同时</strong>产生 DQS_t 上升沿、DQS_c 下降沿。</li>
+<li>当差分 DQS 发生交叉时，DQ 总线<strong>可能仍处于从前一数据向 D0 转换的过程</strong>中。</li>
+<li><strong>一段传播延迟后</strong>，全部 8 条 DQ 信号进入有效逻辑状态。</li>
+<li>DRAM 维持 D0 一段时间，随后开始转换到 D1；对应下一个 DQS 下降沿。</li>
+</ol>
+<p>因此，READ 的<strong>原始 DQS 边沿不是一个可以不经处理就直接采样 DQ 的安全边沿</strong>。所以我们才需要 DDR PHY 内部的 <strong>90° 相移</strong>，将 DQS 的边沿移动到 DQ 数据的中心位置，从而<strong>保证采样的可靠性</strong>。</p>
+<p>这里涉及到两个重要的时序参数：</p>
+<ul>
+<li><span class="arithmatex">\(t_{\rm{DQSQ}}\)</span>: 从 DQS 边沿到所关联 DQ 最晚进入有效状态的最大偏斜。</li>
+<li><span class="arithmatex">\(t_{\rm{QH}}\)</span>: 相对于 DQS 边沿，DQ 最早可能不再保持当前数据有效的时间界限。</li>
+</ul>
+<p>按 DDR3 的这组定义，<strong>接收方可利用的数据有效窗口下限</strong>为：</p>
+<div class="arithmatex">\[t_{\rm{DV}}=t_{\rm{QH}}-t_{\rm{DQSQ}}\]</div>
+<p>那么<strong>接收方如何正确地采样呢</strong>？</p>
+<p>假设 D0 占据：<span class="arithmatex">\(t \in [0, t_{\rm{UI}}]\)</span>，那么我们希望采样时刻尽可能位于：</p>
+<div class="arithmatex">\[t = \frac{t_{\rm{UI}}}{2}=\frac{t_{\rm{CK}}}{4}\]</div>
+<p>也就是相对于原始 DQS 边沿向后移动约 90° 的 CK 相位。这就是 READ 波形中橙色 DQS 比蓝色 DQS <strong>晚半个 UI</strong> 的原因。</p>
+<p>整个 Burst 的传输序列就如下：</p>
+<table>
+<thead>
+<tr>
+<th>数据</th>
+<th>DRAM 原始 DQS 边沿（理想）</th>
+<th>PHY 内部采样边沿（理想）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D0</td>
+<td>0 UI，上升沿</td>
+<td>0.5 UI，上升沿</td>
+</tr>
+<tr>
+<td>D1</td>
+<td>1 UI，下降沿</td>
+<td>1.5 UI，下降沿</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>2 UI，上升沿</td>
+<td>2.5 UI，上升沿</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>3 UI，下降沿</td>
+<td>3.5 UI，下降沿</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td>D7</td>
+<td>7 UI，下降沿</td>
+<td>7.5 UI，下降沿</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>实际 PHY 还需要通过 Read Training 校准数据眼中心，不能简单假定固定延迟 <span class="arithmatex">\(t_{\mathrm{CK}}/4\)</span> 在所有 PVT 条件下始终最优。</p>
+</blockquote>
+<hr />
+<h4 id="write-timing">Write Timing<a class="headerlink" href="#write-timing" title="Permanent link">&para;</a></h4>
+<p><img alt="ddr_dqs_write_timing" src="assets/ddr_dqs_write_timing.svg" /></p>
+<p>令 D0 的数据有效区间从 <span class="arithmatex">\(t=0\)</span> 开始，WRITE 时的时序理解如下：</p>
+<ol>
+<li>Memory Controller PHY 开始<strong>驱动 D0</strong>，DQ[7:0] 逐渐进入稳定状态。</li>
+<li>在 <span class="arithmatex">\(t=0.5\ \mathrm{UI}\)</span>，PHY 驱动 DQS_t 上升、DQS_c 下降。</li>
+<li><strong>DRAM 内部的差分 DQS 接收电路检测到有效交叉边沿</strong>，触发输入采样寄存器。<strong>此时的时钟信号正是 DQS</strong>，检测的是 DQS 时钟的边沿，而非 CK。即：<code>always @(posedge DQS_t or negedge DQS_c)</code> 而非 <code>always @(posedge CK_t)</code>。</li>
+<li>DRAM 锁存 D0 对应的 8 个数据位。</li>
+<li>随后 DQ 转换成 D1，DQS 在 <span class="arithmatex">\(t=1.5\ \mathrm{UI}\)</span> 再次跳变，DRAM 锁存 D1。</li>
+<li>如此重复，直到 D7。</li>
+</ol>
+<p>WRITE 不需要像 READ 那样，在接收端再对 DQS 进行近似 90° 的中心化相移。<strong>发送端（DDR PHY）直接把 DQS 边沿对准 DQ 数据的中心</strong>。</p>
+<p>这里同样有两个重要的时序参数需要关注——<strong>DQ 数据需要确保再在 DQS 边沿处保持稳定</strong>：</p>
+<ul>
+<li><span class="arithmatex">\(t_{\rm{DS}}\)</span>: Data Setup Time，相对于 DQS 有效采样边沿的<strong>数据建立时间</strong>。</li>
+<li><span class="arithmatex">\(t_{\rm{DH}}\)</span>: Data Hold Time，相对于 DQS 有效采样边沿的<strong>数据保持时间</strong>。</li>
+</ul>
+<p>也就是说假设 DQS 的有效交叉边沿发生于 <span class="arithmatex">\(t_s\)</span>，那么DRAM 要求关联的 DQ 引脚<strong>至少在以下整个时间区间</strong>内保持有效数据：</p>
+<div class="arithmatex">\[[t_{s} - t_{\rm{DS}}, t_{s} + t_{\rm{DH}}]\]</div>
+<p><img alt="dqs_write_timing_detail" src="assets/dqs_write_detail.svg" /></p>
+<blockquote>
+<p>实际 DDR PHY 还需要控制：<br />
+- DQ 与 DQS 的输出延迟差异。<br />
+- 不同 DQ 引脚的走线偏斜。<br />
+- DQS 抖动与数据眼宽度。<br />
+- 温度、电压变化造成的时序漂移。</p>
+</blockquote>
+<hr />
+<div class="admonition question">
+<p class="admonition-title">差分信号 DQS 实际在硬件上如何形成采样边沿？</p>
+<p>差分接收器不关注 DQS_t 和 DQS_c 两根信号线的绝对值，它关注的是：</p>
+<div class="arithmatex">\[V_{\mathrm{diff}}(t)=V_{\mathrm{DQS_t}}(t)-V_{\mathrm{DQS_c}}(t)\]</div>
+<p>当差分电压从负到正穿过判决区域时，形成逻辑上的 DQS 上升沿；从正到负时形成逻辑上的 DQS 下降沿。</p>
+<p><img alt="DQS 信号差分检测" src="assets/dqs_diff_detec.svg" /></p>
+<p>在 DRAM/PHY 内部，差分 DQS 接收器将这对信号转换成内部采样参考，再通过相应的数据捕获电路采集 DQ。</p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Preamble / Postamble</p>
+<p>有一个需要特别注意的硬件问题：</p>
+<p>既然 DQS 有跳变就可能触发采样，那么 DQS 在 Burst 开始之前、结束之后发生跳变怎么办？</p>
+<p>这正是 Preamble（前导）和 Postamble（后导）及 PHY Strobe Gating 要解决的问题。</p>
+<p>Preamble 和 Postamble 分别是 DQS 在 Burst <strong>传输开始前和结束后的一段额外跳变时间</strong>。它们的具体波形可以参见之前的 Read Timing 波形图和 Write Timing 波形图。</p>
+<p>在本例采用的 DDR3 示例中，<strong>完整的 DRAM 传输时序</strong>应当包括如下各阶段：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>READ</th>
+<th>WRITE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Idle</td>
+<td>DRAM 不驱动 DQS，通常为 High-Z</td>
+<td>Controller 不驱动 DQS，通常为 High-Z</td>
+</tr>
+<tr>
+<td>Preamble</td>
+<td>DQS_t 低、DQS_c 高</td>
+<td>先 DQS_t 高、DQS_c 低，再切换为相反极性</td>
+</tr>
+<tr>
+<td>BL8 Transfer</td>
+<td>8 个有效 DQS 边沿</td>
+<td>8 个有效 DQS 边沿</td>
+</tr>
+<tr>
+<td>Postamble</td>
+<td>最后有效边沿后维持 DQS_t 低</td>
+<td>最后有效边沿后维持 DQS_t 低</td>
+</tr>
+<tr>
+<td>Burst 结束</td>
+<td>DRAM 释放 DQS 驱动</td>
+<td>Controller 释放 DQS 驱动</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 
 
