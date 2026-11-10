@@ -104,7 +104,7 @@ Bit Line 是纵向贯穿存储阵列的数据线，**每一根（或每一对）
     在同一个 DRAM Bank 内，每一列只有一根（或一对差分）Bit Line，垂直贯穿整个阵列，连接着该列上所有 Row 的 DRAM Cell。当一行被激活时，该行所有 Cell 的电荷会同时“共享”到各自连接的 Bit Line 上，这个过程称为 **Charge Sharing**。**Sense Amplifier** 随即检测 **Bit Line 上微小的电压变化**，并将其**放大**为完整的逻辑电平。
 
     如果尝试在同一 Bank 中同时激活两行，那么这两行位于同一列的 Cell 会**同时向同一根 Bit Line 放电**——Bit Line 上的最终电压将取决于两个 DRAM Cell 电荷的“竞争”结果。
-                
+                        
     - 如果两个 Cell 存储的值相同（都是 1 或都是 0），Bit Line 的电压可能勉强能被正确识别；
     - 但如果一个存 1、一个存 0，它们会相互中和，导致 Bit Line 的电压处于一个模糊的中间态。**灵敏放大器无法判断这个中间电压代表的是 0 还是 1，读出的数据就是随机的、错误的**。     
 
@@ -129,10 +129,10 @@ Bit Line 是纵向贯穿存储阵列的数据线，**每一根（或每一对）
 
     结合上述物理过程，一次DRAM读取在器件层面的完整图景是：
 
-    1.  **Precharge**：位线对（BL, /BL）被均衡并预充到 \(V_{DD}/2\)。此时，字线处于关闭状态，存储电容 \(C_S\) **与外界隔离**，保持着数据电荷。
-    2.  **行激活与电荷共享**：字线被拉至高电平，该行所有存取晶体管导通。每个存储电容 \(C_S\) 与自己的位线 \(C_{BL}\) 发生**电荷共享**，导致位线电压产生一个微小的、依赖存储数据的偏移（高于或低于\(V_{DD}/2\)）。
-    3.  **灵敏放大**：灵敏放大器被激活，它本质上是一个**正反馈锁存器**。它检测到BL和/BL之间微小的电压差，通过正反馈迅速将这个差异**放大并锁存**：电压稍高的一侧被拉至 \(V_{DD}\)，稍低的一侧被拉至地（GND）。
-    4.  **数据再生**：在灵敏放大过程中，被拉至满幅（\(V_{DD}\)或GND）的位线电压会**反过来给存储电容\(C_S\)充电或放电**，将其**电荷状态恢复到读取前的水平，补偿了电荷共享造成的损失**。这正是DRAM“破坏性读出”后“再生”的物理机制。
+    1.  **Precharge**：位线对（BL, /BL）被均衡并预充到 $V_{DD}/2$。此时，字线处于关闭状态，存储电容 $C_S$ **与外界隔离**，保持着数据电荷。
+    2.  **行激活与电荷共享**：字线被拉至高电平，该行所有存取晶体管导通。每个存储电容 $C_S$ 与自己的位线 $C_{BL}$ 发生**电荷共享**，导致位线电压产生一个微小的、依赖存储数据的偏移（高于或低于$V_{DD}/2$）。
+    3.  **灵敏放大**：灵敏放大器被激活，它本质上是一个**正反馈锁存器**。它检测到BL和/BL之间微小的电压差，通过正反馈迅速将这个差异**放大并锁存**：电压稍高的一侧被拉至 $V_{DD}$，稍低的一侧被拉至地（GND）。
+    4.  **数据再生**：在灵敏放大过程中，被拉至满幅（$V_{DD}$或GND）的位线电压会**反过来给存储电容$C_S$充电或放电**，将其**电荷状态恢复到读取前的水平，补偿了电荷共享造成的损失**。这正是DRAM“破坏性读出”后“再生”的物理机制。
 
 
 #### Row Buffer
@@ -199,7 +199,7 @@ DRAM
     - Bank 0: Access A
     - Bank 1: Access B
     - Bank 2: Access C
-                
+                        
     很多访问就可以 overlap，于是**单次 latency 依旧很高，但是总 Throughput 会提高**。
 
 ### 2.4 DRAM Chip
@@ -316,7 +316,7 @@ Memory Controller 的主要功能包括：
 
 **Byte Offset → Column → Bank (Group) → Rank → Row**
 
-*   **Byte Offset (字节偏移)**：地址的最低几位用于在**一个数据总线宽度**（如64位=8字节）内定位具体字节。对于64位总线，最低 **3 位**（\(2^3=8\)）就是字节偏移。
+*   **Byte Offset (字节偏移)**：地址的最低几位用于在**一个数据总线宽度**（如64位=8字节）内定位具体字节。对于64位总线，最低 **3 位**（$2^3=8$）就是字节偏移。
 *   **Column (列地址)**：Column 地址选择 Bank 内的列。列地址位宽决定了**每个 Row 中有多少个可寻址的“数据块”**。**而一个 Column 包含多少位数据，取决于 DRAM Chip 的规格（x4, x8, x16 等）**。例如，x8 芯片的每个 Column 地址对应 8 位数据。
     
     > 注意：这里的 Column 地址是系统地址编码中的 Column 地址，一个 Column 包含多个 bit；这个 Column 地址**不是 DRAM Chip 内部 Cell Array 的 Column 地址——这个地址准确来说是 Bit Line 地址**。
@@ -347,7 +347,7 @@ Memory Controller 的主要功能包括：
 
     - `0x00000000` ~ `0x3FFFFFFF` → Channel 0
     - `0x40000000` ~ `0x7FFFFFFF` → Channel 1
-        
+                
     那么连续数组：`A[0], A[1], A[2], A[3]...` 它们的 PA 的高位地址通常是相同的，因此 CPU 很可能长期只访问：Channel 0，**这会浪费其他并行 Channel 的带宽**。
 
     因此 Memory Controller 通常会做：**Memory Interleaving**，将连续的地址**映射到不同的 Channel** 上，从而**充分利用多通道并行性**。
@@ -496,12 +496,12 @@ Burst 传输的几个关键特性：
     **两者并无直接关系**，换句话说：x8 DRAM Chip 不是只能服务 64 bit 系统，它还**可以服务 32 bit, 128 bit 系统**。
 
     我们在上面的 Burst 传输推演流程中，默认的数据总线宽度为 64 bit，这只是一个例子。在 Burst 的每拍中，8 个 x8 DRAM Chip 各自输出 8 bit 数据，组成完整的 64 bit 数据字。
-        
+                
     对于其他宽度的系统总线，**即便我们只使用同一种 DRAM Chip，也可以通过调整 Rank 内的 Chip 数量来适配数据总线宽度**。例如：
-        
+                
     - 4 个 x8 DRAM Chip 可以组成 32 bit Rank；
     - 16 个 x8 DRAM Chip 可以组成 128 bit Rank。
-        
+                
     而 **Burst Length 和 Burst 传输只讨论 DRAM 需要连续输出多少 Beat 数据块，它本身并不关心这个数据块是 64 bit 还是 32 bit 的**。 
 
 DDR 演进过程中，典型 Prefetch 和 BL 参数参加下表：
@@ -628,3 +628,215 @@ Memory Controller（MC）需要知道**插在 Channel 中的 DRAM 的具体架�
     1. MC 通过 **SPD** 读取 DIMM 的基础参数。
     2. MC 执行**训练**，**校准** PHY 参数。
     3. MC 通过 **MRS 命令**，将训练结果和系统决策（**BL、CL、Burst Type、ODT 等**）**写入 Mode Register**。这一步就是配置流程的终点，**一旦MRS 完成，DRAM 就进入了 MC 期望的工作状态**，后续所有访存操作都基于这些配置执行。
+
+## V. Transmission & Timing
+
+现在我们深入到 Memory Controller 与 DRAM 之间的数据交换的传输时序问题。
+
+### 5.1 Clock Domains
+
+首先需要明确：`CPU Core -> Fabric -> Memory Controller -> DRAM` 这条链路所经过的 **Clock Domain**。
+
+| 时钟名称 | 典型频率/关系 | 产生硬件模块 | 核心职责 |
+| :--- | :--- | :--- | :--- |
+| **CPU Core Clock** ($f_{\text{core}}$) | 数 GHz (如 3~5 GHz) | CPU Core PLL | 驱动 CPU 计算流水线、ALU、L1/L2 Cache 等核心数字逻辑。 |
+| **Fabric / Uncore Clock** ($f_{\text{ring}} / f_{\text{mesh}}$) | 2~3 GHz | System Agent / Fabric PLL | **驱动芯片内片上网络**、共享 L3 Cache，负责各 Core 与内存控制器间的数据搬运。 |
+| **Memory Controller (MC) / DFI 时钟** ($f_{\text{mc}}$ / $f_{\text{DFI}}$) | 往往为总线频率的 1/2 或 1/4 (如 Gear 2/4 模式) | **由 DDR PLL 分频生成** | 驱动内存控制器的**纯数字逻辑**以及 **DFI (DDR PHY Interface)** 接口。 |
+| **DDR PHY 高速时钟** ($f_{\text{vco}} / f_{\text{high}}$) | **极高（等于或倍频于 IO 数据速率）** | DDR PHY 内部的 Dedicated PLL / LC-VCO | 驱动 PHY 内部的 **SerDes 电路**、高速采样锁存器。 |
+| **DDR 总线差分时钟 (CK_t / CK_c)** | 数据传输率的一半 | DDR PHY 的 TX 发送通路（时钟分频器与输出 Buffer） | **常开**的全局差分参考时钟，提供给 PCB 走线和 DRAM 芯片，用于同步命令/地址 (CA) 信号，并作为 DRAM 内部 DLL 的参考源。 |
+| **数据选通时钟 (DQS_t / DQS_c)** | 频率同 CK，但为突发式 (Bursted) | **写操作：** PHY 产生<br>**读操作：** DRAM 内部产生 | **伴随数据 (Source-Synchronous) 的选通时钟**。仅在发生数据传输时随 DQ 突发翻转，**负责直接采样 DQ 数据**。 |
+| **DRAM 内部阵列时钟** ($t_{\text{CK\_internal}}$) | 相对低频 (200~400 MHz) | DRAM 内部时钟分频与控制逻辑 | 为存储阵列内部**物理上耗时的操作（如行激活、电荷分享、灵敏放大）** 提供一个精确的本地时序基准 |
+
+### 5.2 DDR PHY
+
+这里值得提及的是 DDR PHY 电路以及高速 PHY 时钟。
+
+Memory Controller 的协议层是**纯 Standard Cell 综合的数字电路**，而外部引脚连接的是复杂的 **PCB 传输线**，属于**高速模拟/混合信号电路**。Memory Controller 输出的是遵循特定**片上协议**（如 DFI 协议）的并行数字信号；而 DRAM 芯片接收和输出的是高速串行电气信号。
+
+DDR PHY，就是位于 Memory Controller 和 DRAM 芯片之间的接口模块，它是一个混合信号电路：输入端面向 Memory Controller，工作在**相对较低频率的数字逻辑域**；它的输出端面向 DRAM，工作在**极高频率的模拟/电气域**。
+
+> Memory Controller 协议层的数字逻辑电路之所以工作频率较低，是因为数字逻辑位宽大、走线复杂，降频运行以满足静态时序分析 (STA) 和降低动态功耗。
+
+而 **DDR PHY 高速时钟**是 PHY 内部**频率最高的一档时钟**，通常由 PHY 专用的 **DDR PLL**（有时称为 **PHY PLL**、**DDR 倍频 PLL**）产生。它的频率与 DDR 数据速率直接相关：
+
+- 在 DDR 接口中，一个 CK 周期传输 2 bit。如果 PHY 采用半速率或四分之一速率架构，内部高速时钟往往是 CK 频率的 2× 或 4×。例如[有资料指出](https://nanoxplore-wiki.atlassian.net/wiki/plugins/viewsource/viewpagesrc.action?pageId=219971591)，PHY 需要“频率为 DDR 存储器时钟两倍”的时钟，因为**物理层接口只使用正沿，必须靠更快的时钟来覆盖双沿传输的时序**。
+- 该时钟由 PHY 内的 PLL 对参考时钟进行倍频产生。[TI 的 DDR2 PHY 文档](https://www.alldatasheet.jp/html-pdf/549764/TI1/TMS320C6457CCMH8/9792/142/TMS320C6457CCMH8.html#1)中可见 PLL 以 ×5 有效倍率向 PHY 提供时钟；专利文献也明确写到，DDR PHY 的时钟生成 PLL 负责产生“合适的 PLL 时钟”。
+
+DDR PHY 的核心功能包括：
+
+1. **并串转换**：把 Memory Controller 侧较宽的并行写数据，转换为 DDR 接口上按 **DQS 节拍**逐比特发送的串行数据流，该功能由 DDR PHY 高速时钟驱动，硬件电路是高速 SerDes。
+2. **串并转换**：把 DRAM 回传的串行读数据重新汇聚为并行数据，交给控制器。该过程中 PHY 需要利用高速时钟派生出的多相位版本（如 90° 延迟）**把 DQS 搬到数据窗口中央**进行可靠采样。
+3. **时序校准与去偏移（Deskew & Training）**：消除 PCB 走线长短不一带来的板级延迟差异（包含 Write Leveling、Read Gate Training、Read/Write VREF 寻优等），实现**皮秒 (ps) 级别的精细对齐**。
+4. **生成 DDR 接口信号**：输出 CK/CKB、命令/地址、DQ、DQS（写方向），并接收读方向的 DQ/DQS。**CK 和写 DQS** 最终都源于 PHY 内部的高速时钟，经过分频、延迟和占空比校正后送出。
+
+
+### 5.3 CK and DQS
+
+**DDR CK** 是 DDR 接口上由 Memory Controller/PHY 的 Clock Slice 产生并**送往 DRAM 的公共差分时钟（CK/CKB）** ，用作命令、地址采样以及 DRAM 内部操作的时间基准。
+
+- 产生点：始终由 MC 侧的 DDR PHY **单向发送给 DRAM**。
+- 电路实现：DDR PLL 的输出经过分频器产生与总线传输率匹配的时钟信号。然后通过高度对称的 Clock Tree 分发，经过 Differential TX Driver 变换为**互补信号 CK_t / CK_c 打出芯片**。它在系统工作时始终连续不断地翻转。
+
+**DQS(Data Input/Output Strobe)** 是双向源同步数据选通信号，**写方向由控制器/PHY 产生**、**读方向由 DRAM 产生**，伴随 DQ 数据用于接收端采样数据——它并非严格意义上的周期时钟，而是随数据有效窗口跳变的选通信号。
+
+DQS 是一组**双向（Bidirectional）、半双工、突发翻转（Bursted）**的差分信号。谁发数据，谁就负责产生对应的 DQS：
+
+- **写操作（CPU $\rightarrow$ DRAM）：由 DDR PHY 产生**
+    * PHY 内部将产生 CK 的高速时钟源引出一路，通过相位插值器（PI）或延迟锁相环（DLL）进行精确的 **$90^\circ$（四分之一周期）相移**。
+    * 配合命令时序，在写数据突发期间，开启 DQS 输出缓冲器打出波形。
+- **读操作（DRAM $\rightarrow$ CPU）：由 DRAM 芯片内部产生**
+    * DRAM 芯片内部集成了 **DRAM DLL**。该 DLL 锁定在外部输入的 CK 时钟上，消除 DRAM 内部接收放大器和时钟树带来的传播延迟。
+    * 当收到 Read 命令后，DRAM 内部的 Read FIFO 将数据吐出到 DQ 引脚的同时，利用这路锁相时钟驱动 DQS 引脚翻转，与读出的数据同步返回给 CPU。
+
+DDR CK 是真正意义上的时钟信号，其功能如下：
+
+- 作为 DRAM **内部操作的时间基准**，DRAM 内部的模式寄存器设置、激活、读写命令时序都以 CK 周期计数。
+- 作为**CMD 和 ADDR 的采样时钟**。DDR 中命令/地址在 CK 的单沿（通常是上升沿）被 DRAM 锁存。
+
+但是，CK **不直接用于高速数据 DQ 的采样**——数据采样由 DQS 完成。CK 是“公共时钟”，DQS 是“源同步数据时钟”。
+
+也就是说，我们平常说的：DDR 双边沿采样，这里的双边沿，**指的是 DQS 的双边沿**，而不是 CK 的双边沿。
+
+DQS 选通、以及 DQ 数据信号的采样，见下一节。
+
+### 5.4 Timing
+
+我们各通过一项示例来演示 DRAM 的读/写操作时序。
+
+参考系统：数据总线位宽 64bit, Cache Line 64 B, DRAM 方面：1 Channel, 1 Rank, 8 × x8 DRAM Chip, 8n Prefetch, Burst Length = 8，DDR3 风格
+
+Burst Length = 8，每次传输 8 颗 x8 DRAM Chip 同时工作，提供 64 bit 数据。8 颗 DRAM Chip 各自提供一组：`DQ[7:0]`，以及一对差分 DQS：
+
+$$\text{DQS}_{t}[k], \text{DQS}_{c}[k], k=0,1,2,\dots 7$$
+
+其中$k$**为 DRAM Chip 芯片序号**。
+
+每一对差分 DQS 负责对应的 8-bit DQ Byte Lane。这意味着物理接口有 64 条 DQ 数据线、16 条 DQS 信号线（8 对差分对）。
+
+因为 DDR 双边沿传输，定义：
+
+$$t_{\text{UI}}=\frac{t_{\text{CK}}}{2}$$
+
+其中 UI（Unit Interval）表示**一个 DQ 数据 Beat 的时间宽度**。
+
+下面将 8 个连续数据 Beat 表示为 D0～D7。每个 D0～D7 均是 64-bit 数据。为了观察物理 DQS 时序，**波形中只绘制一个代表性的 x8 Byte Lane**，其余七组具有同样的基本时序关系。
+
+#### Read Timing
+
+![ddr_dqs_read_timing](./assets/ddr_dqs_read_timing.svg)
+
+- $\text{CK}_{t}$ 就是 DDR CK 时钟
+- DQS 差分选通信号（DQS_t 和 DQS_c）**由 DRAM 驱动**，与 DDR CK 保持**边沿对齐（in-phase）**。DQS_t 和 DQS_c 的每次交叉，**对应差分 DQS 的一个有效跳变边沿**。
+- 数据信号 DQ 的变化周期是 UI，即 $t_{\text{CK}}/2$
+
+Memory Controller 的 DDR PHY 接收到 DQS 信号后，**会在内部将 DQS 延迟 90 度，再用其延迟后的边沿去对准 DQ 数据的中心进行采样**。
+
+我们详细考虑这一过程，以数据 D0 为例：
+
+![ddr_dqs_read_timing_detail](./assets/dqs_read_detail.svg)
+
+具体过程为：
+
+1. DRAM 内部读取到数据后，输出驱动器开始驱动 D0。
+2. DRAM **同时**产生 DQS_t 上升沿、DQS_c 下降沿。
+3. 当差分 DQS 发生交叉时，DQ 总线**可能仍处于从前一数据向 D0 转换的过程**中。
+4. **一段传播延迟后**，全部 8 条 DQ 信号进入有效逻辑状态。
+5. DRAM 维持 D0 一段时间，随后开始转换到 D1；对应下一个 DQS 下降沿。
+
+因此，READ 的**原始 DQS 边沿不是一个可以不经处理就直接采样 DQ 的安全边沿**。所以我们才需要 DDR PHY 内部的 **90° 相移**，将 DQS 的边沿移动到 DQ 数据的中心位置，从而**保证采样的可靠性**。
+
+这里涉及到两个重要的时序参数：
+
+- $t_{\rm{DQSQ}}$: 从 DQS 边沿到所关联 DQ 最晚进入有效状态的最大偏斜。
+- $t_{\rm{QH}}$: 相对于 DQS 边沿，DQ 最早可能不再保持当前数据有效的时间界限。
+
+按 DDR3 的这组定义，**接收方可利用的数据有效窗口下限**为：
+
+$$t_{\rm{DV}}=t_{\rm{QH}}-t_{\rm{DQSQ}}$$
+
+那么**接收方如何正确地采样呢**？
+
+假设 D0 占据：$t \in [0, t_{\rm{UI}}]$，那么我们希望采样时刻尽可能位于：
+
+$$t = \frac{t_{\rm{UI}}}{2}=\frac{t_{\rm{CK}}}{4}$$
+
+也就是相对于原始 DQS 边沿向后移动约 90° 的 CK 相位。这就是 READ 波形中橙色 DQS 比蓝色 DQS **晚半个 UI** 的原因。
+
+整个 Burst 的传输序列就如下：
+
+| 数据 | DRAM 原始 DQS 边沿（理想） | PHY 内部采样边沿（理想） |
+| --- | --- | --- |
+| D0 | 	0 UI，上升沿 |	0.5 UI，上升沿 |
+| D1 | 	1 UI，下降沿 |	1.5 UI，下降沿 |
+| D2 | 	2 UI，上升沿 |	2.5 UI，上升沿 |
+| D3 | 	3 UI，下降沿 |	3.5 UI，下降沿 |
+| ...| ... | ... |
+| D7 | 	7 UI，下降沿 |	7.5 UI，下降沿 |
+
+> 实际 PHY 还需要通过 Read Training 校准数据眼中心，不能简单假定固定延迟 $t_{\mathrm{CK}}/4$ 在所有 PVT 条件下始终最优。
+
+---
+
+#### Write Timing
+
+![ddr_dqs_write_timing](./assets/ddr_dqs_write_timing.svg)
+
+令 D0 的数据有效区间从 $t=0$ 开始，WRITE 时的时序理解如下：
+
+1. Memory Controller PHY 开始**驱动 D0**，DQ[7:0] 逐渐进入稳定状态。
+2. 在 $t=0.5\ \mathrm{UI}$，PHY 驱动 DQS_t 上升、DQS_c 下降。
+3. **DRAM 内部的差分 DQS 接收电路检测到有效交叉边沿**，触发输入采样寄存器。**此时的时钟信号正是 DQS**，检测的是 DQS 时钟的边沿，而非 CK。即：`always @(posedge DQS_t or negedge DQS_c)` 而非 `always @(posedge CK_t)`。
+4. DRAM 锁存 D0 对应的 8 个数据位。
+5. 随后 DQ 转换成 D1，DQS 在 $t=1.5\ \mathrm{UI}$ 再次跳变，DRAM 锁存 D1。
+6. 如此重复，直到 D7。
+
+WRITE 不需要像 READ 那样，在接收端再对 DQS 进行近似 90° 的中心化相移。**发送端（DDR PHY）直接把 DQS 边沿对准 DQ 数据的中心**。
+
+这里同样有两个重要的时序参数需要关注——**DQ 数据需要确保再在 DQS 边沿处保持稳定**：
+
+- $t_{\rm{DS}}$: Data Setup Time，相对于 DQS 有效采样边沿的**数据建立时间**。
+- $t_{\rm{DH}}$: Data Hold Time，相对于 DQS 有效采样边沿的**数据保持时间**。
+
+也就是说假设 DQS 的有效交叉边沿发生于 \(t_s\)，那么DRAM 要求关联的 DQ 引脚**至少在以下整个时间区间**内保持有效数据：
+
+$$[t_{s} - t_{\rm{DS}}, t_{s} + t_{\rm{DH}}]$$
+
+![dqs_write_timing_detail](./assets/dqs_write_detail.svg)
+
+> 实际 DDR PHY 还需要控制：
+> - DQ 与 DQS 的输出延迟差异。
+> - 不同 DQ 引脚的走线偏斜。
+> - DQS 抖动与数据眼宽度。
+> - 温度、电压变化造成的时序漂移。
+
+---
+
+!!! Question "差分信号 DQS 实际在硬件上如何形成采样边沿？"
+    差分接收器不关注 DQS_t 和 DQS_c 两根信号线的绝对值，它关注的是：
+    
+    $$V_{\mathrm{diff}}(t)=V_{\mathrm{DQS_t}}(t)-V_{\mathrm{DQS_c}}(t)$$
+
+    当差分电压从负到正穿过判决区域时，形成逻辑上的 DQS 上升沿；从正到负时形成逻辑上的 DQS 下降沿。
+
+    ![DQS 信号差分检测](./assets/dqs_diff_detec.svg)
+
+    在 DRAM/PHY 内部，差分 DQS 接收器将这对信号转换成内部采样参考，再通过相应的数据捕获电路采集 DQ。
+
+!!! Attention "Preamble / Postamble"
+    有一个需要特别注意的硬件问题：
+
+    既然 DQS 有跳变就可能触发采样，那么 DQS 在 Burst 开始之前、结束之后发生跳变怎么办？
+
+    这正是 Preamble（前导）和 Postamble（后导）及 PHY Strobe Gating 要解决的问题。
+
+    Preamble 和 Postamble 分别是 DQS 在 Burst **传输开始前和结束后的一段额外跳变时间**。它们的具体波形可以参见之前的 Read Timing 波形图和 Write Timing 波形图。
+
+    在本例采用的 DDR3 示例中，**完整的 DRAM 传输时序**应当包括如下各阶段：
+
+    | 阶段           | READ                    | WRITE                         |
+    | ------------ | ----------------------- | ----------------------------- |
+    | Idle         | DRAM 不驱动 DQS，通常为 High-Z | Controller 不驱动 DQS，通常为 High-Z |
+    | Preamble     | DQS_t 低、DQS_c 高         | 先 DQS_t 高、DQS_c 低，再切换为相反极性    |
+    | BL8 Transfer | 8 个有效 DQS 边沿            | 8 个有效 DQS 边沿                  |
+    | Postamble    | 最后有效边沿后维持 DQS_t 低       | 最后有效边沿后维持 DQS_t 低             |
+    | Burst 结束     | DRAM 释放 DQS 驱动          | Controller 释放 DQS 驱动          |
