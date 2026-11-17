@@ -123,7 +123,7 @@ LW r2, 512(r0);
 - V index or P index?
 - V tag or P tag?
 
-见：[Virtual Memory and Cache](../../processors/memory/index.md#L673)
+见：[Virtual Memory and Cache](../../processors/memory/index.md#vii-virtual-memory)
 
 ---
 
