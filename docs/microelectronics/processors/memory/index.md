@@ -774,9 +774,9 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 #### 6.3.1 hit or page fault?
 
 1. Hit: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 1，说明这个**虚拟页已经被映射到物理内存中了，可以直接拿到对应的 PPN，完成地址拼接转换**。
-2. <span style='color:red'>Page fault</span> （缺页中断）: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 0，说明数据不在 DRAM 里，它还在慢吞吞的**硬盘（Disk）**里。去主存拿数据（Cache Miss）顶多等几百个周期（$\mu\text{s}$级），但去硬盘拿数据（Page Fault）要等**几百万甚至上千万个周期（$\text{ms}$级）**！
+2. <span style='color:red'>Page fault</span> （缺页中断）: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 0，说明数据不在 DRAM 里，它还在慢吞吞的 **硬盘（Disk）** 里。去主存拿数据（Cache Miss）顶多等几百个周期（$\mu\text{s}$级），但去硬盘拿数据（Page Fault）要等 **几百万甚至上千万个周期（$\text{ms}$级）**！
     - 这个时候会进行类似 replace 的操作，会从**硬盘把这个 Page 搬到 Physical Memory 中**，并且**更新 Page Table** 中对应 Entry 的 valid 位和 PPN。
-    - 如果 Physical Memory 中这个 **Page 是 Dirty 的话，还需要先把它写回硬盘**。总共就会有**两次 Disk 访问**，性能直接暴跌。
+    - 如果 Physical Memory 中**被 Replaced 掉的那个 Page (Victim Page) 是 Dirty 的话，还需要先把它写回硬盘**。总共就会有**两次 Disk 访问**，性能直接暴跌。
 
 #### 6.3.2 Page Fault Penalty
 
