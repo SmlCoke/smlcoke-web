@@ -1,6 +1,6 @@
 # Memory Hierarchy
 
-> Memory Hierarchy 基础版本笔记：[Memory Hierarchy Fundamentals](/docs/microelectronics/processors/memory/index.md)
+> Memory Hierarchy 基础版本笔记：[Memory Hierarchy Fundamentals](../../processors/memory/index.md)
 
 ## I. Cache Optimizations
 
@@ -38,7 +38,7 @@ Higher latency and larger throughput prefers large block. Lower latency and smal
 
 #### (4) More Cache Levels
 
-多级缓存的性能分析见：[Multi-level Cache Performance Analysis](/docs/microelectronics/processors/memory/multilevel-cache-performance/index.md)
+多级缓存的性能分析见：[Multi-level Cache Performance Analysis](../../processors/memory/multilevel-cache-performance/index.md)
 
 这里我们考虑 Multilevel Inclusion 策略和 Multilevel Exclusion 策略的差异。
 
@@ -123,7 +123,7 @@ LW r2, 512(r0);
 - V index or P index?
 - V tag or P tag?
 
-见：[Virtual Memory and Cache](/docs/microelectronics/processors/memory/index.md#L673)
+见：[Virtual Memory and Cache](../../processors/memory/index.md#L673)
 
 ---
 
@@ -514,7 +514,7 @@ for (i = 0; i < N; i = i+1)
 
 **缩小矩阵乘法的工作集，使其适应 Cache 的容量**，充分利用空间局部性，进而**缩短 reuse distance**。
 
-详细分析见笔记：[Tiled GEMM 分析](/docs/self-cultivation/research/ai-accelerator/base/conv_hardware/gemm_tile/index.md)
+详细分析见笔记：[Tiled GEMM 分析](../../../self-cultivation/research/ai-accelerator/base/conv_hardware/gemm_tile/index.md)
 
 #### 9 & 10. Prefetching
 
