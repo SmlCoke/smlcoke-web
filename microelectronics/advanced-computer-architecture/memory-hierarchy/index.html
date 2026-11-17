@@ -13058,6 +13058,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ii-virtual-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Virtual Memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="II. Virtual Memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-page-fault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Page Fault 是 如何产生的？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-pte-cache-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 PTE 本身可以被 Cache Hierarchy 缓存吗？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-tlb-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 TLB Handler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-multi-level-page-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Multi-level page table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -13077,7 +13138,7 @@
 
 <h1 id="memory-hierarchy">Memory Hierarchy<a class="headerlink" href="#memory-hierarchy" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>Memory Hierarchy 基础版本笔记：<a href="/docs/microelectronics/processors/memory/index.md">Memory Hierarchy Fundamentals</a></p>
+<p>Memory Hierarchy 基础版本笔记：<a href="../../processors/memory/">Memory Hierarchy Fundamentals</a></p>
 </blockquote>
 <h2 id="i-cache-optimizations">I. Cache Optimizations<a class="headerlink" href="#i-cache-optimizations" title="Permanent link">&para;</a></h2>
 <h3 id="11-6-basic-optimizations">1.1 6 Basic Optimizations<a class="headerlink" href="#11-6-basic-optimizations" title="Permanent link">&para;</a></h3>
@@ -13109,7 +13170,7 @@
 </ul>
 <p><img alt="alt text" src="assets/image.webp" /></p>
 <h4 id="4-more-cache-levels">(4) More Cache Levels<a class="headerlink" href="#4-more-cache-levels" title="Permanent link">&para;</a></h4>
-<p>多级缓存的性能分析见：<a href="/docs/microelectronics/processors/memory/multilevel-cache-performance/index.md">Multi-level Cache Performance Analysis</a></p>
+<p>多级缓存的性能分析见：<a href="../../processors/memory/multilevel-cache-performance/">Multi-level Cache Performance Analysis</a></p>
 <p>这里我们考虑 Multilevel Inclusion 策略和 Multilevel Exclusion 策略的差异。</p>
 <p><strong>对于 Multilevel Inclusion 策略</strong></p>
 <p><strong>（1）如果 Block 大小不同</strong></p>
@@ -13189,7 +13250,7 @@
 <li>V index or P index?</li>
 <li>V tag or P tag?</li>
 </ul>
-<p>见：<a href="/docs/microelectronics/processors/memory/index.md#L673">Virtual Memory and Cache</a></p>
+<p>见：<a href="../../processors/memory/#L673">Virtual Memory and Cache</a></p>
 <hr />
 <h3 id="12-10-advanced-optimizations">1.2 10 Advanced Optimizations<a class="headerlink" href="#12-10-advanced-optimizations" title="Permanent link">&para;</a></h3>
 <h4 id="1-small-and-simple-l1-caches">1. Small and Simple L1 Caches<a class="headerlink" href="#1-small-and-simple-l1-caches" title="Permanent link">&para;</a></h4>
@@ -13499,7 +13560,7 @@
 </span></code></pre></div>
 <p><strong>类型（4）分块矩阵乘法</strong></p>
 <p><strong>缩小矩阵乘法的工作集，使其适应 Cache 的容量</strong>，充分利用空间局部性，进而<strong>缩短 reuse distance</strong>。</p>
-<p>详细分析见笔记：<a href="/docs/self-cultivation/research/ai-accelerator/base/conv_hardware/gemm_tile/index.md">Tiled GEMM 分析</a></p>
+<p>详细分析见笔记：<a href="../../../self-cultivation/research/ai-accelerator/base/conv_hardware/gemm_tile/">Tiled GEMM 分析</a></p>
 <h4 id="9-10-prefetching">9 &amp; 10. Prefetching<a class="headerlink" href="#9-10-prefetching" title="Permanent link">&para;</a></h4>
 <p>Prefetch 的核心思想：<strong>在 CPU 真正需要某块数据之前，提前把它搬到更靠近 CPU 的地方</strong></p>
 <p>观察如下三幅与 Prefetch 行为相关的图：</p>
@@ -13568,6 +13629,185 @@
 </ul>
 </li>
 </ul>
+<hr />
+<h2 id="ii-virtual-memory">II. Virtual Memory<a class="headerlink" href="#ii-virtual-memory" title="Permanent link">&para;</a></h2>
+<p>相比于基础笔记 <a href="../../processors/memory/">Memory Hierarchy Fundamentals</a> 中 Vritual Memory 的介绍，这里我们补充一些零散的关于 Virtual Memory 分析和优化的内容。</p>
+<h3 id="21-page-fault">2.1 Page Fault 是 如何产生的？<a class="headerlink" href="#21-page-fault" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>我们考虑 32 位地址系统，Page 大小 4 KiB，因此 VPN 和 PPN 的长度均为 <span class="arithmatex">\(32-12=20\)</span> 位。那么是不是说，Page Table 中一定会有：<span class="arithmatex">\(2^{20} = 1\rm{M}\)</span> 个 Page Table Entry？如果是这样的话，应该不可能出现 Page Fault 才对啊？因为每一个 Page 在 Page Table 中的 Page Table Entry 是根据 VPN 唯一确定的，一个 Page 有且仅有一个属于自己的位置，那么为什么还会发生 Page Fault, 乃至 Replace 呢？</p>
+</blockquote>
+<p>我们一步步来理清：</p>
+<h5 id="1-page-table">(1) Page Table 里到底有什么？<a class="headerlink" href="#1-page-table" title="Permanent link">&para;</a></h5>
+<p>在 32 位、4KB 页的系统中，如果一个进程使用了<strong>扁平页表（Flat Page Table）</strong>，确实会有 <span class="arithmatex">\(2^{20} = 1M\)</span> 个 PTE。<br />
+但是，PTE 的作用是<strong>记录映射关系</strong>，而不是<strong>存储数据本身</strong>。每个 PTE 里面有两个最关键的字段：<br />
+*   <strong>Valid (Present) 位</strong>：表示该虚拟页当前<strong>是否在物理内存中</strong>。<br />
+*   <strong>PPN (Physical Page Number)</strong>：如果 Valid = 1，这里存放数据在 DRAM 里的物理页框号；如果 Valid = 0，这里可能存放的是该页在硬盘（Swap 空间）上的<strong>磁盘扇区号</strong>。</p>
+<p><strong>发生 Page Fault 的根本原因：</strong> 当 CPU 拿着 VPN 去查 Page Table 时，找到了那个唯一的 PTE，发现它的 <strong>Valid = 0</strong>。这就意味着：这页数据虽然在逻辑上属于你的进程，但它<strong>目前不在 DRAM 里</strong>。</p>
+<h5 id="2-valid-0">(2) 为什么会有 Valid = 0？<a class="headerlink" href="#2-valid-0" title="Permanent link">&para;</a></h5>
+<p>这就涉及到了<strong>物理内存的局限性</strong>。</p>
+<p>32 位系统虚拟地址空间有 <strong>4GB</strong>（<span class="arithmatex">\(2^{32}\)</span> 字节）。</p>
+<p>如果物理内存（DRAM）只有 <strong>8GB</strong>，而系统里同时运行了 10 个进程，每个进程都觉得自己有完整的 4GB 空间，加起来需要 40GB。DRAM 根本装不下这么多数据。所以操作系统必须把大部分暂时不用的页，<strong>“踢”到硬盘的 Swap 分区（或者文件系统中）</strong>去。当一个页被踢到硬盘上时，OS 就会把它的 PTE 的 Valid 位置为 0，并把磁盘地址记录在 PTE 里。此时若 CPU 再次访问这个页，就会触发 Page Fault。</p>
+<h5 id="3">(3) 多级页表<a class="headerlink" href="#3" title="Permanent link">&para;</a></h5>
+<p>“一定有 1M 个 PTE”其实是在扁平页表下才成立。实际上，<strong>绝大多数 32 位/64 位系统根本不会用扁平页表</strong>。</p>
+<p>如果每个进程都分配 1M 个 PTE（每个 4 字节），光页表就要占 <strong>4MB 连续的物理内存</strong>，这对于几十上百个进程来说，简直是灾难。</p>
+<p>现代架构使用<strong>多级页表（如两级、四级页表）</strong>。因为<strong>程序实际用到的虚拟地址往往是稀疏</strong>的（比如代码段在低地址，栈在高地址，<strong>中间大片空白</strong>）。多级页表允许未使用的地址空间<strong>不分配对应的页表</strong>。</p>
+<p>甚至，进程刚启动时，OS 采用 <strong>Demand Paging（按需调页）</strong>，很多页的 PTE 甚至根本不存在（多级页表的上一级表项 Valid=0），完全在硬盘上。</p>
+<hr />
+<h3 id="22-pte-cache-hierarchy">2.2 PTE 本身可以被 Cache Hierarchy 缓存吗？<a class="headerlink" href="#22-pte-cache-hierarchy" title="Permanent link">&para;</a></h3>
+<p>可以，而且现代 CPU 本来就会把 PTE 放进 L1/L2/L3 普通数据 Cache（Data Cache）里。并且，这里的 Cache 就是普通 Cache，而不是 TLB。具体来说：</p>
+<ol>
+<li><strong>TLB：专门缓存「虚拟地址→物理地址」的转换结果</strong><ul>
+<li>TLB属于MMU的专用缓存，不在普通Cache层次里。TLB命中 = 直接拿到物理地址，<strong>不需要去内存读页表</strong>。TLB miss 才需要去内存里找对应的PTE。</li>
+</ul>
+</li>
+<li>
+<p><strong>PTE本身（页表里的那条数据）：就是普通内存数据，会走正常Cache层级</strong><br />
+    例如，当TLB失效，MMU要去内存读取PTE的时候：</p>
+<ul>
+<li>首先去查：L1 D Cache → L2 → L3 → 主存</li>
+<li>如果这个PTE刚好之前被访问过，它已经被缓存在 Data Cache 里，这次 TLB miss 只需要读 Cache，<strong>不需要访问DRAM</strong>，速度快很多</li>
+<li>只有 PTE 在 Cache 里也没命中（PTE Cache miss），才会<strong>真正去 DRAM 读取 PTE</strong>。</li>
+</ul>
+</li>
+</ol>
+<p>因此，根据 VPN 获取 PPN 其实是有多重保障的（TLB, Cache），并不是每次都真正要去 DRAM 里找。</p>
+<p>一条 PTE 数据 / PPN 本身，首先肯定存在于 Page Table 所在的 DRAM 里，然后在 Cache 和 TLB 可能都有副本。所以，这其实还会引发一个问题——Coherency：<strong>软件修改 PTE 之后，除了刷新 TLB，必要时还要做 Cache 刷新（invalidate）</strong>，保证 MMU 读到最新 PTE，因为旧 PTE 可能还留在 Data Cache 里。</p>
+<hr />
+<h3 id="23-tlb-handler">2.3 TLB Handler<a class="headerlink" href="#23-tlb-handler" title="Permanent link">&para;</a></h3>
+<p>这一部分将介绍现代计算机系统中处理 TLB Miss 的一种非常经典且高效的机制：软件管理的 TLB（Software-managed TLB）及<strong>Fast TLB Miss Handler</strong>。</p>
+<p>不同于 x86 架构那种“硬件自动遍历页表”的机制（Page Walker）。而这里展示的（典型的 MIPS 架构设计）是<strong>硬件只抛出异常，软件（操作系统内核）通过一段极其精简的汇编代码来查询页表并填入 TLB</strong>。</p>
+<p>当 TLB miss 时，调用操作系统，控制权转移至地址 <code>0x8000 0000</code>（<strong>Fast TLB Miss handler</strong> 的专用入口点）</p>
+<p>该汇编程序核心片段如下：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>TLBmiss: mfc0 $k1,Context   # copy address of PTE into temp $k1
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>         lw $k1,0($k1)      # put PTE into temp $k1
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>         mtc0 $k1,EntryLo   # put PTE into special register EntryLo
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>         tlbwr              # put EntryLo into TLB entry at Random
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>         eret               # return from TLB miss exception
+</span></code></pre></div>
+<h5 id="context">核心概念：Context 寄存器<a class="headerlink" href="#context" title="Permanent link">&para;</a></h5>
+<p>当发生 TLB Miss 时，MMU 不是两手一摊什么都不管，它会<strong>自动</strong>把两个关键信息打包塞进 <code>Context</code> 寄存器中：</p>
+<ol>
+<li><strong>页表基址（PTE Base）</strong>：当前进程页表在物理内存中的起始地址。</li>
+<li><strong>缺失页的 VPN（虚拟页号）</strong>：引发缺页的那个地址的高 20 位。</li>
+</ol>
+<p><strong>巧妙之处</strong>：硬件把这俩拼在一起后，<code>Context</code> 寄存器里存储的地址，正好就是<strong>这个缺失页对应的 PTE 在页表中的绝对物理地址</strong>。</p>
+<h5 id="fast-tlb-miss-handler">逐行拆解 "Fast TLB Miss Handler"<a class="headerlink" href="#fast-tlb-miss-handler" title="Permanent link">&para;</a></h5>
+<p>当 CPU 发现 TLB Miss 时，硬件会强行把 PC（程序计数器）指向一个特定地址 <code>0x8000 0000</code>（这是操作系统预留的专属异常入口），开始执行以下 5 条指令：</p>
+<ol>
+<li><code>mfc0 $k1, Context</code><ul>
+<li><strong>动作</strong>：将协处理器 0（CP0）中的 <code>Context</code> 寄存器的值，读入到通用寄存器 <code>$k1</code> 中。</li>
+<li><strong>微架构视角</strong>：此时 <code>$k1</code> 里装的就是那个 PTE 的物理地址。（注：<code>$k1</code> 和 <code>$k0</code> 是 MIPS 专门留给内核异常处理用的保留寄存器，这里直接使用，省去了保存通用寄存器的开销）。</li>
+</ul>
+</li>
+<li><code>lw $k1, 0($k1)</code><ul>
+<li><strong>动作</strong>：去物理内存中，读取刚才 <code>$k1</code> 指向的地址里的数据，覆盖写入 <code>$k1</code>。</li>
+<li><strong>微架构视角</strong>：这就是一次真正的访存，把真实的 PTE 内容（包含物理页号 PPN、权限位等）取到了 <code>$k1</code> 中。<strong>PTE 本身作为普通内存数据自然也会进入缓存系统，这一步会有 Cache Miss 以及 DRAM 访问的风险，但也只是 PTE 不在 D Cache 中才会有访存的风险</strong>。</li>
+</ul>
+</li>
+<li><code>mtc0 $k1, EntryLo</code><ul>
+<li><strong>动作</strong>：把读到的 PTE 内容，写入到硬件专门用于准备写 TLB 的 <code>EntryLo</code>（Entry Low）寄存器中。</li>
+<li><strong>微架构视角</strong>：<code>EntryLo</code> 是 TLB 条目的下半部分，用于存放 PPN 和权限位（Protection bits）。</li>
+</ul>
+</li>
+<li><code>tlbwr</code> (TLB Write Random)<ul>
+<li><strong>动作</strong>：执行一条特殊的特权指令，将 <code>EntryLo</code> 和另外一个高位寄存器（<code>EntryHi</code>，里面存着 VPN）合并，写进 TLB 中。</li>
+<li><strong>微架构视角</strong>：写进哪个 TLB 表项呢？硬件提供了一个 <code>Random</code> 寄存器（一个<strong>不停递增的自循环计数器</strong>），<code>tlbwr</code> 会根据这个计数器的值，<strong>随机替换</strong>掉 TLB 中的某一个表项（这就替代了复杂的 LRU 替换算法，硬件极其简单）。</li>
+</ul>
+</li>
+<li><code>eret</code> (Exception Return)<ul>
+<li><strong>动作</strong>：从异常返回。</li>
+<li><strong>微架构视角</strong>：CPU 重新执行刚才引发 TLB Miss 的那条访存指令。这次因为 TLB 里已经有映射了，就会 TLB Hit。</li>
+</ul>
+</li>
+</ol>
+<h5 id="valid">为什么不检查 Valid 位？<a class="headerlink" href="#valid" title="Permanent link">&para;</a></h5>
+<p><strong>The handler does not check if the page table entry is valid.</strong></p>
+<p><strong>正常逻辑下，我们取到了 PTE，应该检查一下这条 PTE 里的 <code>Valid</code> 位（Present 位）是不是 1</strong>，以确认这一页到底在不在物理内存（DRAM）里。如果不在，就需要触发极其复杂的 <strong>Page Fault Handler</strong>。</p>
+<p><strong>为什么 MIPS 这段快速代码直接无视 Valid 位，直接往 TLB 里塞？</strong></p>
+<ol>
+<li><strong>极致的性能权衡</strong>：<ul>
+<li><strong>大概率情况（频繁）</strong>：<strong>TLB Miss 绝大多数是因为 TLB 容量小，装不下所有活跃页导致的。页表里的 PTE 是 Valid 的（数据在内存里）</strong>。这种情况下，查页表、填 TLB 极快，CPU 停顿时间极短。如果硬要去检查 Valid，可能查了也是白查，因为 Valid 大概率等于 1。</li>
+<li><strong>小概率情况（不频繁）</strong>：PTE 的 Valid = 0。说明发生了真正的 Page Fault，需要去硬盘捞数据。这原本就是个极为漫长的过程（几百万个周期）。</li>
+</ul>
+</li>
+<li><strong>“二次异常”的兜底机制</strong>：<ul>
+<li>假设这个 PTE 的 Valid 确实是 0，而且权限位被填成了极其苛刻的状态。CPU <code>eret</code> 返回后，重新执行那条访存指令。</li>
+<li>此时 TLB Hit 了，但硬件在检查 TLB 条目时，会发现<strong>它是无效的（或者权限不对）</strong>。</li>
+<li>此时，硬件会触发<strong>第二次异常</strong>（通常叫 TLB Invalid Exception），这就直接跳转到了真正的、极其复杂的 Page Fault Handler。</li>
+</ul>
+</li>
+</ol>
+<p><strong>设计哲学</strong>：如果为了检查 Valid 位加入几个判断和跳转指令，会拖慢 99% 的 TLB Miss 处理速度。不如闭着眼睛把 PTE 塞进 TLB 然后 <code>eret</code> 返回——我们只是遇到了 TLB Miss 而已，没必要每次都还要额外做一次检查甚至 Page Fault Handling。</p>
+<p>因此，Fast TLB Miss Handler 采用了 <strong>Fast Path（快速路径）</strong> 的设计。它极其精简，完全不保存现场（因为 <code>$k0</code> 和 <code>$k1</code> 专供内核使用），直接用物理地址去查表、塞表。</p>
+<p>它<strong>牺牲了极少数 Page Fault 情况下的性能（要触发两次异常）</strong>，<strong>换取了最常见 TLB Miss 情况下的极低开销</strong>。这正是 "Computer Architecture: A Quantitative Approach" 中反复强调的设计理念：Make the Common Case Fast。</p>
+<hr />
+<h3 id="24-multi-level-page-table">2.4 Multi-level page table<a class="headerlink" href="#24-multi-level-page-table" title="Permanent link">&para;</a></h3>
+<h4 id="241-motivation-page-table-size">2.4.1 Motivation: Page Table Size<a class="headerlink" href="#241-motivation-page-table-size" title="Permanent link">&para;</a></h4>
+<p>考虑 32 位地址系统，Page = 4 KiB，那么一个 Process 的虚拟地址空间有 <span class="arithmatex">\(2^{32} / 2^{12} = 2^{20}\)</span> 个 Page。假设每个 PTE 占 4 B，那么一个进程的页表大小为：4 MB。</p>
+<p>那如果是 64 位地址系统，依旧 Page = 4 KiB，依旧每个 PTE 占 4 B，那么一个进程的页表大小为：<span class="arithmatex">\(2^{64} / 2^{12} * 4 = 2^{54}\)</span> B = 16 PB。显然，<strong>扁平式页表在 64 位系统下是不可行的</strong>。</p>
+<h4 id="242-multi-level-page-table">2.4.2 Multi-level page table<a class="headerlink" href="#242-multi-level-page-table" title="Permanent link">&para;</a></h4>
+<p>扁平式页表在 64 位系统下的“爆炸问题”是所有现代计算机必须采用 Multi-Level Page Table 的最根本原因。</p>
+<p>为了理解多级页表是如何把那个 16 PB 的庞然大物缩减到现实的几 KB 或几 MB 的，我们需要引入一个关键概念：虚拟地址空间的<strong>稀疏性（Sparsity）</strong>。程序虽然拥有巨大的逻辑地址空间，但它实际活跃使用的地址（代码段、堆、栈）往往<strong>只集中在几个很小的区域，中间存在大片的“空洞”</strong>。</p>
+<p>我们依旧以 32 位地址系统为例，分析两级页表的工作原理。</p>
+<p>在 32 位系统中，虽然扁平页表需要 4 MB（1M 个 PTE，每个 PTE 4 B），但在两级页表下，这就被拆解成了类似“目录”和“正文”的关系。</p>
+<h5 id="_1">虚拟地址的拆分<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h5>
+<ul>
+<li><strong>Offset（12位）</strong>：页内偏移，对应 4KB 的页大小（<span class="arithmatex">\(2^{12}\)</span>）。</li>
+<li><strong>p2（10位）</strong>：二级页表索引。</li>
+<li><strong>p1（10位）</strong>：一级页表索引。</li>
+</ul>
+<h5 id="_2">硬件寻址过程<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h5>
+<ul>
+<li><strong>第一步</strong>：CPU 里的 <strong>PTR 寄存器</strong>（页表基址寄存器）保存着<strong>一级页表的物理基地址</strong>。用 <code>p1</code> 作为索引，在一级页表中找到一个 PTE（我们叫它 <strong>PDE, Page Directory Entry</strong>）。</li>
+<li><strong>第二步</strong>：这个 PDE 里存的不是最终物理地址，而是<strong>二级页表的物理基地址</strong>。</li>
+<li><strong>第三步</strong>：用 <code>p2</code> 作为索引，在这个二级页表里找到最终的 PTE。这个 PTE 里才真正存着指向 4KB 物理内存页框的 PPN。</li>
+<li><strong>第四步</strong>：PPN 加上 Offset，得到最终物理地址。</li>
+</ul>
+<h5 id="_3">为什么能省空间？<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h5>
+<ul>
+<li><strong>进程启动时</strong>：OS 只分配一个 <strong>4 KB 的一级页表</strong>（含 1K 个条目）。把它的地址放进 PTR 寄存器。</li>
+<li><strong>按需分配（On-demand）</strong>：如果进程只使用了 1MB 的虚拟空间，OS 只需为这 1MB 分配<strong>一个</strong> 4 KB 的二级页表（4KB 二级页表有 1K 个 Entry，覆盖 1K × 4KiB = 4MB 地址空间，够用）。</li>
+<li><strong>惊天对比</strong>：扁平页表不管进程用不用，一上来就强行分配 4 MB 连续内存。而两级页表，只要程序没用到，对应的二级页表<strong>根本不分配</strong>（<strong>一级页表对应的 PDE 标记为无效即可</strong>）。这就极大地节省了内存。</li>
+</ul>
+<h4 id="243-example-64-amd-opteron-amd64">2.4.3 Example 拆解真实的 64 位系统（AMD Opteron / AMD64）<a class="headerlink" href="#243-example-64-amd-opteron-amd64" title="Permanent link">&para;</a></h4>
+<p>64 位系统把这种“套娃游戏”玩到了极致。现实中的 64 位系统不可能真的用满 64 位地址（否则又炸了），通常目前只用了 48 位（未来可能扩展到 57 位）。</p>
+<p><img alt="alt text" src="assets/image-5.webp" /></p>
+<p>这张图展示了经典的 <strong>四级页表</strong>（x86-64 和 ARM64 的基石）。</p>
+<p>64 位地址被划分为：</p>
+<p><code>000...0 或 111...1 (16位)</code> | <code>L4(9位)</code> | <code>L3(9位)</code> | <code>L2(9位)</code> | <code>L1(9位)</code> | <code>Offset(12位)</code></p>
+<ul>
+<li>最左边 16 位是符号扩展位（必须全 0 或全 1，代表有效地址只有 48 位）。</li>
+<li>从 L4 到 L1，每一级正好都是 <strong>9 位</strong>（<span class="arithmatex">\(2^9 = 512\)</span> 个条目）。</li>
+<li>Offset 是 12 位（对应 4 KB 页）。</li>
+</ul>
+<p><strong>为什么偏偏是 9 位？</strong></p>
+<p>这是一个极其经典的硬件对齐设计！因为 64 位系统中每个 PTE 是 <strong>8 字节</strong>。如果一个页表有 512 个条目，那么它的大小正好是：<code>512 × 8B = 4096 B = 4 KB</code>。</p>
+<p><strong>这刚好等于一个标准的物理页大小！</strong> 这意味着 OS 在内存中分配页表时，<strong>不需要寻找连续的巨块，只要随便给一个 4KB 的普通页框就能装下一个页表</strong>。</p>
+<p><strong>寻址方式</strong></p>
+<ol>
+<li><strong>CR3 寄存器</strong>（Control Register 3）保存 L4 页表的物理基地址。</li>
+<li>取出地址中的 <strong>L4 索引</strong>，与 CR3 相加，读出 L4 Entry。该 Entry 指向 L3 页表基址。</li>
+<li>取出地址中的 <strong>L3 索引</strong>，相加，读出 L3 Entry。该 Entry 指向 L2 页表基址。</li>
+<li>以此类推，直到读出 L1 Entry（真正的 PTE），拿到 40 位物理页框号（PPN）。</li>
+<li>PPN 拼接上 12 位 Offset，得到最终物理地址，去 Main memory 取数据。</li>
+</ol>
+<hr />
+<h4 id="244">2.4.4 多级页表的优缺点<a class="headerlink" href="#244" title="Permanent link">&para;</a></h4>
+<p><strong>优点</strong>：</p>
+<ol>
+<li><strong>内存极大节省</strong>：得益于稀疏空间不分配中间层页表，64 位系统下页表占用从天文数字降到了极其可观的程度。</li>
+<li><strong>物理内存连续性要求低</strong>：一级页表只要 <strong>4KB</strong> 连续内存，二级页表也只要 <strong>4KB</strong> 连续内存，<strong>无需寻找巨大的连续物理内存块（减少了外部碎片）</strong>。</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li><strong>TLB Miss Penalty 急剧增加（最致命的缺点）</strong>：<ul>
+<li>在单级页表中，TLB Miss 后<strong>查一次页表</strong>（访存 1 次）就能拿到 PPN。</li>
+<li>在四级页表中，TLB Miss 后，<strong>硬件 Page Walker（页表漫步器）需要连续访存 4 次</strong>（L4 -&gt; L3 -&gt; L2 -&gt; L1）才能拿到 PPN！但是好在每一级访问的 Entry 本身作为普通数据是可以被 Cache 缓存的（L1/L2/L3）。</li>
+<li><strong>但是！</strong> 如果这四次访问全都不在 Cache 里，那就是 4 次 DRAM 访问，延迟高达数百个周期。这就是为什么<strong>现代架构把 TLB 看得比 L1 Cache 还要重要</strong>。</li>
+</ul>
+</li>
+<li><strong>硬件状态机极其复杂</strong>：像 x86 这种硬件管理的页表，Page Walker 是一个超级庞大的状态机，还需要处理访存过程中的各种异常、缺页、权限违规等。</li>
+</ol>
 
 
 

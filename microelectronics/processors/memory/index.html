@@ -14530,9 +14530,9 @@
 <h4 id="631-hit-or-page-fault">6.3.1 hit or page fault?<a class="headerlink" href="#631-hit-or-page-fault" title="Permanent link">&para;</a></h4>
 <ol>
 <li>Hit: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 1，说明这个<strong>虚拟页已经被映射到物理内存中了，可以直接拿到对应的 PPN，完成地址拼接转换</strong>。</li>
-<li><span style='color:red'>Page fault</span> （缺页中断）: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 0，说明数据不在 DRAM 里，它还在慢吞吞的<strong>硬盘（Disk）</strong>里。去主存拿数据（Cache Miss）顶多等几百个周期（<span class="arithmatex">\(\mu\text{s}\)</span>级），但去硬盘拿数据（Page Fault）要等<strong>几百万甚至上千万个周期（<span class="arithmatex">\(\text{ms}\)</span>级）</strong>！<ul>
+<li><span style='color:red'>Page fault</span> （缺页中断）: 给定 VPN，在 Page Table 中对应的 Entry 的 valid = 0，说明数据不在 DRAM 里，它还在慢吞吞的 <strong>硬盘（Disk）</strong> 里。去主存拿数据（Cache Miss）顶多等几百个周期（<span class="arithmatex">\(\mu\text{s}\)</span>级），但去硬盘拿数据（Page Fault）要等 <strong>几百万甚至上千万个周期（<span class="arithmatex">\(\text{ms}\)</span>级）</strong>！<ul>
 <li>这个时候会进行类似 replace 的操作，会从<strong>硬盘把这个 Page 搬到 Physical Memory 中</strong>，并且<strong>更新 Page Table</strong> 中对应 Entry 的 valid 位和 PPN。</li>
-<li>如果 Physical Memory 中这个 <strong>Page 是 Dirty 的话，还需要先把它写回硬盘</strong>。总共就会有<strong>两次 Disk 访问</strong>，性能直接暴跌。</li>
+<li>如果 Physical Memory 中<strong>被 Replaced 掉的那个 Page (Victim Page) 是 Dirty 的话，还需要先把它写回硬盘</strong>。总共就会有<strong>两次 Disk 访问</strong>，性能直接暴跌。</li>
 </ul>
 </li>
 </ol>
@@ -14603,7 +14603,7 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <p class="admonition-title">Page Table 中的状态位</p>
 <p>总结以上分析，Page Table 中的每个 Entry（PTE）至少包含以下几个重要字段：</p>
 <ul>
-<li><strong>Valid bit</strong>：标记该页是否有效（是否已经被映射到</li>
+<li><strong>Valid bit</strong>：标记该页是否有效（是否已经被映射到内存</li>
 <li><strong>Drity bit</strong>: 标记该页是否被修改过，即 DRAM 中的数据是否被修改过但还没有写回磁盘</li>
 <li><strong>Reference bit</strong>: 标记该页是否被访问过，用于 <strong>Replacement 算法</strong>的决策</li>
 <li><strong>PPN</strong>: 存储该页对应的物理页号（Physical Page Number），用于拼接 PA。</li>
@@ -14731,7 +14731,7 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <li><strong>【Cache 命中 (Cache Hit)】</strong>：<ul>
 <li>狂喜！数据就在 Cache 里。</li>
 <li>如果是<strong>读</strong>：Cache 芯片直接吐出数据，送入 CPU 寄存器，<strong>整个访存流程完美结束</strong>。</li>
-<li>如果是<strong>写</strong>：根据写策略（Write-Through 或 Write-Back）修改数据 [14, 15]。</li>
+<li>如果是<strong>写</strong>：根据写策略（Write-Through 或 Write-Back）修改数据。</li>
 </ul>
 </li>
 <li><strong>【Cache 缺失 (Cache Miss)】</strong>：<ul>
@@ -14816,7 +14816,7 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <ol>
 <li>CPU 发出虚拟地址 (VA)。</li>
 <li><strong>兵分两路，同时出发</strong>：<ul>
-<li><strong>一路去 TLB</strong>：把高位的 VPN 翻译成 PPN [1.2.9]。</li>
+<li><strong>一路去 TLB</strong>：把高位的 VPN 翻译成 PPN。</li>
 <li><strong>另一路去 Cache</strong>：因为 <strong>Index 通常很短</strong>，且完全落在低 12 位（Page Offset）的范围内，所以可以直接用这部分<strong>虚拟地址的 Index 抢先去索引选通 Cache 行</strong>！</li>
 </ul>
 </li>
@@ -14858,6 +14858,8 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <h3 id="67-overall-operations">6.7 Overall Operations<a class="headerlink" href="#67-overall-operations" title="Permanent link">&para;</a></h3>
 <p>For a memory hierarchy, <strong>possible events</strong> in the TLB, virtual memory and cache:</p>
 <p><img alt="alt text" src="assets/image-20.webp" /></p>
+<p>示意架构图：ARM Cortex-A8</p>
+<p><img alt="alt text" src="assets/image.webp" /></p>
 <h2 id="viii-memory-protection">VIII. Memory Protection<a class="headerlink" href="#viii-memory-protection" title="Permanent link">&para;</a></h2>
 <h3 id="71-memory-protection">7.1 Memory Protection<a class="headerlink" href="#71-memory-protection" title="Permanent link">&para;</a></h3>
 <p>在多任务操作系统中，多个并发运行的进程（Tasks）共享物理内存，甚至可以共享部分虚拟地址空间（如共享库、进程间通信映射）。为了防止程序因错误指针引发的误访问（Errant Access）或恶意攻击，硬件和操作系统必须协同实现强力的<strong>内存保护机制</strong>。</p>
@@ -14932,9 +14934,9 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <p>虚拟机监视器（Virtual Machine Monitor, VMM，亦称 Hypervisor）是实现虚拟化最核心的软件层，其主要职能是将真实的物理资源（CPU、内存、I/O 设备）安全地映射为多套相互独立的虚拟资源。</p>
 <ul>
 <li><strong>运行机制 (Trap-and-Emulate)</strong>：<ul>
-<li>为了防止 Guest OS 破坏其他虚拟系统或物理硬件，<strong>Guest OS 的内核代码在真实硬件上只能以“用户模式（User Mode）”运行</strong> [79]。</li>
-<li>当 Guest OS 试图执行特权指令（如修改其虚拟页表、控制硬件中断等）时，CPU 会产生硬件异常并<strong>下陷（Trap）至 VMM 软件</strong> [79]。</li>
-<li>VMM 拦截该指令后，在软件中对其进行模拟执行（Emulate），并安全地将结果返回给 Guest OS [79]。</li>
+<li>为了防止 Guest OS 破坏其他虚拟系统或物理硬件，<strong>Guest OS 的内核代码在真实硬件上只能以“用户模式（User Mode）”运行</strong>。</li>
+<li>当 Guest OS 试图执行特权指令（如修改其虚拟页表、控制硬件中断等）时，CPU 会产生硬件异常并<strong>下陷（Trap）至 VMM 软件</strong>。</li>
+<li>VMM 拦截该指令后，在软件中对其进行模拟执行（Emulate），并安全地将结果返回给 Guest OS。</li>
 </ul>
 </li>
 </ul>
@@ -14942,21 +14944,21 @@ CPU 执行代码的流程，准确来说应该是：</p>
 <p>在虚拟化场景下，地址翻译从原本的一级映射演进为极其复杂的<strong>两级映射（三类地址空间）</strong>：</p>
 <div class="arithmatex">\[\text{VA (Guest 虚拟地址)} \Rightarrow \text{PA (Guest 物理地址)} \Rightarrow \text{MA (VMM 机器物理地址)}\]</div>
 <ul>
-<li><strong>VA (Virtual Address)</strong>：Guest OS 中应用程序使用的虚拟地址 [80]。</li>
-<li><strong>PA (Physical Address)</strong>：Guest OS 误以为的“物理地址”，本质上是虚拟出来的中间层地址 [80]。</li>
-<li><strong>MA (Machine Address)</strong>：真实的物理内存地址，由 VMM 进行统一分配与管理 [80]。</li>
+<li><strong>VA (Virtual Address)</strong>：Guest OS 中应用程序使用的虚拟地址。</li>
+<li><strong>PA (Physical Address)</strong>：Guest OS 误以为的“物理地址”，本质上是虚拟出来的中间层地址。</li>
+<li><strong>MA (Machine Address)</strong>：真实的物理内存地址，由 VMM 进行统一分配与管理。</li>
 </ul>
 <p>由于两级映射需要查两次页表，直接翻译的软件开销极大。为了加速这一过程，依旧可以采取 Cache 的方式：VMM 在软件中维护了<strong>影子页表（Shadow Page Table）</strong>。</p>
 <ul>
-<li><strong>原理</strong>：影子页表在软件中直接把最顶层的 <strong>VA (Virtual Address)</strong> 映射到最底层的 <strong>MA (Machine Address)</strong> [80]。</li>
-<li><strong>效果</strong>：通过合并两级翻译，硬件 MMU 在实际运行时<strong>只需查一次影子页表</strong>即可直接定位真实物理内存，极大地加速了虚拟化环境下的内存访问 [80]。</li>
+<li><strong>原理</strong>：影子页表在软件中直接把最顶层的 <strong>VA (Virtual Address)</strong> 映射到最底层的 <strong>MA (Machine Address)</strong>。</li>
+<li><strong>效果</strong>：通过合并两级翻译，硬件 MMU 在实际运行时<strong>只需查一次影子页表</strong>即可直接定位真实物理内存，极大地加速了虚拟化环境下的内存访问。</li>
 </ul>
 <h4 id="84-instruction-set-support">8.4 处理器指令集对虚拟化的支持 (Instruction Set Support)<a class="headerlink" href="#84-instruction-set-support" title="Permanent link">&para;</a></h4>
-<p>虚拟化的高效运行高度依赖于处理器指令集架构（ISA）的配合 [81]：</p>
+<p>虚拟化的高效运行高度依赖于处理器指令集架构（ISA）的配合：</p>
 <ul>
-<li><strong>严格特权控制</strong>：所有敏感物理资源（包括页表、中断控制、I/O 寄存器）必须被严格限制，只有通过特权指令才能访问 [81]。</li>
-<li><strong>特权指令下陷</strong>：当 Guest OS（运行在用户模式下）执行特权指令时，硬件必须能够精确、安全地触发 Trap 并移交控制权给 VMM [81]。</li>
-<li><strong>硬件虚拟化演进 (Hardware Virtualization Support)</strong>：为了消除纯软件模拟（如影子页表）的巨大开销，现代主流指令集（如 x86 的 Intel VT-x、AMD-V，以及 ARM 的 Virtualization Extensions）都进行了硬件扩展，提供了原生的双层页表翻译（Nested Page Table / EPT）等硬件虚拟化支持 [81]。</li>
+<li><strong>严格特权控制</strong>：所有敏感物理资源（包括页表、中断控制、I/O 寄存器）必须被严格限制，只有通过特权指令才能访问。</li>
+<li><strong>特权指令下陷</strong>：当 Guest OS（运行在用户模式下）执行特权指令时，硬件必须能够精确、安全地触发 Trap 并移交控制权给 VMM。</li>
+<li><strong>硬件虚拟化演进 (Hardware Virtualization Support)</strong>：为了消除纯软件模拟（如影子页表）的巨大开销，现代主流指令集（如 x86 的 Intel VT-x、AMD-V，以及 ARM 的 Virtualization Extensions）都进行了硬件扩展，提供了原生的双层页表翻译（Nested Page Table / EPT）等硬件虚拟化支持。</li>
 </ul>
 <h2 id="_3">配套阅读<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <div class="card-grid">
@@ -14979,13 +14981,13 @@ CPU 执行代码的流程，准确来说应该是：</p>
   <p class="card-desc">多级缓存的访问时间与性能分析。</p>
 </a>
 
-<a class="note-card teal" href="/docs/microelectronics/advanced-computer-architecture/memory-hierarchy/index.md">
+<a class="note-card teal" href="../../advanced-computer-architecture/memory-hierarchy/index.md">
   <span class="card-icon" aria-hidden="true">💾</span>
   <div class="card-title">Memory Hierarchy X</div>
   <p class="card-desc">存储架构中的高级/优化技术</p>
 </a>
 
-<a class="note-card stone" href="/docs/self-cultivation/digital-ic/architecture/memory-hierarchy/dram_structure/index.md">
+<a class="note-card stone" href="../../../self-cultivation/digital-ic/architecture/memory-hierarchy/dram_structure/index.md">
   <span class="card-icon" aria-hidden="true">📚️</span>
   <div class="card-title">DRAM</div>
   <p class="card-desc">DRAM 的体系结构视角拆解</p>
