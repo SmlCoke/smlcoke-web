@@ -1179,13 +1179,13 @@ $$\text{VA (Guest 虚拟地址)} \Rightarrow \text{PA (Guest 物理地址)} \Rig
   <p class="card-desc">多级缓存的访问时间与性能分析。</p>
 </a>
 
-<a class="note-card teal" href="../../advanced-computer-architecture/memory-hierarchy/index.md">
+<a class="note-card teal" href="../../advanced-computer-architecture/memory-hierarchy/">
   <span class="card-icon" aria-hidden="true">💾</span>
   <div class="card-title">Memory Hierarchy X</div>
   <p class="card-desc">存储架构中的高级/优化技术</p>
 </a>
 
-<a class="note-card stone" href="../../../self-cultivation/digital-ic/architecture/memory-hierarchy/dram_structure/index.md">
+<a class="note-card stone" href="../../../self-cultivation/digital-ic/architecture/memory-hierarchy/dram_structure/">
   <span class="card-icon" aria-hidden="true">📚️</span>
   <div class="card-title">DRAM</div>
   <p class="card-desc">DRAM 的体系结构视角拆解</p>
