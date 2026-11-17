@@ -835,7 +835,7 @@ $X[i][j]$ 需要用到 $Y[i]$ 行与 $Z[j]$ 列的所有元素进行计算，因
 !!! note "Page Table 中的状态位"
     总结以上分析，Page Table 中的每个 Entry（PTE）至少包含以下几个重要字段：
     
-    - **Valid bit**：标记该页是否有效（是否已经被映射到
+    - **Valid bit**：标记该页是否有效（是否已经被映射到内存
     - **Drity bit**: 标记该页是否被修改过，即 DRAM 中的数据是否被修改过但还没有写回磁盘
     - **Reference bit**: 标记该页是否被访问过，用于 **Replacement 算法**的决策
     - **PPN**: 存储该页对应的物理页号（Physical Page Number），用于拼接 PA。
@@ -943,7 +943,7 @@ TLB 的每个 Entry 包含：
 *   **【Cache 命中 (Cache Hit)】**：
     *   狂喜！数据就在 Cache 里。
     *   如果是**读**：Cache 芯片直接吐出数据，送入 CPU 寄存器，**整个访存流程完美结束**。
-    *   如果是**写**：根据写策略（Write-Through 或 Write-Back）修改数据 [14, 15]。
+    *   如果是**写**：根据写策略（Write-Through 或 Write-Back）修改数据。
 *   **【Cache 缺失 (Cache Miss)】**：
     *   没中，只能去主存进货了。
     *   **前往第 5 步**。
@@ -1011,7 +1011,7 @@ $$\mathbf{[Index\ 方式]\ I\ [Tag\ 方式]\ T}$$
 
 1.  CPU 发出虚拟地址 (VA)。
 2.  **兵分两路，同时出发**：
-    *   **一路去 TLB**：把高位的 VPN 翻译成 PPN [1.2.9]。
+    *   **一路去 TLB**：把高位的 VPN 翻译成 PPN。
     *   **另一路去 Cache**：因为 **Index 通常很短**，且完全落在低 12 位（Page Offset）的范围内，所以可以直接用这部分**虚拟地址的 Index 抢先去索引选通 Cache 行**！
 3.  **终点汇合**：
     *   Cache 此时已经选通了对应的行，并吐出了那里的物理 Tag。
@@ -1055,6 +1055,10 @@ For a memory hierarchy, **possible events** in the TLB, virtual memory and cache
 
 ![alt text](assets/image-20.webp)
 
+
+示意架构图：ARM Cortex-A8
+
+![alt text](assets/image.webp)
 
 ## VIII. Memory Protection
 
@@ -1128,30 +1132,30 @@ For a memory hierarchy, **possible events** in the TLB, virtual memory and cache
 虚拟机监视器（Virtual Machine Monitor, VMM，亦称 Hypervisor）是实现虚拟化最核心的软件层，其主要职能是将真实的物理资源（CPU、内存、I/O 设备）安全地映射为多套相互独立的虚拟资源。
 
 *   **运行机制 (Trap-and-Emulate)**：
-    *   为了防止 Guest OS 破坏其他虚拟系统或物理硬件，**Guest OS 的内核代码在真实硬件上只能以“用户模式（User Mode）”运行** [79]。
-    *   当 Guest OS 试图执行特权指令（如修改其虚拟页表、控制硬件中断等）时，CPU 会产生硬件异常并**下陷（Trap）至 VMM 软件** [79]。
-    *   VMM 拦截该指令后，在软件中对其进行模拟执行（Emulate），并安全地将结果返回给 Guest OS [79]。
+    *   为了防止 Guest OS 破坏其他虚拟系统或物理硬件，**Guest OS 的内核代码在真实硬件上只能以“用户模式（User Mode）”运行**。
+    *   当 Guest OS 试图执行特权指令（如修改其虚拟页表、控制硬件中断等）时，CPU 会产生硬件异常并**下陷（Trap）至 VMM 软件**。
+    *   VMM 拦截该指令后，在软件中对其进行模拟执行（Emulate），并安全地将结果返回给 Guest OS。
 
 #### 8.3 虚拟化内存管理 (Virtual Memory in Virtualization)
 在虚拟化场景下，地址翻译从原本的一级映射演进为极其复杂的**两级映射（三类地址空间）**：
 
 $$\text{VA (Guest 虚拟地址)} \Rightarrow \text{PA (Guest 物理地址)} \Rightarrow \text{MA (VMM 机器物理地址)}$$
 
-*   **VA (Virtual Address)**：Guest OS 中应用程序使用的虚拟地址 [80]。
-*   **PA (Physical Address)**：Guest OS 误以为的“物理地址”，本质上是虚拟出来的中间层地址 [80]。
-*   **MA (Machine Address)**：真实的物理内存地址，由 VMM 进行统一分配与管理 [80]。
+*   **VA (Virtual Address)**：Guest OS 中应用程序使用的虚拟地址。
+*   **PA (Physical Address)**：Guest OS 误以为的“物理地址”，本质上是虚拟出来的中间层地址。
+*   **MA (Machine Address)**：真实的物理内存地址，由 VMM 进行统一分配与管理。
 
 由于两级映射需要查两次页表，直接翻译的软件开销极大。为了加速这一过程，依旧可以采取 Cache 的方式：VMM 在软件中维护了**影子页表（Shadow Page Table）**。
 
-*   **原理**：影子页表在软件中直接把最顶层的 **VA (Virtual Address)** 映射到最底层的 **MA (Machine Address)** [80]。
-*   **效果**：通过合并两级翻译，硬件 MMU 在实际运行时**只需查一次影子页表**即可直接定位真实物理内存，极大地加速了虚拟化环境下的内存访问 [80]。
+*   **原理**：影子页表在软件中直接把最顶层的 **VA (Virtual Address)** 映射到最底层的 **MA (Machine Address)**。
+*   **效果**：通过合并两级翻译，硬件 MMU 在实际运行时**只需查一次影子页表**即可直接定位真实物理内存，极大地加速了虚拟化环境下的内存访问。
 
 #### 8.4 处理器指令集对虚拟化的支持 (Instruction Set Support)
-虚拟化的高效运行高度依赖于处理器指令集架构（ISA）的配合 [81]：
+虚拟化的高效运行高度依赖于处理器指令集架构（ISA）的配合：
 
-*   **严格特权控制**：所有敏感物理资源（包括页表、中断控制、I/O 寄存器）必须被严格限制，只有通过特权指令才能访问 [81]。
-*   **特权指令下陷**：当 Guest OS（运行在用户模式下）执行特权指令时，硬件必须能够精确、安全地触发 Trap 并移交控制权给 VMM [81]。
-*   **硬件虚拟化演进 (Hardware Virtualization Support)**：为了消除纯软件模拟（如影子页表）的巨大开销，现代主流指令集（如 x86 的 Intel VT-x、AMD-V，以及 ARM 的 Virtualization Extensions）都进行了硬件扩展，提供了原生的双层页表翻译（Nested Page Table / EPT）等硬件虚拟化支持 [81]。
+*   **严格特权控制**：所有敏感物理资源（包括页表、中断控制、I/O 寄存器）必须被严格限制，只有通过特权指令才能访问。
+*   **特权指令下陷**：当 Guest OS（运行在用户模式下）执行特权指令时，硬件必须能够精确、安全地触发 Trap 并移交控制权给 VMM。
+*   **硬件虚拟化演进 (Hardware Virtualization Support)**：为了消除纯软件模拟（如影子页表）的巨大开销，现代主流指令集（如 x86 的 Intel VT-x、AMD-V，以及 ARM 的 Virtualization Extensions）都进行了硬件扩展，提供了原生的双层页表翻译（Nested Page Table / EPT）等硬件虚拟化支持。
 
 ## 配套阅读
 
