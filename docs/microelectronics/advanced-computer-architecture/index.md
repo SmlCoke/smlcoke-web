@@ -21,4 +21,10 @@ hide:
     <div class="card-title">体系结构基础</div>
     <p class="card-desc">基础概念、发展趋势与设计原则；正文待补充。</p>
   </a>
+
+  <a class="note-card teal" href="memory-hierarchy/">
+    <span class="card-icon" aria-hidden="true">💾</span>
+    <div class="card-title">Memory Hierarchy</div>
+    <p class="card-desc">存储架构中的高级技术</p>
+  </a>
 </div>

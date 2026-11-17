@@ -221,6 +221,8 @@ nav:
     - microelectronics/advanced-computer-architecture/index.md
     - Ch1. Fundamentals:
       - microelectronics/advanced-computer-architecture/fundamentals/index.md
+    - Ch2. Memory Hierarchy:
+      - microelectronics/advanced-computer-architecture/memory-hierarchy/index.md
   - SoC:
     - microelectronics/soc/index.md
     - Introduction:
