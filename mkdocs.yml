@@ -402,6 +402,9 @@ nav:
             - self-cultivation/digital-ic/architecture/interconnect/pcie/netfpga-2015/index.md
           - PCIe DMA X:
             - self-cultivation/digital-ic/architecture/interconnect/pcie/pcie-dma-x/index.md
+    - FPGA:
+      - Fundamentals:
+        - self-cultivation/digital-ic/fpga/fundamentals/index.md
   - Research:
     - self-cultivation/research/index.md
     - AI Accelerator:
