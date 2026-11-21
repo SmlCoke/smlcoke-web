@@ -387,6 +387,8 @@ nav:
         - DRAM Structure:
           - self-cultivation/digital-ic/architecture/memory-hierarchy/dram_structure/index.md
       - I/O Subsystem:
+        - Fundamentals:
+          - self-cultivation/digital-ic/architecture/io-subsystem/fundamentals/index.md
         - Host-Device I/O Fundamentals:
           - self-cultivation/digital-ic/architecture/io-subsystem/host-device/index.md
       - Interconnect:
