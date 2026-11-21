@@ -36,7 +36,7 @@ int fib (int m) {
 
 编译后的汇编代码：
 
-![alt text](assets/image.png)
+![alt text](assets/image.webp)
 
 Basic Block 的**典型大小为 3–6 条指令**，**因此必须跨分支进行优化**。
 
@@ -134,7 +134,7 @@ Exceptions
 
 例如如下不同硬件单元的 Latency 和 Initiation Interval：
 
-![alt text](assets/image-1.png)
+![alt text](assets/image-1.webp)
 
 
 *   **Integer ALU**：
@@ -149,7 +149,7 @@ Exceptions
 
 **两种微架构图**
 
-![alt text](assets/image-2.png)
+![alt text](assets/image-2.webp)
 
 左图是早期设计，IF -> ID 之后，指令被分发给不同的功能单元（Integer, FP multiply, FP adder, FP divider）。
 每个功能单元都是一个**单独的“大 EX 阶段”**。算完之后，大家统一汇合到 MEM -> WB 阶段。**问题**：不同延迟的指令在后级汇合时可能竞争 MEM / WB 资源，必须增加相应的冲突检测与停顿控制。
@@ -175,7 +175,7 @@ Exceptions
 
 观察如下流水线时空图：
 
-![alt text](assets/image-3.png)
+![alt text](assets/image-3.webp)
 
 
 *   **`MUL.D`**：经历了 M1-M7 和 MEM，要在 CC11 进行 **WB**。
@@ -221,7 +221,7 @@ ADD.D F2, F4, F6  # I1：较早发射，多周期 FP ADD
 L.D   F2, 0(R2)    # I2：较晚发射，但 Load 可能更早写回
 ```
 
-![alt text](assets/image-4.png)
+![alt text](assets/image-4.webp)
 
 程序要求 `F2` 最终保存 I2 的 Load 结果。如果 I2 先写回、I1 后写回，就会被 I1 的旧结果覆盖，产生 **WAW Hazard**。
 
@@ -287,7 +287,7 @@ Precise Exception(精确异常): 流水线可以暂停，使得出错指令之�
 
 两个例子：
 
-![alt text](assets/image-5.png)
+![alt text](assets/image-5.webp)
 
 - **Case 1**：老指令 `L.D` 在 MEM 发生 Page Fault，年轻指令 `DADD` 在 EX 检测到算术异常。虽然两个异常在同一时刻出现，但应优先处理**程序顺序更早的 `L.D` 异常**。
 - **Case 2**：老指令在 MEM 遇到 Data Page Fault，年轻指令在 IF 遇到 Instruction Page Fault。**同样不能因为年轻指令的异常在前端先被报告，就忽略老指令的异常**。
@@ -326,7 +326,7 @@ MIPS R4000 是**深流水线（Superpipelining）** 案例。与经典五级流�
 - 紧邻 Load 的相关指令需要等待 **2 cycles**；
 - Branch 的控制冒险代价为 **3 cycles**。
 
-![alt text](assets/image-6.png)
+![alt text](assets/image-6.webp)
 
 #### Floating-Point Pipeline
 
@@ -345,4 +345,4 @@ R4000 的 FP Pipeline **不是为每一种浮点指令完全复制一套硬件�
 
 例如 P36 中，先发射一条 FP Multiply，再尝试连续发射 FP Add。某些发射时机下，Multiply 与 Add 会在相同周期争用 `A` 或 `R` 等阶段，因此即便两条指令**没有 RAW 数据依赖**，也必须推迟 Add 的发射。这是多周期流水线内部的 **Structural Hazard**。
 
-![alt text](assets/image-7.png)
+![alt text](assets/image-7.webp)
